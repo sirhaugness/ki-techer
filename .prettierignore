@@ -1,0 +1,9 @@
+node_modules
+.next
+package-lock.json
+coverage
+playwright-report
+test-results
+SPEC.md
+docs/SPEC.md
+next-env.d.ts
