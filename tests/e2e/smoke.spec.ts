@@ -1,4 +1,8 @@
 import { test, expect } from '@playwright/test';
+test('auth callback keeps the same browser origin', async ({ page }) => {
+  await page.goto('/auth/callback');
+  await expect(page).toHaveURL('http://127.0.0.1:3000/login?error=link');
+});
 test('parent entry point has Norwegian, accessible login form', async ({
   page,
 }) => {

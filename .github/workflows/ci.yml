@@ -35,7 +35,8 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 2.75.0
-      - run: supabase start
+      # Auth/RLS tests need Postgres, Auth, REST, Kong and Mailpit only.
+      - run: supabase start -x realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
       - run: npx playwright install --with-deps chromium
       - run: npx tsx scripts/e2e-local.ts
       - if: always()

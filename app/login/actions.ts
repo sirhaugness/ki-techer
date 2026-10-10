@@ -12,7 +12,7 @@ export async function sendLink(
     return {
       message: 'Innlogging er ikke satt opp ennå. Se oppsettveiledningen.',
     };
-  const origin = z.url().safeParse(process.env.APP_URL);
+  const origin = z.url({ protocol: /^https?$/ }).safeParse(process.env.APP_URL);
   if (!origin.success)
     return { message: 'Nettadressen for innlogging mangler i oppsettet.' };
   const { error } = await (

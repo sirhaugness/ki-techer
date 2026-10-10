@@ -48,6 +48,14 @@ Fortsatt begrensning: full Auth-e2e kan ikke kjøres i dette skymiljøet fordi S
 
 ---
 
+## Rettelser og verifisering etter PR-opprettelse
+
+GitHub Actions bekreftet kvalitetssjekkene, men full Auth-e2e fant at callback-redirect fra 127.0.0.1 til Nexts interne localhost mistet sesjonens cookie. Feilen er reprodusert lokalt uten ekte nøkler og rettet med validerte `APP_URL`-redirects. Ny regresjonstest: 232 Vitest-tester grønne, 3 lokale nettlesertester grønne / full lokal Auth-test fortsatt hoppet over av nettverkspolicyen. Lint, typecheck og formatering grønne. Full CI kjøres på nytt med rettelsen.
+
+Simuleringen passerte resultatkravene, men én delt CI-runner overskred testgrensen på 30 sekunder. Bare denne testens grense er økt til 120 sekunder; neste GitHub-kjøring passerte. Vercel har bygget Preview. Migrasjonsworkflowen stopper før tilkobling fordi `SUPABASE_ACCESS_TOKEN` mangler; ingen ekstern dev/prod-database er endret av denne PR-ens workflow hittil.
+
+---
+
 ## Historisk M0-logg fra main
 
 ### M0 – gjennomført 6. oktober 2026

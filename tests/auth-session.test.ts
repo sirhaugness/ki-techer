@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest';
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest';
 vi.mock('server-only', () => ({}));
 const context = vi.hoisted(() => ({
   configured: true,
@@ -50,7 +50,8 @@ vi.mock('@/lib/db/server', () => ({
 import { parentOnly, signedIn } from '@/lib/auth/session';
 import { GET } from '@/app/auth/callback/route';
 import { NextRequest } from 'next/server';
-beforeEach(() =>
+beforeEach(() => {
+  vi.stubEnv('APP_URL', 'http://localhost:3000');
   Object.assign(context, {
     configured: true,
     user: { id: 'parent' },
@@ -59,8 +60,9 @@ beforeEach(() =>
     dbError: false,
     exchangeError: false,
     rpcError: false,
-  }),
-);
+  });
+});
+afterEach(() => vi.unstubAllEnvs());
 describe('server-side parent gates', () => {
   it('requires authentication even with a device cookie', async () => {
     context.user = null;
@@ -82,6 +84,20 @@ describe('server-side parent gates', () => {
   });
 });
 describe('PKCE callback', () => {
+  it('keeps the configured cookie origin when Next uses an internal hostname', async () => {
+    vi.stubEnv('APP_URL', 'http://127.0.0.1:3000');
+    const response = await GET(
+      new NextRequest('http://localhost:3000/auth/callback?code=test-code'),
+    );
+    expect(response.headers.get('location')).toBe(
+      'http://127.0.0.1:3000/forelder',
+    );
+    vi.stubEnv('APP_URL', 'ftp://example.test');
+    expect(
+      (await GET(new NextRequest('http://localhost:3000/auth/callback')))
+        .status,
+    ).toBe(503);
+  });
   it('exchanges the code and initializes the household before redirect', async () => {
     const response = await GET(
       new NextRequest('http://localhost:3000/auth/callback?code=test-code'),
