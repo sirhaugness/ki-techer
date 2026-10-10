@@ -68,6 +68,14 @@ Verifisert med `npm run check`: lint, typecheck, formatering, 247 tester (15 nye
 
 ---
 
+## Oppfølging: diagnostikk ved mislykket e-postsending
+
+Brukeren ser fortsatt feil ved sending og bekrefter å teste med samme e-post som Supabase-kontoen. Den generiske meldingen fastslår ikke årsaken; ingen hosted Auth-logg er tilgjengelig fra verktøyene her. Ny håndtering bruker Supabase-feilkode og HTTP-status til konkrete norske neste steg for sendegrense, SMTP-begrensning, deaktivert e-post/OTP, registrering, ugyldig adresse, CAPTCHA og feil API-nøkkel. Rå servermeldinger, e-post, nøkler og innloggingslenker logges eller vises ikke.
+
+`npm run check` er grønn: lint, typecheck, formatering, 257 tester (10 nye for feilkoder og skjerming av sensitive provider-meldinger), simulering, 3 lokale nettlesertester og produksjonsbuild. Full lokal Auth-e2e hoppes over her av samme nettverkspolicy som før og kjøres i CI. DEPLOY beskriver Supabases innebygde SMTP-begrensninger, egne SMTP-innstillinger og hvor Auth-feilkoden finnes, med offisielle kilder. Årsaken til ekte e-postsending er fortsatt uavklart; brukeren er bedt om kort feilkode fra leo-dev sin Auth-logg. Dette er diagnostikk, ikke en påstand om bekreftet levering fra hosted Supabase.
+
+---
+
 ## Historisk M0-logg fra main
 
 ### M0 – gjennomført 6. oktober 2026

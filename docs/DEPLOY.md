@@ -61,6 +61,20 @@ For denne PR-ens stabile Preview-adresse er redirect-verdien `https://ki-techer-
 
 ## 5. Hva du skal teste på Preview
 
+### Hvis ingen innloggings-e-post sendes
+
+Den nye feilmeldingen skiller mellom e-postbegrensning, sendegrense, avslått innlogging og feil API-oppsett. Skjermbildet med «Kunne ikke sende lenken» alene fastslår ikke årsaken.
+
+1. Test med samme e-postadresse som tilhører Supabase-prosjektets organisasjon. Supabases innebygde e-posttjeneste sender bare til organisasjonsmedlemmer; andre adresser krever egen SMTP-tjeneste.
+2. Hvis du har prøvd flere ganger, kontroller sendegrensen. Den innebygde tjenesten er for tiden begrenset til to e-poster per time per prosjekt. Vent på at grensen nullstilles før et nytt forsøk; verdien kan endres av Supabase.
+3. Åpne **leo-dev → Logs → Auth**, finn feilen ved siste innloggingsforsøk og se feilkoden. `email_address_not_authorized` krever organisasjonsmedlem eller egen SMTP; `over_email_send_rate_limit` betyr sendegrense. Ved serverfeil viser loggen den konkrete årsaken. Del bare en kort feilkode/melding ved feilsøking, uten nøkler, lenker eller persondata.
+4. For sending til vanlige foreldreadresser: sett opp en e-postleverandør som støtter SMTP, og fyll inn vert, port, brukernavn, passord og verifisert avsender under Supabase **Authentication → Email / SMTP Settings**. Dette settes i Supabase, ikke som en ny nettadressevariabel i Vercel. Konfigurer dev og prod hver for seg.
+5. Ved feil nøkkel: kontroller `NEXT_PUBLIC_SUPABASE_URL` og `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` for Preview i Vercel, hent begge fra leo-dev og velg **Redeploy** etter endring.
+
+Kilder: [Supabases e-postbegrensninger og SMTP-oppsett](https://supabase.com/docs/guides/auth/auth-smtp) og [Auth-feilkoder](https://supabase.com/docs/guides/auth/debugging/error-codes). I Vercels runtime-logger lagrer appen bare Supabase-feilkode og HTTP-status ved mislykket sending, aldri rå feilmelding, e-postadresse eller innloggingslenke.
+
+### Test innlogging, profil og PIN
+
 1. Åpne Preview-lenken i PR-en. Du skal se «Leo-læreren» og «Kom i gang som forelder».
 2. Be om en innloggingslenke med din egen e-post, og åpne den i samme nettleser. Du skal komme til «Foreldresiden».
 3. Opprett Leo med 4. trinn og lærerens navn. Last siden på nytt; profilen skal fortsatt være der.

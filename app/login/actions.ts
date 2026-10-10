@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { headers } from 'next/headers';
 import { db, configured } from '@/lib/db/server';
 import { authOrigin } from '@/lib/auth/origin';
+import { loginErrorMessage } from '@/lib/auth/login-error';
 export type LoginState = { message: string };
 export async function sendLink(
   _: LoginState,
@@ -25,7 +26,7 @@ export async function sendLink(
   });
   return {
     message: error
-      ? 'Kunne ikke sende lenken. Vent litt og prøv igjen.'
+      ? loginErrorMessage(error)
       : 'Sjekk e-posten din. Trykk på lenken for å logge inn.',
   };
 }

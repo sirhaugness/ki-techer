@@ -76,3 +76,7 @@ M0s Supabase-navn (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
 ## Automatisk innloggingsadresse på Preview og produksjon
 
 `APP_URL` er nå valgfri etter at Preview stoppet uten denne variabelen. Felles server-only `authOrigin` brukes både for e-postlenken og callback-redirect: gyldig eksplisitt APP_URL → forespørselens eksterne Host → innebygd VERCEL_URL → request.url hvis ingen andre kilder finnes. Vercels forwarded host godtas bare på Vercel; andre miljøer bruker Host. Eksterne adresser bruker HTTPS, og localhost/127.0.0.1/IPv6-loopback støtter lokal HTTP. Vert med URL, sti, brukerinfo eller komma avvises. En feil eksplisitt overstyring avvises i stedet for å skjules. Supabase Redirect URLs må fortsatt tillate callback på adressen brukeren åpner. Full Auth-e2e og smoke-test kjører med tom APP_URL for å kontrollere den automatiske flyten.
+
+## Feil ved sending av innloggings-e-post
+
+Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, sendegrense, deaktivert e-post/OTP, avslått registrering, ugyldig adresse, CAPTCHA og feil API-nøkkel. Ukjente feil henviser til Auth-loggen. Bare kode i formatet `[a-z_]{1,64}` og HTTP-status logges; rå provider-melding, e-post, nøkler og lenker eksponeres ikke. Skjermbildet med den tidligere generiske meldingen bekrefter ikke én bestemt årsak. Ekte e-postlevering kan ikke fastslås fra CI med lokal Mailpit; hosted Supabase må også ha fungerende e-postoppsett.
