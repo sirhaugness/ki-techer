@@ -12,9 +12,15 @@ export default defineConfig({
       name: 'chromium',
       use: {
         browserName: 'chromium',
-        launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
-          ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH }
-          : undefined,
+        launchOptions:
+          process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
+          process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE
+            ? {
+                executablePath:
+                  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
+                  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
+              }
+            : undefined,
         viewport: { width: 1024, height: 768 },
       },
     },

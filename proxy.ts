@@ -4,13 +4,19 @@ export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
   )
     return response;
   const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
+      cookieOptions: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+      },
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll: (values) => {

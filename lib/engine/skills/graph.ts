@@ -219,8 +219,14 @@ export const skills: readonly Skill[] = definitions.map(
     generatorKey: id,
     difficultyLevels: 5,
     order,
-    maxOperand: 1000,
-    operations: part === 4 ? ['+', '*'] : ['+', '-', '*', '/'],
+    maxOperand: id.startsWith('mult-tabell') ? 100 : part === null ? 200 : 1000,
+    operations: id.startsWith('mult-')
+      ? ['*']
+      : id === 'dobling-halvering'
+        ? ['*', '/']
+        : part === 4
+          ? ['+', '*']
+          : ['+', '-', '*', '/'],
   }),
 );
 export function skillById(id: string): Skill {

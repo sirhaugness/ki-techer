@@ -475,7 +475,8 @@ export function generate(
     if (
       !previous ||
       previous.skillId !== skillId ||
-      JSON.stringify(item.params) !== JSON.stringify(previous.params)
+      item.question !== previous.question ||
+      item.expression !== previous.expression
     )
       return item;
   }
@@ -489,8 +490,16 @@ export function checkAnswer(item: GeneratedItem, value: unknown): boolean {
   if (typeof expected === 'number' && typeof actual === 'number')
     return Math.abs(expected - actual) < 1e-9;
   if (Array.isArray(expected))
-    return Array.isArray(actual) && expected.length === actual.length && expected.every((v, i) => v === actual[i]);
+    return (
+      Array.isArray(actual) &&
+      expected.length === actual.length &&
+      expected.every((v, i) => v === actual[i])
+    );
   if (typeof expected === 'object')
-    return typeof actual === 'object' && !Array.isArray(actual) && Object.entries(expected).every(([k, v]) => Reflect.get(actual, k) === v);
+    return (
+      typeof actual === 'object' &&
+      !Array.isArray(actual) &&
+      Object.entries(expected).every(([k, v]) => Reflect.get(actual, k) === v)
+    );
   return expected === actual;
 }

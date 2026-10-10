@@ -6,7 +6,7 @@ import type { Database } from './types';
 export function configured() {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
   );
 }
 export async function db() {
@@ -14,8 +14,14 @@ export async function db() {
   const jar = await cookies();
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
+      cookieOptions: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+      },
       cookies: {
         getAll: () => jar.getAll(),
         setAll: (values) => {
@@ -32,11 +38,11 @@ export async function db() {
   );
 }
 export function adminDb() {
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY)
+  if (!process.env.SUPABASE_SECRET_KEY)
     throw new Error('Servernøkkel mangler.');
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.SUPABASE_SECRET_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }

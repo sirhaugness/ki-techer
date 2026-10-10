@@ -84,15 +84,13 @@ export async function lockLeo(
     )
       return { message: 'Enheten må kobles til på nytt.' };
   }
-  const { error } = await admin
-    .from('devices')
-    .upsert({
-      id,
-      parent_id: user.id,
-      household_id: learner.household_id,
-      learner_id: learner.id,
-      leo_mode_locked: true,
-    });
+  const { error } = await admin.from('devices').upsert({
+    id,
+    parent_id: user.id,
+    household_id: learner.household_id,
+    learner_id: learner.id,
+    leo_mode_locked: true,
+  });
   if (error) return { message: 'Kunne ikke starte Leo-modus.' };
   jar.set('leo-device', id, {
     httpOnly: true,

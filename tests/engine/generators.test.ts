@@ -163,7 +163,10 @@ for (const skill of skills)
           expect(item.answer).toEqual(expected);
           expect(checkAnswer(item, expected)).toBe(true);
           expect(checkAnswer(item, null)).toBe(false);
-          if (previous) expect(item.params).not.toEqual(previous.params);
+          if (previous) {
+            expect(item.params).not.toEqual(previous.params);
+            expect(item.question).not.toBe(previous.question);
+          }
           if (typeof expected === 'number' && item.expression)
             expect(evaluate(item.expression)).toBeCloseTo(expected, 9);
           if (item.answerType === 'choice') {
@@ -193,4 +196,25 @@ it('is reproducible and rejects invalid difficulty, unknown skills and stuck RNG
   expect(() => generate('likhetstegn', 1, () => 0.5, previous)).toThrow(
     'tilfeldighetskilden',
   );
+});
+
+it('checks coordinate, remainder and ordered sequence answers without loose coercion', () => {
+  const base = generate('algoritme-folg-instruksjon', 3, seededRng(4));
+  expect(checkAnswer(base, { x: 99, y: 99 })).toBe(false);
+  expect(checkAnswer(base, { ...(base.answer as object), extra: 1 })).toBe(
+    false,
+  );
+  const sequence: GeneratedItem = {
+    ...base,
+    answerType: 'sequence',
+    answer: ['høyre', 'opp'],
+  };
+  expect(checkAnswer(sequence, ['høyre', 'opp'])).toBe(true);
+  expect(checkAnswer(sequence, ['opp', 'høyre'])).toBe(false);
+  expect(checkAnswer(sequence, ['høyre'])).toBe(false);
+  expect(checkAnswer(sequence, 'høyre,opp')).toBe(false);
+  const numeric = generate('mult-telling-grupper', 1, seededRng(4));
+  expect(checkAnswer(numeric, String(numeric.answer))).toBe(false);
+  expect(checkAnswer(numeric, NaN)).toBe(false);
+  expect(() => validateGraph([skills[0], skills[0]])).toThrow('Duplikate');
 });
