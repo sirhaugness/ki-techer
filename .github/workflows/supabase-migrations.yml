@@ -1,0 +1,38 @@
+name: Supabase-migrasjoner
+on:
+  pull_request:
+    branches: [main, leo-dev]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+# Shared dev/prod databases must not be migrated concurrently or interrupted.
+concurrency:
+  group: supabase-${{ github.event_name == 'pull_request' && 'leo-dev' || 'leo-prod' }}
+  cancel-in-progress: false
+jobs:
+  migrate:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets[github.event_name == 'pull_request' && 'SUPABASE_PROJECT_REF_DEV' || 'SUPABASE_PROJECT_REF_PROD'] }}
+      SUPABASE_DB_PASSWORD: ${{ secrets[github.event_name == 'pull_request' && 'SUPABASE_DB_PASSWORD_DEV' || 'SUPABASE_DB_PASSWORD_PROD'] }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Use the PR's own migrations, not a synthetic merge revision.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
+      - name: Kontroller hemmeligheter
+        run: |
+          test -n "$SUPABASE_ACCESS_TOKEN" || { echo 'SUPABASE_ACCESS_TOKEN mangler'; exit 1; }
+          test -n "$SUPABASE_PROJECT_REF" || { echo 'Prosjektreferanse mangler'; exit 1; }
+          test -n "$SUPABASE_DB_PASSWORD" || { echo 'Databasepassord mangler'; exit 1; }
+      - name: Koble til valgt Supabase-prosjekt
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+      - name: Kjør ventende migrasjoner
+        run: supabase db push --linked --yes

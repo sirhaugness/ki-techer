@@ -1,0 +1,38 @@
+@import 'tailwindcss';
+:root {
+  color-scheme: light;
+}
+body {
+  background: #f8f7f0;
+  color: #193b35;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+}
+a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+input,
+select {
+  min-height: 48px;
+  border: 2px solid #57746a;
+  border-radius: 10px;
+  padding: 10px;
+  background: white;
+  width: 100%;
+}
+label {
+  display: block;
+  margin: 18px 0;
+}
+small {
+  font-size: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
