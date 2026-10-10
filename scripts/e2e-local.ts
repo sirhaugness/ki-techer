@@ -19,7 +19,7 @@ const result = spawnSync('npx', ['playwright', 'test'], {
     NEXT_PUBLIC_SUPABASE_URL: values.API_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: values.ANON_KEY,
     SUPABASE_SECRET_KEY: values.SERVICE_ROLE_KEY,
-    APP_URL: 'http://127.0.0.1:3000',
+    APP_URL: '',
     E2E_LOCAL_SUPABASE: '1',
   },
 });

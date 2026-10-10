@@ -54,7 +54,7 @@ Ikke hev at GitHub CI eller ekte tjenester er verifisert uten å ha sett resulta
 
 ## M1–M3
 
-`lib/auth/` og `lib/db/` er server-only. Bruk miljønavnene fra M0: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er lagt til for en kontrollert innloggingsredirect. Migrasjoner er append-only. PostgreSQL/RLS testes med PGlite; full Auth-e2e kjøres mot lokal Supabase i CI. `npm run check` kjører alle kvalitetssjekker og simulering.
+`lib/auth/` og `lib/db/` er server-only. Bruk miljønavnene fra M0: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er en valgfri overstyring. Innlogging og callback deler `authOrigin`: forespørselens eksterne vert først, deretter Vercels innebygde `VERCEL_URL`. Ikke bruk Nexts interne localhost-adresse foran den faktiske Host-headeren. Migrasjoner er append-only. PostgreSQL/RLS testes med PGlite; full Auth-e2e kjøres mot lokal Supabase i CI. `npm run check` kjører alle kvalitetssjekker og simulering.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

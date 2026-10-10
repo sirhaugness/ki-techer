@@ -72,3 +72,7 @@ M0s Supabase-navn (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
 
 - Auth-callback bruker den validerte `APP_URL` både ved suksess og feil. Next.js 16 normaliserte `request.url` til localhost i lokal kjøring selv om nettleseren brukte 127.0.0.1. Det skiftet cookie-domene og mistet sesjonen. En reell nettlesertest og en enhetstest med ulik intern/ekstern vert kontrollerer regresjonen. Manglende/ugyldig APP_URL gir 503; kun HTTP/HTTPS godtas.
 - Hele 200-økters simuleringen har 120 sekunders testgrense. En delt GitHub-runner brukte 31,6 sekunder og overskred den opprinnelige grensen på 30 sekunder; resultatkravene er uendret. Full Auth-e2e starter bare de lokale tjenestene den bruker: PostgreSQL, Auth, REST, Kong og Mailpit.
+
+## Automatisk innloggingsadresse på Preview og produksjon
+
+`APP_URL` er nå valgfri etter at Preview stoppet uten denne variabelen. Felles server-only `authOrigin` brukes både for e-postlenken og callback-redirect: gyldig eksplisitt APP_URL → forespørselens eksterne Host → innebygd VERCEL_URL → request.url hvis ingen andre kilder finnes. Vercels forwarded host godtas bare på Vercel; andre miljøer bruker Host. Eksterne adresser bruker HTTPS, og localhost/127.0.0.1/IPv6-loopback støtter lokal HTTP. Vert med URL, sti, brukerinfo eller komma avvises. En feil eksplisitt overstyring avvises i stedet for å skjules. Supabase Redirect URLs må fortsatt tillate callback på adressen brukeren åpner. Full Auth-e2e og smoke-test kjører med tom APP_URL for å kontrollere den automatiske flyten.

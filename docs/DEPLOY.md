@@ -43,20 +43,21 @@ GitHub-hemmelighetene brukes bare av migrasjonsworkflowen. Nettsiden trenger et 
 1. Logg inn på [Vercel](https://vercel.com), velg **Add New → Project**, importer `sirhaugness/ki-techer`, og behold Next.js som rammeverk. Hvis prosjektet allerede er koblet til Vercel, åpne det eksisterende prosjektet.
 2. Under **Settings → Environment Variables**, legg inn følgende for **Preview** fra leo-dev og for **Production** fra leo-prod:
 
-| Variabel                               | Hvor du finner verdien                                                    |
-| -------------------------------------- | ------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Prosjektets API URL / Project URL                                         |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Prosjektets publishable key under API Keys                                |
-| `SUPABASE_SECRET_KEY`                  | Prosjektets secret key under API Keys; kun server-side                    |
-| `APP_URL`                              | Hele nettadressen til denne nettsiden, for eksempel `https://…vercel.app` |
+| Variabel                               | Hvor du finner verdien                                 |
+| -------------------------------------- | ------------------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Prosjektets API URL / Project URL                      |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Prosjektets publishable key under API Keys             |
+| `SUPABASE_SECRET_KEY`                  | Prosjektets secret key under API Keys; kun server-side |
 
 3. Finn API-nøklene under Supabase-prosjektets **Settings → API / API Keys**. Bruk dev-nøkler i Preview og prod-nøkler i Production. Servernøkkelen skal aldri ha `NEXT_PUBLIC_` foran navnet. Ingen OpenAI-nøkkel trengs for M1–M3.
-4. Vercel oppretter en **Preview** for PR-en. Åpne den og kopier hele adressen. Sett `APP_URL` for Preview til denne adressen, og velg **Redeploy** slik at endringen tas i bruk. Ved en ny Preview-adresse må `APP_URL` oppdateres igjen. Bruk gjerne en stabil grenadresse dersom Vercel-prosjektet tilbyr det.
+4. Vercel oppretter en **Preview** for PR-en. Åpne den og kopier hele adressen. Du trenger **ikke** legge inn `APP_URL` eller `VERCEL_URL`: innloggingen bruker automatisk adressen du åpner, med Vercels innebygde `VERCEL_URL` som reserve. Dette fungerer også med produksjonsdomene og grenadresse. Hvis du allerede har lagt inn feil `APP_URL`, fjern den for Preview og velg **Redeploy**. En eventuell overstyring må være hele nettadressen til siden du bruker, for eksempel `https://leo.example.no`, uten `/auth/callback`; den har prioritet over automatisk valg og bør normalt være tom på Preview.
 5. I **leo-dev → Authentication → URL Configuration**, sett **Site URL** til Preview-adressen og legg inn `https://DIN-PREVIEW-ADRESSE/auth/callback` i **Redirect URLs**. Ta med den nøyaktige adressen til siden du skal teste. For leo-prod bruker du produksjonsadressen på tilsvarende måte.
 6. Bruk samme nettleser for å be om og åpne e-postlenken; innloggingen bruker PKCE. Åpne fra e-postklienten i nettleseren du begynte i hvis lenken åpnes i en annen app.
 7. Sjekk at både **Kvalitet** og **Supabase-migrasjoner** er grønne på PR-en. Databasemigrasjoner og Vercel-bygg er separate jobber; innlogging virker først når begge er ferdige og URL-oppsettet er riktig.
 
 Appens serverfunksjoner er satt til Frankfurt i `vercel.json`. Supabase-regionen velges når du oppretter prosjektene.
+
+For denne PR-ens stabile Preview-adresse er redirect-verdien `https://ki-techer-git-feat-m1-m3-learning-foundation-team-thor1.vercel.app/auth/callback`. Hvis du åpner en annen Preview-adresse, må også den være tillatt i Supabase. En adresse som ikke er tillatt kan bli erstattet av Supabase-prosjektets Site URL, slik at nettleserens innloggingscookies ikke følger med.
 
 ## 5. Hva du skal teste på Preview
 

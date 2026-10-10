@@ -60,6 +60,14 @@ Simuleringen passerte resultatkravene, men én delt CI-runner overskred testgren
 
 ---
 
+## Oppfølging: automatisk innloggingsadresse
+
+Rettet Preview-feilen «Nettadressen for innlogging mangler i oppsettet» når APP_URL er tom. Server action og callback deler nå samme server-only adresseresolver: valgfri APP_URL-overstyring, faktisk Host/vert fra Vercels proxy, innebygd VERCEL_URL som reserve, og request.url som siste reserve. Dermed bevares også cookies på grenadresser, produksjonsdomener og lokal 127.0.0.1 til tross for Nexts interne localhost-adresse. Adresser valideres før bruk; feil eksplisitt overstyring og ugyldige Host-verdier avvises.
+
+Verifisert med `npm run check`: lint, typecheck, formatering, 247 tester (15 nye, inkludert e-postsending/callback på Preview og produksjon uten APP_URL, VERCEL_URL-reserve og ugyldige adresser), simulering, 3 lokale nettlesertester og produksjonsbuild grønne. Full lokal-Supabase-test hoppes fortsatt over i skymiljøet av den dokumenterte nettverkspolicyen; CI-flyten kjører nå med tom APP_URL. Miljømal, DEPLOY og beslutninger er oppdatert: ingen ny Vercel-variabel kreves for nettadressen, men Supabase må fortsatt tillate callback-adressen.
+
+---
+
 ## Historisk M0-logg fra main
 
 ### M0 – gjennomført 6. oktober 2026

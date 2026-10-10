@@ -1,6 +1,8 @@
 'use server';
 import { z } from 'zod';
+import { headers } from 'next/headers';
 import { db, configured } from '@/lib/db/server';
+import { authOrigin } from '@/lib/auth/origin';
 export type LoginState = { message: string };
 export async function sendLink(
   _: LoginState,
@@ -12,14 +14,14 @@ export async function sendLink(
     return {
       message: 'Innlogging er ikke satt opp ennå. Se oppsettveiledningen.',
     };
-  const origin = z.url({ protocol: /^https?$/ }).safeParse(process.env.APP_URL);
-  if (!origin.success)
+  const origin = authOrigin(await headers());
+  if (!origin)
     return { message: 'Nettadressen for innlogging mangler i oppsettet.' };
   const { error } = await (
     await db()
   ).auth.signInWithOtp({
     email: email.data,
-    options: { emailRedirectTo: new URL('/auth/callback', origin.data).href },
+    options: { emailRedirectTo: new URL('/auth/callback', origin).href },
   });
   return {
     message: error
