@@ -1,36 +1,19 @@
 # Leo-læreren
 
-En matteapp for Leo, bygget milepæl for milepæl. M0 gir prosjektoppsett og en
-startside. Innlogging og øving er ikke bygget ennå.
+En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M3: forelderinnlogging og Leo-lås, 35 ferdigheter med oppgavegeneratorer, og en deterministisk læringsmotor. KI-agent og interaktive matteøkter kommer i M4–M5.
 
-## Start på din maskin
-
-1. Installer Node.js 24.15 eller nyere (Node.js 22.22.2 støttes også).
-2. Åpne terminalen i prosjektmappen og kjør `npm ci`.
-3. Kjør `npm run dev`.
-4. Åpne http://localhost:3000 i nettleseren.
-
-M0 trenger ingen API-nøkler. Når senere milepæler tar i bruk Supabase og OpenAI,
-kopier `.env.example` til `.env.local` og fyll inn verdiene der. `.env.local` er
-utelatt fra git. Del aldri hemmelige nøkler. Modellforslagene er kommentert i
-`.env.example`; tilgjengelighet og kvalitet vurderes før ekte bruk.
-
-## Sjekk prosjektet
+- [Spesifikasjon](docs/SPEC.md)
+- [Fremdrift og faktiske testresultater](docs/PROGRESS.md)
+- [Oppsett, GitHub-hemmeligheter og Preview-test for nybegynnere](docs/DEPLOY.md)
+- [Beslutninger](docs/DECISIONS.md)
+- [Læreplan og kilder](docs/curriculum/mat01-06.md)
 
 ```sh
-npm run lint
-npm run format:check
-npm run typecheck
-npm run test
-npm run build
-npx playwright install chromium
-npm run test:e2e
+npm ci
+npm run dev
+npm run check
 ```
 
-Installasjon av pakker og nettleser trenger internett. Selve testene bruker bare
-lokale mocks og lokal app, og trenger ingen Supabase-/OpenAI-tilgang eller nøkler.
-GitHub Actions kjører disse sjekkene automatisk ved push og pull request.
+Kopier `.env.example` til `.env.local` og legg inn dev-verdiene for innlogging. Forsiden kan åpnes også før Supabase er konfigurert. `npm run simulate` kjører 200-økts simuleringer uten KI-kall. Full auth-e2e kjøres i CI mot lokal Supabase, og kan kjøres lokalt med Docker/Supabase CLI og `node --import tsx scripts/e2e-local.ts` etter `supabase start`.
 
-Les `docs/SPEC.md` for hele planen, `docs/PROGRESS.md` for status og
-`docs/DECISIONS.md` for valgene underveis. Læreplangrunnlaget samles i
-`docs/curriculum/` fra M2.
+Rotfilen `SPEC.md` er det opprinnelige opplastede dokumentet. `docs/SPEC.md` er arbeidskopien.

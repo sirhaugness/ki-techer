@@ -2,9 +2,6 @@
   "name": "leo-laereren",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "^22.22.2 || >=24.15.0"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,35 +12,50 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "simulate": "node --import tsx scripts/simulate.ts",
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm test && npm run simulate && npm run test:e2e && npm run build"
   },
   "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.117.3",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "1.55.0",
+    "mathjs": "15.2.0",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "class-variance-authority": "0.7.1",
-    "clsx": "2.1.1",
+    "server-only": "0.0.1",
     "tailwind-merge": "3.7.0",
+    "ts-fsrs": "5.4.2",
+    "zod": "4.6.5",
     "@radix-ui/react-slot": "1.4.0"
   },
   "devDependencies": {
-    "typescript": "5.9.3",
+    "@electric-sql/pglite": "0.5.8",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "tailwindcss": "4.3.3",
-    "@tailwindcss/postcss": "4.3.3",
+    "@vitest/coverage-v8": "5.0.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.0",
-    "eslint-config-prettier": "10.1.8",
     "prettier": "3.9.9",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
     "vitest": "5.0.3",
+    "eslint-config-prettier": "10.1.8",
     "@vitejs/plugin-react": "6.1.2",
-    "@playwright/test": "1.63.0",
     "@testing-library/react": "16.3.3",
     "@testing-library/jest-dom": "6.9.1",
     "jsdom": "30.1.2",
     "msw": "2.15.0"
   },
-  "type": "module"
+  "type": "module",
+  "engines": {
+    "node": "^22.22.2 || >=24.15.0"
+  }
 }

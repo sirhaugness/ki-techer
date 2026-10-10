@@ -1,23 +1,29 @@
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig } from '@playwright/test';
 export default defineConfig({
-  testDir: "./tests/e2e",
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  reporter: "list",
-  use: {
-    baseURL: "http://127.0.0.1:3000",
-    trace: "retain-on-failure",
-    // Valgfri testverktøyinnstilling for miljøer med ferdig installert Chromium.
-    launchOptions: {
-      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
-    },
-  },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  testDir: './tests/e2e',
+  use: { baseURL: 'http://127.0.0.1:3000' },
   webServer: {
-    command: "npm run build && npm run start -- --hostname 127.0.0.1",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: false,
-    timeout: 180000,
+    env: { APP_URL: '', VERCEL_URL: '' },
+    command: 'npm run dev -- --hostname 127.0.0.1',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: !process.env.CI,
   },
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        browserName: 'chromium',
+        launchOptions:
+          process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
+          process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE
+            ? {
+                executablePath:
+                  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
+                  process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
+              }
+            : undefined,
+        viewport: { width: 1024, height: 768 },
+      },
+    },
+  ],
 });
