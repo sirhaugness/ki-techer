@@ -8,6 +8,13 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
     'Requires a local Supabase stack with Mailpit.',
   );
   const email = `parent-${Date.now()}@example.test`;
+  page.on('response', (response) => {
+    if (!response.request().isNavigationRequest()) return;
+    const url = new URL(response.url());
+    console.info('Auth navigation:', response.status(), url.pathname, [
+      ...url.searchParams.keys(),
+    ]);
+  });
   await page.goto('/login');
   await page.getByLabel('E-postadressen din').fill(email);
   await page.getByRole('button', { name: 'Send innloggingslenke' }).click();
@@ -35,6 +42,10 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await page.goto(link!);
   // Do not log the email URL or query parameters: they contain credentials.
   console.info('After email verification:', new URL(page.url()).pathname);
+  console.info(
+    'Session cookie names:',
+    (await page.context().cookies()).map((cookie) => cookie.name),
+  );
   await expect(
     page.getByRole('heading', { name: 'Foreldresiden', exact: true }),
   ).toBeVisible();

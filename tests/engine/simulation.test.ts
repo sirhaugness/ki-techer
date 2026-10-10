@@ -16,4 +16,5 @@ it('200-session synthetic pupils calibrate, learn preferences and earn all four 
       preferences: { ...report.preferences, bestArmShares: { broken: 0 } },
     }),
   ).toThrow('Preferanse');
-});
+  // GitHub's shared runners can take >30 s for the full synthetic curriculum.
+}, 120_000);
