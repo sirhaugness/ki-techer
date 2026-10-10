@@ -33,6 +33,8 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
     ?.replaceAll('&amp;', '&');
   expect(link).toBeTruthy();
   await page.goto(link!);
+  // Do not log the email URL or query parameters: they contain credentials.
+  console.info('After email verification:', new URL(page.url()).pathname);
   await expect(
     page.getByRole('heading', { name: 'Foreldresiden', exact: true }),
   ).toBeVisible();

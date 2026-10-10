@@ -9,6 +9,9 @@ export async function GET(request: NextRequest) {
       const result = await client.rpc('ensure_household', {});
       if (!result.error)
         return NextResponse.redirect(new URL('/forelder', request.url));
+      console.error('Auth callback: household failed', result.error.code);
+    } else {
+      console.error('Auth callback: exchange failed', error.code, error.status);
     }
   }
   return NextResponse.redirect(new URL('/login?error=link', request.url));
