@@ -2,13 +2,13 @@
 
 Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Dato: 10. oktober 2026.
 
-| Milepæl                            | Status                                                            |
-| ---------------------------------- | ----------------------------------------------------------------- |
-| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                                 |
-| M1 database, auth, elevprofil, PIN | Implementert; lokal RLS/PIN-test grønn, full Auth-e2e avventer CI |
-| M2 læreplan og generatorer         | Implementert og lokalt verifisert                                 |
-| M3 læringsmotor og simulering      | Implementert og lokalt verifisert                                 |
-| M4–M9                              | Ikke startet                                                      |
+| Milepæl                            | Status                                                   |
+| ---------------------------------- | -------------------------------------------------------- |
+| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                        |
+| M1 database, auth, elevprofil, PIN | Implementert; RLS/PIN lokalt og full Auth-e2e i CI grønn |
+| M2 læreplan og generatorer         | Implementert og verifisert lokalt og i CI                |
+| M3 læringsmotor og simulering      | Implementert og verifisert lokalt og i CI                |
+| M4–M9                              | Ikke startet                                             |
 
 ## M1 — før oppstart av M2
 
@@ -44,13 +44,17 @@ M0-mergen `4c4126c` kom til main mens M3 pågikk og er integrert uten uavklarte 
 
 Se `docs/DEPLOY.md` for steg for steg-oppsett av de fem GitHub-hemmelighetene, Vercel-variablene og Preview-testen. Nettleser-UI i denne PR-en er M1: innlogging, profil og Leo-lås. M2/M3 er den testede motoren; KI-agent og interaktive matteøkter kommer i M4/M5.
 
-Fortsatt begrensning: full Auth-e2e kan ikke kjøres i dette skymiljøet fordi Supabase-containerregisteret er blokkert. Den separate CI-jobben er klar, men CI/ekte dev/prod/Preview er ikke bekreftet i denne lokale loggen. Migrasjonsworkflowen trenger brukerens fem repository secrets; Vercel må være koblet til repoet og konfigurert for at Preview skal fungere.
+Lokal begrensning: full Auth-e2e kan ikke kjøres i skymiljøet fordi Supabase-containerregisteret er blokkert. Den er nå grønn i den separate GitHub CI-jobben (se sluttverifisering nedenfor). Migrasjonsworkflowen trenger brukerens fem repository secrets. Vercel har bygget Preview; innlogging mot leo-dev trenger også miljøvariablene og URL-oppsettet i veiledningen.
 
 ---
 
 ## Rettelser og verifisering etter PR-opprettelse
 
-GitHub Actions bekreftet kvalitetssjekkene, men full Auth-e2e fant at callback-redirect fra 127.0.0.1 til Nexts interne localhost mistet sesjonens cookie. Feilen er reprodusert lokalt uten ekte nøkler og rettet med validerte `APP_URL`-redirects. Ny regresjonstest: 232 Vitest-tester grønne, 3 lokale nettlesertester grønne / full lokal Auth-test fortsatt hoppet over av nettverkspolicyen. Lint, typecheck og formatering grønne. Full CI kjøres på nytt med rettelsen.
+GitHub Actions bekreftet kvalitetssjekkene, men full Auth-e2e fant at callback-redirect fra 127.0.0.1 til Nexts interne localhost mistet sesjonens cookie. Feilen er reprodusert lokalt uten ekte nøkler og rettet med validerte `APP_URL`-redirects. Ny regresjonstest: 232 Vitest-tester grønne, 3 lokale nettlesertester grønne / full lokal Auth-test fortsatt hoppet over av nettverkspolicyen. Lint, typecheck, formatering, produksjonsbuild og actionlint grønne.
+
+**Sluttverifisering:** [GitHub Actions-kjøring 38085697999](https://github.com/sirhaugness/ki-techer/actions/runs/38085697999), kodecommit `03369ba`, er grønn i begge jobber: alle kvalitetssjekker, 232 tester, simulering, smoke-e2e og build; samt 4 nettlesertester mot lokal Supabase inkludert full magisk-lenke → profil → lagret PIN → varig Leo-lås → feil PIN → riktig PIN. Alle tre SQL-migrasjoner ble kjørt med Supabase CLI i den lokale CI-stacken. Ingen ekte Supabase-/OpenAI-nøkler brukes i kvalitetstestene.
+
+PR: [#2](https://github.com/sirhaugness/ki-techer/pull/2). [Preview](https://ki-techer-git-feat-m1-m3-learning-foundation-team-thor1.vercel.app) har grønt Vercel-bygg; funksjonene mot brukerens dev-prosjekt må testes etter oppsettet i DEPLOY.
 
 Simuleringen passerte resultatkravene, men én delt CI-runner overskred testgrensen på 30 sekunder. Bare denne testens grense er økt til 120 sekunder; neste GitHub-kjøring passerte. Vercel har bygget Preview. Migrasjonsworkflowen stopper før tilkobling fordi `SUPABASE_ACCESS_TOKEN` mangler; ingen ekstern dev/prod-database er endret av denne PR-ens workflow hittil.
 
