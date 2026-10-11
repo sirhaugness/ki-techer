@@ -1,0 +1,40 @@
+import type { z } from 'zod';
+
+export type ToolDefinition = {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>;
+};
+export type ToolCall = { id: string; name: string; arguments: unknown };
+export type ProviderReply = {
+  value?: unknown;
+  calls: ToolCall[];
+  conversation?: unknown[];
+};
+export type ModelPurpose = 'tutor' | 'fast';
+export type ModelRequest = {
+  purpose: ModelPurpose;
+  instructions: string;
+  input: string;
+  schema: z.ZodType;
+  tools?: ToolDefinition[];
+  conversation?: unknown[];
+  results?: { call_id: string; output: string }[];
+};
+export type AiCall = {
+  purpose: string;
+  model: string;
+  input_tokens: number;
+  output_tokens: number;
+  cost_estimate: number;
+  latency_ms: number;
+  ok: boolean;
+};
+export interface AiProvider {
+  respond(request: ModelRequest): Promise<ProviderReply>;
+  moderate(text: string): Promise<boolean>;
+}
+// Deliberately conservative estimate, not an invoice. Pricing varies by model.
+export function estimateCost(input: number, output: number): number {
+  return (input * 100 + output * 400) / 1_000_000;
+}

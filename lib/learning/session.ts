@@ -1,0 +1,716 @@
+import { randomUUID } from 'node:crypto';
+import {
+  initialState,
+  diagnosticState,
+  recordAttempt,
+  credit,
+  confirmExplanation,
+} from '../engine/mastery';
+import {
+  startSession,
+  defaultSessionSettings,
+  mayContinue,
+  sessionPhase,
+  sessionSettingsSchema,
+} from '../engine/session';
+import {
+  progressForPart,
+  finishMasterTest,
+  canStartMasterTest,
+} from '../engine/medallion';
+import { skills, skillById } from '../engine/skills/graph';
+import { generate, checkAnswer } from '../engine/skills/generators';
+import { seededRng } from '../engine/random';
+import { newHints, advanceHint } from '../engine/hints';
+import { newBandit, forget, updateArm } from '../engine/bandit';
+import { scheduleReview, serializeCard } from '../engine/scheduler';
+import { detectMisconception, misconceptions } from '../engine/misconceptions';
+import { executeTool, type AgentRuntime } from '../agent/tools';
+import { fallbackResponse, runAgent } from '../agent/loop';
+import { buildContext } from '../agent/context';
+import { evaluateExplanation } from '../ai/evaluate';
+import { guardResponse } from '../agent/guards';
+import { privateText } from '../ai/moderation';
+import type { AiProvider } from '../ai/provider';
+import {
+  emptyEvents,
+  type Snapshot,
+  type LearningEvent,
+  type LearnerProfile,
+  type Interest,
+  type LearningView,
+} from './types';
+
+const diagnosticSkills = [
+  'mult-tabell-3-4',
+  'div-deling-konkret',
+  'mult-tabell-2-5-10',
+  'div-maaling-konkret',
+  'dobling-halvering',
+  'likhetstegn',
+  'mult-tabell-6-9',
+  'div-som-omvendt-mult',
+  'figur-2d-egenskaper',
+  'mult-telling-grupper',
+];
+export function createSession(
+  profile: LearnerProfile,
+  previous: Snapshot | null,
+  now: string,
+  usedMinutes: number,
+  mode: Snapshot['mode'],
+  selectedPart: 1 | 2 | 3 | 4 | null,
+): Snapshot {
+  const settings = sessionSettingsSchema.parse({
+    ...defaultSessionSettings,
+    plannedMinutes: profile.settings.session_minutes ?? 15,
+    dailyMaxMinutes: profile.settings.daily_max_minutes ?? 30,
+    allowedStartMinute: profile.settings.allowed_start_minute ?? 0,
+    allowedEndMinute: profile.settings.allowed_end_minute ?? 1440,
+  });
+  const states = structuredClone(previous?.states ?? {});
+  const parts = ([1, 2, 3, 4] as const).map((id) =>
+    progressForPart(
+      id,
+      states,
+      previous?.parts.find((p) => p.id === id) ?? null,
+    ),
+  );
+  if (
+    selectedPart &&
+    parts.find((p) => p.id === selectedPart)?.status === 'låst'
+  )
+    throw new Error('Velg en tilgjengelig del av kartet.');
+  if (
+    mode === 'master' &&
+    (!selectedPart ||
+      !canStartMasterTest(
+        parts.find((p) => p.id === selectedPart)!,
+        now,
+      ))
+  )
+    throw new Error('Mesterutfordringen kan tas tidligst neste dag.');
+  return {
+    version: 1,
+    revision: 0,
+    id: randomUUID(),
+    clock: startSession(settings, now, usedMinutes),
+    mode,
+    states,
+    parts,
+    cards: previous?.cards ?? {},
+    bandit: forget(previous?.bandit ?? newBandit()),
+    history: [],
+    active: null,
+    hints: newHints(),
+    focusSkillId: null,
+    selectedPart,
+    masterTest: null,
+    masterAnswers: [],
+    diagnosticIndex: 0,
+    diagnosticDifficulty: 2,
+    diagnosticComplete: previous?.diagnosticComplete ?? false,
+    usedInterests: [],
+    seenEvents: [],
+    messages: [],
+    response: {
+      ...fallbackResponse(),
+      speech:
+        mode === 'diagnostic'
+          ? 'Vi blir kjent med matte sammen. Det er helt greit å prøve seg frem.'
+          : 'Velkommen tilbake. Hvordan kjennes dagen i dag?',
+    },
+    endedAt: null,
+    taskStartedAt: now,
+    correct: null,
+    pauseOffered: false,
+    celebration: null,
+    moodStart: null,
+    moodEnd: null,
+    schoolTopics:
+      previous?.schoolTopics.filter(
+        (t) => Date.parse(t.expiresAt) > Date.parse(now),
+      ) ?? [],
+    pendingObservations: [],
+  };
+}
+export async function learningTurn(
+  original: Snapshot,
+  event: LearningEvent,
+  eventId: string,
+  now: string,
+  profile: LearnerProfile,
+  interests: Interest[],
+  provider: AiProvider | null,
+  instructions: string,
+) {
+  const state = structuredClone(original),
+    events = emptyEvents();
+  if (state.seenEvents.includes(eventId))
+    return { state, events, replayed: true };
+  if (state.endedAt) throw new Error('Økten er allerede avsluttet.');
+  const phase = sessionPhase(state.clock, now);
+  const runtime: AgentRuntime = {
+    taskCreationAllowed: event.type === 'next' || event.type === 'mood',
+    masterStartAllowed: state.mode === 'master',
+    context: {
+      states: state.states,
+      clock: state.clock,
+      now,
+      phase:
+        phase === 'hovedøkt'
+          ? 'hovedøkt'
+          : phase === 'blandet_utfordring'
+            ? 'blandet_utfordring'
+            : 'oppvarming',
+      selectedPart: state.selectedPart ?? undefined,
+      history: state.history,
+      focusSkillId: state.focusSkillId,
+      bandit: state.bandit,
+      schoolTopics: state.schoolTopics,
+    },
+    rng: seededRng(
+      Number.parseInt(eventId.replaceAll('-', '').slice(0, 8), 16),
+    ),
+    uuid: randomUUID,
+    provider,
+    active: state.active,
+    states: state.states,
+    parts: state.parts,
+    masterTest: state.masterTest,
+    interests,
+    usedInterests: state.usedInterests,
+    pendingObservations: state.pendingObservations,
+    schoolTopics: state.schoolTopics,
+    visual: null,
+    ended: false,
+    pauseOffered: state.pauseOffered,
+  };
+  const flag = async (type: string) => {
+    events.flags.push({
+      id: randomUUID(),
+      type,
+      excerpt: 'Innhold skjermet av sikkerhetskontrollen.',
+    });
+  };
+  const logTool = async (
+    name: string,
+    args: unknown,
+    result: unknown,
+    latency: number,
+  ) => {
+    events.tools.push({
+      id: randomUUID(),
+      tool: name,
+      args,
+      result,
+      ok: (result as { ok: boolean }).ok,
+      latency_ms: latency,
+    });
+  };
+  const invokeAgent = async (text?: string) => {
+    const context = buildContext({
+      learner: {
+        firstName: profile.firstName,
+        grade: profile.grade,
+        tutorName: profile.tutorName,
+      },
+      engine: runtime.context,
+      active: runtime.active?.item ?? null,
+      allowedHintLevel: state.mode === 'master' ? 0 : state.hints.level,
+      answerResult: state.correct,
+      observations: [],
+      messages: state.messages,
+    });
+    const result = await runAgent({
+      runtime,
+      context,
+      instructions,
+      text,
+      allowedHintLevel: state.mode === 'master' ? 0 : state.hints.level,
+      logTool,
+      flag,
+    });
+    if (text) {
+      const shown =
+        result.response.safety_flag === 'upassende' || privateText(text)
+          ? '[Tekst skjermet av sikkerhetskontrollen]'
+          : text;
+      const message = { role: 'leo', text: shown };
+      state.messages = [...state.messages, message].slice(-12);
+      events.messages.push({
+        id: randomUUID(),
+        ...message,
+        meta: { prompt_version: 'tutor.v1' },
+      });
+    }
+    return result;
+  };
+  const nextTask = async () => {
+    if (runtime.active && !runtime.active.resolved)
+      throw new Error('Prøv den aktive oppgaven først.');
+    state.hints = newHints();
+    state.correct = null;
+    state.taskStartedAt = now;
+    if (state.mode === 'diagnostic') {
+      if (state.diagnosticIndex >= diagnosticSkills.length) {
+        state.diagnosticComplete = true;
+        runtime.ended = true;
+        state.response = {
+          ...fallbackResponse('avslutt'),
+          speech:
+            'Nå har vi blitt bedre kjent. Neste gang utforsker vi kartet sammen.',
+        };
+        return;
+      }
+      const item = generate(
+        diagnosticSkills[state.diagnosticIndex],
+        state.diagnosticDifficulty,
+        runtime.rng,
+        runtime.active?.item,
+      );
+      runtime.active = {
+        id: randomUUID(),
+        item,
+        text: item.question,
+        representation: 'konkret',
+        strategy: {},
+        resolved: false,
+      };
+      state.response = fallbackResponse('ny_oppgave');
+      return;
+    }
+    if (state.mode === 'master') {
+      if (!runtime.masterTest) {
+        const result = await executeTool(runtime, 'start_mesterprøve', {
+          part_id: state.selectedPart,
+        });
+        if (!result.ok) throw new Error(String(result.result));
+        const test = runtime.masterTest!;
+        events.masterTests.push({
+          id: test.id,
+          part_id: test.part,
+          item_ids: test.items.map((i) => i.id),
+          score: null,
+          passed: null,
+        });
+      }
+      const test = runtime.masterTest!;
+      const task = test.items[state.masterAnswers.length];
+      if (!task) return;
+      const item = generate(task.skillId, 3, runtime.rng, runtime.active?.item);
+      runtime.active = {
+        id: task.id,
+        item,
+        text: item.question,
+        representation: 'tall',
+        strategy: {},
+        resolved: false,
+      };
+      state.response = {
+        ...fallbackResponse('ny_oppgave'),
+        speech:
+          'Prøv på egen hånd. Vi ser på det sammen når utfordringen er ferdig.',
+      };
+      return;
+    }
+    const ai = await invokeAgent();
+    state.response = ai.response;
+    if (runtime.ended) return;
+    if (!runtime.active || runtime.active.resolved) {
+      const result = await executeTool(runtime, 'hent_kandidater', {});
+      const candidates = result.result as {
+        skill_id: string;
+        foreslått_vanskegrad: number;
+        anbefalt_strategi: Record<string, string>;
+      }[];
+      const candidate = candidates[0];
+      if (!candidate) {
+        runtime.pauseOffered = true;
+        state.response = {
+          ...fallbackResponse('foreslå_pause'),
+          speech: 'La oss ta en rolig pause. Du kan avslutte for i dag.',
+        };
+        return;
+      }
+      const interest = interests.find(
+        (i) =>
+          i.active &&
+          !(
+            state.usedInterests.slice(-2).length === 2 &&
+            state.usedInterests.slice(-2).every((id) => id === i.id)
+          ),
+      );
+      await executeTool(runtime, 'lag_oppgave', {
+        skill_id: candidate.skill_id,
+        vanskegrad: candidate.foreslått_vanskegrad,
+        interesse_id: interest?.id ?? null,
+        representasjon: candidate.anbefalt_strategi.representasjon,
+        kontekst_stil: interest ? 'interessefortelling' : 'ren_oppgave',
+        begrunnelse: 'Motorens anbefalte neste øvingsoppgave.',
+      });
+      state.response = fallbackResponse('ny_oppgave');
+    }
+    state.focusSkillId ??= runtime.active?.item.skillId ?? null;
+  };
+  if (!mayContinue(state.clock, now)) {
+    runtime.ended = true;
+    state.response = fallbackResponse('avslutt');
+  } else if (event.type === 'mood') {
+    state.moodStart = event.mood;
+    await nextTask();
+  } else if (event.type === 'next') await nextTask();
+  else if (event.type === 'hint') {
+    if (state.mode === 'master')
+      throw new Error('Mesterutfordringen gjøres uten hint.');
+    if (!runtime.active || runtime.active.resolved)
+      throw new Error('Velg en oppgave først.');
+    state.hints = advanceHint(state.hints, { id: eventId, type: 'request' });
+    const result = await invokeAgent();
+    state.response = result.response;
+    if (result.fallback) {
+      const speech =
+        state.hints.level === 4
+          ? `Svaret er ${typeof runtime.active.item.answer === 'object' ? JSON.stringify(runtime.active.item.answer) : runtime.active.item.answer}. Se på hvordan gruppene passer sammen.`
+          : state.hints.level === 3
+            ? 'Prøv først et mindre, lignende eksempel med andre tall. Vis deretter den opprinnelige oppgaven med klosser.'
+            : state.hints.level === 2
+              ? 'Finn først hva du vet og hva du skal finne. Ta et lite steg med klossene.'
+              : 'Kan du tegne eller lage grupper som passer til oppgaven?';
+      state.response = {
+        ...fallbackResponse('hint'),
+        speech,
+        hint_level_used: state.hints.level,
+      };
+    }
+  } else if (event.type === 'answer') {
+    const active = runtime.active;
+    if (!active || active.resolved || active.id !== event.itemId)
+      throw new Error('Denne oppgaven er ikke aktiv lenger.');
+    const correct = checkAnswer(active.item, event.answer),
+      hint = state.mode === 'master' ? 0 : state.hints.level;
+    state.correct = correct;
+    const timeMs = Math.max(
+      0,
+      Date.parse(now) - Date.parse(state.taskStartedAt),
+    );
+    const misconception = detectMisconception(
+      event.answer,
+      active.item.commonWrongAnswers,
+    );
+    events.attempts.push({
+      id: eventId,
+      item_id: active.id,
+      answer_raw: JSON.stringify(event.answer),
+      answer_parsed: event.answer,
+      correct,
+      credit: credit(correct, hint),
+      hint_level_used: hint,
+      time_ms: timeMs,
+      input_mode: event.inputMode,
+      misconception_code: misconception,
+      is_master_test: state.mode === 'master',
+    });
+    if (misconception)
+      events.misconceptions.push({
+        skill_id: active.item.skillId,
+        code: misconception,
+        description: misconceptions[misconception].description,
+      });
+    if (state.mode === 'master') {
+      active.resolved = true;
+      state.masterAnswers.push({ itemId: active.id, correct, hintLevel: 0 });
+      if (state.masterAnswers.length === runtime.masterTest!.items.length) {
+        const test = runtime.masterTest!,
+          part = runtime.parts.find((p) => p.id === test.part)!;
+        const result = finishMasterTest(part, test, state.masterAnswers, now);
+        runtime.parts = runtime.parts.map((p) =>
+          p.id === test.part ? result.progress : p,
+        );
+        events.masterTests.push({
+          id: test.id,
+          part_id: test.part,
+          item_ids: test.items.map((i) => i.id),
+          score: result.score,
+          passed: result.passed,
+        });
+        runtime.ended = true;
+        state.celebration = result.passed
+          ? runtime.parts.every((p) => p.awardedAt)
+            ? 'Hele mattemedaljongen er din!'
+            : `Du har fått del ${test.part} av medaljongen!`
+          : null;
+        state.response = {
+          ...fallbackResponse('avslutt'),
+          speech: result.passed
+            ? 'Du holdt ut og viste det du kan. Nå lyser en ny del av medaljongen.'
+            : 'Du fikk til mye. Vi øver på det vanskelige, og prøver igjen en annen dag.',
+        };
+      } else
+        state.response = {
+          ...fallbackResponse(),
+          speech: 'Takk for svaret. Nå kan du prøve neste oppgave.',
+        };
+    } else if (state.mode === 'diagnostic') {
+      active.resolved = true;
+      const previous = state.states[active.item.skillId];
+      if (!previous?.masteredAt)
+        runtime.states[active.item.skillId] = diagnosticState(
+          correct && hint === 0 ? state.diagnosticDifficulty - 1 : -1,
+        );
+      state.diagnosticDifficulty = Math.max(
+        1,
+        Math.min(5, state.diagnosticDifficulty + (correct ? 1 : -1)),
+      ) as 1 | 2 | 3 | 4 | 5;
+      state.diagnosticIndex++;
+      state.response = {
+        ...fallbackResponse(),
+        speech: 'Takk for at du prøvde. Vi utforsker en ny oppgave sammen.',
+      };
+    } else {
+      const previous = runtime.states[active.item.skillId] ?? initialState();
+      let next = recordAttempt(previous, {
+        id: eventId,
+        at: now,
+        difficulty: active.item.difficulty,
+        correct,
+        hintLevel: hint,
+      });
+      runtime.states[active.item.skillId] = next;
+      if (!previous.masteredAt && next.masteredAt)
+        state.celebration = `Du har mestret ${skillById(active.item.skillId).title}!`;
+      if (next.masteredAt) {
+        const card = scheduleReview(
+          state.cards[active.item.skillId] ?? null,
+          now,
+          { correct, hintLevel: hint, timeMs, medianMs: null },
+        );
+        state.cards[active.item.skillId] = serializeCard(card);
+        next.nextReviewAt = card.due.toISOString();
+      }
+      runtime.context.history = [
+        ...state.history,
+        {
+          skillId: active.item.skillId,
+          difficulty: active.item.difficulty as 1 | 2 | 3 | 4 | 5,
+          representation: active.representation,
+          correct,
+          phase: runtime.context.phase,
+        },
+      ];
+      state.history = runtime.context.history as typeof state.history;
+      for (const [dimension, arm] of Object.entries(active.strategy))
+        if (
+          dimension in state.bandit &&
+          state.bandit[dimension as keyof typeof state.bandit].some(
+            (a) => a.name === arm,
+          )
+        )
+          state.bandit[dimension as keyof typeof state.bandit] = updateArm(
+            state.bandit[dimension as keyof typeof state.bandit],
+            arm,
+            credit(correct, hint) * 0.5,
+          );
+      state.hints = advanceHint(state.hints, {
+        id: eventId,
+        type: correct ? 'correct' : 'wrong',
+      });
+      active.resolved = correct;
+      const result = await invokeAgent();
+      if (correct && result.fallback) {
+        const claimArgs = {
+          skill_id: active.item.skillId,
+          begrunnelse:
+            'Regelstyrt lærer: kontrollerte selvstendige svar viser fremgang.',
+        };
+        const claim = await executeTool(runtime, 'foreslå_mestring', claimArgs);
+        await logTool('foreslå_mestring', claimArgs, claim, 0);
+      }
+      next = runtime.states[active.item.skillId];
+      if (!previous.masteredAt && next.masteredAt) {
+        state.celebration = `Du har mestret ${skillById(active.item.skillId).title}!`;
+        if (!state.cards[active.item.skillId]) {
+          const card = scheduleReview(null, now, {
+            correct,
+            hintLevel: hint,
+            timeMs,
+            medianMs: null,
+          });
+          state.cards[active.item.skillId] = serializeCard(card);
+          next.nextReviewAt = card.due.toISOString();
+        }
+      }
+      state.response = result.fallback
+        ? correct
+          ? fallbackResponse('ros')
+          : {
+              ...fallbackResponse(),
+              speech:
+                'Det passet ikke helt. Du kan prøve igjen eller be om et hint.',
+            }
+        : result.response;
+    }
+  } else if (event.type === 'explain') {
+    if (state.mode === 'master')
+      throw new Error('Forklaringer tar vi etter mesterutfordringen.');
+    if (!runtime.active) throw new Error('Velg en oppgave først.');
+    const result = await evaluateExplanation(
+      provider,
+      event.text,
+      runtime.active.item.question,
+    );
+    // A rubric cannot replace answer evidence; preserve data criterion and
+    // attach understanding only after the independently correct, unaided answer.
+    const skillState = runtime.states[runtime.active.item.skillId];
+    const attempt = skillState?.recent.at(-1);
+    if (
+      state.mode === 'practice' &&
+      result.forstaelse === 2 &&
+      state.correct &&
+      state.hints.level === 0 &&
+      skillState &&
+      attempt
+    )
+      runtime.states[runtime.active.item.skillId] = confirmExplanation(
+        skillState,
+        attempt.id,
+        result.forstaelse,
+        now,
+      );
+    const candidate = { ...fallbackResponse(), speech: result.tilbakemelding };
+    state.response =
+      guardResponse(candidate, runtime.active.item, state.hints.level) ??
+      fallbackResponse();
+    const reply = await invokeAgent(event.text);
+    if (!reply.fallback) state.response = reply.response;
+  } else if (event.type === 'end') {
+    state.moodEnd = event.mood;
+    if (event.reflection) {
+      const reply = await invokeAgent(event.reflection);
+      if (reply.response.safety_flag !== 'ingen')
+        state.response = reply.response;
+    }
+    runtime.ended = true;
+    state.response = fallbackResponse('avslutt');
+  }
+  state.active = runtime.active;
+  state.states = runtime.states;
+  state.parts = runtime.parts.map((p) =>
+    progressForPart(p.id, state.states, p),
+  );
+  state.masterTest = runtime.masterTest;
+  state.pauseOffered = runtime.pauseOffered;
+  state.usedInterests = runtime.usedInterests;
+  state.pendingObservations = runtime.pendingObservations;
+  state.schoolTopics = runtime.schoolTopics;
+  if (runtime.ended) state.endedAt = now;
+  state.seenEvents = [...state.seenEvents, eventId].slice(-128);
+  state.revision++;
+  if (state.active && state.active.id !== original.active?.id) {
+    const a = state.active;
+    events.items.push({
+      id: a.id,
+      skill_id: a.item.skillId,
+      origin: Object.keys(a.item.params).length ? 'generator' : 'modell',
+      difficulty: a.item.difficulty,
+      params: a.item.params,
+      answer: a.item.answer,
+      expression: a.item.expression,
+      representation: a.representation,
+      strategy: a.strategy,
+      story_text: a.text,
+      visual_spec: { representationHints: a.item.representationHints },
+      prompt_version: 'tutor.v1',
+      validated: true,
+    });
+  }
+  const message = { role: 'lærer', text: state.response.speech };
+  state.messages = [...state.messages, message].slice(-12);
+  events.messages.push({
+    id: randomUUID(),
+    ...message,
+    meta: {
+      prompt_version: 'tutor.v1',
+      action: state.response.action,
+      hint_level_used: state.response.hint_level_used,
+    },
+  });
+  for (const topic of state.schoolTopics.filter(
+    (t) => !original.schoolTopics.some((old) => old.rawText === t.rawText),
+  ))
+    events.schoolTopics.push({
+      raw_text: topic.rawText,
+      mapped_skill_ids: topic.skillIds,
+      confidence: topic.confidence,
+      expires_at: topic.expiresAt,
+    });
+  return { state, events, replayed: false };
+}
+export function publicView(state: Snapshot): LearningView {
+  const a = state.active,
+    item = a?.item,
+    params = item?.params ?? {};
+  const division = item?.skillId.startsWith('div-') ?? false;
+  const type =
+    item?.representationHints.find((h) =>
+      [
+        'grupper',
+        'rutenett',
+        'tallinje',
+        'tierblokker',
+        'figur2d',
+        'figur3d',
+      ].includes(h),
+    ) ?? (division ? 'grupper' : 'rutenett');
+  return {
+    id: state.id,
+    revision: state.revision,
+    mode: state.mode,
+    task:
+      a && item
+        ? {
+            id: a.id,
+            question: a.text,
+            answerType: item.answerType,
+            choices: item.choices ?? [],
+            resolved: a.resolved,
+            skillTitle: skillById(item.skillId).title,
+            showVisual: a.representation !== 'tall',
+            visual: {
+              type: item?.skillId === 'div-maaling-konkret' ? 'maaling' : type,
+              count:
+                typeof params.total === 'number'
+                  ? params.total
+                  : typeof params.a === 'number' && typeof params.b === 'number'
+                    ? params.a * params.b
+                    : typeof params.number === 'number'
+                      ? params.number
+                      : typeof params.count === 'number'
+                        ? params.count
+                        : 0,
+              groups: typeof params.b === 'number' ? params.b : 1,
+              shape: typeof params.shape === 'string' ? params.shape : null,
+              steps: Array.isArray(params.steps) ? params.steps : [],
+            },
+          }
+        : null,
+    speech: state.response.speech,
+    parts: state.parts,
+    ended: !!state.endedAt,
+    correct: state.mode === 'master' && !state.endedAt ? null : state.correct,
+    hintLevel: state.mode === 'master' ? 0 : state.hints.level,
+    pauseOffered: state.pauseOffered,
+    celebration: state.celebration,
+    diagnosticComplete: state.diagnosticComplete,
+    masterProgress: state.masterTest
+      ? {
+          done: state.masterAnswers.length,
+          total: state.masterTest.items.length,
+        }
+      : null,
+  };
+}
+export function stateSummary(state: Snapshot) {
+  return `Økten hadde ${state.history.length} øvingssvar. Leo prøvde ${new Set(state.history.map((h) => h.skillId)).size} ferdigheter.`;
+}
+export { skills };

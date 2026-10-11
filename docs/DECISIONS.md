@@ -80,3 +80,35 @@ M0s Supabase-navn (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
 ## Feil ved sending av innloggings-e-post
 
 Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, sendegrense, deaktivert e-post/OTP, avslått registrering, ugyldig adresse, CAPTCHA og feil API-nøkkel. Ukjente feil henviser til Auth-loggen. Bare kode i formatet `[a-z_]{1,64}` og HTTP-status logges; rå provider-melding, e-post, nøkler og lenker eksponeres ikke. Skjermbildet med den tidligere generiske meldingen bekrefter ikke én bestemt årsak. Ekte e-postlevering kan ikke fastslås fra CI med lokal Mailpit; hosted Supabase må også ha fungerende e-postoppsett.
+
+## M4 — sikker agentintegrasjon
+
+- Brukerens spesifikasjon krever en applikasjonseid Responses-løkke; ingen ny hosted agentplattform eller Agents SDK innføres.
+- OpenAI `store:false` kombineres med eksplisitt replay av verktøykall/resultater og krypterte reasoning-elementer innen én tur. Modellnavn kommer bare fra de avtalte miljøvariablene. Norsk verktøynavn beholdes internt; API-navnet bruker ASCII.
+- Fasitkontroll av tall beviser ikke at en KI-fortelling betyr det samme. Derfor må kontekstualisering bevare generatorspørsmålet ordrett og bare legge til en kort tallfri ramme. Egne oppgaver tillates bare som transparente uttrykkspørsmål etter AST-, ferdighets- og modereringskontroll.
+- Før hintnivå 4 avvises numeriske påstander i samtaletekst konservativt. Kontrollerte spørsmål og manipulativer vises separat. Modereringsfeil tillater ikke fritekst til modellen; generatorer og ferdige tekster fungerer fortsatt.
+- Kostnader estimeres konservativt til 100 NOK / million input-tokens og 400 NOK / million output-tokens; dette er et estimat, ikke fakturagrunnlag. Oppdatert modellspesifikk pris/budsjettherding hører til M9.
+- Observasjonsverktøyet legger forslag i kø; det overstyrer aldri forelderens profil. Full flette-/refleksjonsmotor hører til M7. Skoletemaer støtter sikker, konservativ nøkkelordmapping med terskel 0,6 og sju dagers utløp.
+- Nøkkelen beholdes i Vercel etter brukerens uttrykkelige valg. Ekte agent-eval kan derfor ikke erklæres bestått i dette miljøet; alle kvalitetstester bruker mocks.
+
+## M5 — varige økter og nettbrett
+
+- Motorens fullstendige snapshot ligger i sessions.engine_state og overføres mellom økter. Den samme transaksjonen speiler evidens til fagtabeller for innsyn; klienten får bare en eksplisitt offentlig visning. KI-kall skjer før radlåsen tas, slik at eksterne svartider ikke holder databaselåser.
+- Én åpen økt per elev hindrer at to enheter overskriver hverandres mestring. Revisjon + requestId sikrer gamle svar og dobbelttrykk. Ny sideinnlasting gjenopptar oppgaven med samme ID og hint-tilstand.
+- Kartleggingen har ti varierte oppgaver med adaptiv vanskegrad, ikke en medaljongprøve. Den øker bare start-theta ved riktig uten hint. Den oppretter ingen mestringsevidens. Forelderstyrt ny kartlegging og fullt dashbord kommer i M8.
+- En regelstyrt fallback-lærer bruker samme foreslå_mestring-verktøy og doble datakrav som KI-en; dette gjør at mestring kan fortsette uten KI. Slike forslag merkes som regelstyrte i loggen. Forklaringer knyttes til eksisterende, selvstendig riktige forsøk uten å øke antall forsøk.
+- Neste oppgave velges ved Leos eksplisitte knapp. KI-en kan ikke bytte oppgave midt i et svar-/hint-/forklaringsturn eller flytte gammelt hintnivå til en ny oppgave.
+- Bildeinteresser er kontrollerte apptekster. Egendefinerte interesser og endrede lærernavn krever fungerende moderering; ved feil beholdes tidligere valg. Full interessevekting, profilfletting og fortellingskapitler kommer i M7.
+- Nettbretttestene bruker den samme øktmotoren og UI-en med minnelagring i en eksplisitt utviklingsfixture. SQL-lagring/RLS testes separat i PostgreSQL og innlogget matteflyt i lokal-Supabase-CI. Testfixturen er utilgjengelig i produksjon.
+
+## M6 — tale og iPad
+
+- OpenAI TTS og STT bruker kun miljøstyrte modeller/stemme og servernøkkel. Ingen nye miljønavn er innført. API-klienten har 20 sekunders tidsgrense og ingen skjulte SDK-retries.
+- All lærertekst på hjem/økt/avslutning kan leses høyt. Første brukertrykk aktiverer lydavspilling på iOS; auto-opplesing krever dette trykket per lastet side. Norsk speechSynthesis er reserve dersom serverlyd er utilgjengelig.
+- TTS-ruten aksepterer bare kilde, økt-ID og revisjon, aldri klientvalgt tekst. Privat lydcache er avgrenset per husholdning, tekst, modell og stemme. Storage-bøtten opprettes privat ved første skriving; cachefeil hindrer ikke fersk opplesing.
+- MediaRecorder velger MP4 på Safari og WebM/Opus der det støttes. Opptak stopper ved slipp, avbrudd, skjult side og senest 30 sekunder. Slipp mens tillatelsesdialogen er åpen starter ikke et skjult opptak.
+- Transkripsjon vises og kan rettes. Bare entydige tall/rest/koordinater eller faktiske svaralternativer kan sendes som talesvar, med eksplisitt bekreftelse. Lydopptak lagres ikke hos appen; trykk mikrofon stopper lærerens opplesing.
+- TTS/STT-kostnader logges som grove estimater, ikke fakturabeløp: TTS 0,30 NOK per 1000 tegn, STT 2 NOK per MB opptak. Pris-/budsjettstyring og opprydding er M9. Vercel-funksjoner velger Stockholm (`arn1`) i EU.
+- Automatisk verifisering bruker falsk mikrofon og lydfixture, pluss codec-/avbrudds-/tilgangstester. Fysisk iPad Safari/Chrome, ekte norsk uttale og ekte modell-eval krever Preview-test og kan ikke erklæres bestått av mock-resultater.
+
+Fasitvernet deler én kontroll for matematiske tallpåstander mellom samtaler og interesseinnramming. Unicode-tall og sammensatte norske tallord/brøkord avvises før hintnivå 4, også når de ikke matcher fasiten direkte. Iterativ ordsegmentering unngår eksponentiell regex-backtracking. Vanlig «en/et» alene kan brukes i rammetekst med mindre det faktisk røper svaret én. Ukontrollerte matematiske påstander fra KI-en erstattes med betrodd fallback eller det opprinnelige generatorspørsmålet.

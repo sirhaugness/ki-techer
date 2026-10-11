@@ -2,13 +2,16 @@
 
 Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Dato: 10. oktober 2026.
 
-| Milepæl                            | Status                                                   |
-| ---------------------------------- | -------------------------------------------------------- |
-| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                        |
-| M1 database, auth, elevprofil, PIN | Implementert; RLS/PIN lokalt og full Auth-e2e i CI grønn |
-| M2 læreplan og generatorer         | Implementert og verifisert lokalt og i CI                |
-| M3 læringsmotor og simulering      | Implementert og verifisert lokalt og i CI                |
-| M4–M9                              | Ikke startet                                             |
+| Milepæl                            | Status                                                        |
+| ---------------------------------- | ------------------------------------------------------------- |
+| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                             |
+| M1 database, auth, elevprofil, PIN | Implementert; RLS/PIN lokalt og full Auth-e2e i CI grønn      |
+| M2 læreplan og generatorer         | Implementert og verifisert lokalt og i CI                     |
+| M3 læringsmotor og simulering      | Implementert og verifisert lokalt og i CI                     |
+| M4 agent                           | Implementert og mock-testet; ekte modell-eval gjenstår        |
+| M5 Leo-UI                          | Implementert; økt og mesterprøve testet på nettbrettstørrelse |
+| M6 tale                            | Implementert og mock-testet; fysisk iPad-test gjenstår        |
+| M7–M9                              | Ikke startet                                                  |
 
 ## M1 — før oppstart av M2
 
@@ -108,3 +111,49 @@ Brukeren ser fortsatt feil ved sending og bekrefter å teste med samme e-post so
 GitHub Actions er konfigurert, men en ekstern CI-kjøring er ikke observert her.
 Simulering, ekte agent-evaluering og læreplanverifisering kommer i M3, M4 og M2.
 Neste milepæl er M1: database, RLS, foreldreinnlogging, elevprofil og PIN.
+
+## M4 — agent, før oppstart av M5 (11. oktober 2026)
+
+Implementert server-only OpenAI-provider med Responses/function calling og Structured Outputs, versjonert norsk systemprompt, kompakt kontekst uten fasit, alle elleve verktøy med Zod og motorgrenser, maks fem verktøykall, ett korrigeringsforsøk per verktøy, to respons-retries og deterministisk fallback. Moderering feiler lukket; personinfo sendes ikke videre. Kontekstualisering bevarer det kontrollerte generatorspørsmålet, forklaringsrubrikken kan ikke tildele forståelse i fallback, og provider/verktøy eksponerer kostnads- og innsynslogger for øktlagringen i M5. OpenAI-verktøynavn oversettes til ASCII på API-grensen, og Responses kjøres uten lagring hos OpenAI (`store:false`).
+
+Verifisert før M5: `npm run check` grønn: lint, typecheck, formatering, **311 Vitest-tester i 15 filer**, simulering, **3 Playwright-tester bestått / 1 lokal-Supabase-test hoppet over**, produksjonsbuild. Agenttestene dekker verktøyregler, retry/fallback, modereringsfeil, tall/tallord/indirekte numerisk fasit-lekkasje, og 30 skriptede mock-scenarioer. Eksisterende 175 000 generatoroppgaver, RLS og simuleringer er fortsatt grønne.
+
+**Ikke verifisert:** ekte `npm run eval:agent` (30 scenarioer, krav ≥95 % og null lekkasjer) stopper eksplisitt fordi OPENAI_API_KEY ikke finnes her. Brukeren valgte å beholde nøkkelen i Vercel og utvikle med mocks. Mock-resultatene dokumenterer kodegrenser, ikke ekte modellkvalitet. Ekte eval og fysisk iPad-test gjenstår før produksjonsaksept. Full hosted Supabase/OpenAI er ikke testet lokalt.
+
+## M5 — Leo på nettbrett, før oppstart av M6 (11. oktober 2026)
+
+Laget hjem med original SVG-medaljong, ferdighetssteiner, fire kartdeler og en original lærerfigur. Bli kjent går adaptivt gjennom ti kontrollerte oppgaver og initialiserer theta uten å finne på mestring eller riktige dager. Leo kan velge interesser fra bilder, legge til moderert tekst, skru interesser av/på og velge lærernavn/figur. Økten har humørinnsjekk, stort talltastatur, flervalg, rest-/koordinatsvar, hint, tekstforklaring, avslutning og lagret fremgang. Hjelpemidler omfatter dele-ut med dra/trykk, grupper, rutenett, tallinje, tierblokker, roterbare figurer og algoritmebrett med løkke/vilkår. Konkrete hjelpemidler åpnes fra start; geometrifigurer vises også i mesterutfordringen.
+
+Alle fasiter og svar kontrolleres server-side. Mesterutfordringen dekker sju ferdigheter med ti oppgaver på nivå 3, nekter hint/forklaringshjelp og tildeler først etter siste svar. Feiring av ferdighet, del og hel medaljong respekterer redusert bevegelse. Offentlig øktrespons inneholder ikke fasit, uttrykk, generatorsvar eller motorens private tilstand.
+
+Ny append-only migrasjon, opprettet med Supabase CLI: én åpen økt per elev og `commit_learning_turn` for kort, atomisk transaksjon med radlås og versjonskontroll. Økt, oppgaver, forsøk, ferdigheter, FSRS, medaljong, strategier og logger lagres samlet. Bare service_role kan kalle skrivefunksjonen; API-en kontrollerer den innloggede, låste enhetens elev før servernøkkelen brukes. Gjentatt requestId gir ingen dobbelt uttelling, og foreldrelåsen fra M1 er bevart.
+
+Verifisert før M6: **`npm run check` grønn**: lint, typecheck, formatering, **317 tester i 16 filer**, alle simuleringer, **5 Playwright-tester bestått / full lokal Auth-test hoppet over**, produksjonsbuild og `git diff --check`. PostgreSQL-testen kjører alle fire migrasjoner, sjekker RPC-tilgang, gamle revisjoner, evidens og full rollback ved feil. Nettbrett-e2e gjennomfører kartlegging → interesser → økt/hint/hjelpemidler → reload → avslutning og en seedet mesterutfordring → tildeling.
+
+Den separate CI-testen med ekte lokal Supabase er utvidet til kartlegging og lagret matteøkt etter innlogging/PIN. Resultatet for denne nye koden er ikke observert ennå. Mock-fixture finnes bare med eksplisitt testvariabel, uten konfigurert Supabase og utenfor produksjon. Ingen ekte elevdata eller API-nøkler brukes i kvalitetstestene. Fysisk iPad og hosted integrasjoner må testes på Preview.
+
+## M6 — tale, sluttverifisering før felles PR (11. oktober 2026)
+
+Laget miljøstyrt norsk TTS/STT, privat husholdningsavgrenset Supabase Storage-cache med tekst-/modell-/stemmehash, Les høyt/Stopp på hjem og alle øktfaser, auto-opplesing med lagret valg og norsk enhetsstemme som reserve. Serveren henter godkjent lærertekst selv; klienten kan ikke sende vilkårlig tekst til TTS. Taleopptak velger Safari MP4 eller WebM/Opus, stopper ved slipp/avbrudd og senest 30 sekunder, og rå opptak lagres ikke i appen. Transkripsjon vises redigerbar og sendes først ved eksplisitt bekreftelse. Mikrofon er også koblet til interesser, forklaringer og avslutning. Tastaturet fungerer fortsatt ved nektet mikrofon eller tjenestefeil.
+
+**`npm run check` grønn:** lint, typecheck, formatering, **332 Vitest-tester i 18 filer**, alle simuleringer, **7 Playwright-tester bestått / 1 full lokal-Supabase/Auth-test hoppet over**, produksjonsbuild og `git diff --check`. Taletestene dekker cachetreff/feil og husholdningsskille, entydige talesvar, codecvalg, filgrenser, kort trykk under tillatelsesdialog, maks opptakstid, avbrudd og nektet tillatelse. Rutesikkerhetstester avviser vilkårlig opplesingstekst, feil elev/økt/revisjon, kryssopprinnelse og ikke-godkjent transkripsjon. Nettlesertestene bruker falsk mikrofon og en lydfixture som faktisk spilles av.
+
+Ingen nye miljøvariabelnavn er innført. Eksisterende Vercel-nøkkel skal brukes etter brukerens valg; modell-/stemmevariablene må være tilgjengelige for Preview. Ny M5-migrasjon må være kjørt på leo-dev; privat `leo-tts`-bøtte opprettes ved første cache-skriving. Vercel-funksjoner er satt til EU-region Stockholm. [DEPLOY](DEPLOY.md), [personvern](PRIVACY.md) og [testplan for en hel iPad-økt](IPAD-TESTPLAN.md) er oppdatert.
+
+**Gjenstår å observere:** GitHub CI med lokal Supabase, hosted migrasjon og Vercel Preview. Fysisk iPad Safari/Chrome, ekte uttale og M4s ekte 30-scenario-eval (≥95 %, ingen lekkasjer) er ikke verifisert her. Ingen ekte KI-/Supabase-nøkler eller KI-kall er brukt i kvalitetstestene. M4, M5 og M6 er testet og loggført hver for seg før neste steg og samles i én PR.
+
+## M4–M6 — oppfølging av felles PR #3
+
+[PR #3](https://github.com/sirhaugness/ki-techer/pull/3) samler alle tre milepælene. Vercel har bekreftet grønt Preview-bygg for kodecommit `6ebc600`; [Preview](https://ki-techer-git-feat-m4-m6-tutor-tablet-voice-team-thor1.vercel.app). [Supabase-workflow 38138388285](https://github.com/sirhaugness/ki-techer/actions/runs/38138388285) er grønn og loggen bekrefter at `20261011113234_learning_turns.sql` ble kjørt på leo-dev. Ingen prod-migrasjon er kjørt av denne PR-en.
+
+Første CI-kvalitetsjobb besto lint, typer, formatering, 332 tester og simulering, men voice-e2e feilet da GitHub kjørte to arbeidere mot den samme, ene syntetiske elevprofilen. Nettlesertestene kjører nå eksplisitt én arbeider slik at testenes reset ikke overskriver en annen tests økt. Revisjonskonflikter i selve appen kontrolleres fortsatt av SQL-/motortestene. Hele den lokale nettleserpakken er kjørt på nytt: 7 grønne / 1 lokal Auth-test hoppet over. Avslutning har dessuten fått et faktisk humørvalg, og valgt elevfigur vises på hjem. Lint/typecheck er kjørt på nytt etter disse UI-rettelsene. Full lokal-Supabase-CI og siste Preview-bygg følges før sluttmelding.
+
+Full lokal-Supabase-CI gjennomførte innlogging, kartlegging, økt, lagring og gjenlasting, men siste PIN-sjekk fant to statusfelt etter at opplesingskontrollen ble lagt til. Testen avgrenser nå statusmeldingen til forelders opplåsingspanel. Ingen PIN-regel er endret. Formatering og produksjonsbuild er også grønne etter UI-oppfølgingen.
+
+Ekstra regresjonskontroll: en modellvurdert forklaring under kartlegging skal ikke forsøke å lese mestringsforsøk som kartleggingen aldri oppretter. Forståelsesbekreftelse er nå avgrenset til vanlig øving med et eksisterende forsøk. Ny test bruker en positiv rubrikkrespons og kontrollerer at kartleggingens tilstand ikke får mestringsevidens eller ekstra forsøk. Lint/typecheck og alle 60 berørte agent-/økt-tester er grønne.
+
+**Sluttkontroll av koden:** `npm run check` på `2aae377` er grønn med **333 tester i 18 filer**, simulering, **7 nettlesertester bestått / 1 lokal Auth-test hoppet over**, lint, typecheck, formatering og produksjonsbuild. [CI-kjøring 38138704953](https://github.com/sirhaugness/ki-techer/actions/runs/38138704953) på `8952128` er grønn i begge jobber, inkludert full magisk lenke → profil/PIN → ti kartleggingsoppgaver → lagret økt/hint/gjenlasting → avslutning → feil og riktig PIN. Siste forklaringsrettelse er verifisert med den nye regresjonstesten og hele pakken lokalt. Vercel har bekreftet grønt bygg også for `2aae377`. Siste CI-resultat lenkes i PR-en etter kontroll. Hosted innlogget Preview/ekte KI og fysisk iPad er fortsatt ikke verifisert i dette miljøet.
+
+Preview-veiledningen peker nå på denne PR-ens callback-adresse og Stockholm-region. Før innlogging må den nye Preview-adressen være tillatt i leo-dev sin Auth URL Configuration; dette er et Supabase-valg, ikke en ny Vercel-miljøvariabel.
+
+Siste fasitvern-kontroll fant at tallord over tjue og Unicode-tall kunne omgå den opprinnelige korte ordlisten. Kontrollen avviser nå sammensatte norske tallord, vanlige brøkord og alle Unicode-tall før fullt løsningshint. Den samme kontrollen brukes på interesseinnramming, som ellers kunne røpe fasit før eleven hadde bedt om hint. Lange tallord behandles med en avgrenset, iterativ ordsegmentering uten regex-backtracking. **92 berørte agent-/økt-/taletester er grønne**, inkludert nye tilfeller for «åtte», «trettitre», «ett tusen fire hundre», brøkord og alternative siffer. Den samlede sjekken og CI kjøres på nytt etter denne rettelsen; sluttresultatet dokumenteres i PR-en.

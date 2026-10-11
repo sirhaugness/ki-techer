@@ -36,6 +36,36 @@ type Table<T> = {
   Update: Partial<T>;
   Relationships: [];
 };
+export type SessionRow = {
+  id: string;
+  learner_id: string;
+  started_at: string;
+  ended_at: string | null;
+  planned_minutes: number;
+  engine_state: Json;
+  revision: number;
+};
+export type InterestRow = {
+  id: string;
+  learner_id: string;
+  label: string;
+  active: boolean;
+  source: string;
+  weight: number;
+  times_used: number;
+};
+type AiCallRow = {
+  id: string;
+  household_id: string;
+  purpose: string;
+  model: string;
+  input_tokens: number;
+  output_tokens: number;
+  cost_estimate: number;
+  latency_ms: number;
+  ok: boolean;
+  created_at: string;
+};
 export type Database = {
   public: {
     Tables: {
@@ -43,9 +73,27 @@ export type Database = {
       parents: Table<Parent>;
       devices: Table<Device>;
       parent_secrets: Table<ParentSecret>;
+      sessions: Table<SessionRow>;
+      interests: Table<InterestRow>;
+      ai_calls: Table<AiCallRow>;
+      tts_cache: Table<{
+        text_hash: string;
+        voice: string;
+        storage_path: string;
+      }>;
     };
     Views: Record<string, never>;
     Functions: {
+      commit_learning_turn: {
+        Args: {
+          target_session: string;
+          target_learner: string;
+          expected_revision: number;
+          next_state: Json;
+          events: Json;
+        };
+        Returns: boolean;
+      };
       ensure_household: { Args: Record<string, never>; Returns: string };
       record_pin_attempt: {
         Args: { target_parent: string; success: boolean };
