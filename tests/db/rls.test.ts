@@ -296,4 +296,168 @@ describe('PostgreSQL RLS', () => {
     ).toBe(0);
     await db.exec('reset role');
   });
+  it('reflection merges new evidence once, protects parent decisions and limits active observations', async () => {
+    await db.exec('reset role');
+    const obs = randomUUID(),
+      locked = randomUUID(),
+      rejected = randomUUID();
+    for (const [id, status] of [
+      [obs, 'aktiv'],
+      [locked, 'låst'],
+      [rejected, 'avvist'],
+    ])
+      await db.query(
+        "insert into public.learner_profile_observations(id,learner_id,category,text,status,updated_by) values($1,$2,'skolemetode',$3,$4,'forelder')",
+        [id, ids.la, id, status],
+      );
+    const call = 'select public.commit_reflection($1,$2,$3) ok';
+    for (let n = 0; n < 4; n++) {
+      const session = randomUUID();
+      await db.query(
+        'insert into public.sessions(id,learner_id,ended_at) values($1,$2,now())',
+        [session, ids.la],
+      );
+      const operations = [obs, locked, rejected].map((id) => ({
+        op: n < 2 ? 'styrk' : 'arkiver',
+        observation_id: id,
+        category: 'skolemetode',
+        text: 'Metode',
+        evidence_session_id: session,
+        confidence_delta: 1,
+      }));
+      const result = JSON.stringify({
+        operations,
+        summary: 'Øvd på matte.',
+        suggestions: [],
+      });
+      await asUser(ids.a);
+      await expect(db.query(call, [session, ids.la, result])).rejects.toThrow();
+      await db.exec('reset role; set role service_role');
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.lb, result]))
+          .rows[0].ok,
+      ).toBe(false);
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.la, result]))
+          .rows[0].ok,
+      ).toBe(true);
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.la, result]))
+          .rows[0].ok,
+      ).toBe(false);
+    }
+    const { rows } = await db.query<{
+      id: string;
+      confidence: number;
+      status: string;
+    }>(
+      'select id,confidence,status from public.learner_profile_observations where id=any($1::uuid[])',
+      [[obs, locked, rejected]],
+    );
+    expect(rows.find((o) => o.id === obs)).toMatchObject({
+      confidence: 0.3,
+      status: 'aktiv',
+    });
+    expect(rows.find((o) => o.id === locked)).toMatchObject({
+      confidence: 0.4,
+      status: 'låst',
+    });
+    expect(rows.find((o) => o.id === rejected)).toMatchObject({
+      confidence: 0.4,
+      status: 'avvist',
+    });
+    await db.exec('reset role');
+  });
+  it('caps observations at 25, archives below 0.2 and weights interests once per session', async () => {
+    await db.exec('reset role');
+    await db.query(
+      'delete from public.learner_profile_observations where learner_id=$1',
+      [ids.la],
+    );
+    for (let n = 0; n < 25; n++)
+      await db.query(
+        "insert into public.learner_profile_observations(learner_id,category,text,confidence,updated_by) values($1,'styrke',$2,.2,'system')",
+        [ids.la, `Styrke ${n}`],
+      );
+    const interest = randomUUID(),
+      session = randomUUID();
+    await db.query(
+      "insert into public.interests(id,learner_id,label,source) values($1,$2,'Fotball','leo')",
+      [interest, ids.la],
+    );
+    await db.query(
+      "insert into public.sessions(id,learner_id,ended_at,mood_end,engine_state) values($1,$2,now(),'glad',$3)",
+      [
+        session,
+        ids.la,
+        JSON.stringify({ usedInterests: [interest, interest] }),
+      ],
+    );
+    const op = {
+      op: 'legg_til',
+      observation_id: null,
+      category: 'styrke',
+      text: 'En ekstra',
+      evidence_session_id: session,
+      confidence_delta: 1,
+    };
+    await db.exec('set role service_role');
+    await db.query('select public.commit_reflection($1,$2,$3)', [
+      session,
+      ids.la,
+      JSON.stringify({ operations: [op], summary: 'Matte', suggestions: [] }),
+    ]);
+    expect(
+      (
+        await db.query(
+          'select id from public.learner_profile_observations where learner_id=$1',
+          [ids.la],
+        )
+      ).rows,
+    ).toHaveLength(25);
+    expect(
+      (
+        await db.query(
+          'select times_used,weight,engagement_avg from public.interests where id=$1',
+          [interest],
+        )
+      ).rows[0],
+    ).toMatchObject({ times_used: 2, weight: 1.1, engagement_avg: 1 });
+    const session2 = randomUUID();
+    await db.query(
+      'insert into public.sessions(id,learner_id,ended_at) values($1,$2,now())',
+      [session2, ids.la],
+    );
+    const o = (
+      await db.query<{ id: string }>(
+        'select id from public.learner_profile_observations where learner_id=$1 limit 1',
+        [ids.la],
+      )
+    ).rows[0];
+    await db.query('select public.commit_reflection($1,$2,$3)', [
+      session2,
+      ids.la,
+      JSON.stringify({
+        operations: [
+          {
+            ...op,
+            op: 'svekk',
+            observation_id: o.id,
+            evidence_session_id: session2,
+          },
+        ],
+        summary: 'Matte',
+        suggestions: [],
+      }),
+    ]);
+    expect(
+      (
+        await db.query(
+          'select status,confidence from public.learner_profile_observations where id=$1',
+          [o.id],
+        )
+      ).rows[0],
+    ).toMatchObject({ status: 'arkivert', confidence: 0 });
+    await db.exec('reset role');
+  });
 });

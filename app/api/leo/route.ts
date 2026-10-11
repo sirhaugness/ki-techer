@@ -1,3 +1,5 @@
+import { after } from 'next/server';
+import { observations, reflectPending } from '@/lib/profile/repository';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
@@ -114,6 +116,7 @@ export async function POST(request: Request) {
       id: i.id,
       label: i.label,
       active: i.active,
+      weight: 'weight' in i ? Number(i.weight) : 1,
     }));
     if (cmd.command === 'interest') {
       // Preset labels are trusted app content; custom text requires moderation.
@@ -276,6 +279,7 @@ export async function POST(request: Request) {
       interests,
       provider,
       instructions,
+      mock ? [] : await observations(profile.id),
     );
     if (f) {
       if (f.state?.revision !== cmd.revision)
@@ -291,6 +295,8 @@ export async function POST(request: Request) {
         { message: 'Økten ble oppdatert. Last siden på nytt.' },
         { status: 409 },
       );
+    if (!mock && result.state.endedAt)
+      after(() => reflectPending(profile.id, profile.householdId));
     return Response.json(publicView(result.state), {
       headers: { 'Cache-Control': 'no-store' },
     });

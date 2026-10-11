@@ -348,7 +348,11 @@ export async function executeTool(
         ? ['div-deling-konkret']
         : /\b(ganging|multiplikasjon|gangetabell)\b/i.test(a.leo_sa)
           ? ['mult-telling-grupper']
-          : [];
+          : /\b(figurer|geometri|former)\b/i.test(a.leo_sa)
+            ? ['figur-2d-egenskaper']
+            : /\b(algoritmer|løkker|programmering)\b/i.test(a.leo_sa)
+              ? ['algoritme-folg-instruksjon']
+              : [];
       if (!topic.length)
         return { ok: true, result: 'Temaet er usikkert og lagres ikke.' };
       runtime.schoolTopics.push({

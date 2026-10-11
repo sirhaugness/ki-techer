@@ -11,7 +11,7 @@ export type ProviderReply = {
   calls: ToolCall[];
   conversation?: unknown[];
 };
-export type ModelPurpose = 'tutor' | 'fast';
+export type ModelPurpose = 'tutor' | 'fast' | 'reflect';
 export type ModelRequest = {
   purpose: ModelPurpose;
   instructions: string;

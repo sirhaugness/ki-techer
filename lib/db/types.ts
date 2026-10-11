@@ -44,6 +44,10 @@ export type SessionRow = {
   planned_minutes: number;
   engine_state: Json;
   revision: number;
+  reflected_at: string | null;
+  reflection_started_at: string | null;
+  summary: string | null;
+  suggestions: Json;
 };
 export type InterestRow = {
   id: string;
@@ -69,6 +73,18 @@ type AiCallRow = {
 export type Database = {
   public: {
     Tables: {
+      learner_profile_observations: Table<
+        import('../profile/rules').Observation
+      >;
+      tool_calls: Table<{
+        id: string;
+        learner_id: string;
+        session_id: string;
+        tool: string;
+        ok: boolean;
+        args: Json;
+        result: Json;
+      }>;
       learners: Table<Learner>;
       parents: Table<Parent>;
       devices: Table<Device>;
@@ -84,6 +100,14 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      claim_reflection: {
+        Args: { target_session: string; target_learner: string };
+        Returns: boolean;
+      };
+      commit_reflection: {
+        Args: { target_session: string; target_learner: string; result: Json };
+        Returns: boolean;
+      };
       commit_learning_turn: {
         Args: {
           target_session: string;

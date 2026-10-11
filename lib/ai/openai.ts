@@ -20,7 +20,9 @@ export function openaiProvider(
       const model =
         request.purpose === 'tutor'
           ? process.env.OPENAI_MODEL_TUTOR
-          : process.env.OPENAI_MODEL_FAST;
+          : request.purpose === 'reflect'
+            ? process.env.OPENAI_MODEL_REFLECT
+            : process.env.OPENAI_MODEL_FAST;
       if (!model) throw new Error('Modelloppsettet mangler.');
       const started = Date.now();
       let input = 0,

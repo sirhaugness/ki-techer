@@ -143,6 +143,7 @@ export async function learningTurn(
   interests: Interest[],
   provider: AiProvider | null,
   instructions: string,
+  observations: import('../profile/rules').Observation[] = [],
 ) {
   const state = structuredClone(original),
     events = emptyEvents();
@@ -219,7 +220,7 @@ export async function learningTurn(
       active: runtime.active?.item ?? null,
       allowedHintLevel: state.mode === 'master' ? 0 : state.hints.level,
       answerResult: state.correct,
-      observations: [],
+      observations,
       messages: state.messages,
     });
     const result = await runAgent({
@@ -333,14 +334,16 @@ export async function learningTurn(
         };
         return;
       }
-      const interest = interests.find(
-        (i) =>
-          i.active &&
-          !(
-            state.usedInterests.slice(-2).length === 2 &&
-            state.usedInterests.slice(-2).every((id) => id === i.id)
-          ),
-      );
+      const interest = [...interests]
+        .sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1))
+        .find(
+          (i) =>
+            i.active &&
+            !(
+              state.usedInterests.slice(-2).length === 2 &&
+              state.usedInterests.slice(-2).every((id) => id === i.id)
+            ),
+        );
       await executeTool(runtime, 'lag_oppgave', {
         skill_id: candidate.skill_id,
         vanskegrad: candidate.foreslått_vanskegrad,
@@ -360,7 +363,26 @@ export async function learningTurn(
     state.moodStart = event.mood;
     await nextTask();
   } else if (event.type === 'next') await nextTask();
-  else if (event.type === 'hint') {
+  else if (event.type === 'school') {
+    if (state.mode === 'master')
+      throw new Error('Skoletema kan noteres etter utfordringen.');
+    if (event.text) {
+      const result = await executeTool(runtime, 'noter_skoletema', {
+        leo_sa: event.text,
+      });
+      await logTool('noter_skoletema', {}, result, 0);
+      state.response = {
+        ...fallbackResponse(),
+        speech: result.ok
+          ? String(result.result)
+          : 'Vi kunne ikke notere temaet. Du kan fortsette å øve.',
+      };
+    } else
+      state.response = {
+        ...fallbackResponse(),
+        speech: 'Det er helt greit. Vi utforsker matte sammen.',
+      };
+  } else if (event.type === 'hint') {
     if (state.mode === 'master')
       throw new Error('Mesterutfordringen gjøres uten hint.');
     if (!runtime.active || runtime.active.resolved)
