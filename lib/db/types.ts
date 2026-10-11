@@ -118,6 +118,36 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      budget_status: {
+        Args: { target_household: string; configured_limit: number };
+        Returns: Json;
+      };
+      reserve_ai_budget: {
+        Args: {
+          target_household: string;
+          reservation_id: string;
+          amount: number;
+          configured_limit: number;
+        };
+        Returns: boolean;
+      };
+      settle_ai_budget: {
+        Args: { reservation_id: string; actual: number };
+        Returns: boolean;
+      };
+      allow_ai_request: {
+        Args: {
+          target_device: string;
+          target_household: string;
+          request_scope: string;
+          request_limit: number;
+        };
+        Returns: boolean;
+      };
+      maintain_learner: {
+        Args: { target_learner: string };
+        Returns: undefined;
+      };
       parent_dashboard: {
         Args: { target_learner: string; page_offset: number };
         Returns: Json;

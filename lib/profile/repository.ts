@@ -1,7 +1,7 @@
 import 'server-only';
 import { adminDb } from '../db/server';
-import { asJson, snapshot, logAi } from '../learning/repository';
-import { openaiProvider } from '../ai/openai';
+import { asJson, snapshot } from '../learning/repository';
+import { controlledProvider } from '../ai/control';
 import { reflectSession } from '../ai/reflect';
 export async function observations(learnerId: string) {
   const { data, error } = await adminDb()
@@ -41,9 +41,7 @@ export async function reflectPending(learnerId: string, householdId: string) {
       .eq('learner_id', learnerId)
       .limit(100);
     if (toolError) throw new Error('Kunne ikke hente verktøyhistorikk.');
-    const provider = process.env.OPENAI_API_KEY
-      ? openaiProvider((call) => logAi(householdId, call))
-      : null;
+    const provider = await controlledProvider(householdId);
     const result = await reflectSession(provider, state, existing, tools ?? []);
     const { error: saveError } = await db.rpc('commit_reflection', {
       target_session: row.id,

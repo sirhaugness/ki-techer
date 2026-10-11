@@ -26,9 +26,16 @@ export const parentCommand = z.discriminatedUnion('action', [
     .strict(),
   z
     .object({
-      action: z.enum(['seenPart', 'seenFlag']),
+      action: z.literal('seenPart'),
       learnerId: z.uuid(),
-      id: z.string().min(1).max(40),
+      id: z.enum(['1', '2', '3', '4']),
+    })
+    .strict(),
+  z
+    .object({
+      action: z.literal('seenFlag'),
+      learnerId: z.uuid(),
+      id: z.uuid(),
     })
     .strict(),
   z
@@ -71,6 +78,8 @@ export type Dashboard = {
   moods: Row[];
   sessionCount: number;
   spend: number;
+  budget?: import('../engine/limits').BudgetStatus;
+  aiAvailable?: boolean;
 };
 export const rows = (value: unknown): Row[] =>
   Array.isArray(value) ? (value as Row[]) : [];

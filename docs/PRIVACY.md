@@ -1,4 +1,4 @@
-# Personvern i M1–M8
+# Personvern i M1–M9
 
 Supabase lagrer forelderens e-post for innlogging, husholdningstilknytning, barnets fornavn/trinn/lærernavn, interesser og enhetslås. PIN lagres bare som saltet scrypt-hash i en tabell uten klienttilgang. Nettleseren får nødvendige HttpOnly sesjons- og enhetscookies. Ingen analyse- eller sporingsskript er lagt til.
 
@@ -12,4 +12,10 @@ Velg EU-region for begge Supabase-prosjektene. Vercel-funksjoner er konfigurert 
 
 Foreldersiden tilbyr komplett JSON-eksport av husholdningens appdata, inkludert samtaler og verktøykall, uten PIN-hash, API-nøkler og innloggingstokener. Lydcache beskrives med filreferanser. «Slett alle appdata» fjerner alle elevprofiler, læringshistorikk, PIN, forbrukslogger og private lydfiler; innloggingskontoen beholdes. «Slett forelders innloggingskonto» på profilsiden sletter også din Auth-konto og logger ut alle dine økter. Andre foreldres Auth-kontoer slettes ikke. Ved tjenestefeil viser appen hva som ikke kunne fullføres og lar forelder prøve igjen.
 
-Forelder kan velge 1–36 måneders oppbevaring av samtalelogger (standard 12) og slette eldre logger nå. Kopien av meldinger i øktsnapshot ryddes samtidig; matematisk mestringsevidens bevares. Automatisk opprydding og ferdig budsjettstyring innføres i M9. Eksport/sletting påvirker ikke data som allerede er eksportert til en lokal fil eller eventuell leverandøroppbevaring hos OpenAI.
+Forelder kan velge 1–36 måneders oppbevaring av samtalelogger (standard 12) og slette eldre logger nå. Kopien av meldinger i øktsnapshot ryddes samtidig; matematisk mestringsevidens bevares. Automatisk opprydding kjøres ved åpning av elevhjem eller autorisert foreldredashbord. Skoletema, inkludert råtekst i øktsnapshot, utløper etter sju dager. Privat opplesingslyd eldre enn 30 dager ryddes i grupper på inntil 100 filer per besøk. Ingen bakgrunnsjobb kjører for inaktive kontoer; opprydding skjer ved neste besøk. Matematisk mestring og forsøk beholdes til appdata slettes. Eksport/sletting påvirker ikke data som allerede er eksportert til en lokal fil eller eventuell leverandøroppbevaring hos OpenAI.
+
+Profilminnet har faste confidence-regler, maks 25 aktive/låste observasjoner og bare synlige observasjoner i lærerens kontekst. Forelder kan redigere, låse og avvise. Gjentatt refleksjon over samme økt teller ikke dobbelt; manglende KI gir et faktabasert sammendrag uten oppdiktede observasjoner.
+
+Budsjettdata lagrer månedsbeløp og reservasjoner uten samtaletekst; månedsrader ryddes etter 24 måneder og reservasjoner etter 12 måneder ved besøk. Forespørselstellere per enhet/minutt ryddes etter to timer ved besøk. Alle disse dataene inngår i eksport og appdatasletting. Budsjettet bruker kostnadsestimater med konservative reservasjoner; det er ikke leverandørens fakturabeløp. Eksport og sletting krever innlogget forelder uten aktiv Leo-lås; destruktive valg krever uttrykkelig tekstbekreftelse.
+
+Sletting i appen fjerner aktive appdata og private lydfiler, men lover ikke øyeblikkelig fjerning fra leverandørens sikkerhetskopier. Supabase/OpenAI/e-postleverandørens egne vilkår og avtaler gjelder for eventuell ekstern oppbevaring.

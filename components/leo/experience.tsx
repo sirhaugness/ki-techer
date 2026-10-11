@@ -128,7 +128,7 @@ export function LeoExperience({
               revision: 0,
               mode: 'practice',
               task: null,
-              speech: homeSpeech(profile.tutorName),
+              speech: `${homeSpeech(profile.tutorName)} ${story.title}. Kapittel ${story.number}. ${story.text}`,
               parts: displayedParts,
               ended: true,
               correct: null,
@@ -240,6 +240,11 @@ export function LeoExperience({
         </>
       ) : (
         <>
+          {view.fallbackMode && view.mode === 'practice' && (
+            <p className="home-note">
+              Vi øver med faste oppgaver og rolige hint i dag.
+            </p>
+          )}
           {view.celebration && (
             <div className="celebration" role="status">
               <span aria-hidden="true">✦</span>

@@ -6,6 +6,8 @@ const mock = vi.hoisted(() => ({
   audio: vi.fn(),
   transcribe: vi.fn(),
   approved: vi.fn(),
+  allow: vi.fn(),
+  budget: vi.fn(),
 }));
 vi.mock('server-only', () => ({}));
 vi.mock('@/lib/learning/access', () => ({ leoAccess: mock.access }));
@@ -19,7 +21,19 @@ vi.mock('@/lib/voice/speech', () => ({ speechAudio: mock.audio }));
 vi.mock('@/lib/voice/openai', () => ({
   openaiVoice: () => ({ transcribe: mock.transcribe }),
 }));
-vi.mock('@/lib/ai/openai', () => ({ openaiProvider: () => ({}) }));
+vi.mock('@/lib/ai/control', () => ({ controlledProvider: async () => ({}) }));
+vi.mock('@/lib/security/limits', () => ({
+  allowDevice: mock.allow,
+  budgetStatus: mock.budget,
+  budgetGuard: () => ({}),
+}));
+vi.mock('@/lib/profile/home', () => ({
+  homeChapter: async () => ({
+    title: 'Reisen',
+    number: 1,
+    text: 'Et lite eventyr.',
+  }),
+}));
 vi.mock('@/lib/ai/moderation', () => ({ approved: mock.approved }));
 import { POST as tts } from '../../app/api/voice/tts/route';
 import { POST as stt } from '../../app/api/voice/stt/route';
@@ -39,7 +53,9 @@ beforeEach(() => {
   vi.stubEnv('OPENAI_MODEL_TTS', 'configured-tts');
   vi.stubEnv('OPENAI_TTS_VOICE', 'configured-voice');
   vi.stubEnv('OPENAI_MODEL_STT', 'configured-stt');
-  mock.access.mockResolvedValue({ profile });
+  mock.access.mockResolvedValue({ profile, device: { id: profile.id } });
+  mock.allow.mockResolvedValue(true);
+  mock.budget.mockResolvedValue({ fallback: false });
   mock.audio.mockResolvedValue({ bytes: new Uint8Array([1, 2]), cached: true });
   mock.transcribe.mockResolvedValue('tolv');
   mock.approved.mockResolvedValue(true);
@@ -154,5 +170,39 @@ it('parent voice-off setting blocks both audio routes', async () => {
       )
     ).status,
   ).toBe(403);
+  expect(mock.transcribe).not.toHaveBeenCalled();
+});
+it('rate limits before any voice provider and keeps cached TTS available at exhausted budget', async () => {
+  mock.allow.mockResolvedValue(false);
+  expect(
+    (await tts(request({ sessionId: profile.id, revision: 0, source: 'home' })))
+      .status,
+  ).toBe(429);
+  expect(mock.audio).not.toHaveBeenCalled();
+  mock.allow.mockResolvedValue(true);
+  mock.budget.mockResolvedValue({ fallback: true });
+  expect(
+    (await tts(request({ sessionId: profile.id, revision: 0, source: 'home' })))
+      .status,
+  ).toBe(200);
+  expect(mock.audio).toHaveBeenCalledWith(
+    expect.objectContaining({
+      provider: null,
+      text: expect.stringContaining('Et lite eventyr.'),
+    }),
+  );
+  const form = new FormData();
+  form.set('audio', new File(['audio'], 'svar.webm', { type: 'audio/webm' }));
+  expect(
+    (
+      await stt(
+        new Request('https://preview.example/api/voice/stt', {
+          method: 'POST',
+          headers: { origin: 'https://preview.example' },
+          body: form,
+        }),
+      )
+    ).status,
+  ).toBe(503);
   expect(mock.transcribe).not.toHaveBeenCalled();
 });

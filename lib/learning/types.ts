@@ -52,6 +52,7 @@ export type Interest = {
 };
 export type Snapshot = {
   version: 1;
+  fallbackMode?: boolean;
   revision: number;
   id: string;
   clock: SessionClock;
@@ -126,6 +127,7 @@ export type PublicTask = {
   skillTitle: string;
 };
 export type LearningView = {
+  fallbackMode?: boolean;
   id: string;
   revision: number;
   mode: Snapshot['mode'];

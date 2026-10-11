@@ -149,6 +149,7 @@ export async function learningTurn(
     events = emptyEvents();
   if (state.seenEvents.includes(eventId))
     return { state, events, replayed: true };
+  state.fallbackMode = !provider;
   if (state.endedAt) throw new Error('Økten er allerede avsluttet.');
   const phase = sessionPhase(state.clock, now);
   const runtime: AgentRuntime = {
@@ -232,6 +233,7 @@ export async function learningTurn(
       logTool,
       flag,
     });
+    if (result.fallback) state.fallbackMode = true;
     if (text) {
       const shown =
         result.response.safety_flag === 'upassende' || privateText(text)
@@ -686,6 +688,7 @@ export function publicView(state: Snapshot): LearningView {
     ) ?? (division ? 'grupper' : 'rutenett');
   return {
     id: state.id,
+    fallbackMode: state.fallbackMode ?? false,
     revision: state.revision,
     mode: state.mode,
     task:

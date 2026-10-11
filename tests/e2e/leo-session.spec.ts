@@ -31,6 +31,9 @@ test('tablet diagnostics → interests → practice, hints, manipulatives, reloa
   await page.getByRole('link', { name: 'Tilbake til kartet' }).click();
   await page.getByRole('button', { name: 'Start en matteøkt' }).click();
   await page.getByRole('button', { name: '🙂 Rolig' }).click();
+  await expect(
+    page.getByText('Vi øver med faste oppgaver og rolige hint i dag.'),
+  ).toBeVisible();
   await page.getByRole('button', { name: 'Jeg vil ha et hint' }).click();
   await expect(page.getByText('Kan du tegne eller lage grupper')).toBeVisible();
   await expect(

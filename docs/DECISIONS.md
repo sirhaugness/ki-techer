@@ -128,3 +128,15 @@ Alle foreldresider, eksport, diplom og mutasjoner sjekker både innlogging, Leo-
 Forelders profilendringer bruker samme elevlås som refleksjon. Redigering beholder bevislenker og merkes som forelders endring; låst/avvist beskyttes mot automatikk. Ny kartlegging tillates bare etter avsluttet økt og bevarer mestring og medaljong. Diplomet krever lagret tildeling og har A4-layout uten navigasjon på utskrift.
 
 «Slett alle appdata» fjerner hele husholdningens elevprofiler og avhengige læringsdata, PIN, forbrukslogger og privat lyd, men beholder innloggingskontoen slik at forelder kan starte på nytt. En separat bekreftet handling på profilsiden sletter også den aktuelle forelders Auth-konto etter global utlogging. Den sletter ikke en annen forelders innloggingskonto. Appdatasletting starter med en varig ryddeflagg; ved Storage-feil kan forelder prøve igjen. Databasegrenser avviser gamle økt-/lydforespørsler etter en personvern-nullstilling. Gamle samtalelogger slettes også fra øktsnapshotets meldingskopi, mens matematisk evidens bevares.
+
+## M9 — grenser og opprydding
+
+Månedsbudsjett følger Europe/Oslo, per husholdning. Laveste elevgrense og Vercels overgrense gjelder. 80 % gir foreldervarsel; 100 % eller utilgjengelig budsjettkontroll gir deterministisk læring uten betalte KI-kall. PostgreSQL reserverer et konservativt beløp under radlås før hvert kall og frigir bare kjent ubrukt beløp. Timeout beholder reservasjonen. Estimatet er ikke en leverandørfaktura; budsjettet verner mot samtidige kall og merker perioden selv ved månedsbytte.
+
+Rate limiting lagres per autorisert låst enhet/minutt: 30 app-, 12 TTS- og 6 STT-forespørsler. Faktisk strømstørrelse begrenses, også uten Content-Length. Eleven får vennlig beskjed og kan bruke tastatur ved talefeil. Cached lyd/enhetsstemme kan brukes selv om nye KI-kall er stoppet. Forelders tale-av går foran dette.
+
+Oppbevaring ryddes ved autorisert besøk fremfor en ny cron-tjeneste: samtaler/verktøylogger etter valgt 1–36 måneder, skoletema etter 7 dager, privat opplesingslyd etter 30 dager (maks 100 per besøk), reservasjoner etter 12 måneder, månedsrader etter 24 måneder og minuttellere etter 2 timer. Mestring beholdes. Eksport og sletting omfatter også de nye tekniske tabellene. Inaktive kontoer ryddes ved neste besøk; dette er eksplisitt i personvern/deploy-veiledning.
+
+Lighthouse legges i lokal fullsjekk og CI med mock-only server og lagrede rapporter. Automatisk tilgjengelighet er kontrollert på seks visninger; faktisk iPad, skjermleser, KI-uttale og hosted Preview må vurderes separat. Ingen nye miljønavn eller produksjonsendringer.
+
+Fallback bevarer M4s forståelsesvern: en fritekstforklaring får ikke forståelse=2 uten godkjent rubrikk. Øvingssvar, hint, eksisterende mestring og tilgjengelige mesterutfordringer virker fortsatt, og tildeling er testet med null-provider. Ingen budsjettregel gir gratis mestring; ny forståelsesvurdering venter på fungerende KI.

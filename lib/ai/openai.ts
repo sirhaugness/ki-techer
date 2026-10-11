@@ -3,12 +3,14 @@ import OpenAI from 'openai';
 import { z } from 'zod';
 import type { AiProvider, AiCall, ModelRequest } from './provider';
 import { estimateCost } from './provider';
+import type { BudgetGuard } from '../security/limits';
 
 const wireName = (name: string) =>
   name.replaceAll('ø', 'o').replaceAll('å', 'a').replaceAll('æ', 'ae');
 
 export function openaiProvider(
   log: (call: AiCall) => Promise<void>,
+  budget?: BudgetGuard,
 ): AiProvider {
   const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -25,6 +27,22 @@ export function openaiProvider(
             : process.env.OPENAI_MODEL_FAST;
       if (!model) throw new Error('Modelloppsettet mangler.');
       const started = Date.now();
+      const ceiling = estimateCost(
+        Buffer.byteLength(
+          JSON.stringify({
+            instructions: request.instructions,
+            input: request.input,
+            conversation: request.conversation,
+            results: request.results,
+            tools: request.tools,
+            schema: z.toJSONSchema(request.schema),
+          }),
+        ) + 1000,
+        1200,
+      );
+      const reservation = budget ? await budget.reserve(ceiling) : null;
+      if (budget && !reservation)
+        throw new Error('KI-budsjettet er brukt opp.');
       let input = 0,
         output = 0,
         ok = false;
@@ -87,7 +105,7 @@ export function openaiProvider(
             : undefined,
         };
       } finally {
-        await log({
+        const call = {
           purpose: request.purpose,
           model,
           input_tokens: input,
@@ -95,7 +113,10 @@ export function openaiProvider(
           cost_estimate: estimateCost(input, output),
           latency_ms: Date.now() - started,
           ok,
-        });
+        };
+        if (budget && reservation)
+          await budget.settle(reservation, ceiling, call);
+        await log(call);
       }
     },
     async moderate(text) {

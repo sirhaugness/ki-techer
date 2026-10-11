@@ -5,6 +5,7 @@ import { adminDb } from '../db/server';
 import { fixtureEnabled, fixture } from '../learning/fixture';
 import { parentFixture } from './fixture';
 import type { Dashboard } from './contracts';
+import { budgetStatus } from '../security/limits';
 export async function parentLearner(learnerId: string) {
   if (!z.uuid().safeParse(learnerId).success)
     throw new Error('Ugyldig profil.');
@@ -36,7 +37,13 @@ export async function dashboard(learnerId: string, offset: number = 0) {
     page_offset: offset,
   });
   if (error || !data) throw new Error('Kunne ikke hente oversikten.');
-  return data as unknown as Dashboard;
+  const budget = await budgetStatus(access.householdId);
+  return {
+    ...(data as unknown as Dashboard),
+    budget,
+    spend: budget.spent,
+    aiAvailable: Boolean(process.env.OPENAI_API_KEY),
+  };
 }
 export async function clearHousehold(householdId: string) {
   const db = adminDb();

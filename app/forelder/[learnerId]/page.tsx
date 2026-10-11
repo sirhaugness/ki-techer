@@ -1,3 +1,5 @@
+import { after } from 'next/server';
+import { maintainLearner } from '@/lib/profile/home';
 import { redirect } from 'next/navigation';
 import { dashboard } from '@/lib/parent/repository';
 import { parentFixture } from '@/lib/parent/fixture';
@@ -22,6 +24,7 @@ export default async function LearnerDashboard({
     redirect(`/forelder/${learnerId}`);
   }
   const data = await dashboard(learnerId, offset);
+  if (!fixtureEnabled()) after(() => maintainLearner(learnerId));
   return (
     <ParentDashboard
       data={data}

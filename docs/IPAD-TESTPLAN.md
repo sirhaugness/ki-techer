@@ -42,3 +42,14 @@ Bruk Preview fra PR-en, **ikke produksjon**. Sett av 30–45 minutter sammen med
 Mesterutfordring åpnes først når alle ferdighetene i en del er mestret og tidligst neste dag. Det er normalt at du ikke får den i første økt. Når den åpner: gjør ti oppgaver uten hint, og kontroller at medaljongdelen først tildeles etter prøven med minst 80 % riktige. Hele denne flyten er også testet automatisk med en syntetisk profil.
 
 Ved feil: noter nettleser, stående/liggende skjerm, hvilken knapp du trykket og hva som skjedde. Vurder også om stemmen er tydelig norsk, om tempoet passer, og om en voksen ser noen fasit i et tidlig hint. Ikke send API-nøkkel, innloggingslenke eller barnets private opplysninger.
+
+## Profilminne, foreldreside og budsjett (M7–M9)
+
+- [ ] På hjem: skriv «Vi jobbet med deling» som skoletema, og prøv også «Vet ikke». Temaet skal være valgfritt. Kapittelrammen skal følge en aktiv interesse og endre seg etter avsluttede økter.
+- [ ] Avslutt en økt, åpne foreldresiden med PIN og velg «Se fremgang og innstillinger». Kontroller tid, ferdigheter og øktens samtale/verktøy. Refleksjon kan bli synlig litt etter at økten er lagret.
+- [ ] Legg til en egen profilobservasjon, lås den og last siden på nytt. Rediger og avvis en observasjon. Låste og avviste valg skal ikke overstyres av neste refleksjon.
+- [ ] Slå tale av som forelder. Leo skal bruke tastaturet og ikke kunne skru tale på selv. Slå tale på igjen og prøv opplesing av kapittel og oppgave.
+- [ ] Sett KI-budsjett til **0 på testprofilen**. Start en vanlig matteøkt, svar og be om hint. Oppgavene skal fortsatt virke, med beskjed om faste oppgaver. Ny tale-til-tekst skal gi beskjed om tastatur. Sett budsjettet tilbake etterpå.
+- [ ] Last ned eksport og åpne JSON-filen. Den skal inneholde din husholdnings fremgang og økter. Filen kan inneholde persondata; oppbevar eller slett den bevisst.
+- [ ] Når en del faktisk er tildelt: åpne diplomet og prøv utskrift/PDF. Det skal bli én liggende A4-side. Ikke forvent diplom før mesterprøven er bestått.
+- [ ] Prøv sletting bare på en husholdning med testdata du er ferdig med. «Slett alle appdata» beholder innloggingen; «Slett forelders innloggingskonto» sletter også din innlogging. Disse valgene gjelder hele husholdningens appdata.

@@ -1,9 +1,11 @@
+import { allowDevice, budgetStatus, budgetGuard } from '@/lib/security/limits';
+import { boundedBody } from '@/lib/security/body';
+import { controlledProvider } from '@/lib/ai/control';
 import { authOrigin } from '@/lib/auth/origin';
 import { leoAccess } from '@/lib/learning/access';
 import { logAi } from '@/lib/learning/repository';
 import { fixtureEnabled } from '@/lib/learning/fixture';
 import { openaiVoice } from '@/lib/voice/openai';
-import { openaiProvider } from '@/lib/ai/openai';
 import { approved } from '@/lib/ai/moderation';
 import { MAX_AUDIO_BYTES, validAudio } from '@/lib/voice/contracts';
 export const runtime = 'nodejs';
@@ -29,7 +31,27 @@ export async function POST(request: Request) {
         { message: 'Forelder har slått av tale. Bruk tastaturet.' },
         { status: 403 },
       );
-    const form = await request.formData(),
+    if (
+      !mock &&
+      !(await allowDevice(
+        access!.device.id,
+        access!.profile.householdId,
+        'stt',
+      ))
+    )
+      return Response.json(
+        { message: 'Prøv tale igjen om ett minutt. Du kan bruke tastaturet.' },
+        { status: 429, headers: { 'Retry-After': '60' } },
+      );
+    const bytes = await boundedBody(request, MAX_AUDIO_BYTES + 10000);
+    if (!bytes)
+      return Response.json(
+        { message: 'Opptaket er for stort.' },
+        { status: 413 },
+      );
+    const form = await new Response(Buffer.from(bytes), {
+        headers: { 'Content-Type': request.headers.get('content-type') ?? '' },
+      }).formData(),
       file = form.get('audio');
     if (!(file instanceof File) || !validAudio(file))
       return Response.json(
@@ -46,13 +68,24 @@ export async function POST(request: Request) {
         { message: 'Tale er ikke tilgjengelig nå. Bruk tastaturet.' },
         { status: 503 },
       );
+    if ((await budgetStatus(access!.profile.householdId)).fallback)
+      return Response.json(
+        { message: 'Tale er utilgjengelig nå. Bruk tastaturet.' },
+        { status: 503 },
+      );
     const log = (call: Parameters<typeof logAi>[1]) =>
       logAi(access!.profile.householdId, call);
-    const text = await openaiVoice(log).transcribe(
-      file,
-      process.env.OPENAI_MODEL_STT,
-    );
-    if (text.length > 600 || !(await approved(openaiProvider(log), text)))
+    const text = await openaiVoice(
+      log,
+      budgetGuard(access!.profile.householdId),
+    ).transcribe(file, process.env.OPENAI_MODEL_STT);
+    if (
+      text.length > 600 ||
+      !(await approved(
+        await controlledProvider(access!.profile.householdId),
+        text,
+      ))
+    )
       return Response.json(
         {
           message:

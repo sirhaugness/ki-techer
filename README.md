@@ -1,10 +1,13 @@
 # Leo-læreren
 
-En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M3: forelderinnlogging og Leo-lås, 35 ferdigheter med oppgavegeneratorer, og en deterministisk læringsmotor. KI-agent og interaktive matteøkter kommer i M4–M5.
+En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M9: innlogging og Leo-lås, 35 ferdigheter, kontrollerte matteøkter, KI-lærer med profilminne, medaljong, tale og foreldredashbord med budsjett, eksport og sletting. Ekte KI-kvalitet og fysisk iPad-test må godkjennes før fast bruk; se fremdriften for hva som er faktisk verifisert.
 
 - [Spesifikasjon](docs/SPEC.md)
 - [Fremdrift og faktiske testresultater](docs/PROGRESS.md)
 - [Oppsett, GitHub-hemmeligheter og Preview-test for nybegynnere](docs/DEPLOY.md)
+- [Personvern](docs/PRIVACY.md)
+- [iPad-testplan](docs/IPAD-TESTPLAN.md)
+- [Tilgjengelighet](docs/ACCESSIBILITY.md)
 - [Beslutninger](docs/DECISIONS.md)
 - [Læreplan og kilder](docs/curriculum/mat01-06.md)
 

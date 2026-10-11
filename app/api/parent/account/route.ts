@@ -1,3 +1,4 @@
+import { boundedJson } from '@/lib/security/body';
 import { parentOnly } from '@/lib/auth/session';
 import { authOrigin } from '@/lib/auth/origin';
 import { adminDb } from '@/lib/db/server';
@@ -8,7 +9,13 @@ export async function POST(request: Request) {
     request.headers.get('origin') !== authOrigin(request.headers, request.url)
   )
     return Response.json({ message: 'Last siden på nytt.' }, { status: 403 });
-  const value = await request.json().catch(() => null);
+  const body = await boundedJson(request, 1000);
+  if (body.tooLarge)
+    return Response.json(
+      { message: 'Meldingen er for lang.' },
+      { status: 413 },
+    );
+  const value = body.value as { confirmation?: unknown } | null;
   if (value?.confirmation !== 'SLETT KONTO')
     return Response.json(
       { message: 'Bekreft sletting av konto.' },

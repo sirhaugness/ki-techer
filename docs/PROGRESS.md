@@ -11,7 +11,9 @@ Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Da
 | M4 agent                           | Implementert og mock-testet; ekte modell-eval gjenstår        |
 | M5 Leo-UI                          | Implementert; økt og mesterprøve testet på nettbrettstørrelse |
 | M6 tale                            | Implementert og mock-testet; fysisk iPad-test gjenstår        |
-| M7–M9                              | Ikke startet                                                  |
+| M7 profil og historie              | Implementert og full lokal sjekk grønn før M8                 |
+| M8 foreldredashbord                | Implementert og full lokal sjekk grønn før M9                 |
+| M9 herding                         | Implementert; full lokal sjekk og Lighthouse grønne           |
 
 ## M1 — før oppstart av M2
 
@@ -189,3 +191,13 @@ JSON-eksport aggregerer alle husholdningens rader i SQL uten REST-trunkering og 
 **Verifisert før M9:** `npm run check` grønn med lint, typecheck, formatering, **376 tester i 22 filer**, simuleringer, **10 Playwright-tester bestått / 1 full lokal Auth-test hoppet over**, produksjonsbuild. PostgreSQL-testen kjører alle seks migrasjoner og kontrollerer eksport med over 1000 meldinger, husholdningsskille, forelders profilskriving, loggopprydding og sletting. Nye rutetester dekker foreldergate, Origin, bekreftelse, eksport og kontosletting ved Auth-feil. Nettlesertestene redigerer/låser profil, markerer varsler, åpner verktøyinnsyn, eksporterer JSON, lagrer innstillinger og avviser diplom før tildeling. Test-PDF og skjermbilde er inspisert: én liggende A4-side med lesbar tekst og uten navigasjon/knapper. Ingen ekte elev-/kontodata ble slettet.
 
 Full lokal Auth-CI er utvidet til foreldredashbord og eksport etter PIN-opplåsing. Automatisk oppbevaringsrydding, bindende KI-budsjett og rate limiting kommer i M9. Hosted Preview og ekte tjenester er ikke verifisert her ennå. Vercel-plugin finnes, men er ikke koblet til; tilgang er etterspurt mens uavhengig arbeid fortsetter.
+
+## M9 — før felles PR (11. oktober 2026)
+
+Atomisk månedlig KI-budsjett med reservasjon før betalte kall, 80 %-varsel og regelstyrt fallback ved grense eller utilgjengelig kontroll. Rate limiting per låst enhet og egen kvote for app/TTS/STT. Faktiske strømgrenser på alle JSON-/lydruter, håndtering av avbrutt innlesing, tidsavgrensede providerkall, privat lydcache og PostgreSQL-indekser for historie/forbruk/retention. Opprydding ved autorisert besøk omfatter logger, skoletema i både tabell og snapshot, gammel lyd og tekniske tellere. Eksport/sletting inkluderer nye budsjett-/rate-tabeller. Tastaturfokus, hopp-til-innhold, redusert bevegelse og Lighthouse i fullsjekk/CI. Nybegynnerveiledning, personvern, README og iPad-testplan er oppdatert.
+
+**Verifisert:** `npm run check` grønn: lint, typecheck, formatering, **383 tester i 23 filer**, alle simuleringer, **10 Playwright-tester bestått / 1 full lokal Auth-test eksplisitt hoppet over**, produksjonsbuild og **100/100 Lighthouse-tilgjengelighet på alle seks visninger**. Alle sju migrasjoner kjøres i PostgreSQL-testen. Nye tester kontrollerer 0/80/100 %-grense, reservasjon/oppgjør/idempotens, måneds-/husholdningsskille, enhet/lås/rate-scope, vedlikehold uten tap av mestring, faktisk chunked-størrelse og betalt provider som ikke kalles ved nektet reservasjon. Nettleseren viser fallback, og eksisterende null-provider-mesterflyt tildeler delen først etter korrekt prøve.
+
+Etter siste grenseforbedring på forelderrutene og avbrutt JSON-strøm er lint/typecheck og **alle 14 berørte grense-/forelder-/talerutetester** kjørt på nytt og grønne. Lighthouse-rapporter lagres som CI-artifact; målingen er lokal med syntetiske data, ikke hosted produksjon. Fallback gir ingen oppdiktet forståelsesgodkjenning for fritekst.
+
+M7 og M8 ble fulltestet, dokumentert og committet før neste milepæl. Hosted dev-migrasjon, GitHub CI og Vercel Preview følges opp i samme PR. Ingen produksjonsendring er utført. Ekte KI-eval (≥95 %, null fasit-lekkasje), innlogget Preview og fysisk iPad Safari/Chrome gjenstår før fast bruk. Vercel-tilgang er etterspurt fordi den ikke er koblet til her; ingen nye miljønavn er innført.

@@ -1,3 +1,4 @@
+import { boundedJson } from '@/lib/security/body';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { authOrigin } from '@/lib/auth/origin';
@@ -12,19 +13,13 @@ export async function POST(request: Request) {
     request.headers.get('origin') !== authOrigin(request.headers, request.url)
   )
     return Response.json({ message: 'Last siden på nytt.' }, { status: 403 });
-  const body = await request.text();
-  if (body.length > 8000)
+  const body = await boundedJson(request);
+  if (body.tooLarge)
     return Response.json(
       { message: 'Meldingen er for lang.' },
       { status: 413 },
     );
-  let value: unknown;
-  try {
-    value = JSON.parse(body);
-  } catch {
-    return Response.json({ message: 'Ugyldig handling.' }, { status: 400 });
-  }
-  const parsed = parentCommand.safeParse(value);
+  const parsed = parentCommand.safeParse(body.value);
   if (!parsed.success)
     return Response.json(
       { message: 'Sjekk feltene og prøv igjen.' },
@@ -153,7 +148,12 @@ export async function POST(request: Request) {
     );
   } catch (e) {
     return Response.json(
-      { message: e instanceof Error ? e.message : 'Kunne ikke lagre.' },
+      {
+        message:
+          e instanceof Error && !e.message.includes('REDIRECT')
+            ? e.message
+            : 'Logg inn som forelder og lås opp med PIN først.',
+      },
       { status: 400 },
     );
   }

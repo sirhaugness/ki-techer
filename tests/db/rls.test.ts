@@ -579,6 +579,170 @@ describe('PostgreSQL RLS', () => {
     ).rejects.toThrow();
     await db.exec('reset role');
   });
+  it('reserves a monthly budget atomically, warns at 80%, stops at 100% and settles only once', async () => {
+    await db.exec('reset role;set role service_role');
+    const h = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    await db.query(
+      "update public.learners set settings=jsonb_set(settings,'{ai_budget_nok}','10') where id=$1",
+      [ids.la],
+    );
+    const reserve = async (id: string, amount: number) =>
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.reserve_ai_budget($1,$2,$3,100)ok',
+          [h, id, amount],
+        )
+      ).rows[0].ok;
+    const status = async () =>
+      (
+        await db.query<{
+          s: {
+            spent: number;
+            limit: number;
+            warning: boolean;
+            fallback: boolean;
+          };
+        }>('select public.budget_status($1,100)s', [h])
+      ).rows[0].s;
+    const r = randomUUID();
+    expect(await reserve(r, 8)).toBe(true);
+    expect(await reserve(r, 8)).toBe(false);
+    expect(await status()).toMatchObject({
+      limit: 10,
+      warning: true,
+      fallback: false,
+    });
+    expect(await reserve(randomUUID(), 3)).toBe(false);
+    expect(await reserve(randomUUID(), 2)).toBe(true);
+    expect(await status()).toMatchObject({ spent: 10, fallback: true });
+    expect(await reserve(randomUUID(), 0.1)).toBe(false);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.settle_ai_budget($1,1)ok',
+          [r],
+        )
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.settle_ai_budget($1,0)ok',
+          [r],
+        )
+      ).rows[0].ok,
+    ).toBe(false);
+    expect(await status()).toMatchObject({
+      spent: 3,
+      warning: false,
+      fallback: false,
+    });
+    expect(
+      (
+        await db.query<{ s: { fallback: boolean } }>(
+          'select public.budget_status($1,0)s',
+          [h],
+        )
+      ).rows[0].s.fallback,
+    ).toBe(true);
+    await db.query(
+      "insert into public.ai_budget_months(household_id,month,spent)values($1,date_trunc('month',now() at time zone 'Europe/Oslo')::date-interval '1 month',1000)",
+      [h],
+    );
+    expect((await status()).spent).toBe(3);
+    const exported = (
+      await db.query<{ x: { ai_reservations: unknown[] } }>(
+        'select public.export_household($1)x',
+        [h],
+      )
+    ).rows[0].x;
+    expect(exported.ai_reservations).toHaveLength(2);
+    await asUser(ids.b);
+    expect(
+      (await db.query('select * from public.ai_budget_months')).rows,
+    ).toEqual([]);
+    await expect(
+      db.query('select public.reserve_ai_budget($1,$2,1,100)', [
+        h,
+        randomUUID(),
+      ]),
+    ).rejects.toThrow();
+    await db.exec('reset role');
+  });
+  it('limits authenticated locked devices independently by scope and household', async () => {
+    await db.exec('reset role;set role service_role');
+    const h = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    const other = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.lb],
+      )
+    ).rows[0].household_id;
+    const d = randomUUID();
+    await db.query(
+      'insert into public.devices(id,parent_id,learner_id,household_id,leo_mode_locked)values($1,$2,$3,$4,true)',
+      [d, ids.a, ids.la, h],
+    );
+    const allow = async (scope: string, house = h) =>
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.allow_ai_request($1,$2,$3,2)ok',
+          [d, house, scope],
+        )
+      ).rows[0].ok;
+    expect(await allow('leo', other)).toBe(false);
+    expect(await allow('leo')).toBe(true);
+    expect(await allow('leo')).toBe(true);
+    expect(await allow('leo')).toBe(false);
+    expect(await allow('tts')).toBe(true);
+    await db.query(
+      'update public.devices set leo_mode_locked=false where id=$1',
+      [d],
+    );
+    expect(await allow('stt')).toBe(false);
+    await db.exec('reset role');
+  });
+  it('maintenance removes expired school text from rows and snapshots without deleting mastery', async () => {
+    await db.exec('reset role;set role service_role');
+    const s = randomUUID();
+    const topics = [
+      {
+        raw: 'Gammelt tema',
+        expiresAt: new Date(Date.now() - 86400000).toISOString(),
+      },
+      {
+        raw: 'Nytt tema',
+        expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      },
+    ];
+    await db.query(
+      'insert into public.sessions(id,learner_id,ended_at,engine_state)values($1,$2,now(),$3)',
+      [
+        s,
+        ids.la,
+        JSON.stringify({ schoolTopics: topics, states: { keep: true } }),
+      ],
+    );
+    await db.query('select public.maintain_learner($1)', [ids.la]);
+    const state = (
+      await db.query<{
+        engine_state: { schoolTopics: unknown[]; states: unknown };
+      }>('select engine_state from public.sessions where id=$1', [s])
+    ).rows[0].engine_state;
+    expect(state.schoolTopics).toEqual([topics[1]]);
+    expect(state.states).toEqual({ keep: true });
+    await db.exec('reset role');
+  });
   it('clearing data removes only the chosen household and rejects stale audio/session writes', async () => {
     await db.exec('reset role;set role service_role');
     const household = (
@@ -607,6 +771,22 @@ describe('PostgreSQL RLS', () => {
         ])
       ).rows[0].ok,
     ).toBe(true);
+    expect(
+      (
+        await db.query(
+          'select * from public.ai_budget_months where household_id=$1',
+          [household],
+        )
+      ).rows,
+    ).toEqual([]);
+    expect(
+      (
+        await db.query(
+          'select * from public.ai_reservations where household_id=$1',
+          [household],
+        )
+      ).rows,
+    ).toEqual([]);
     expect(
       (await db.query('select id from public.learners where id=$1', [ids.la]))
         .rows,

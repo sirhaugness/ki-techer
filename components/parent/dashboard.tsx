@@ -70,6 +70,13 @@ export function ParentDashboard({
       setBusy(false);
     }
   }
+  const budget = data.budget ?? {
+    spent: data.spend,
+    limit: 100,
+    remaining: 100 - data.spend,
+    warning: false,
+    fallback: false,
+  };
   const settings = (data.learner.settings ?? {}) as Row;
   const observations = data.observations;
   const newParts = data.parts.filter((p) => p.awarded_at && !p.parent_seen);
@@ -109,6 +116,20 @@ export function ParentDashboard({
       )}
       <section className="card" id="oversikt">
         <h2>Oversikt</h2>
+        {budget.fallback || data.aiAvailable === false ? (
+          <p role="status">
+            KI-veiledning er slått av eller utilgjengelig. Øving og medaljong
+            fortsetter med faste oppgaver. Tale bruker lydcache eller
+            enhetsstemme.
+          </p>
+        ) : (
+          budget.warning && (
+            <p role="status">
+              Minst 80 % av KI-budsjettet er brukt. Ved grensen fortsetter
+              øvingen med faste oppgaver.
+            </p>
+          )
+        )}
         <p>
           {data.sessionCount} økter ·{' '}
           {data.parts.filter((p) => p.awarded_at).length} av 4 medaljongdeler
@@ -377,8 +398,8 @@ export function ParentDashboard({
         <h2>Innstillinger</h2>
         <p>
           Anslått KI-forbruk denne måneden for husholdningen:{' '}
-          {data.spend.toFixed(2)} kr. Dette er et forsiktig estimat, ikke en
-          faktura.
+          {data.spend.toFixed(2)} av {budget.limit.toFixed(2)} kr. Dette er et
+          forsiktig estimat, ikke en faktura.
         </p>
         <SettingsForm
           settings={settings}
