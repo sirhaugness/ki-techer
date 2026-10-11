@@ -1,27 +1,27 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-const buttonVariants = cva(
-  "inline-flex min-h-12 items-center justify-center rounded-xl px-6 py-3 text-xl font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 motion-reduce:transition-none",
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+export const buttonVariants = cva(
+  'inline-flex min-h-12 items-center justify-center rounded-xl px-5 py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        outline: "border border-border bg-background hover:bg-muted",
+        default: 'bg-teal-800 text-white hover:bg-teal-900',
+        outline: 'border-2 border-teal-800 text-teal-900 hover:bg-teal-50',
       },
     },
-    defaultVariants: { variant: "default" },
+    defaultVariants: { variant: 'default' },
   },
 );
-function Button({
+export function Button({
   className,
   variant,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
+}: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot : 'button';
   return (
     <Comp
       data-slot="button"
@@ -30,4 +30,3 @@ function Button({
     />
   );
 }
-export { Button, buttonVariants };

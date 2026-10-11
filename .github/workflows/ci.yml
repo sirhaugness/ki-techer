@@ -1,23 +1,43 @@
-name: Kvalitetskontroll
+name: Kvalitet
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
 permissions:
   contents: read
 jobs:
-  quality:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: '24'
           cache: npm
       - run: npm ci
       - run: npm run lint
-      - run: npm run format:check
       - run: npm run typecheck
-      - run: npm run test
-      - run: npm run build
+      - run: npm run format:check
+      - run: npm test
+      - run: npm run simulate
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run build
+  supabase-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.75.0
+      # Auth/RLS tests need Postgres, Auth, REST, Kong and Mailpit only.
+      - run: supabase start -x realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+      - run: npx playwright install --with-deps chromium
+      - run: npx tsx scripts/e2e-local.ts
+      - if: always()
+        run: supabase stop

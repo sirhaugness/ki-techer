@@ -42,7 +42,8 @@ Løsningen skal være trygg, lett å bruke og kreve lite arbeid fra forelder.
 TypeScript strict. Zod på API-grenser, verktøykall og KI-svar når disse innføres.
 `lib/engine` har ingen I/O; harde regler hører hjemme i motoren.
 Ingen hemmeligheter i klientkode eller git. Bruk nøyaktige variabler fra `.env.example`.
-Test Supabase og OpenAI med mocks, aldri ekte nøkler eller eksterne tjenester i CI.
+Test Supabase og OpenAI med mocks, aldri ekte nøkler eller eksterne tjenester i kvalitetstestene.
+Full Auth-e2e kan bruke en lokal Supabase-stack med testnøkler. Brukerens eksplisitte migrasjonsworkflow er separat og bruker repository secrets mot dev/prod.
 Les `docs/SPEC.md` nøye og bygg én milepæl av gangen. Dokumenter rimelige valg i DECISIONS.
 
 ## Ferdigkriterier
@@ -50,3 +51,17 @@ Les `docs/SPEC.md` nøye og bygg én milepæl av gangen. Dokumenter rimelige val
 Relevante tester, lint, typecheck, formatering og build er grønne.
 Oppdater `docs/PROGRESS.md` med utført arbeid og verifisering, og commit med beskrivende melding.
 Ikke hev at GitHub CI eller ekte tjenester er verifisert uten å ha sett resultatet.
+
+## M1–M3
+
+`lib/auth/` og `lib/db/` er server-only. Bruk miljønavnene fra M0: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er en valgfri overstyring. Innlogging og callback deler `authOrigin`: forespørselens eksterne vert først, deretter Vercels innebygde `VERCEL_URL`. Ikke bruk Nexts interne localhost-adresse foran den faktiske Host-headeren. Migrasjoner er append-only. PostgreSQL/RLS testes med PGlite; full Auth-e2e kjøres mot lokal Supabase i CI. `npm run check` kjører alle kvalitetssjekker og simulering.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
