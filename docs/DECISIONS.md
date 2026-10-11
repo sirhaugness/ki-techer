@@ -80,3 +80,13 @@ M0s Supabase-navn (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`
 ## Feil ved sending av innloggings-e-post
 
 Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, sendegrense, deaktivert e-post/OTP, avslått registrering, ugyldig adresse, CAPTCHA og feil API-nøkkel. Ukjente feil henviser til Auth-loggen. Bare kode i formatet `[a-z_]{1,64}` og HTTP-status logges; rå provider-melding, e-post, nøkler og lenker eksponeres ikke. Skjermbildet med den tidligere generiske meldingen bekrefter ikke én bestemt årsak. Ekte e-postlevering kan ikke fastslås fra CI med lokal Mailpit; hosted Supabase må også ha fungerende e-postoppsett.
+
+## M4 — sikker agentintegrasjon
+
+- Brukerens spesifikasjon krever en applikasjonseid Responses-løkke; ingen ny hosted agentplattform eller Agents SDK innføres.
+- OpenAI `store:false` kombineres med eksplisitt replay av verktøykall/resultater og krypterte reasoning-elementer innen én tur. Modellnavn kommer bare fra de avtalte miljøvariablene. Norsk verktøynavn beholdes internt; API-navnet bruker ASCII.
+- Fasitkontroll av tall beviser ikke at en KI-fortelling betyr det samme. Derfor må kontekstualisering bevare generatorspørsmålet ordrett og bare legge til en kort tallfri ramme. Egne oppgaver tillates bare som transparente uttrykkspørsmål etter AST-, ferdighets- og modereringskontroll.
+- Før hintnivå 4 avvises numeriske påstander i samtaletekst konservativt. Kontrollerte spørsmål og manipulativer vises separat. Modereringsfeil tillater ikke fritekst til modellen; generatorer og ferdige tekster fungerer fortsatt.
+- Kostnader estimeres konservativt til 100 NOK / million input-tokens og 400 NOK / million output-tokens; dette er et estimat, ikke fakturagrunnlag. Oppdatert modellspesifikk pris/budsjettherding hører til M9.
+- Observasjonsverktøyet legger forslag i kø; det overstyrer aldri forelderens profil. Full flette-/refleksjonsmotor hører til M7. Skoletemaer støtter sikker, konservativ nøkkelordmapping med terskel 0,6 og sju dagers utløp.
+- Nøkkelen beholdes i Vercel etter brukerens uttrykkelige valg. Ekte agent-eval kan derfor ikke erklæres bestått i dette miljøet; alle kvalitetstester bruker mocks.

@@ -108,3 +108,11 @@ Brukeren ser fortsatt feil ved sending og bekrefter å teste med samme e-post so
 GitHub Actions er konfigurert, men en ekstern CI-kjøring er ikke observert her.
 Simulering, ekte agent-evaluering og læreplanverifisering kommer i M3, M4 og M2.
 Neste milepæl er M1: database, RLS, foreldreinnlogging, elevprofil og PIN.
+
+## M4 — agent, før oppstart av M5 (11. oktober 2026)
+
+Implementert server-only OpenAI-provider med Responses/function calling og Structured Outputs, versjonert norsk systemprompt, kompakt kontekst uten fasit, alle elleve verktøy med Zod og motorgrenser, maks fem verktøykall, ett korrigeringsforsøk per verktøy, to respons-retries og deterministisk fallback. Moderering feiler lukket; personinfo sendes ikke videre. Kontekstualisering bevarer det kontrollerte generatorspørsmålet, forklaringsrubrikken kan ikke tildele forståelse i fallback, og provider/verktøy eksponerer kostnads- og innsynslogger for øktlagringen i M5. OpenAI-verktøynavn oversettes til ASCII på API-grensen, og Responses kjøres uten lagring hos OpenAI (`store:false`).
+
+Verifisert før M5: `npm run check` grønn: lint, typecheck, formatering, **311 Vitest-tester i 15 filer**, simulering, **3 Playwright-tester bestått / 1 lokal-Supabase-test hoppet over**, produksjonsbuild. Agenttestene dekker verktøyregler, retry/fallback, modereringsfeil, tall/tallord/indirekte numerisk fasit-lekkasje, og 30 skriptede mock-scenarioer. Eksisterende 175 000 generatoroppgaver, RLS og simuleringer er fortsatt grønne.
+
+**Ikke verifisert:** ekte `npm run eval:agent` (30 scenarioer, krav ≥95 % og null lekkasjer) stopper eksplisitt fordi OPENAI_API_KEY ikke finnes her. Brukeren valgte å beholde nøkkelen i Vercel og utvikle med mocks. Mock-resultatene dokumenterer kodegrenser, ikke ekte modellkvalitet. Ekte eval og fysisk iPad-test gjenstår før produksjonsaksept. Full hosted Supabase/OpenAI er ikke testet lokalt.
