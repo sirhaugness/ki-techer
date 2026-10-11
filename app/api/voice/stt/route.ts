@@ -24,6 +24,11 @@ export async function POST(request: Request) {
   try {
     const mock = fixtureEnabled();
     const access = mock ? null : await leoAccess();
+    if (access?.profile.settings.voice === false)
+      return Response.json(
+        { message: 'Forelder har slått av tale. Bruk tastaturet.' },
+        { status: 403 },
+      );
     const form = await request.formData(),
       file = form.get('audio');
     if (!(file instanceof File) || !validAudio(file))

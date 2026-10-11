@@ -129,3 +129,30 @@ it('STT rejects unsupported audio and withholds rejected transcripts, then retur
   expect(await response.json()).toEqual({ text: 'tolv' });
   expect(response.headers.get('cache-control')).toBe('no-store');
 });
+
+it('parent voice-off setting blocks both audio routes', async () => {
+  mock.access.mockResolvedValue({
+    profile: { ...profile, settings: { voice: false } },
+  });
+  expect(
+    (await tts(request({ sessionId: profile.id, revision: 0, source: 'home' })))
+      .status,
+  ).toBe(403);
+  const form = new FormData();
+  form.set(
+    'audio',
+    new File(['test'], 'recording.webm', { type: 'audio/webm' }),
+  );
+  expect(
+    (
+      await stt(
+        new Request('https://preview.example/api/voice/stt', {
+          method: 'POST',
+          headers: { origin: 'https://preview.example' },
+          body: form,
+        }),
+      )
+    ).status,
+  ).toBe(403);
+  expect(mock.transcribe).not.toHaveBeenCalled();
+});

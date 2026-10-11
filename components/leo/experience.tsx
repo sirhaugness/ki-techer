@@ -118,27 +118,32 @@ export function LeoExperience({
           </div>
         </>
       )}
-      <SpeechControls
-        source={view ? 'all' : 'home'}
-        initialAuto={profile.settings.auto_read === true}
-        view={
-          view ?? {
-            id: profile.id,
-            revision: 0,
-            mode: 'practice',
-            task: null,
-            speech: homeSpeech(profile.tutorName),
-            parts: displayedParts,
-            ended: true,
-            correct: null,
-            hintLevel: 0,
-            pauseOffered: false,
-            celebration: null,
-            diagnosticComplete,
-            masterProgress: null,
+      {profile.settings.voice !== false && (
+        <SpeechControls
+          source={view ? 'all' : 'home'}
+          initialAuto={profile.settings.auto_read === true}
+          view={
+            view ?? {
+              id: profile.id,
+              revision: 0,
+              mode: 'practice',
+              task: null,
+              speech: homeSpeech(profile.tutorName),
+              parts: displayedParts,
+              ended: true,
+              correct: null,
+              hintLevel: 0,
+              pauseOffered: false,
+              celebration: null,
+              diagnosticComplete,
+              masterProgress: null,
+            }
           }
-        }
-      />
+        />
+      )}
+      {profile.settings.voice === false && (
+        <p>Tale er slått av av forelder. Du kan bruke tastaturet.</p>
+      )}
       {!view ? (
         <>
           <section className="card">
@@ -302,7 +307,10 @@ export function LeoExperience({
                 )}
                 {!view.task.resolved && (
                   <>
-                    <RecordButton disabled={busy} onText={setTranscript} />
+                    <RecordButton
+                      disabled={busy || profile.settings.voice === false}
+                      onText={setTranscript}
+                    />
                     {transcript && (
                       <div className="card">
                         <label>
@@ -418,7 +426,7 @@ export function LeoExperience({
                       </label>
                       <RecordButton
                         label="Hold for å forklare"
-                        disabled={busy}
+                        disabled={busy || profile.settings.voice === false}
                         onText={setExplanation}
                       />
                       <button disabled={busy || !explanation.trim()}>
@@ -505,7 +513,7 @@ export function LeoExperience({
                   </label>
                   <RecordButton
                     label="Hold for å fortelle hva du lærte"
-                    disabled={busy}
+                    disabled={busy || profile.settings.voice === false}
                     onText={setReflection}
                   />
                   <fieldset>

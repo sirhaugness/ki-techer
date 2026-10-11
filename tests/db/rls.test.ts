@@ -460,4 +460,176 @@ describe('PostgreSQL RLS', () => {
     ).toMatchObject({ status: 'arkivert', confidence: 0 });
     await db.exec('reset role');
   });
+  it('parent RPCs preserve household isolation and export more than the REST row limit', async () => {
+    await db.exec('reset role');
+    const session = '00000000-0000-4000-8000-000000000021';
+    await db.query(
+      "insert into public.messages(session_id,learner_id,role,text) select $1::uuid,$2::uuid,'leo','Eksportert melding '||n from generate_series(1,1005)n",
+      [session, ids.la],
+    );
+    const household = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    for (const user of [ids.a, ids.b]) {
+      await asUser(user);
+      await expect(
+        db.query('select public.export_household($1)', [household]),
+      ).rejects.toThrow();
+      await expect(
+        db.query('select public.parent_dashboard($1,0)', [ids.la]),
+      ).rejects.toThrow();
+    }
+    await db.exec('reset role;set role service_role');
+    const exported = (
+      await db.query<{ data: Record<string, unknown[]> }>(
+        'select public.export_household($1) data',
+        [household],
+      )
+    ).rows[0].data;
+    expect(exported.messages.length).toBeGreaterThan(1000);
+    expect(exported.learners).toHaveLength(1);
+    expect(JSON.stringify(exported)).not.toContain(ids.lb);
+    expect(JSON.stringify(exported.pin_settings)).not.toContain('pin_hash');
+    expect(
+      (
+        await db.query<{ data: unknown }>(
+          'select public.session_insight($1,$2)data',
+          [session, ids.lb],
+        )
+      ).rows[0].data,
+    ).toBe(null);
+    await db.exec('reset role');
+  });
+  it('parent profile edits keep evidence and respect the active cap; old log cleanup keeps mastery', async () => {
+    await db.exec('reset role;set role service_role');
+    const own = (
+      await db.query<{ id: string }>(
+        "select id from public.learner_profile_observations where learner_id=$1 and status='aktiv' limit 1",
+        [ids.la],
+      )
+    ).rows[0];
+    const edit = 'select public.edit_parent_profile($1,$2,$3,$4,$5) ok';
+    expect(
+      (
+        await db.query<{ ok: boolean }>(edit, [
+          ids.lb,
+          own.id,
+          'styrke',
+          'Feil husholdning',
+          'låst',
+        ])
+      ).rows[0].ok,
+    ).toBe(false);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(edit, [
+          ids.la,
+          own.id,
+          'skolemetode',
+          'Tegner grupper',
+          'låst',
+        ])
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query<{ status: string; updated_by: string }>(
+          'select status,updated_by from public.learner_profile_observations where id=$1',
+          [own.id],
+        )
+      ).rows[0],
+    ).toMatchObject({ status: 'låst', updated_by: 'forelder' });
+    const oldSession = randomUUID();
+    await db.query(
+      "insert into public.sessions(id,learner_id,started_at,ended_at,engine_state) values($1,$2,now()-interval '14 months',now()-interval '14 months',$3)",
+      [
+        oldSession,
+        ids.la,
+        JSON.stringify({
+          version: 1,
+          messages: [{ text: 'Gammel tekst' }],
+          pendingObservations: [{ text: 'Gammel observasjon' }],
+          states: { keep: true },
+        }),
+      ],
+    );
+    await db.query(
+      "insert into public.messages(session_id,learner_id,role,text,created_at) values($1,$2,'leo','Gammel tekst',now()-interval '14 months')",
+      [oldSession, ids.la],
+    );
+    expect(
+      (
+        await db.query<{ n: number }>('select public.prune_logs($1,12)n', [
+          ids.la,
+        ])
+      ).rows[0].n,
+    ).toBe(1);
+    const old = (
+      await db.query<{
+        engine_state: { messages: unknown[]; states: unknown };
+      }>('select engine_state from public.sessions where id=$1', [oldSession])
+    ).rows[0];
+    expect(old.engine_state.messages).toEqual([]);
+    expect(old.engine_state.states).toEqual({ keep: true });
+    await expect(
+      db.query('select public.prune_logs($1,0)', [ids.la]),
+    ).rejects.toThrow();
+    await db.exec('reset role');
+  });
+  it('clearing data removes only the chosen household and rejects stale audio/session writes', async () => {
+    await db.exec('reset role;set role service_role');
+    const household = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    await db.query('select public.begin_data_clear($1)', [household]);
+    await expect(
+      db.query(
+        'insert into public.sessions(learner_id,ended_at)values($1,now())',
+        [ids.la],
+      ),
+    ).rejects.toThrow();
+    await expect(
+      db.query(
+        "insert into public.tts_cache(text_hash,voice,storage_path)values('old','voice',$1)",
+        [`${household}/old.mp3`],
+      ),
+    ).rejects.toThrow();
+    expect(
+      (
+        await db.query<{ ok: boolean }>('select public.clear_app_data($1)ok', [
+          household,
+        ])
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (await db.query('select id from public.learners where id=$1', [ids.la]))
+        .rows,
+    ).toHaveLength(0);
+    expect(
+      (await db.query('select id from public.learners where id=$1', [ids.lb]))
+        .rows,
+    ).toHaveLength(1);
+    expect(
+      (
+        await db.query('select id from public.messages where learner_id=$1', [
+          ids.la,
+        ])
+      ).rows,
+    ).toHaveLength(0);
+    expect(
+      (
+        await db.query(
+          'select parent_id from public.parent_secrets where parent_id=$1',
+          [ids.a],
+        )
+      ).rows,
+    ).toHaveLength(0);
+    await db.exec('reset role');
+  });
 });

@@ -1,3 +1,5 @@
+import { DeleteAccount } from '@/components/parent/delete-account';
+import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 import { parentOnly } from '@/lib/auth/session';
 import { LearnerForm, PinForm, LockForm } from './forms';
@@ -26,6 +28,11 @@ export default async function ParentPage() {
             <h2 className="mb-5 text-2xl font-bold">
               {l.first_name} · {l.grade}. trinn
             </h2>
+            <p className="mb-4">
+              <Link href={`/forelder/${l.id}`} className="underline">
+                Se fremgang, økter og innstillinger for {l.first_name}
+              </Link>
+            </p>
             <LockForm id={l.id} name={l.first_name} />
           </section>
         ))
@@ -38,6 +45,7 @@ export default async function ParentPage() {
         <h2 className="text-2xl font-bold">Leo-lås</h2>
         <PinForm />
       </section>
+      <DeleteAccount />
       <form action={signOut}>
         <Button variant="outline">Logg ut</Button>
       </form>

@@ -8,10 +8,12 @@ export function Interests({
   interests,
   tutorName,
   avatar,
+  voiceEnabled = true,
 }: {
   interests: Interest[];
   tutorName: string;
   avatar: string;
+  voiceEnabled?: boolean;
 }) {
   const [label, setLabel] = useState(''),
     [name, setName] = useState(tutorName),
@@ -99,7 +101,7 @@ export function Interests({
         </label>
         <RecordButton
           label="Hold for å fortelle hva du liker"
-          disabled={busy}
+          disabled={busy || !voiceEnabled}
           onText={(text) => setLabel(text.slice(0, 40))}
         />
         <button disabled={busy || !label.trim()}>Lagre interesse</button>

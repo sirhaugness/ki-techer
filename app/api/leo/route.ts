@@ -88,9 +88,13 @@ export async function POST(request: Request) {
         : openaiProvider((call) => logAi(profile.householdId, call));
     const cmd = parsed.data;
     if (cmd.command === 'voiceSettings') {
+      if (profile.settings.voice === false)
+        return Response.json(
+          { message: 'Forelder har slått av tale.' },
+          { status: 403 },
+        );
       const settings = {
         ...profile.settings,
-        voice: true,
         auto_read: cmd.autoRead,
       };
       if (f) f.profile.settings = settings;

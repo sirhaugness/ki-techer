@@ -10,6 +10,7 @@ export default async function InterestsPage() {
         interests={f.interests}
         tutorName={f.profile.tutorName}
         avatar={f.profile.avatar}
+        voiceEnabled={f.profile.settings.voice !== false}
       />
     );
   }
@@ -24,6 +25,7 @@ export default async function InterestsPage() {
       interests={data ?? []}
       tutorName={profile.tutorName}
       avatar={profile.avatar}
+      voiceEnabled={profile.settings.voice !== false}
     />
   );
 }

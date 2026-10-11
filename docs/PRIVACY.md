@@ -1,4 +1,4 @@
-# Personvern i M1–M6
+# Personvern i M1–M8
 
 Supabase lagrer forelderens e-post for innlogging, husholdningstilknytning, barnets fornavn/trinn/lærernavn, interesser og enhetslås. PIN lagres bare som saltet scrypt-hash i en tabell uten klienttilgang. Nettleseren får nødvendige HttpOnly sesjons- og enhetscookies. Ingen analyse- eller sporingsskript er lagt til.
 
@@ -10,4 +10,6 @@ Mikrofonen krever tillatelse og er aktiv bare under opptak, maksimalt 30 sekunde
 
 Velg EU-region for begge Supabase-prosjektene. Vercel-funksjoner er konfigurert til Stockholm. Dette fastslår ikke OpenAIs behandlingsregion. E-post sendes av Supabase Auth eller SMTP-leverandøren du konfigurerer der.
 
-Eksport, sletting fra dashbordet og automatisk opprydding av gamle logger og lydcache er planlagt i M8–M9. Ingen automatisk oppbevaringsfrist er implementert her. Disse personvernfunksjonene og resterende milepæler må gjennomføres før full produksjonsaksept.
+Foreldersiden tilbyr komplett JSON-eksport av husholdningens appdata, inkludert samtaler og verktøykall, uten PIN-hash, API-nøkler og innloggingstokener. Lydcache beskrives med filreferanser. «Slett alle appdata» fjerner alle elevprofiler, læringshistorikk, PIN, forbrukslogger og private lydfiler; innloggingskontoen beholdes. «Slett forelders innloggingskonto» på profilsiden sletter også din Auth-konto og logger ut alle dine økter. Andre foreldres Auth-kontoer slettes ikke. Ved tjenestefeil viser appen hva som ikke kunne fullføres og lar forelder prøve igjen.
+
+Forelder kan velge 1–36 måneders oppbevaring av samtalelogger (standard 12) og slette eldre logger nå. Kopien av meldinger i øktsnapshot ryddes samtidig; matematisk mestringsevidens bevares. Automatisk opprydding og ferdig budsjettstyring innføres i M9. Eksport/sletting påvirker ikke data som allerede er eksportert til en lokal fil eller eventuell leverandøroppbevaring hos OpenAI.

@@ -31,8 +31,8 @@ export default async function Home() {
         Kom i gang som forelder
       </Link>
       <p className="mt-8 text-base">
-        Første versjon: innlogging, elevprofil og Leo-lås. Matteøkter kommer
-        senere.
+        Matteøving med veiledning, medaljong og foreldreinnsyn. En forelder
+        setter opp profilen og låser opp foreldresiden med PIN.
       </p>
     </>
   );

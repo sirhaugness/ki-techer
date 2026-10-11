@@ -26,6 +26,8 @@ export async function POST(request: Request) {
   try {
     const mock = fixtureEnabled(),
       profile = mock ? fixture().profile : (await leoAccess()).profile;
+    if (profile.settings.voice === false)
+      return new Response(null, { status: 403 });
     const state =
       parsed.data.source === 'home'
         ? null

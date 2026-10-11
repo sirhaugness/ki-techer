@@ -60,8 +60,26 @@ export async function saveTurn(
   return result.data;
 }
 export async function logAi(householdId: string, call: AiCall) {
+  const household = await adminDb()
+    .from('households')
+    .select('*')
+    .eq('id', householdId)
+    .maybeSingle();
+  if (household.error)
+    throw new Error('Kunne ikke kontrollere forbruksloggen.');
+  if (
+    !household.data ||
+    household.data.clearing_data ||
+    (household.data.privacy_cutoff &&
+      Date.now() - call.latency_ms <= Date.parse(household.data.privacy_cutoff))
+  )
+    return;
   const { error } = await adminDb()
     .from('ai_calls')
-    .insert({ ...call, household_id: householdId });
+    .insert({
+      ...call,
+      household_id: householdId,
+      request_started_at: new Date(Date.now() - call.latency_ms).toISOString(),
+    });
   if (error) throw new Error('Kunne ikke lagre KI-forbruket.');
 }
