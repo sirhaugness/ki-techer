@@ -36,6 +36,7 @@ export function LeoExperience({
     [showEnd, setShowEnd] = useState(false),
     [reflection, setReflection] = useState('');
   const [transcript, setTranscript] = useState('');
+  const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
   async function send(command: Record<string, unknown>) {
     setBusy(true);
@@ -84,6 +85,13 @@ export function LeoExperience({
             <div>
               <p className="eyebrow">DITT MATTEEVENTYR</p>
               <h1>Hei, {profile.firstName}!</h1>
+              <p aria-label={`Din figur: ${profile.avatar}`}>
+                {profile.avatar === 'stjerne'
+                  ? '⭐'
+                  : profile.avatar === 'fjell'
+                    ? '⛰️'
+                    : '🌱'}
+              </p>
               <p>
                 Jeg heter {profile.tutorName}. Vi utforsker matte sammen, steg
                 for steg.
@@ -448,7 +456,7 @@ export function LeoExperience({
                   className="card"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    turn({ type: 'end', mood: 'rolig', reflection });
+                    turn({ type: 'end', mood: endMood, reflection });
                   }}
                 >
                   <label>
@@ -464,6 +472,26 @@ export function LeoExperience({
                     disabled={busy}
                     onText={setReflection}
                   />
+                  <fieldset>
+                    <legend>Hvordan kjennes det nå?</legend>
+                    <div className="button-row">
+                      {(['glad', 'rolig', 'sliten'] as const).map((mood) => (
+                        <button
+                          key={mood}
+                          type="button"
+                          disabled={busy}
+                          aria-pressed={endMood === mood}
+                          onClick={() => setEndMood(mood)}
+                        >
+                          {mood === 'glad'
+                            ? '😊 Glad'
+                            : mood === 'rolig'
+                              ? '🙂 Rolig'
+                              : '😴 Sliten'}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
                   <button className="primary" disabled={busy}>
                     Lagre og avslutt
                   </button>
