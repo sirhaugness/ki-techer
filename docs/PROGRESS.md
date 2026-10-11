@@ -167,3 +167,9 @@ Opplesingskontrollen er nå felles for hjem og økt. Lyd og stoppstatus knyttes 
 **Verifisert:** Hele `npm run check` er grønn: lint, typecheck, formatering, **357 tester i 19 filer**, simuleringer, **8 Playwright-tester bestått / 1 lokal Auth-test hoppet over** og produksjonsbuild. Sju nye komponenttester dekker retry etter HTTP 503, sen avspillingsfeil etter Stopp, stopp før sent HTTP 200/503-svar, svar fra gammel økt, feil i enhetsstemmen og manuell opplesing ved oppgavebytte. Ny nettlesertest kontrollerer Auto på hjem → humørspørsmål → første oppgave med faktiske lydforespørsler og WAV-avspilling. iPad-testplanen er utvidet med disse tilfellene.
 
 Testene bruker mocks etter brukerens valg. Ingen tilgang til Vercels kjørelogger eller fysisk iPad her; den konkret observerte Preview-feilen og ekte OpenAI-/Safari-avspilling er derfor ikke bekreftet. Ekstern CI og Preview for oppfølgingsrettelsen dokumenteres i den nye PR-en etter at resultatene er observert.
+
+## Arbeidsregel for oppsett og Preview (11. oktober 2026)
+
+Brukerens regel er lagt ordrett inn i AGENTS.md: nødvendig oppsett skal utføres og verifiseres via tilgjengelige connectorer eller CLI, Preview skal testes før ferdigmelding, produksjonsendringer krever spørsmål først, og brukeren skal bare spørres om manglende tilgang. Dette er en dokumentasjonsendring; ingen miljøvariabler, Redirect URLs, hemmeligheter eller produksjonstjenester er endret. Verifisert med Prettier på begge endrede filer og `git diff --check`.
+
+Flettekonflikten mellom PR #4 og main etter innfletting av PR #5 er løst ved å beholde begge oppfølgingsavsnittene. Ingen appkode er endret i konfliktløsningen; formatering og `git diff --check` er kontrollert.
