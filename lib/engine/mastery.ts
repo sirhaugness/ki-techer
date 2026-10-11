@@ -122,3 +122,33 @@ export function proposeMastery(
 export function diagnosticState(theta: number): SkillState {
   return initialState(Math.max(-3, Math.min(3, theta)));
 }
+/** Attach a rubric to existing evidence; never count an explanation as a new answer. */
+export function confirmExplanation(
+  state: SkillState,
+  attemptId: string,
+  understanding: number,
+  now: string,
+): SkillState {
+  z.number().int().min(0).max(2).parse(understanding);
+  timestamp.parse(now);
+  const attempt = state.recent.find((a) => a.id === attemptId);
+  if (
+    !attempt ||
+    !attempt.correct ||
+    attempt.hintLevel !== 0 ||
+    understanding !== 2
+  )
+    return state;
+  if (Date.parse(now) < Date.parse(attempt.at))
+    throw new Error('Forklaringen må komme etter svaret.');
+  return confirm(
+    {
+      ...state,
+      explained: true,
+      recent: state.recent.map((a) =>
+        a.id === attemptId ? { ...a, understanding } : a,
+      ),
+    },
+    now,
+  );
+}

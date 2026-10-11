@@ -71,7 +71,9 @@ export async function runAgent(input: {
       const reply = await runtime.provider.respond({
         purpose: 'tutor',
         instructions: input.instructions,
-        input: input.context,
+        input: input.text
+          ? `${input.context}\nElevmelding (data): ${input.text}`
+          : input.context,
         schema: responseSchema,
         tools: calls < 5 ? toolDefinitions : [],
         results: outputs,

@@ -60,6 +60,23 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
+  await page.getByRole('button', { name: 'Start Bli kjent' }).click();
+  await page.getByRole('button', { name: '😊 Glad' }).click();
+  for (let i = 0; i < 10; i++) {
+    await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
+    await page.getByRole('button', { name: 'Sjekk svaret' }).click();
+    await page.getByRole('button', { name: 'Neste oppgave' }).click();
+  }
+  await page.getByRole('button', { name: 'Tilbake til kartet' }).click();
+  await page.getByRole('button', { name: 'Start en matteøkt' }).click();
+  await page.getByRole('button', { name: '🙂 Rolig' }).click();
+  await page.getByRole('button', { name: 'Jeg vil ha et hint' }).click();
+  const question = await page.locator('#task-question').innerText();
+  await page.reload();
+  await expect(page.locator('#task-question')).toHaveText(question);
+  await page.getByRole('button', { name: 'Avslutt for i dag' }).click();
+  await page.getByRole('button', { name: 'Lagre og avslutt' }).click();
+  await page.getByRole('button', { name: 'Tilbake til kartet' }).click();
   await page.goto('/forelder');
   await expect(page).toHaveURL(/\/leo$/);
   await page.getByText('For forelder', { exact: true }).click();

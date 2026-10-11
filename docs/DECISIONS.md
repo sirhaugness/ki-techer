@@ -90,3 +90,13 @@ Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, send
 - Kostnader estimeres konservativt til 100 NOK / million input-tokens og 400 NOK / million output-tokens; dette er et estimat, ikke fakturagrunnlag. Oppdatert modellspesifikk pris/budsjettherding hører til M9.
 - Observasjonsverktøyet legger forslag i kø; det overstyrer aldri forelderens profil. Full flette-/refleksjonsmotor hører til M7. Skoletemaer støtter sikker, konservativ nøkkelordmapping med terskel 0,6 og sju dagers utløp.
 - Nøkkelen beholdes i Vercel etter brukerens uttrykkelige valg. Ekte agent-eval kan derfor ikke erklæres bestått i dette miljøet; alle kvalitetstester bruker mocks.
+
+## M5 — varige økter og nettbrett
+
+- Motorens fullstendige snapshot ligger i sessions.engine_state og overføres mellom økter. Den samme transaksjonen speiler evidens til fagtabeller for innsyn; klienten får bare en eksplisitt offentlig visning. KI-kall skjer før radlåsen tas, slik at eksterne svartider ikke holder databaselåser.
+- Én åpen økt per elev hindrer at to enheter overskriver hverandres mestring. Revisjon + requestId sikrer gamle svar og dobbelttrykk. Ny sideinnlasting gjenopptar oppgaven med samme ID og hint-tilstand.
+- Kartleggingen har ti varierte oppgaver med adaptiv vanskegrad, ikke en medaljongprøve. Den øker bare start-theta ved riktig uten hint. Den oppretter ingen mestringsevidens. Forelderstyrt ny kartlegging og fullt dashbord kommer i M8.
+- En regelstyrt fallback-lærer bruker samme foreslå_mestring-verktøy og doble datakrav som KI-en; dette gjør at mestring kan fortsette uten KI. Slike forslag merkes som regelstyrte i loggen. Forklaringer knyttes til eksisterende, selvstendig riktige forsøk uten å øke antall forsøk.
+- Neste oppgave velges ved Leos eksplisitte knapp. KI-en kan ikke bytte oppgave midt i et svar-/hint-/forklaringsturn eller flytte gammelt hintnivå til en ny oppgave.
+- Bildeinteresser er kontrollerte apptekster. Egendefinerte interesser og endrede lærernavn krever fungerende moderering; ved feil beholdes tidligere valg. Full interessevekting, profilfletting og fortellingskapitler kommer i M7.
+- Nettbretttestene bruker den samme øktmotoren og UI-en med minnelagring i en eksplisitt utviklingsfixture. SQL-lagring/RLS testes separat i PostgreSQL og innlogget matteflyt i lokal-Supabase-CI. Testfixturen er utilgjengelig i produksjon.

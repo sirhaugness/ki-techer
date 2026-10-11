@@ -1,35 +1,44 @@
-export const dynamic = 'force-dynamic';
+import { leoAccess } from '@/lib/learning/access';
+import { fixtureEnabled, fixture, resetFixture } from '@/lib/learning/fixture';
+import { latestSession } from '@/lib/learning/repository';
+import { publicView } from '@/lib/learning/session';
+import { progressForPart } from '@/lib/engine/medallion';
+import { LeoExperience } from '@/components/leo/experience';
 import { redirect } from 'next/navigation';
-import { currentDevice } from '@/lib/auth/session';
 import { UnlockForm } from '@/app/forelder/forms';
-export default async function LeoPage() {
-  const { client, device } = await currentDevice();
-  if (!device?.leo_mode_locked) redirect('/forelder');
-  const { data: learner } = await client
-    .from('learners')
-    .select('*')
-    .eq('id', device.learner_id)
-    .single();
-  if (!learner) throw new Error('Fant ikke elevprofilen.');
+export const dynamic = 'force-dynamic';
+export default async function LeoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ fixture?: string }>;
+}) {
+  const mock = fixtureEnabled(),
+    query = await searchParams;
+  if (mock && query.fixture) {
+    resetFixture(query.fixture === 'master');
+    redirect('/leo');
+  }
+  const f = mock ? fixture() : null;
+  const profile = f?.profile ?? (await leoAccess()).profile;
+  const state = f ? f.state : await latestSession(profile.id);
+  const parts =
+    state?.parts ??
+    ([1, 2, 3, 4] as const).map((id) => progressForPart(id, {}));
   return (
     <>
-      <div className="rounded-3xl bg-teal-100 p-8">
-        <p className="text-6xl" aria-hidden="true">
-          🌱
-        </p>
-        <h1 className="my-5 text-4xl font-bold">Hei, {learner.first_name}!</h1>
-        <p>
-          Jeg heter {learner.tutor_name}. Her skal vi utforske matte sammen.
-        </p>
-        <p className="mt-5">
-          Matteeventyret bygges nå. Oppgaver og medaljong kommer i en senere
-          milepæl.
-        </p>
-      </div>
-      <details className="mt-12">
-        <summary className="min-h-12 cursor-pointer">For forelder</summary>
-        <UnlockForm />
-      </details>
+      <LeoExperience
+        key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
+        profile={profile}
+        initial={state ? publicView(state) : null}
+        parts={parts}
+        diagnosticComplete={state?.diagnosticComplete ?? false}
+      />
+      {!mock && (
+        <details className="mt-12">
+          <summary className="min-h-12 cursor-pointer">For forelder</summary>
+          <UnlockForm />
+        </details>
+      )}
     </>
   );
 }

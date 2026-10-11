@@ -89,6 +89,8 @@ export type ActiveTask = {
   resolved: boolean;
 };
 export type AgentRuntime = {
+  taskCreationAllowed?: boolean;
+  masterStartAllowed?: boolean;
   context: CandidateContext;
   rng: Rng;
   uuid: () => string;
@@ -137,6 +139,11 @@ export async function executeTool(
     case 'hent_kandidater':
       return { ok: true, result: candidates() };
     case 'lag_oppgave': {
+      if (runtime.taskCreationAllowed === false)
+        return {
+          ok: false,
+          result: 'Neste oppgave velges når eleven trykker Neste oppgave.',
+        };
       if (runtime.masterTest || (runtime.active && !runtime.active.resolved))
         return { ok: false, result: 'Fullfør den aktive oppgaven først.' };
       const a = itemArgs.parse(args);
@@ -196,6 +203,8 @@ export async function executeTool(
       };
     }
     case 'foreslå_egen_oppgave': {
+      if (runtime.taskCreationAllowed === false)
+        return { ok: false, result: 'Fullfør denne turen først.' };
       const a = toolSchemas.foreslå_egen_oppgave.parse(args);
       const validation = validateProposal({
         skillId: a.skill_id,
@@ -289,6 +298,11 @@ export async function executeTool(
       return { ok: proposed.approved, result: proposed.remaining };
     }
     case 'start_mesterprøve': {
+      if (runtime.masterStartAllowed === false)
+        return {
+          ok: false,
+          result: 'Eleven velger mesterutfordringen fra kartet.',
+        };
       const a = toolSchemas.start_mesterprøve.parse(args),
         progress = runtime.parts.find((p) => p.id === a.part_id);
       if (

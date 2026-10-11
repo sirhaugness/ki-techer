@@ -1,6 +1,8 @@
 import { PGlite } from '@electric-sql/pglite';
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { createSession, learningTurn } from '../../lib/learning/session';
+import { randomUUID } from 'node:crypto';
 let db: PGlite;
 const ids = {
   a: '00000000-0000-4000-8000-000000000001',
@@ -182,5 +184,116 @@ describe('PostgreSQL RLS', () => {
         )
       ).rows[0].ok,
     ).toBe(true);
+  });
+  it('commits evidence atomically, rejects stale revisions and hides the RPC from clients', async () => {
+    await db.exec('reset role');
+    const profile = {
+      id: ids.la,
+      householdId: ids.a,
+      firstName: 'Leo',
+      tutorName: 'Lumi',
+      grade: 4,
+      avatar: 'spire',
+      settings: {},
+    };
+    const now = '2026-10-11T10:00:00.000Z',
+      state = createSession(profile, null, now, 0, 'practice', null);
+    state.id = '00000000-0000-4000-8000-000000000021';
+    const next = await learningTurn(
+      state,
+      { type: 'next' },
+      randomUUID(),
+      now,
+      profile,
+      [],
+      null,
+      'Bokmål',
+    );
+    const args = [
+      state.id,
+      ids.la,
+      0,
+      JSON.stringify(next.state),
+      JSON.stringify(next.events),
+    ];
+    const query = 'select public.commit_learning_turn($1,$2,$3,$4,$5) ok';
+    await asUser(ids.a);
+    await expect(db.query(query, args)).rejects.toThrow();
+    await db.exec('reset role;set role service_role');
+    expect((await db.query<{ ok: boolean }>(query, args)).rows[0].ok).toBe(
+      true,
+    );
+    expect((await db.query<{ ok: boolean }>(query, args)).rows[0].ok).toBe(
+      false,
+    );
+    const attempt = await learningTurn(
+      next.state,
+      {
+        type: 'answer',
+        itemId: next.state.active!.id,
+        answer: next.state.active!.item.answer,
+        inputMode: 'tastatur',
+      },
+      randomUUID(),
+      now,
+      profile,
+      [],
+      null,
+      'Bokmål',
+    );
+    expect(
+      (
+        await db.query<{ ok: boolean }>(query, [
+          state.id,
+          ids.la,
+          1,
+          JSON.stringify(attempt.state),
+          JSON.stringify(attempt.events),
+        ])
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query<{ n: number }>(
+          'select count(*)::int n from public.attempts where learner_id=$1',
+          [ids.la],
+        )
+      ).rows[0].n,
+    ).toBe(1);
+    const bad = structuredClone(attempt.events);
+    bad.attempts[0].id = randomUUID();
+    bad.attempts[0].item_id = randomUUID();
+    bad.messages.push({
+      id: randomUUID(),
+      role: 'lærer',
+      text: 'Dette skal rulles tilbake.',
+      meta: {},
+    });
+    const updated = { ...attempt.state, revision: 3 };
+    await expect(
+      db.query(query, [
+        state.id,
+        ids.la,
+        2,
+        JSON.stringify(updated),
+        JSON.stringify(bad),
+      ]),
+    ).rejects.toThrow();
+    expect(
+      (
+        await db.query<{ revision: number }>(
+          'select revision from public.sessions where id=$1',
+          [state.id],
+        )
+      ).rows[0].revision,
+    ).toBe(2);
+    expect(
+      (
+        await db.query<{ n: number }>(
+          "select count(*)::int n from public.messages where text='Dette skal rulles tilbake.'",
+        )
+      ).rows[0].n,
+    ).toBe(0);
+    await db.exec('reset role');
   });
 });

@@ -3,7 +3,11 @@ export default defineConfig({
   testDir: './tests/e2e',
   use: { baseURL: 'http://127.0.0.1:3000' },
   webServer: {
-    env: { APP_URL: '', VERCEL_URL: '' },
+    env: {
+      APP_URL: '',
+      VERCEL_URL: '',
+      E2E_LEO_FIXTURE: process.env.E2E_LOCAL_SUPABASE === '1' ? '0' : '1',
+    },
     command: 'npm run dev -- --hostname 127.0.0.1',
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
