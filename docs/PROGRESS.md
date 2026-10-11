@@ -158,6 +158,18 @@ Preview-veiledningen peker nå på denne PR-ens callback-adresse og Stockholm-re
 
 Siste fasitvern-kontroll fant at tallord over tjue og Unicode-tall kunne omgå den opprinnelige korte ordlisten. Kontrollen avviser nå sammensatte norske tallord, vanlige brøkord og alle Unicode-tall før fullt løsningshint. Den samme kontrollen brukes på interesseinnramming, som ellers kunne røpe fasit før eleven hadde bedt om hint. Lange tallord behandles med en avgrenset, iterativ ordsegmentering uten regex-backtracking. **92 berørte agent-/økt-/taletester er grønne**, inkludert nye tilfeller for «åtte», «trettitre», «ett tusen fire hundre», brøkord og alternative siffer. Den samlede sjekken og CI kjøres på nytt etter denne rettelsen; sluttresultatet dokumenteres i PR-en.
 
+## Opplesing — oppfølging etter PR #3 (11. oktober 2026)
+
+PR #3 er flettet inn i main. Feilsøkingen fant tre reproduserbare klientfeil: Auto-opplesing og den aktiverte lydspilleren ble nullstilt i overgangen fra hjem til økt; etter én mislykket TTS-forespørsel prøvde «Les høyt» aldri taletjenesten igjen; en sen avspillingsfeil kunne overskrive Stopp-meldingen. Nettlesertesten gjenskapte at Auto ble av etter øktstart, og to komponenttester gjenskapte de andre feilene før rettelsen.
+
+Opplesingskontrollen er nå felles for hjem og økt. Lyd og stoppstatus knyttes til kilde, økt-ID og revisjon; manuelt bestilt lyd følger ikke med til neste oppgave når Auto er av. «Les høyt» prøver TTS igjen etter en tjenestefeil. Stopp, mikrofonstart, ny tekst og avmontering ugyldiggjør gamle avspillingsmeldinger. Feil i enhetsstemmen gir en forståelig melding. Ingen nye miljøvariabler eller databaseendringer.
+
+**Verifisert:** Hele `npm run check` er grønn: lint, typecheck, formatering, **357 tester i 19 filer**, simuleringer, **8 Playwright-tester bestått / 1 lokal Auth-test hoppet over** og produksjonsbuild. Sju nye komponenttester dekker retry etter HTTP 503, sen avspillingsfeil etter Stopp, stopp før sent HTTP 200/503-svar, svar fra gammel økt, feil i enhetsstemmen og manuell opplesing ved oppgavebytte. Ny nettlesertest kontrollerer Auto på hjem → humørspørsmål → første oppgave med faktiske lydforespørsler og WAV-avspilling. iPad-testplanen er utvidet med disse tilfellene.
+
+Testene bruker mocks etter brukerens valg. Ingen tilgang til Vercels kjørelogger eller fysisk iPad her; den konkret observerte Preview-feilen og ekte OpenAI-/Safari-avspilling er derfor ikke bekreftet. Ekstern CI og Preview for oppfølgingsrettelsen dokumenteres i den nye PR-en etter at resultatene er observert.
+
 ## Arbeidsregel for oppsett og Preview (11. oktober 2026)
 
 Brukerens regel er lagt ordrett inn i AGENTS.md: nødvendig oppsett skal utføres og verifiseres via tilgjengelige connectorer eller CLI, Preview skal testes før ferdigmelding, produksjonsendringer krever spørsmål først, og brukeren skal bare spørres om manglende tilgang. Dette er en dokumentasjonsendring; ingen miljøvariabler, Redirect URLs, hemmeligheter eller produksjonstjenester er endret. Verifisert med Prettier på begge endrede filer og `git diff --check`.
+
+Flettekonflikten mellom PR #4 og main etter innfletting av PR #5 er løst ved å beholde begge oppfølgingsavsnittene. Ingen appkode er endret i konfliktløsningen; formatering og `git diff --check` er kontrollert.

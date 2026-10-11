@@ -14,54 +14,71 @@ export function SpeechControls({
 }) {
   const [auto, setAuto] = useState(initialAuto),
     [enabled, setEnabled] = useState(false),
-    [message, setMessage] = useState('');
+    [message, setMessage] = useState(''),
+    [retry, setRetry] = useState(0);
+  const key = `${source}:${view.id}:${view.revision}`;
   const player = useRef<HTMLAudioElement | null>(null),
     url = useRef<string | null>(null),
-    ready = useRef<{ revision: number; blob: Blob } | null>(null);
+    ready = useRef<{ key: string; blob: Blob } | null>(null);
   const wanted = useRef(false),
-    unavailable = useRef(false);
-  const stopped = useRef<number | null>(null),
-    current = useRef(view.revision);
+    unavailable = useRef(false),
+    autoRead = useRef(initialAuto),
+    playback = useRef(0),
+    utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const stopped = useRef<string | null>(null),
+    current = useRef(key);
   const text =
     `${view.speech} ${view.ended ? '' : (view.task?.question ?? '')}`.trim();
+  const invalidatePlayback = useCallback(() => ++playback.current, []);
   const native = useCallback(() => {
     if ('speechSynthesis' in window) {
+      const attempt = invalidatePlayback();
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
+      utteranceRef.current = utterance;
       utterance.lang = 'nb-NO';
       utterance.rate = 0.9;
       const voice = window.speechSynthesis
         .getVoices()
         .find((v) => /^nb|^no/i.test(v.lang));
       if (voice) utterance.voice = voice;
+      utterance.onerror = () => {
+        if (attempt === playback.current)
+          setMessage(
+            'Lyden kunne ikke starte. Prøv Les høyt igjen eller les teksten.',
+          );
+      };
       window.speechSynthesis.speak(utterance);
       setMessage('Leser med stemmen på enheten.');
     } else setMessage('Lyden er utilgjengelig. Du kan alltid lese teksten.');
-  }, [text]);
+  }, [text, invalidatePlayback]);
   const play = useCallback(async () => {
     const audio = player.current;
     if (!audio) return;
-    if (!ready.current || ready.current.revision !== view.revision) {
+    if (!ready.current || ready.current.key !== key) {
       native();
       return;
     }
     window.speechSynthesis?.cancel();
+    const attempt = invalidatePlayback();
     audio.pause();
     if (url.current) URL.revokeObjectURL(url.current);
     url.current = URL.createObjectURL(ready.current.blob);
     audio.src = url.current;
     try {
       await audio.play();
-      setMessage('Leser høyt.');
+      if (attempt === playback.current) setMessage('Leser høyt.');
     } catch {
-      setMessage('Trykk Les høyt en gang til for å starte lyden.');
+      if (attempt === playback.current)
+        setMessage('Trykk Les høyt en gang til for å starte lyden.');
     }
-  }, [native, view.revision]);
+  }, [native, key, invalidatePlayback]);
   useEffect(() => {
     const audio = new Audio();
     audio.preload = 'auto';
     player.current = audio;
     const stop = () => {
+      invalidatePlayback();
       audio.pause();
       stopped.current = current.current;
       wanted.current = false;
@@ -75,12 +92,15 @@ export function SpeechControls({
       if (url.current) URL.revokeObjectURL(url.current);
       window.removeEventListener('leo-recording', stop);
     };
-  }, []);
+  }, [invalidatePlayback]);
   useEffect(() => {
-    current.current = view.revision;
+    if (current.current !== key) wanted.current = false;
+    current.current = key;
     if (!enabled) return;
     const controller = new AbortController();
+    invalidatePlayback();
     ready.current = null;
+    unavailable.current = false;
     player.current?.pause();
     window.speechSynthesis?.cancel();
     void fetch('/api/voice/tts', {
@@ -97,55 +117,75 @@ export function SpeechControls({
         if (response.ok) {
           const blob = await response.blob();
           if (!controller.signal.aborted) {
-            ready.current = { revision: view.revision, blob };
-            if ((auto && stopped.current !== view.revision) || wanted.current) {
+            ready.current = { key, blob };
+            if (
+              (autoRead.current && stopped.current !== key) ||
+              wanted.current
+            ) {
               wanted.current = false;
               await play();
             }
           }
         } else if (!controller.signal.aborted) {
           unavailable.current = true;
-          if ((auto && stopped.current !== view.revision) || wanted.current) {
+          if ((autoRead.current && stopped.current !== key) || wanted.current) {
             wanted.current = false;
             native();
           }
         }
       })
       .catch((error) => {
-        if (error?.name !== 'AbortError') {
+        if (!controller.signal.aborted && error?.name !== 'AbortError') {
           unavailable.current = true;
-          if ((auto && stopped.current !== view.revision) || wanted.current) {
+          if ((autoRead.current && stopped.current !== key) || wanted.current) {
             wanted.current = false;
             native();
           }
         }
       });
-    return () => controller.abort();
-  }, [view.id, view.revision, auto, enabled, play, native, source]);
+    return () => {
+      controller.abort();
+      invalidatePlayback();
+    };
+  }, [
+    view.id,
+    view.revision,
+    key,
+    retry,
+    enabled,
+    play,
+    native,
+    source,
+    invalidatePlayback,
+  ]);
   function activate() {
     stopped.current = null;
     wanted.current = true;
+    invalidatePlayback();
     setEnabled(true);
     const audio = player.current;
     if (audio) {
       audio.src = silence;
       void audio.play().catch(() => {});
     }
-    if (ready.current?.revision === view.revision) {
+    if (ready.current?.key === key) {
       wanted.current = false;
       void play();
     } else if (unavailable.current) {
-      wanted.current = false;
-      native();
+      unavailable.current = false;
+      setRetry((attempt) => attempt + 1);
+      setMessage('Gjør klar lyd …');
     } else setMessage('Gjør klar lyd …');
   }
   async function toggle() {
     const value = !auto;
+    autoRead.current = value;
     setAuto(value);
     if (value) activate();
     else {
       wanted.current = false;
-      stopped.current = view.revision;
+      stopped.current = key;
+      invalidatePlayback();
       player.current?.pause();
       window.speechSynthesis?.cancel();
     }
@@ -169,9 +209,10 @@ export function SpeechControls({
         <button
           type="button"
           onClick={() => {
+            invalidatePlayback();
             player.current?.pause();
             window.speechSynthesis?.cancel();
-            stopped.current = view.revision;
+            stopped.current = key;
             wanted.current = false;
             setMessage('Opplesingen er stoppet.');
           }}

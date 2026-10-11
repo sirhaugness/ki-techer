@@ -8,6 +8,7 @@ Bruk Preview fra PR-en, **ikke produksjon**. Sett av 30–45 minutter sammen med
 - [ ] Åpne HTTPS-lenken i Safari. Skru opp volumet. Logg inn med magisk lenke i **samme nettleser**; ikke bytt til Chrome i e-poststeget.
 - [ ] Opprett elevprofil om nødvendig, lagre en PIN du husker, og start Leo-modus. Du skal se hjem, kart og medaljong.
 - [ ] Trykk «Les høyt». En rolig norsk stemme skal lese velkomsten. Trykk «Stopp opplesing» og bekreft at lyden stopper.
+- [ ] Slå på Auto-opplesing på hjemskjermen, og start «Bli kjent» eller en matteøkt. Valget skal fortsatt være på, og både humørspørsmålet og første matteoppgave skal leses uten et nytt trykk på «Les høyt».
 
 ## Bli kjent og velg interesser
 
@@ -33,6 +34,7 @@ Bruk Preview fra PR-en, **ikke produksjon**. Sett av 30–45 minutter sammen med
 - [ ] Åpne foreldresiden mens Leo-modus er låst. Du skal fortsatt være i Leo-modus. Prøv feil PIN, deretter riktig PIN via «For forelder».
 - [ ] I en separat prøve: nekt mikrofontilgang. En forståelig melding skal vises og talltastaturet skal fungere. Tillat mikrofon igjen i nettleserens nettstedinnstillinger før neste test.
 - [ ] Slå kort av Wi-Fi under en ubesvart oppgave. En mislykket innsending skal gi en melding uten å miste svaret; slå på Wi-Fi og prøv igjen. Last siden på nytt og kontroller oppgaven.
+- [ ] Prøv «Les høyt» på en ny oppgave mens Wi-Fi er av. Slå Wi-Fi på igjen og trykk «Les høyt» på nytt. Appen skal prøve taletjenesten igjen uten at du må laste siden på nytt. Hvis reservestemmen heller ikke starter, skal appen vise en forståelig melding.
 - [ ] Gjenta opplesing, hold-for-å-snakke, tekstkontroll og bekreftelse i **Chrome på iPad**. Logg inn der separat. Safari-testen dekker ikke automatisk Chrome.
 
 ## Mesterutfordring og hva du melder tilbake

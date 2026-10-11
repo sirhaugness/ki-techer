@@ -92,3 +92,33 @@ test('denied microphone leaves text answer available', async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByLabel('Svaret ditt', { exact: true })).toBeEnabled();
 });
+test('auto read and the unlocked audio player survive starting a session from home', async ({
+  page,
+}) => {
+  await page.goto('/leo?fixture=reset');
+  await page.getByRole('button', { name: 'Auto-opplesing: av' }).click();
+  await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+  const moodAudio = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/voice/tts') &&
+      response.request().postDataJSON()?.source === 'all' &&
+      response.request().postDataJSON()?.revision === 0,
+  );
+  await page.getByRole('button', { name: 'Start Bli kjent' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Bli kjent', exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Auto-opplesing: på' }),
+  ).toHaveAttribute('aria-pressed', 'true');
+  expect((await moodAudio).status()).toBe(200);
+  await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+  const taskAudio = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/voice/tts') &&
+      response.request().postDataJSON()?.revision === 1,
+  );
+  await page.getByRole('button', { name: '😊 Glad' }).click();
+  expect((await taskAudio).status()).toBe(200);
+  await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+});
