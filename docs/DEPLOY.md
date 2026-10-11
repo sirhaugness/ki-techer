@@ -120,7 +120,7 @@ Det er **ingen nye miljøvariabelnavn** i denne PR-en. Du har valgt å bruke Ope
 
 Verdiene er foreslått i miljømalen, men modellen må også være tilgjengelig for OpenAI-prosjektet ditt. Refleksjonsmodell og budsjettvariabel er nå i bruk. Hvis noen av modell-, stemme- eller budsjettvariablene mangler, legg dem inn i **Settings → Environment Variables**, velg Preview, lagre og trykk **Redeploy** på nyeste Preview. Ingen endring i Supabase-variablene eller APP_URL er nødvendig.
 
-Alle tre nye databasemigrasjoner (profilrefleksjon, foreldredashbord og KI-grenser) må være kjørt på **leo-dev** før du starter kartlegging. Kontroller at PR-sjekken **Supabase-migrasjoner** er grønn; se GitHub-hemmelighetene ovenfor hvis den feiler. Ikke kjør en database-reset. På første opplesing oppretter serveren automatisk et **privat** Supabase Storage-lager, `leo-tts`. Du trenger ikke opprette en offentlig bøtte. Funksjonene kjører i Vercels Stockholm-region (`arn1`).
+Alle fire nye databasemigrasjoner (profilrefleksjon, foreldredashbord, KI-grenser og anonym tilgang) må være kjørt på **leo-dev** før du starter kartlegging. Kontroller at PR-sjekken **Supabase-migrasjoner** er grønn; se GitHub-hemmelighetene ovenfor hvis den feiler. Ikke kjør en database-reset. På første opplesing oppretter serveren automatisk et **privat** Supabase Storage-lager, `leo-tts`. Du trenger ikke opprette en offentlig bøtte. Funksjonene kjører i Vercels Stockholm-region (`arn1`).
 
 Hvis KI-en feiler, fortsetter øving med korte, regelstyrte spørsmål og hint. Egendefinerte interesser/lærernavn krever fungerende moderering. Hvis taletjenesten feiler, kan enhetens norske stemme lese teksten; tastaturet fungerer fortsatt. Lyd i mock-testene er ikke en vurdering av ekte norsk uttale.
 

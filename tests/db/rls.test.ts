@@ -20,6 +20,10 @@ beforeAll(async () => {
   await db.exec(
     `create role anon; create role authenticated; create role service_role bypassrls; create schema auth; create table auth.users(id uuid primary key); create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; grant usage on schema auth,public to anon,authenticated,service_role; grant execute on function auth.uid() to anon,authenticated,service_role;`,
   );
+  // Match hosted Supabase's direct grants, not just PostgreSQL's PUBLIC grant.
+  await db.exec(
+    'alter default privileges in schema public grant execute on functions to anon,authenticated,service_role;',
+  );
   for (const file of readdirSync('supabase/migrations')
     .filter((f) => f.endsWith('.sql'))
     .sort())
@@ -53,6 +57,13 @@ describe('PostgreSQL RLS', () => {
       "select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and not c.relrowsecurity",
     );
     expect(rows).toEqual([]);
+  });
+  it('no security-definer function is executable anonymously, including hosted defaults', async () => {
+    await db.exec('reset role');
+    const result = await db.query(
+      "select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and has_function_privilege('anon',p.oid,'EXECUTE')",
+    );
+    expect(result.rows).toEqual([]);
   });
   it('bootstrap is idempotent and anonymous access is rejected', async () => {
     await asUser(ids.a);

@@ -140,3 +140,5 @@ Oppbevaring ryddes ved autorisert besøk fremfor en ny cron-tjeneste: samtaler/v
 Lighthouse legges i lokal fullsjekk og CI med mock-only server og lagrede rapporter. Automatisk tilgjengelighet er kontrollert på seks visninger; faktisk iPad, skjermleser, KI-uttale og hosted Preview må vurderes separat. Ingen nye miljønavn eller produksjonsendringer.
 
 Fallback bevarer M4s forståelsesvern: en fritekstforklaring får ikke forståelse=2 uten godkjent rubrikk. Øvingssvar, hint, eksisterende mestring og tilgjengelige mesterutfordringer virker fortsatt, og tildeling er testet med null-provider. Ingen budsjettregel gir gratis mestring; ny forståelsesvurdering venter på fungerende KI.
+
+Hosted Supabase tildeler også direkte EXECUTE til anon ved funksjonsopprettelse. M1s PUBLIC-revoke er supplert med eksplisitt anon-revoke for de tre auth.uid()-avgrensede bootstrap/RLS-funksjonene. PGlite-testene etterligner disse default-grantene og krever at ingen SECURITY DEFINER-funksjon er anonymt kjørbar. Dette ble funnet ved M9s hosted advisor-kontroll; migrasjonen er en ny fil fordi de tidligere allerede er brukt på dev.
