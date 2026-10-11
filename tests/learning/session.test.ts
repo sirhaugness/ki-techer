@@ -8,6 +8,8 @@ import {
 import { initialState, confirmExplanation } from '../../lib/engine/mastery';
 import { skills } from '../../lib/engine/skills/graph';
 import { progressForPart } from '../../lib/engine/medallion';
+import { mockProvider } from '../agent/fixtures';
+import { fallbackResponse } from '../../lib/agent/loop';
 import type {
   LearnerProfile,
   Snapshot,
@@ -30,6 +32,44 @@ export const turn = (
   at = now,
 ) => learningTurn(state, event, id, at, profile, [], null, 'Bokmål.');
 describe('persistent learning session', () => {
+  it('can evaluate an explanation during diagnostics without creating mastery evidence', async () => {
+    let state = createSession(profile, null, now, 0, 'diagnostic', null);
+    state = (await turn(state, { type: 'next' })).state;
+    state = (
+      await turn(state, {
+        type: 'answer',
+        itemId: state.active!.id,
+        answer: state.active!.item.answer,
+        inputMode: 'tale',
+      })
+    ).state;
+    const before = structuredClone(state.states);
+    const provider = mockProvider([
+      {
+        calls: [],
+        value: {
+          forstaelse: 2,
+          strategi: 'grupper',
+          misoppfatning: null,
+          tilbakemelding: 'Takk for at du forklarte.',
+        },
+      },
+      { calls: [], value: fallbackResponse() },
+    ]);
+    const result = await learningTurn(
+      state,
+      { type: 'explain', text: 'Jeg telte gruppene.' },
+      randomUUID(),
+      now,
+      profile,
+      [],
+      provider,
+      'Bokmål.',
+    );
+    expect(result.state.states).toEqual(before);
+    expect(result.state.revision).toBe(state.revision + 1);
+    expect(result.events.attempts).toEqual([]);
+  });
   it('finishes adaptive diagnostics without awarding mastery or extra days', async () => {
     let state = createSession(profile, null, now, 0, 'diagnostic', null);
     for (let i = 0; i < 10; i++) {

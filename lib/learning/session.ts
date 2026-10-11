@@ -561,15 +561,19 @@ export async function learningTurn(
     );
     // A rubric cannot replace answer evidence; preserve data criterion and
     // attach understanding only after the independently correct, unaided answer.
+    const skillState = runtime.states[runtime.active.item.skillId];
+    const attempt = skillState?.recent.at(-1);
     if (
+      state.mode === 'practice' &&
       result.forstaelse === 2 &&
       state.correct &&
       state.hints.level === 0 &&
-      runtime.states[runtime.active.item.skillId]
+      skillState &&
+      attempt
     )
       runtime.states[runtime.active.item.skillId] = confirmExplanation(
-        runtime.states[runtime.active.item.skillId],
-        runtime.states[runtime.active.item.skillId].recent.at(-1)!.id,
+        skillState,
+        attempt.id,
         result.forstaelse,
         now,
       );
