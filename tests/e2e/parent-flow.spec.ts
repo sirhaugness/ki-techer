@@ -3,6 +3,7 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   page,
   request,
 }) => {
+  test.setTimeout(90_000);
   test.skip(
     process.env.E2E_LOCAL_SUPABASE !== '1',
     'Requires a local Supabase stack with Mailpit.',

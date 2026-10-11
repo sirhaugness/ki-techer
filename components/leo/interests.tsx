@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { RecordButton } from './record-button';
 import { useRouter } from 'next/navigation';
 import type { Interest } from '@/lib/learning/types';
 export function Interests({
@@ -96,6 +97,11 @@ export function Interests({
             maxLength={40}
           />
         </label>
+        <RecordButton
+          label="Hold for å fortelle hva du liker"
+          disabled={busy}
+          onText={(text) => setLabel(text.slice(0, 40))}
+        />
         <button disabled={busy || !label.trim()}>Lagre interesse</button>
       </form>
       <form

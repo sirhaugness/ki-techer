@@ -11,6 +11,10 @@ import type { Answer } from '@/lib/engine/skills/generators';
 import type { PartProgress } from '@/lib/engine/medallion';
 import { AnswerPanel } from './answer-panel';
 import { Manipulatives } from './manipulatives';
+import { SpeechControls } from './speech-controls';
+import { RecordButton } from './record-button';
+import { homeSpeech } from '@/lib/voice/text';
+import { parseVoiceAnswer } from '@/lib/voice/parse';
 import { Medallion, Tutor, partTitles } from './art';
 export function LeoExperience({
   profile,
@@ -31,6 +35,7 @@ export function LeoExperience({
     [showExplain, setShowExplain] = useState(false),
     [showEnd, setShowEnd] = useState(false),
     [reflection, setReflection] = useState('');
+  const [transcript, setTranscript] = useState('');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
   async function send(command: Record<string, unknown>) {
     setBusy(true);
@@ -49,6 +54,7 @@ export function LeoExperience({
       setExplanation('');
       setShowExplain(false);
       setShowEnd(false);
+      setTranscript('');
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Prøv igjen.');
     } finally {
@@ -85,6 +91,25 @@ export function LeoExperience({
             </div>
             <Tutor />
           </div>
+          <SpeechControls
+            source="home"
+            initialAuto={profile.settings.auto_read === true}
+            view={{
+              id: profile.id,
+              revision: 0,
+              mode: 'practice',
+              task: null,
+              speech: homeSpeech(profile.tutorName),
+              parts: displayedParts,
+              ended: true,
+              correct: null,
+              hintLevel: 0,
+              pauseOffered: false,
+              celebration: null,
+              diagnosticComplete,
+              masterProgress: null,
+            }}
+          />
           <div className="medallion-home">
             <Medallion parts={displayedParts} />
             <div>
@@ -187,6 +212,10 @@ export function LeoExperience({
           <div className="tutor-speech" aria-live="polite">
             <p>{view.speech}</p>
           </div>
+          <SpeechControls
+            view={view}
+            initialAuto={profile.settings.auto_read === true}
+          />
           {view.celebration && (
             <div className="celebration" role="status">
               <span aria-hidden="true">✦</span>
@@ -252,6 +281,59 @@ export function LeoExperience({
                     onAnswer={() => {}}
                   />
                 )}
+                {!view.task.resolved && (
+                  <>
+                    <RecordButton disabled={busy} onText={setTranscript} />
+                    {transcript && (
+                      <div className="card">
+                        <label>
+                          Dette hørte vi. Du kan rette teksten.
+                          <input
+                            value={transcript}
+                            maxLength={600}
+                            onChange={(e) => setTranscript(e.target.value)}
+                          />
+                        </label>
+                        <button
+                          disabled={
+                            busy ||
+                            parseVoiceAnswer(
+                              transcript,
+                              view.task.answerType,
+                              view.task.choices,
+                            ) === null
+                          }
+                          onClick={() => {
+                            const answer = parseVoiceAnswer(
+                              transcript,
+                              view.task!.answerType,
+                              view.task!.choices,
+                            );
+                            if (answer !== null)
+                              turn({
+                                type: 'answer',
+                                itemId: view.task!.id,
+                                answer,
+                                inputMode: 'tale',
+                              });
+                          }}
+                        >
+                          Bruk talesvaret
+                        </button>
+                        {parseVoiceAnswer(
+                          transcript,
+                          view.task.answerType,
+                          view.task.choices,
+                        ) === null && (
+                          <p>
+                            Vi trenger ett tydelig svar. Rett teksten eller bruk
+                            tastaturet.
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
                 {view.task.resolved ? (
                   <>
                     <p role="status">
@@ -315,6 +397,11 @@ export function LeoExperience({
                           maxLength={600}
                         />
                       </label>
+                      <RecordButton
+                        label="Hold for å forklare"
+                        disabled={busy}
+                        onText={setExplanation}
+                      />
                       <button disabled={busy || !explanation.trim()}>
                         Send forklaringen
                       </button>
@@ -372,6 +459,11 @@ export function LeoExperience({
                       onChange={(e) => setReflection(e.target.value)}
                     />
                   </label>
+                  <RecordButton
+                    label="Hold for å fortelle hva du lærte"
+                    disabled={busy}
+                    onText={setReflection}
+                  />
                   <button className="primary" disabled={busy}>
                     Lagre og avslutt
                   </button>

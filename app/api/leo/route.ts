@@ -24,6 +24,9 @@ import { dayKey } from '@/lib/engine/time';
 export const runtime = 'nodejs';
 export const maxDuration = 120;
 const commandSchema = z.discriminatedUnion('command', [
+  z
+    .object({ command: z.literal('voiceSettings'), autoRead: z.boolean() })
+    .strict(),
   z.object({
     command: z.literal('start'),
     mode: z.enum(['diagnostic', 'practice', 'master']),
@@ -82,6 +85,22 @@ export async function POST(request: Request) {
         ? null
         : openaiProvider((call) => logAi(profile.householdId, call));
     const cmd = parsed.data;
+    if (cmd.command === 'voiceSettings') {
+      const settings = {
+        ...profile.settings,
+        voice: true,
+        auto_read: cmd.autoRead,
+      };
+      if (f) f.profile.settings = settings;
+      else {
+        const { error } = await adminDb()
+          .from('learners')
+          .update({ settings: settings as import('@/lib/db/types').Json })
+          .eq('id', profile.id);
+        if (error) throw new Error('Kunne ikke lagre talevalget.');
+      }
+      return Response.json({ ok: true });
+    }
     const interestRows =
       f?.interests ??
       (

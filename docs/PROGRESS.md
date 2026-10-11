@@ -2,13 +2,16 @@
 
 Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Dato: 10. oktober 2026.
 
-| Milepæl                            | Status                                                   |
-| ---------------------------------- | -------------------------------------------------------- |
-| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                        |
-| M1 database, auth, elevprofil, PIN | Implementert; RLS/PIN lokalt og full Auth-e2e i CI grønn |
-| M2 læreplan og generatorer         | Implementert og verifisert lokalt og i CI                |
-| M3 læringsmotor og simulering      | Implementert og verifisert lokalt og i CI                |
-| M4–M9                              | Ikke startet                                             |
+| Milepæl                            | Status                                                        |
+| ---------------------------------- | ------------------------------------------------------------- |
+| M0 nødvendig prosjektoppsett       | Implementert og lokalt verifisert                             |
+| M1 database, auth, elevprofil, PIN | Implementert; RLS/PIN lokalt og full Auth-e2e i CI grønn      |
+| M2 læreplan og generatorer         | Implementert og verifisert lokalt og i CI                     |
+| M3 læringsmotor og simulering      | Implementert og verifisert lokalt og i CI                     |
+| M4 agent                           | Implementert og mock-testet; ekte modell-eval gjenstår        |
+| M5 Leo-UI                          | Implementert; økt og mesterprøve testet på nettbrettstørrelse |
+| M6 tale                            | Implementert og mock-testet; fysisk iPad-test gjenstår        |
+| M7–M9                              | Ikke startet                                                  |
 
 ## M1 — før oppstart av M2
 
@@ -128,3 +131,13 @@ Ny append-only migrasjon, opprettet med Supabase CLI: én åpen økt per elev og
 Verifisert før M6: **`npm run check` grønn**: lint, typecheck, formatering, **317 tester i 16 filer**, alle simuleringer, **5 Playwright-tester bestått / full lokal Auth-test hoppet over**, produksjonsbuild og `git diff --check`. PostgreSQL-testen kjører alle fire migrasjoner, sjekker RPC-tilgang, gamle revisjoner, evidens og full rollback ved feil. Nettbrett-e2e gjennomfører kartlegging → interesser → økt/hint/hjelpemidler → reload → avslutning og en seedet mesterutfordring → tildeling.
 
 Den separate CI-testen med ekte lokal Supabase er utvidet til kartlegging og lagret matteøkt etter innlogging/PIN. Resultatet for denne nye koden er ikke observert ennå. Mock-fixture finnes bare med eksplisitt testvariabel, uten konfigurert Supabase og utenfor produksjon. Ingen ekte elevdata eller API-nøkler brukes i kvalitetstestene. Fysisk iPad og hosted integrasjoner må testes på Preview.
+
+## M6 — tale, sluttverifisering før felles PR (11. oktober 2026)
+
+Laget miljøstyrt norsk TTS/STT, privat husholdningsavgrenset Supabase Storage-cache med tekst-/modell-/stemmehash, Les høyt/Stopp på hjem og alle øktfaser, auto-opplesing med lagret valg og norsk enhetsstemme som reserve. Serveren henter godkjent lærertekst selv; klienten kan ikke sende vilkårlig tekst til TTS. Taleopptak velger Safari MP4 eller WebM/Opus, stopper ved slipp/avbrudd og senest 30 sekunder, og rå opptak lagres ikke i appen. Transkripsjon vises redigerbar og sendes først ved eksplisitt bekreftelse. Mikrofon er også koblet til interesser, forklaringer og avslutning. Tastaturet fungerer fortsatt ved nektet mikrofon eller tjenestefeil.
+
+**`npm run check` grønn:** lint, typecheck, formatering, **332 Vitest-tester i 18 filer**, alle simuleringer, **7 Playwright-tester bestått / 1 full lokal-Supabase/Auth-test hoppet over**, produksjonsbuild og `git diff --check`. Taletestene dekker cachetreff/feil og husholdningsskille, entydige talesvar, codecvalg, filgrenser, kort trykk under tillatelsesdialog, maks opptakstid, avbrudd og nektet tillatelse. Rutesikkerhetstester avviser vilkårlig opplesingstekst, feil elev/økt/revisjon, kryssopprinnelse og ikke-godkjent transkripsjon. Nettlesertestene bruker falsk mikrofon og en lydfixture som faktisk spilles av.
+
+Ingen nye miljøvariabelnavn er innført. Eksisterende Vercel-nøkkel skal brukes etter brukerens valg; modell-/stemmevariablene må være tilgjengelige for Preview. Ny M5-migrasjon må være kjørt på leo-dev; privat `leo-tts`-bøtte opprettes ved første cache-skriving. Vercel-funksjoner er satt til EU-region Stockholm. [DEPLOY](DEPLOY.md), [personvern](PRIVACY.md) og [testplan for en hel iPad-økt](IPAD-TESTPLAN.md) er oppdatert.
+
+**Gjenstår å observere:** GitHub CI med lokal Supabase, hosted migrasjon og Vercel Preview. Fysisk iPad Safari/Chrome, ekte uttale og M4s ekte 30-scenario-eval (≥95 %, ingen lekkasjer) er ikke verifisert her. Ingen ekte KI-/Supabase-nøkler eller KI-kall er brukt i kvalitetstestene. M4, M5 og M6 er testet og loggført hver for seg før neste steg og samles i én PR.

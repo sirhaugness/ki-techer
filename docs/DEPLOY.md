@@ -1,6 +1,6 @@
 # Oppsett og Preview — for en nybegynner
 
-Denne PR-en lager grunnmuren M1–M3. Du kan teste forelderinnlogging, elevprofil og Leo-lås i nettleseren. Mattegeneratorer og læringsmotor testes automatisk. KI-samtaler, matteøkter og medaljongskjermen kommer i M4–M5.
+M1–M6 gir innlogging, elevprofil, Leo-lås, KI-lærer, kartlegging, matteøkter, medaljong og tale. Start med oppsettet nedenfor. Har du allerede satt opp M1–M3, gå til «M4–M6: dette må være klart på Preview» nederst.
 
 ## 1. Lag to Supabase-prosjekter
 
@@ -49,7 +49,7 @@ GitHub-hemmelighetene brukes bare av migrasjonsworkflowen. Nettsiden trenger et 
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Prosjektets publishable key under API Keys             |
 | `SUPABASE_SECRET_KEY`                  | Prosjektets secret key under API Keys; kun server-side |
 
-3. Finn API-nøklene under Supabase-prosjektets **Settings → API / API Keys**. Bruk dev-nøkler i Preview og prod-nøkler i Production. Servernøkkelen skal aldri ha `NEXT_PUBLIC_` foran navnet. Ingen OpenAI-nøkkel trengs for M1–M3.
+3. Finn API-nøklene under Supabase-prosjektets **Settings → API / API Keys**. Bruk dev-nøkler i Preview og prod-nøkler i Production. Servernøkkelen skal aldri ha `NEXT_PUBLIC_` foran navnet. M4–M6 bruker også OpenAI-oppsettet nederst.
 4. Vercel oppretter en **Preview** for PR-en. Åpne den og kopier hele adressen. Du trenger **ikke** legge inn `APP_URL` eller `VERCEL_URL`: innloggingen bruker automatisk adressen du åpner, med Vercels innebygde `VERCEL_URL` som reserve. Dette fungerer også med produksjonsdomene og grenadresse. Hvis du allerede har lagt inn feil `APP_URL`, fjern den for Preview og velg **Redeploy**. En eventuell overstyring må være hele nettadressen til siden du bruker, for eksempel `https://leo.example.no`, uten `/auth/callback`; den har prioritet over automatisk valg og bør normalt være tom på Preview.
 5. I **leo-dev → Authentication → URL Configuration**, sett **Site URL** til Preview-adressen og legg inn `https://DIN-PREVIEW-ADRESSE/auth/callback` i **Redirect URLs**. Ta med den nøyaktige adressen til siden du skal teste. For leo-prod bruker du produksjonsadressen på tilsvarende måte.
 6. Bruk samme nettleser for å be om og åpne e-postlenken; innloggingen bruker PKCE. Åpne fra e-postklienten i nettleseren du begynte i hvis lenken åpnes i en annen app.
@@ -102,3 +102,24 @@ Når du har testet Preview og sjekkene er grønne, kan du merge PR-en til `main`
 ## Lokal utvikling
 
 `npm ci`, kopier `.env.example` til `.env.local` og fyll inn dev-verdiene, deretter `npm run dev`. `npm run check` kjører lint, typecheck, Vitest/PostgreSQL, simulering, Playwright-smoke og build. Full auth-e2e krever Docker og Supabase CLI: `supabase start` og `node --import tsx scripts/e2e-local.ts`. Ikke bruk prod-nøkler i lokale tester.
+
+## M4–M6: dette må være klart på Preview
+
+Det er **ingen nye miljøvariabelnavn** i denne PR-en. Du har valgt å bruke OpenAI-nøkkelen du allerede har i Vercel. Ikke kopier den til chat eller kode. Kontroller at nøkkelen og modellvalgene også gjelder **Preview**, ikke bare Production:
+
+| Variabel             | Verdi / handling                                |
+| -------------------- | ----------------------------------------------- |
+| `OPENAI_API_KEY`     | Behold eksisterende nøkkel; aktiver for Preview |
+| `OPENAI_MODEL_TUTOR` | `gpt-5.2`                                       |
+| `OPENAI_MODEL_FAST`  | `gpt-5-mini`                                    |
+| `OPENAI_MODEL_TTS`   | `gpt-4o-mini-tts`                               |
+| `OPENAI_TTS_VOICE`   | `marin`                                         |
+| `OPENAI_MODEL_STT`   | `gpt-4o-mini-transcribe`                        |
+
+Verdiene er foreslått i miljømalen, men modellen må også være tilgjengelig for OpenAI-prosjektet ditt. Refleksjonsmodell og budsjettvariabel beholder tidligere navn; full etterøktrefleksjon og budsjettstyring kommer senere. Hvis noen av de fem modell-/stemmevariablene mangler, legg dem inn i **Settings → Environment Variables**, velg Preview, lagre og trykk **Redeploy** på nyeste Preview. Ingen endring i Supabase-variablene eller APP_URL er nødvendig.
+
+Den nye databasemigrasjonen må være kjørt på **leo-dev** før du starter kartlegging. Kontroller at PR-sjekken **Supabase-migrasjoner** er grønn; se GitHub-hemmelighetene ovenfor hvis den feiler. Ikke kjør en database-reset. På første opplesing oppretter serveren automatisk et **privat** Supabase Storage-lager, `leo-tts`. Du trenger ikke opprette en offentlig bøtte. Funksjonene kjører i Vercels Stockholm-region (`arn1`).
+
+Hvis KI-en feiler, fortsetter øving med korte, regelstyrte spørsmål og hint. Egendefinerte interesser/lærernavn krever fungerende moderering. Hvis taletjenesten feiler, kan enhetens norske stemme lese teksten; tastaturet fungerer fortsatt. Lyd i mock-testene er ikke en vurdering av ekte norsk uttale.
+
+Bruk [hele testplanen for iPad](IPAD-TESTPLAN.md). Ekte modell-evaluering (30 scenarioer, minst 95 % og ingen fasit-lekkasjer) og fysisk testing i Safari/Chrome må fortsatt gjennomføres med tilgjengelige tjenester. Automatiske tester her bruker mocks, og lager ingen KI-kostnader.

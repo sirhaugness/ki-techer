@@ -100,3 +100,13 @@ Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, send
 - Neste oppgave velges ved Leos eksplisitte knapp. KI-en kan ikke bytte oppgave midt i et svar-/hint-/forklaringsturn eller flytte gammelt hintnivå til en ny oppgave.
 - Bildeinteresser er kontrollerte apptekster. Egendefinerte interesser og endrede lærernavn krever fungerende moderering; ved feil beholdes tidligere valg. Full interessevekting, profilfletting og fortellingskapitler kommer i M7.
 - Nettbretttestene bruker den samme øktmotoren og UI-en med minnelagring i en eksplisitt utviklingsfixture. SQL-lagring/RLS testes separat i PostgreSQL og innlogget matteflyt i lokal-Supabase-CI. Testfixturen er utilgjengelig i produksjon.
+
+## M6 — tale og iPad
+
+- OpenAI TTS og STT bruker kun miljøstyrte modeller/stemme og servernøkkel. Ingen nye miljønavn er innført. API-klienten har 20 sekunders tidsgrense og ingen skjulte SDK-retries.
+- All lærertekst på hjem/økt/avslutning kan leses høyt. Første brukertrykk aktiverer lydavspilling på iOS; auto-opplesing krever dette trykket per lastet side. Norsk speechSynthesis er reserve dersom serverlyd er utilgjengelig.
+- TTS-ruten aksepterer bare kilde, økt-ID og revisjon, aldri klientvalgt tekst. Privat lydcache er avgrenset per husholdning, tekst, modell og stemme. Storage-bøtten opprettes privat ved første skriving; cachefeil hindrer ikke fersk opplesing.
+- MediaRecorder velger MP4 på Safari og WebM/Opus der det støttes. Opptak stopper ved slipp, avbrudd, skjult side og senest 30 sekunder. Slipp mens tillatelsesdialogen er åpen starter ikke et skjult opptak.
+- Transkripsjon vises og kan rettes. Bare entydige tall/rest/koordinater eller faktiske svaralternativer kan sendes som talesvar, med eksplisitt bekreftelse. Lydopptak lagres ikke hos appen; trykk mikrofon stopper lærerens opplesing.
+- TTS/STT-kostnader logges som grove estimater, ikke fakturabeløp: TTS 0,30 NOK per 1000 tegn, STT 2 NOK per MB opptak. Pris-/budsjettstyring og opprydding er M9. Vercel-funksjoner velger Stockholm (`arn1`) i EU.
+- Automatisk verifisering bruker falsk mikrofon og lydfixture, pluss codec-/avbrudds-/tilgangstester. Fysisk iPad Safari/Chrome, ekte norsk uttale og ekte modell-eval krever Preview-test og kan ikke erklæres bestått av mock-resultater.
