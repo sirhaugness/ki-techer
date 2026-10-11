@@ -83,7 +83,9 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await page.getByText('For forelder', { exact: true }).click();
   await page.getByLabel('Forelderens PIN', { exact: true }).fill('9999');
   await page.getByRole('button', { name: 'Lås opp foreldresiden' }).click();
-  await expect(page.getByRole('status')).toContainText('Feil PIN');
+  await expect(page.getByRole('group').getByRole('status')).toContainText(
+    'Feil PIN',
+  );
   await page.getByLabel('Forelderens PIN', { exact: true }).fill('0123');
   await page.getByRole('button', { name: 'Lås opp foreldresiden' }).click();
   await expect(
