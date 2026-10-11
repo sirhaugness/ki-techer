@@ -55,9 +55,9 @@ GitHub-hemmelighetene brukes bare av migrasjonsworkflowen. Nettsiden trenger et 
 6. Bruk samme nettleser for å be om og åpne e-postlenken; innloggingen bruker PKCE. Åpne fra e-postklienten i nettleseren du begynte i hvis lenken åpnes i en annen app.
 7. Sjekk at både **Kvalitet** og **Supabase-migrasjoner** er grønne på PR-en. Databasemigrasjoner og Vercel-bygg er separate jobber; innlogging virker først når begge er ferdige og URL-oppsettet er riktig.
 
-Appens serverfunksjoner er satt til Frankfurt i `vercel.json`. Supabase-regionen velges når du oppretter prosjektene.
+Appens serverfunksjoner er satt til Stockholm i `vercel.json`. Supabase-regionen velges når du oppretter prosjektene.
 
-For denne PR-ens stabile Preview-adresse er redirect-verdien `https://ki-techer-git-feat-m1-m3-learning-foundation-team-thor1.vercel.app/auth/callback`. Hvis du åpner en annen Preview-adresse, må også den være tillatt i Supabase. En adresse som ikke er tillatt kan bli erstattet av Supabase-prosjektets Site URL, slik at nettleserens innloggingscookies ikke følger med.
+For denne PR-ens stabile Preview-adresse er redirect-verdien `https://ki-techer-git-feat-m4-m6-tutor-tablet-voice-team-thor1.vercel.app/auth/callback`. Hvis du åpner en annen Preview-adresse, må også den være tillatt i Supabase. En adresse som ikke er tillatt kan bli erstattet av Supabase-prosjektets Site URL, slik at nettleserens innloggingscookies ikke følger med.
 
 ## 5. Hva du skal teste på Preview
 
