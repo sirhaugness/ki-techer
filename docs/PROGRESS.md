@@ -157,3 +157,7 @@ Ekstra regresjonskontroll: en modellvurdert forklaring under kartlegging skal ik
 Preview-veiledningen peker nå på denne PR-ens callback-adresse og Stockholm-region. Før innlogging må den nye Preview-adressen være tillatt i leo-dev sin Auth URL Configuration; dette er et Supabase-valg, ikke en ny Vercel-miljøvariabel.
 
 Siste fasitvern-kontroll fant at tallord over tjue og Unicode-tall kunne omgå den opprinnelige korte ordlisten. Kontrollen avviser nå sammensatte norske tallord, vanlige brøkord og alle Unicode-tall før fullt løsningshint. Den samme kontrollen brukes på interesseinnramming, som ellers kunne røpe fasit før eleven hadde bedt om hint. Lange tallord behandles med en avgrenset, iterativ ordsegmentering uten regex-backtracking. **92 berørte agent-/økt-/taletester er grønne**, inkludert nye tilfeller for «åtte», «trettitre», «ett tusen fire hundre», brøkord og alternative siffer. Den samlede sjekken og CI kjøres på nytt etter denne rettelsen; sluttresultatet dokumenteres i PR-en.
+
+## Arbeidsregel for oppsett og Preview (11. oktober 2026)
+
+Brukerens regel er lagt ordrett inn i AGENTS.md: nødvendig oppsett skal utføres og verifiseres via tilgjengelige connectorer eller CLI, Preview skal testes før ferdigmelding, produksjonsendringer krever spørsmål først, og brukeren skal bare spørres om manglende tilgang. Dette er en dokumentasjonsendring; ingen miljøvariabler, Redirect URLs, hemmeligheter eller produksjonstjenester er endret. Verifisert med Prettier på begge endrede filer og `git diff --check`.
