@@ -92,3 +92,39 @@ it('logs failures and fails closed on flagged moderation', async () => {
   moderate.mockResolvedValue({ results: [{ flagged: true }] });
   expect(await provider.moderate('tekst')).toBe(false);
 });
+it('reserves before paid calls, refuses exhausted budget and keeps failed-call ceiling', async () => {
+  vi.stubEnv('OPENAI_MODEL_FAST', 'mock-fast');
+  const guard = {
+    reserve: vi.fn().mockResolvedValue(null),
+    settle: vi.fn().mockResolvedValue(undefined),
+  };
+  const provider = openaiProvider(vi.fn(), guard);
+  const request = {
+    purpose: 'fast' as const,
+    instructions: '',
+    input: '{}',
+    schema: responseSchema,
+  };
+  await expect(provider.respond(request)).rejects.toThrow('budsjettet');
+  expect(create).not.toHaveBeenCalled();
+  expect(guard.settle).not.toHaveBeenCalled();
+  guard.reserve.mockResolvedValue('reservation');
+  create.mockRejectedValue(new Error('timeout'));
+  await expect(provider.respond(request)).rejects.toThrow('timeout');
+  expect(guard.settle).toHaveBeenCalledWith(
+    'reservation',
+    expect.any(Number),
+    expect.objectContaining({ ok: false }),
+  );
+  create.mockResolvedValue({
+    usage: { input_tokens: 5, output_tokens: 5 },
+    output: [],
+    output_text: '{}',
+  });
+  await provider.respond(request);
+  expect(guard.settle).toHaveBeenLastCalledWith(
+    'reservation',
+    expect.any(Number),
+    expect.objectContaining({ ok: true, input_tokens: 5, output_tokens: 5 }),
+  );
+});

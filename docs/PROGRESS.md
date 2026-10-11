@@ -11,7 +11,9 @@ Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Da
 | M4 agent                           | Implementert og mock-testet; ekte modell-eval gjenstår        |
 | M5 Leo-UI                          | Implementert; økt og mesterprøve testet på nettbrettstørrelse |
 | M6 tale                            | Implementert og mock-testet; fysisk iPad-test gjenstår        |
-| M7–M9                              | Ikke startet                                                  |
+| M7 profil og historie              | Implementert og full lokal sjekk grønn før M8                 |
+| M8 foreldredashbord                | Implementert og full lokal sjekk grønn før M9                 |
+| M9 herding                         | Implementert; full lokal sjekk og Lighthouse grønne           |
 
 ## M1 — før oppstart av M2
 
@@ -173,3 +175,37 @@ Testene bruker mocks etter brukerens valg. Ingen tilgang til Vercels kjørelogge
 Brukerens regel er lagt ordrett inn i AGENTS.md: nødvendig oppsett skal utføres og verifiseres via tilgjengelige connectorer eller CLI, Preview skal testes før ferdigmelding, produksjonsendringer krever spørsmål først, og brukeren skal bare spørres om manglende tilgang. Dette er en dokumentasjonsendring; ingen miljøvariabler, Redirect URLs, hemmeligheter eller produksjonstjenester er endret. Verifisert med Prettier på begge endrede filer og `git diff --check`.
 
 Flettekonflikten mellom PR #4 og main etter innfletting av PR #5 er løst ved å beholde begge oppfølgingsavsnittene. Ingen appkode er endret i konfliktløsningen; formatering og `git diff --check` er kontrollert.
+
+## M7 — før oppstart av M8 (11. oktober 2026)
+
+Refleksjon etter lagret avslutning med egen refleksjonsmodell, modererte utdrag, Structured Outputs, to retries og faktabasert fallback. Ventende/reflektert-status og lease gjør arbeidet gjenopptakbart fra hjemskjermen. Profilfletting og interessevekting er atomisk og idempotent; faste confidence-regler, maks 25 aktive/låste, arkivering under 0,2 og vern av forelders låste/avviste valg. Profilkonteksten er nå koblet til lagrede observasjoner. Sterkeste aktive interesse tilpasser kapittelrammen, og kapittel følger avsluttede økter. Leo kan notere moderert skoletema eller svare «Vet ikke»; tema utløper etter sju dager.
+
+**Verifisert før M8:** `npm run check` grønn med lint, typecheck, formatering, **365 tester i 20 filer**, alle simuleringer, **8 Playwright-tester bestått / 1 lokal Auth-test eksplisitt hoppet over**, produksjonsbuild. Nye tester dekker faktisk skoletema-tur og lagring, utløp, interessevalg/kapittel, refleksjonsvalidering/moderering/retry/fallback, kryss-elevavvisning, idempotens, foreldervern, arkivering, 25-grense og interessevekting i PostgreSQL. Alle fem migrasjoner kjøres i RLS-testen. Full lokal Auth/Supabase kjøres separat i CI; hosted integrasjoner, ekte modellrefleksjon og fysisk iPad er ikke verifisert her. Ingen ekte KI-kall i testene.
+
+## M8 — før oppstart av M9 (11. oktober 2026)
+
+Foreldredashbord med medaljongstatus og varsler som kan markeres sett, utskriftsdiplom for tildelte deler/hel medaljong, tid per dag/uke, øktantall, treff- og humørtrender, ferdighetskart med LK20, profilredigering/låsing/avvisning og egne observasjoner, bevislenker, misoppfatninger, forståelige strategiforslag, øktsammendrag og komplett samtale-/verktøyinnsyn. Innstillinger for økt/dagsgrense/tidsrom/tale/trinn/kartlegging/PIN/oppbevaring/budsjett og anslått forbruk. Forelders tale-av kan ikke overstyres fra Leo-modus.
+
+JSON-eksport aggregerer alle husholdningens rader i SQL uten REST-trunkering og skjer bak forelderlås og medlemskapskontroll. Gamle logger ryddes også fra meldingskopien i øktsnapshot. Bekreftet appdatasletting fjerner husholdningens elevprofiler og avhengige data, PIN, forbrukslogger og private lydfiler. En separat bekreftelse sletter egen Auth-konto etter global utlogging; andre foreldrekontoer beholdes. Ryddeflagg og skrivegrenser hindrer gamle økt-/lydkall i å legge tilbake slettet innhold.
+
+**Verifisert før M9:** `npm run check` grønn med lint, typecheck, formatering, **376 tester i 22 filer**, simuleringer, **10 Playwright-tester bestått / 1 full lokal Auth-test hoppet over**, produksjonsbuild. PostgreSQL-testen kjører alle seks migrasjoner og kontrollerer eksport med over 1000 meldinger, husholdningsskille, forelders profilskriving, loggopprydding og sletting. Nye rutetester dekker foreldergate, Origin, bekreftelse, eksport og kontosletting ved Auth-feil. Nettlesertestene redigerer/låser profil, markerer varsler, åpner verktøyinnsyn, eksporterer JSON, lagrer innstillinger og avviser diplom før tildeling. Test-PDF og skjermbilde er inspisert: én liggende A4-side med lesbar tekst og uten navigasjon/knapper. Ingen ekte elev-/kontodata ble slettet.
+
+Full lokal Auth-CI er utvidet til foreldredashbord og eksport etter PIN-opplåsing. Automatisk oppbevaringsrydding, bindende KI-budsjett og rate limiting kommer i M9. Hosted Preview og ekte tjenester er ikke verifisert her ennå. Vercel-plugin finnes, men er ikke koblet til; tilgang er etterspurt mens uavhengig arbeid fortsetter.
+
+## M9 — før felles PR (11. oktober 2026)
+
+Atomisk månedlig KI-budsjett med reservasjon før betalte kall, 80 %-varsel og regelstyrt fallback ved grense eller utilgjengelig kontroll. Rate limiting per låst enhet og egen kvote for app/TTS/STT. Faktiske strømgrenser på alle JSON-/lydruter, håndtering av avbrutt innlesing, tidsavgrensede providerkall, privat lydcache og PostgreSQL-indekser for historie/forbruk/retention. Opprydding ved autorisert besøk omfatter logger, skoletema i både tabell og snapshot, gammel lyd og tekniske tellere. Eksport/sletting inkluderer nye budsjett-/rate-tabeller. Tastaturfokus, hopp-til-innhold, redusert bevegelse og Lighthouse i fullsjekk/CI. Nybegynnerveiledning, personvern, README og iPad-testplan er oppdatert.
+
+**Verifisert:** `npm run check` grønn: lint, typecheck, formatering, **383 tester i 23 filer**, alle simuleringer, **10 Playwright-tester bestått / 1 full lokal Auth-test eksplisitt hoppet over**, produksjonsbuild og **100/100 Lighthouse-tilgjengelighet på alle seks visninger**. Alle sju migrasjoner kjøres i PostgreSQL-testen. Nye tester kontrollerer 0/80/100 %-grense, reservasjon/oppgjør/idempotens, måneds-/husholdningsskille, enhet/lås/rate-scope, vedlikehold uten tap av mestring, faktisk chunked-størrelse og betalt provider som ikke kalles ved nektet reservasjon. Nettleseren viser fallback, og eksisterende null-provider-mesterflyt tildeler delen først etter korrekt prøve.
+
+Etter siste grenseforbedring på forelderrutene og avbrutt JSON-strøm er lint/typecheck og **alle 14 berørte grense-/forelder-/talerutetester** kjørt på nytt og grønne. Lighthouse-rapporter lagres som CI-artifact; målingen er lokal med syntetiske data, ikke hosted produksjon. Fallback gir ingen oppdiktet forståelsesgodkjenning for fritekst.
+
+M7 og M8 ble fulltestet, dokumentert og committet før neste milepæl. Hosted dev-migrasjon, GitHub CI og Vercel Preview følges opp i samme PR. Ingen produksjonsendring er utført. Ekte KI-eval (≥95 %, null fasit-lekkasje), innlogget Preview og fysisk iPad Safari/Chrome gjenstår før fast bruk. Vercel-tilgang er etterspurt fordi den ikke er koblet til her; ingen nye miljønavn er innført.
+
+## M7–M9 — oppfølging av PR #6
+
+[PR #6](https://github.com/sirhaugness/ki-techer/pull/6) samler de tre milepælene. [Dev-migrasjon 38149648520](https://github.com/sirhaugness/ki-techer/actions/runs/38149648520) er grønn, og Supabase-connectoren bekrefter alle sju migrasjoner inkludert de tre nye. Vercel har bekreftet grønt Preview-bygg på `66e29d9`. [Hele GitHub-kjøring 38149648554](https://github.com/sirhaugness/ki-techer/actions/runs/38149648554) er grønn i begge jobber, inkludert full lokal Auth-e2e med PIN, foreldredashbord og eksport.
+
+Hosted sikkerhetskontroll avdekket direkte anon-grants på M1s tre auth.uid()-avgrensede SECURITY DEFINER-hjelpere til tross for opprinnelig PUBLIC-revoke. En fjerde append-only migrasjon tilbakekaller eksplisitt anon, og RLS-testen etterligner nå Supabases direkte default-grants. Innloggede brukeres nødvendige bootstrap/RLS-hjelpere beholdes. Service-only tabeller uten klientpolicy er tilsiktet stengt; password-leak-advisor gjelder en passordfunksjon appen ikke bruker. [Supabase-kontrollens forklaring](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable). Etter rettelsen er lint/typecheck/formatering og alle **17 PostgreSQL-/RLS-tester** grønne med alle åtte migrasjoner. Siste CI-/migrasjonsresultater lenkes i PR-en etter observasjon.
+
+Forsøk på å åpne grenens Preview gjennom skymiljøets proxy ble eksplisitt blokkert med HTTP 403 CONNECT. Ingen omgåelse forsøkt. Vercel-plugin er ikke koblet til; innlogget Preview og modell-/budsjettvariabler kan derfor ikke bekreftes. PR står som utkast inntil Preview kan kontrolleres. Dette følger AGENTS.md-regelen «Test Preview selv før du sier at du er ferdig». Tilgang er etterspurt; ingen produksjonsendring.

@@ -4,6 +4,7 @@ import type { SpeechCache } from './contracts';
 const bucket = 'leo-tts';
 export function speechCache(): SpeechCache {
   const client = adminDb();
+  const generationStartedAt = new Date().toISOString();
   return {
     async get(hash, voice) {
       const { data, error } = await client
@@ -21,6 +22,20 @@ export function speechCache(): SpeechCache {
         : new Uint8Array(await audio.data.arrayBuffer());
     },
     async put(hash, voice, path, bytes) {
+      const householdId = path.split('/')[0];
+      const household = await client
+        .from('households')
+        .select('*')
+        .eq('id', householdId)
+        .single();
+      if (
+        household.error ||
+        household.data.clearing_data ||
+        (household.data.privacy_cutoff &&
+          Date.parse(generationStartedAt) <=
+            Date.parse(household.data.privacy_cutoff))
+      )
+        throw new Error('Lydcache ryddes.');
       const existing = await client.storage.getBucket(bucket);
       if (existing.error) {
         const created = await client.storage.createBucket(bucket, {
@@ -39,10 +54,16 @@ export function speechCache(): SpeechCache {
         .from(bucket)
         .upload(path, bytes, { contentType: 'audio/mpeg', upsert: true });
       if (upload.error) throw new Error('Kunne ikke lagre lyden.');
-      const index = await client
-        .from('tts_cache')
-        .upsert({ text_hash: hash, voice, storage_path: path });
-      if (index.error) throw new Error('Kunne ikke indeksere lyden.');
+      const index = await client.from('tts_cache').upsert({
+        text_hash: hash,
+        voice,
+        storage_path: path,
+        generation_started_at: generationStartedAt,
+      });
+      if (index.error) {
+        await client.storage.from(bucket).remove([path]);
+        throw new Error('Kunne ikke indeksere lyden.');
+      }
     },
   };
 }

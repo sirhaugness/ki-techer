@@ -1,3 +1,6 @@
+import { allowDevice, budgetStatus, budgetGuard } from '@/lib/security/limits';
+import { boundedJson } from '@/lib/security/body';
+import { homeChapter } from '@/lib/profile/home';
 import { z } from 'zod';
 import { authOrigin } from '@/lib/auth/origin';
 import { leoAccess } from '@/lib/learning/access';
@@ -21,11 +24,24 @@ export async function POST(request: Request) {
     request.headers.get('origin') !== authOrigin(request.headers, request.url)
   )
     return new Response(null, { status: 403 });
-  const parsed = schema.safeParse(await request.json().catch(() => null));
+  const body = await boundedJson(request);
+  if (body.tooLarge) return new Response(null, { status: 413 });
+  const parsed = schema.safeParse(body.value);
   if (!parsed.success) return new Response(null, { status: 400 });
   try {
     const mock = fixtureEnabled(),
-      profile = mock ? fixture().profile : (await leoAccess()).profile;
+      access = mock ? null : await leoAccess(),
+      profile = mock ? fixture().profile : access!.profile;
+    if (profile.settings.voice === false)
+      return new Response(null, { status: 403 });
+    if (
+      !mock &&
+      !(await allowDevice(access!.device.id, profile.householdId, 'tts'))
+    )
+      return new Response(null, {
+        status: 429,
+        headers: { 'Retry-After': '60' },
+      });
     const state =
       parsed.data.source === 'home'
         ? null
@@ -42,9 +58,10 @@ export async function POST(request: Request) {
     const source = parsed.data.source;
     if (source === 'home' && parsed.data.sessionId !== profile.id)
       return new Response(null, { status: 403 });
+    const story = source === 'home' ? await homeChapter(profile) : null;
     const text =
       source === 'home'
-        ? homeSpeech(profile.tutorName)
+        ? `${homeSpeech(profile.tutorName)} ${story!.title}. Kapittel ${story!.number}. ${story!.text}`
         : [
             source !== 'task' ? state!.response.speech : '',
             source !== 'speech' && !state!.endedAt
@@ -76,8 +93,19 @@ export async function POST(request: Request) {
     const model = process.env.OPENAI_MODEL_TTS,
       voice = process.env.OPENAI_TTS_VOICE;
     if (!model || !voice) return new Response(null, { status: 503 });
-    const provider = process.env.OPENAI_API_KEY
-      ? openaiVoice((call) => logAi(profile.householdId, call))
+    let enabled = false;
+    try {
+      enabled =
+        Boolean(process.env.OPENAI_API_KEY) &&
+        !(await budgetStatus(profile.householdId)).fallback;
+    } catch {
+      /* Cached sound can still be used. */
+    }
+    const provider = enabled
+      ? openaiVoice(
+          (call) => logAi(profile.householdId, call),
+          budgetGuard(profile.householdId),
+        )
       : null;
     const audio = await speechAudio({
       scope: profile.householdId,

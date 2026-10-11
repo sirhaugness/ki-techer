@@ -1,7 +1,11 @@
 import 'server-only';
 import OpenAI from 'openai';
 import type { VoiceProvider, VoiceLog } from './contracts';
-export function openaiVoice(log: VoiceLog): VoiceProvider {
+import type { BudgetGuard } from '../security/limits';
+export function openaiVoice(
+  log: VoiceLog,
+  budget?: BudgetGuard,
+): VoiceProvider {
   const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     timeout: 20_000,
@@ -10,6 +14,10 @@ export function openaiVoice(log: VoiceLog): VoiceProvider {
   return {
     async speak(text, model, voice) {
       const started = Date.now();
+      const ceiling = Math.max(0.5, (text.length / 1000) * 0.3);
+      const reservation = budget ? await budget.reserve(ceiling) : null;
+      if (budget && !reservation)
+        throw new Error('KI-budsjettet er brukt opp.');
       let ok = false;
       try {
         const response = await client.audio.speech.create({
@@ -24,7 +32,7 @@ export function openaiVoice(log: VoiceLog): VoiceProvider {
         ok = true;
         return bytes;
       } finally {
-        await log({
+        const call = {
           purpose: 'tts',
           model,
           input_tokens: Math.ceil(text.length / 4),
@@ -32,11 +40,18 @@ export function openaiVoice(log: VoiceLog): VoiceProvider {
           cost_estimate: ok ? (text.length / 1000) * 0.3 : 0,
           latency_ms: Date.now() - started,
           ok,
-        });
+        };
+        if (budget && reservation)
+          await budget.settle(reservation, ceiling, call);
+        await log(call);
       }
     },
     async transcribe(file, model) {
       const started = Date.now();
+      const ceiling = Math.max(0.5, (file.size / 1_000_000) * 2);
+      const reservation = budget ? await budget.reserve(ceiling) : null;
+      if (budget && !reservation)
+        throw new Error('KI-budsjettet er brukt opp.');
       let ok = false;
       try {
         const response = await client.audio.transcriptions.create({
@@ -48,7 +63,7 @@ export function openaiVoice(log: VoiceLog): VoiceProvider {
         ok = true;
         return response.text;
       } finally {
-        await log({
+        const call = {
           purpose: 'stt',
           model,
           input_tokens: 0,
@@ -56,7 +71,10 @@ export function openaiVoice(log: VoiceLog): VoiceProvider {
           cost_estimate: ok ? (file.size / 1_000_000) * 2 : 0,
           latency_ms: Date.now() - started,
           ok,
-        });
+        };
+        if (budget && reservation)
+          await budget.settle(reservation, ceiling, call);
+        await log(call);
       }
     },
   };

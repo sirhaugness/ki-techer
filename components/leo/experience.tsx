@@ -21,11 +21,13 @@ export function LeoExperience({
   initial,
   parts,
   diagnosticComplete,
+  story,
 }: {
   profile: LearnerProfile;
   initial: LearningView | null;
   parts: PartProgress[];
   diagnosticComplete: boolean;
+  story: { title: string; number: number; text: string };
 }) {
   const router = useRouter();
   const [view, setView] = useState(initial && !initial.ended ? initial : null),
@@ -35,6 +37,7 @@ export function LeoExperience({
     [showExplain, setShowExplain] = useState(false),
     [showEnd, setShowEnd] = useState(false),
     [reflection, setReflection] = useState('');
+  const [school, setSchool] = useState('');
   const [transcript, setTranscript] = useState('');
   const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
@@ -115,29 +118,39 @@ export function LeoExperience({
           </div>
         </>
       )}
-      <SpeechControls
-        source={view ? 'all' : 'home'}
-        initialAuto={profile.settings.auto_read === true}
-        view={
-          view ?? {
-            id: profile.id,
-            revision: 0,
-            mode: 'practice',
-            task: null,
-            speech: homeSpeech(profile.tutorName),
-            parts: displayedParts,
-            ended: true,
-            correct: null,
-            hintLevel: 0,
-            pauseOffered: false,
-            celebration: null,
-            diagnosticComplete,
-            masterProgress: null,
+      {profile.settings.voice !== false && (
+        <SpeechControls
+          source={view ? 'all' : 'home'}
+          initialAuto={profile.settings.auto_read === true}
+          view={
+            view ?? {
+              id: profile.id,
+              revision: 0,
+              mode: 'practice',
+              task: null,
+              speech: `${homeSpeech(profile.tutorName)} ${story.title}. Kapittel ${story.number}. ${story.text}`,
+              parts: displayedParts,
+              ended: true,
+              correct: null,
+              hintLevel: 0,
+              pauseOffered: false,
+              celebration: null,
+              diagnosticComplete,
+              masterProgress: null,
+            }
           }
-        }
-      />
+        />
+      )}
+      {profile.settings.voice === false && (
+        <p>Tale er slått av av forelder. Du kan bruke tastaturet.</p>
+      )}
       {!view ? (
         <>
+          <section className="card">
+            <h2>{story.title}</h2>
+            <p>Kapittel {story.number}</p>
+            <p>{story.text}</p>
+          </section>
           <div className="medallion-home">
             <Medallion parts={displayedParts} />
             <div>
@@ -227,6 +240,11 @@ export function LeoExperience({
         </>
       ) : (
         <>
+          {view.fallbackMode && view.mode === 'practice' && (
+            <p className="home-note">
+              Vi øver med faste oppgaver og rolige hint i dag.
+            </p>
+          )}
           {view.celebration && (
             <div className="celebration" role="status">
               <span aria-hidden="true">✦</span>
@@ -294,7 +312,10 @@ export function LeoExperience({
                 )}
                 {!view.task.resolved && (
                   <>
-                    <RecordButton disabled={busy} onText={setTranscript} />
+                    <RecordButton
+                      disabled={busy || profile.settings.voice === false}
+                      onText={setTranscript}
+                    />
                     {transcript && (
                       <div className="card">
                         <label>
@@ -410,7 +431,7 @@ export function LeoExperience({
                       </label>
                       <RecordButton
                         label="Hold for å forklare"
-                        disabled={busy}
+                        disabled={busy || profile.settings.voice === false}
                         onText={setExplanation}
                       />
                       <button disabled={busy || !explanation.trim()}>
@@ -443,6 +464,31 @@ export function LeoExperience({
               )}
             </>
           )}
+          {!view.ended && view.mode !== 'master' && (
+            <details className="card">
+              <summary>Hva øver dere på på skolen?</summary>
+              <label>
+                Fortell kort, uten navn på skolen.
+                <input
+                  value={school}
+                  maxLength={240}
+                  onChange={(e) => setSchool(e.target.value)}
+                />
+              </label>
+              <button
+                disabled={busy || !school.trim()}
+                onClick={() => turn({ type: 'school', text: school })}
+              >
+                Noter skoletema
+              </button>
+              <button
+                disabled={busy}
+                onClick={() => turn({ type: 'school', text: '' })}
+              >
+                Vet ikke
+              </button>
+            </details>
+          )}
           {!view.ended && (
             <>
               <button
@@ -472,7 +518,7 @@ export function LeoExperience({
                   </label>
                   <RecordButton
                     label="Hold for å fortelle hva du lærte"
-                    disabled={busy}
+                    disabled={busy || profile.settings.voice === false}
                     onText={setReflection}
                   />
                   <fieldset>

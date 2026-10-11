@@ -12,7 +12,12 @@ export default function RootLayout({
   return (
     <html lang="nb">
       <body>
-        <main className="mx-auto max-w-3xl p-6 md:p-12">{children}</main>
+        <a href="#hovedinnhold" className="skip-link">
+          Gå til innhold
+        </a>
+        <main id="hovedinnhold" className="mx-auto max-w-3xl p-6 md:p-12">
+          {children}
+        </main>
       </body>
     </html>
   );

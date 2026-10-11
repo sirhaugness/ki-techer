@@ -20,6 +20,10 @@ beforeAll(async () => {
   await db.exec(
     `create role anon; create role authenticated; create role service_role bypassrls; create schema auth; create table auth.users(id uuid primary key); create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$; grant usage on schema auth,public to anon,authenticated,service_role; grant execute on function auth.uid() to anon,authenticated,service_role;`,
   );
+  // Match hosted Supabase's direct grants, not just PostgreSQL's PUBLIC grant.
+  await db.exec(
+    'alter default privileges in schema public grant execute on functions to anon,authenticated,service_role;',
+  );
   for (const file of readdirSync('supabase/migrations')
     .filter((f) => f.endsWith('.sql'))
     .sort())
@@ -53,6 +57,13 @@ describe('PostgreSQL RLS', () => {
       "select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind='r' and not c.relrowsecurity",
     );
     expect(rows).toEqual([]);
+  });
+  it('no security-definer function is executable anonymously, including hosted defaults', async () => {
+    await db.exec('reset role');
+    const result = await db.query(
+      "select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and has_function_privilege('anon',p.oid,'EXECUTE')",
+    );
+    expect(result.rows).toEqual([]);
   });
   it('bootstrap is idempotent and anonymous access is rejected', async () => {
     await asUser(ids.a);
@@ -294,6 +305,522 @@ describe('PostgreSQL RLS', () => {
         )
       ).rows[0].n,
     ).toBe(0);
+    await db.exec('reset role');
+  });
+  it('reflection merges new evidence once, protects parent decisions and limits active observations', async () => {
+    await db.exec('reset role');
+    const obs = randomUUID(),
+      locked = randomUUID(),
+      rejected = randomUUID();
+    for (const [id, status] of [
+      [obs, 'aktiv'],
+      [locked, 'låst'],
+      [rejected, 'avvist'],
+    ])
+      await db.query(
+        "insert into public.learner_profile_observations(id,learner_id,category,text,status,updated_by) values($1,$2,'skolemetode',$3,$4,'forelder')",
+        [id, ids.la, id, status],
+      );
+    const call = 'select public.commit_reflection($1,$2,$3) ok';
+    for (let n = 0; n < 4; n++) {
+      const session = randomUUID();
+      await db.query(
+        'insert into public.sessions(id,learner_id,ended_at) values($1,$2,now())',
+        [session, ids.la],
+      );
+      const operations = [obs, locked, rejected].map((id) => ({
+        op: n < 2 ? 'styrk' : 'arkiver',
+        observation_id: id,
+        category: 'skolemetode',
+        text: 'Metode',
+        evidence_session_id: session,
+        confidence_delta: 1,
+      }));
+      const result = JSON.stringify({
+        operations,
+        summary: 'Øvd på matte.',
+        suggestions: [],
+      });
+      await asUser(ids.a);
+      await expect(db.query(call, [session, ids.la, result])).rejects.toThrow();
+      await db.exec('reset role; set role service_role');
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.lb, result]))
+          .rows[0].ok,
+      ).toBe(false);
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.la, result]))
+          .rows[0].ok,
+      ).toBe(true);
+      expect(
+        (await db.query<{ ok: boolean }>(call, [session, ids.la, result]))
+          .rows[0].ok,
+      ).toBe(false);
+    }
+    const { rows } = await db.query<{
+      id: string;
+      confidence: number;
+      status: string;
+    }>(
+      'select id,confidence,status from public.learner_profile_observations where id=any($1::uuid[])',
+      [[obs, locked, rejected]],
+    );
+    expect(rows.find((o) => o.id === obs)).toMatchObject({
+      confidence: 0.3,
+      status: 'aktiv',
+    });
+    expect(rows.find((o) => o.id === locked)).toMatchObject({
+      confidence: 0.4,
+      status: 'låst',
+    });
+    expect(rows.find((o) => o.id === rejected)).toMatchObject({
+      confidence: 0.4,
+      status: 'avvist',
+    });
+    await db.exec('reset role');
+  });
+  it('caps observations at 25, archives below 0.2 and weights interests once per session', async () => {
+    await db.exec('reset role');
+    await db.query(
+      'delete from public.learner_profile_observations where learner_id=$1',
+      [ids.la],
+    );
+    for (let n = 0; n < 25; n++)
+      await db.query(
+        "insert into public.learner_profile_observations(learner_id,category,text,confidence,updated_by) values($1,'styrke',$2,.2,'system')",
+        [ids.la, `Styrke ${n}`],
+      );
+    const interest = randomUUID(),
+      session = randomUUID();
+    await db.query(
+      "insert into public.interests(id,learner_id,label,source) values($1,$2,'Fotball','leo')",
+      [interest, ids.la],
+    );
+    await db.query(
+      "insert into public.sessions(id,learner_id,ended_at,mood_end,engine_state) values($1,$2,now(),'glad',$3)",
+      [
+        session,
+        ids.la,
+        JSON.stringify({ usedInterests: [interest, interest] }),
+      ],
+    );
+    const op = {
+      op: 'legg_til',
+      observation_id: null,
+      category: 'styrke',
+      text: 'En ekstra',
+      evidence_session_id: session,
+      confidence_delta: 1,
+    };
+    await db.exec('set role service_role');
+    await db.query('select public.commit_reflection($1,$2,$3)', [
+      session,
+      ids.la,
+      JSON.stringify({ operations: [op], summary: 'Matte', suggestions: [] }),
+    ]);
+    expect(
+      (
+        await db.query(
+          'select id from public.learner_profile_observations where learner_id=$1',
+          [ids.la],
+        )
+      ).rows,
+    ).toHaveLength(25);
+    expect(
+      (
+        await db.query(
+          'select times_used,weight,engagement_avg from public.interests where id=$1',
+          [interest],
+        )
+      ).rows[0],
+    ).toMatchObject({ times_used: 2, weight: 1.1, engagement_avg: 1 });
+    const session2 = randomUUID();
+    await db.query(
+      'insert into public.sessions(id,learner_id,ended_at) values($1,$2,now())',
+      [session2, ids.la],
+    );
+    const o = (
+      await db.query<{ id: string }>(
+        'select id from public.learner_profile_observations where learner_id=$1 limit 1',
+        [ids.la],
+      )
+    ).rows[0];
+    await db.query('select public.commit_reflection($1,$2,$3)', [
+      session2,
+      ids.la,
+      JSON.stringify({
+        operations: [
+          {
+            ...op,
+            op: 'svekk',
+            observation_id: o.id,
+            evidence_session_id: session2,
+          },
+        ],
+        summary: 'Matte',
+        suggestions: [],
+      }),
+    ]);
+    expect(
+      (
+        await db.query(
+          'select status,confidence from public.learner_profile_observations where id=$1',
+          [o.id],
+        )
+      ).rows[0],
+    ).toMatchObject({ status: 'arkivert', confidence: 0 });
+    await db.exec('reset role');
+  });
+  it('parent RPCs preserve household isolation and export more than the REST row limit', async () => {
+    await db.exec('reset role');
+    const session = '00000000-0000-4000-8000-000000000021';
+    await db.query(
+      "insert into public.messages(session_id,learner_id,role,text) select $1::uuid,$2::uuid,'leo','Eksportert melding '||n from generate_series(1,1005)n",
+      [session, ids.la],
+    );
+    const household = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    for (const user of [ids.a, ids.b]) {
+      await asUser(user);
+      await expect(
+        db.query('select public.export_household($1)', [household]),
+      ).rejects.toThrow();
+      await expect(
+        db.query('select public.parent_dashboard($1,0)', [ids.la]),
+      ).rejects.toThrow();
+    }
+    await db.exec('reset role;set role service_role');
+    const exported = (
+      await db.query<{ data: Record<string, unknown[]> }>(
+        'select public.export_household($1) data',
+        [household],
+      )
+    ).rows[0].data;
+    expect(exported.messages.length).toBeGreaterThan(1000);
+    expect(exported.learners).toHaveLength(1);
+    expect(JSON.stringify(exported)).not.toContain(ids.lb);
+    expect(JSON.stringify(exported.pin_settings)).not.toContain('pin_hash');
+    expect(
+      (
+        await db.query<{ data: unknown }>(
+          'select public.session_insight($1,$2)data',
+          [session, ids.lb],
+        )
+      ).rows[0].data,
+    ).toBe(null);
+    await db.exec('reset role');
+  });
+  it('parent profile edits keep evidence and respect the active cap; old log cleanup keeps mastery', async () => {
+    await db.exec('reset role;set role service_role');
+    const own = (
+      await db.query<{ id: string }>(
+        "select id from public.learner_profile_observations where learner_id=$1 and status='aktiv' limit 1",
+        [ids.la],
+      )
+    ).rows[0];
+    const edit = 'select public.edit_parent_profile($1,$2,$3,$4,$5) ok';
+    expect(
+      (
+        await db.query<{ ok: boolean }>(edit, [
+          ids.lb,
+          own.id,
+          'styrke',
+          'Feil husholdning',
+          'låst',
+        ])
+      ).rows[0].ok,
+    ).toBe(false);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(edit, [
+          ids.la,
+          own.id,
+          'skolemetode',
+          'Tegner grupper',
+          'låst',
+        ])
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query<{ status: string; updated_by: string }>(
+          'select status,updated_by from public.learner_profile_observations where id=$1',
+          [own.id],
+        )
+      ).rows[0],
+    ).toMatchObject({ status: 'låst', updated_by: 'forelder' });
+    const oldSession = randomUUID();
+    await db.query(
+      "insert into public.sessions(id,learner_id,started_at,ended_at,engine_state) values($1,$2,now()-interval '14 months',now()-interval '14 months',$3)",
+      [
+        oldSession,
+        ids.la,
+        JSON.stringify({
+          version: 1,
+          messages: [{ text: 'Gammel tekst' }],
+          pendingObservations: [{ text: 'Gammel observasjon' }],
+          states: { keep: true },
+        }),
+      ],
+    );
+    await db.query(
+      "insert into public.messages(session_id,learner_id,role,text,created_at) values($1,$2,'leo','Gammel tekst',now()-interval '14 months')",
+      [oldSession, ids.la],
+    );
+    expect(
+      (
+        await db.query<{ n: number }>('select public.prune_logs($1,12)n', [
+          ids.la,
+        ])
+      ).rows[0].n,
+    ).toBe(1);
+    const old = (
+      await db.query<{
+        engine_state: { messages: unknown[]; states: unknown };
+      }>('select engine_state from public.sessions where id=$1', [oldSession])
+    ).rows[0];
+    expect(old.engine_state.messages).toEqual([]);
+    expect(old.engine_state.states).toEqual({ keep: true });
+    await expect(
+      db.query('select public.prune_logs($1,0)', [ids.la]),
+    ).rejects.toThrow();
+    await db.exec('reset role');
+  });
+  it('reserves a monthly budget atomically, warns at 80%, stops at 100% and settles only once', async () => {
+    await db.exec('reset role;set role service_role');
+    const h = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    await db.query(
+      "update public.learners set settings=jsonb_set(settings,'{ai_budget_nok}','10') where id=$1",
+      [ids.la],
+    );
+    const reserve = async (id: string, amount: number) =>
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.reserve_ai_budget($1,$2,$3,100)ok',
+          [h, id, amount],
+        )
+      ).rows[0].ok;
+    const status = async () =>
+      (
+        await db.query<{
+          s: {
+            spent: number;
+            limit: number;
+            warning: boolean;
+            fallback: boolean;
+          };
+        }>('select public.budget_status($1,100)s', [h])
+      ).rows[0].s;
+    const r = randomUUID();
+    expect(await reserve(r, 8)).toBe(true);
+    expect(await reserve(r, 8)).toBe(false);
+    expect(await status()).toMatchObject({
+      limit: 10,
+      warning: true,
+      fallback: false,
+    });
+    expect(await reserve(randomUUID(), 3)).toBe(false);
+    expect(await reserve(randomUUID(), 2)).toBe(true);
+    expect(await status()).toMatchObject({ spent: 10, fallback: true });
+    expect(await reserve(randomUUID(), 0.1)).toBe(false);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.settle_ai_budget($1,1)ok',
+          [r],
+        )
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.settle_ai_budget($1,0)ok',
+          [r],
+        )
+      ).rows[0].ok,
+    ).toBe(false);
+    expect(await status()).toMatchObject({
+      spent: 3,
+      warning: false,
+      fallback: false,
+    });
+    expect(
+      (
+        await db.query<{ s: { fallback: boolean } }>(
+          'select public.budget_status($1,0)s',
+          [h],
+        )
+      ).rows[0].s.fallback,
+    ).toBe(true);
+    await db.query(
+      "insert into public.ai_budget_months(household_id,month,spent)values($1,date_trunc('month',now() at time zone 'Europe/Oslo')::date-interval '1 month',1000)",
+      [h],
+    );
+    expect((await status()).spent).toBe(3);
+    const exported = (
+      await db.query<{ x: { ai_reservations: unknown[] } }>(
+        'select public.export_household($1)x',
+        [h],
+      )
+    ).rows[0].x;
+    expect(exported.ai_reservations).toHaveLength(2);
+    await asUser(ids.b);
+    expect(
+      (await db.query('select * from public.ai_budget_months')).rows,
+    ).toEqual([]);
+    await expect(
+      db.query('select public.reserve_ai_budget($1,$2,1,100)', [
+        h,
+        randomUUID(),
+      ]),
+    ).rejects.toThrow();
+    await db.exec('reset role');
+  });
+  it('limits authenticated locked devices independently by scope and household', async () => {
+    await db.exec('reset role;set role service_role');
+    const h = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    const other = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.lb],
+      )
+    ).rows[0].household_id;
+    const d = randomUUID();
+    await db.query(
+      'insert into public.devices(id,parent_id,learner_id,household_id,leo_mode_locked)values($1,$2,$3,$4,true)',
+      [d, ids.a, ids.la, h],
+    );
+    const allow = async (scope: string, house = h) =>
+      (
+        await db.query<{ ok: boolean }>(
+          'select public.allow_ai_request($1,$2,$3,2)ok',
+          [d, house, scope],
+        )
+      ).rows[0].ok;
+    expect(await allow('leo', other)).toBe(false);
+    expect(await allow('leo')).toBe(true);
+    expect(await allow('leo')).toBe(true);
+    expect(await allow('leo')).toBe(false);
+    expect(await allow('tts')).toBe(true);
+    await db.query(
+      'update public.devices set leo_mode_locked=false where id=$1',
+      [d],
+    );
+    expect(await allow('stt')).toBe(false);
+    await db.exec('reset role');
+  });
+  it('maintenance removes expired school text from rows and snapshots without deleting mastery', async () => {
+    await db.exec('reset role;set role service_role');
+    const s = randomUUID();
+    const topics = [
+      {
+        raw: 'Gammelt tema',
+        expiresAt: new Date(Date.now() - 86400000).toISOString(),
+      },
+      {
+        raw: 'Nytt tema',
+        expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      },
+    ];
+    await db.query(
+      'insert into public.sessions(id,learner_id,ended_at,engine_state)values($1,$2,now(),$3)',
+      [
+        s,
+        ids.la,
+        JSON.stringify({ schoolTopics: topics, states: { keep: true } }),
+      ],
+    );
+    await db.query('select public.maintain_learner($1)', [ids.la]);
+    const state = (
+      await db.query<{
+        engine_state: { schoolTopics: unknown[]; states: unknown };
+      }>('select engine_state from public.sessions where id=$1', [s])
+    ).rows[0].engine_state;
+    expect(state.schoolTopics).toEqual([topics[1]]);
+    expect(state.states).toEqual({ keep: true });
+    await db.exec('reset role');
+  });
+  it('clearing data removes only the chosen household and rejects stale audio/session writes', async () => {
+    await db.exec('reset role;set role service_role');
+    const household = (
+      await db.query<{ household_id: string }>(
+        'select household_id from public.learners where id=$1',
+        [ids.la],
+      )
+    ).rows[0].household_id;
+    await db.query('select public.begin_data_clear($1)', [household]);
+    await expect(
+      db.query(
+        'insert into public.sessions(learner_id,ended_at)values($1,now())',
+        [ids.la],
+      ),
+    ).rejects.toThrow();
+    await expect(
+      db.query(
+        "insert into public.tts_cache(text_hash,voice,storage_path)values('old','voice',$1)",
+        [`${household}/old.mp3`],
+      ),
+    ).rejects.toThrow();
+    expect(
+      (
+        await db.query<{ ok: boolean }>('select public.clear_app_data($1)ok', [
+          household,
+        ])
+      ).rows[0].ok,
+    ).toBe(true);
+    expect(
+      (
+        await db.query(
+          'select * from public.ai_budget_months where household_id=$1',
+          [household],
+        )
+      ).rows,
+    ).toEqual([]);
+    expect(
+      (
+        await db.query(
+          'select * from public.ai_reservations where household_id=$1',
+          [household],
+        )
+      ).rows,
+    ).toEqual([]);
+    expect(
+      (await db.query('select id from public.learners where id=$1', [ids.la]))
+        .rows,
+    ).toHaveLength(0);
+    expect(
+      (await db.query('select id from public.learners where id=$1', [ids.lb]))
+        .rows,
+    ).toHaveLength(1);
+    expect(
+      (
+        await db.query('select id from public.messages where learner_id=$1', [
+          ids.la,
+        ])
+      ).rows,
+    ).toHaveLength(0);
+    expect(
+      (
+        await db.query(
+          'select parent_id from public.parent_secrets where parent_id=$1',
+          [ids.a],
+        )
+      ).rows,
+    ).toHaveLength(0);
     await db.exec('reset role');
   });
 });

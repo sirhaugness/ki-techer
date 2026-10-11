@@ -13,6 +13,7 @@ import { answerSchema } from '../engine/skills/generators';
 export const eventSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('next') }),
   z.object({ type: z.literal('hint') }),
+  z.object({ type: z.literal('school'), text: z.string().trim().max(240) }),
   z.object({
     type: z.literal('answer'),
     itemId: z.uuid(),
@@ -43,9 +44,15 @@ export type LearnerProfile = {
   avatar: string;
   settings: Record<string, unknown>;
 };
-export type Interest = { id: string; label: string; active: boolean };
+export type Interest = {
+  id: string;
+  label: string;
+  active: boolean;
+  weight?: number;
+};
 export type Snapshot = {
   version: 1;
+  fallbackMode?: boolean;
   revision: number;
   id: string;
   clock: SessionClock;
@@ -120,6 +127,7 @@ export type PublicTask = {
   skillTitle: string;
 };
 export type LearningView = {
+  fallbackMode?: boolean;
   id: string;
   revision: number;
   mode: Snapshot['mode'];

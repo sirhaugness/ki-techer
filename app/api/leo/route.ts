@@ -1,3 +1,5 @@
+import { after } from 'next/server';
+import { observations, reflectPending } from '@/lib/profile/repository';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
@@ -12,10 +14,11 @@ import {
   latestSession,
   insertSession,
   saveTurn,
-  logAi,
 } from '@/lib/learning/repository';
 import { adminDb } from '@/lib/db/server';
-import { openaiProvider } from '@/lib/ai/openai';
+import { controlledProvider } from '@/lib/ai/control';
+import { allowDevice } from '@/lib/security/limits';
+import { boundedJson } from '@/lib/security/body';
 import { approved } from '@/lib/ai/moderation';
 import { eventSchema } from '@/lib/learning/types';
 import { authOrigin } from '@/lib/auth/origin';
@@ -62,14 +65,13 @@ export async function POST(request: Request) {
       { message: 'Last siden på nytt før du prøver igjen.' },
       { status: 403 },
     );
-  if (Number(request.headers.get('content-length') ?? 0) > 8_000)
+  const body = await boundedJson(request);
+  if (body.tooLarge)
     return Response.json(
       { message: 'Meldingen er for lang.' },
       { status: 413 },
     );
-  const parsed = commandSchema.safeParse(
-    await request.json().catch(() => null),
-  );
+  const parsed = commandSchema.safeParse(body.value);
   if (!parsed.success)
     return Response.json(
       { message: 'Sjekk svaret og prøv igjen.' },
@@ -80,15 +82,26 @@ export async function POST(request: Request) {
       f = mock ? fixture() : null;
     const access = mock ? null : await leoAccess(),
       profile = f?.profile ?? access!.profile;
-    const provider =
-      mock || !process.env.OPENAI_API_KEY
-        ? null
-        : openaiProvider((call) => logAi(profile.householdId, call));
+    if (
+      !mock &&
+      !(await allowDevice(access!.device.id, profile.householdId, 'leo'))
+    )
+      return Response.json(
+        { message: 'Vi trenger en liten pause. Prøv igjen om ett minutt.' },
+        { status: 429, headers: { 'Retry-After': '60' } },
+      );
+    const provider = mock
+      ? null
+      : await controlledProvider(profile.householdId);
     const cmd = parsed.data;
     if (cmd.command === 'voiceSettings') {
+      if (profile.settings.voice === false)
+        return Response.json(
+          { message: 'Forelder har slått av tale.' },
+          { status: 403 },
+        );
       const settings = {
         ...profile.settings,
-        voice: true,
         auto_read: cmd.autoRead,
       };
       if (f) f.profile.settings = settings;
@@ -114,6 +127,7 @@ export async function POST(request: Request) {
       id: i.id,
       label: i.label,
       active: i.active,
+      weight: 'weight' in i ? Number(i.weight) : 1,
     }));
     if (cmd.command === 'interest') {
       // Preset labels are trusted app content; custom text requires moderation.
@@ -276,6 +290,7 @@ export async function POST(request: Request) {
       interests,
       provider,
       instructions,
+      mock ? [] : await observations(profile.id),
     );
     if (f) {
       if (f.state?.revision !== cmd.revision)
@@ -291,6 +306,8 @@ export async function POST(request: Request) {
         { message: 'Økten ble oppdatert. Last siden på nytt.' },
         { status: 409 },
       );
+    if (!mock && result.state.endedAt)
+      after(() => reflectPending(profile.id, profile.householdId));
     return Response.json(publicView(result.state), {
       headers: { 'Cache-Control': 'no-store' },
     });

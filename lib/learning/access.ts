@@ -28,5 +28,12 @@ export async function leoAccess() {
     .eq('id', device.learner_id)
     .single();
   if (error || !data) throw new Error('Fant ikke elevprofilen.');
+  const household = await client
+    .from('households')
+    .select('clearing_data')
+    .eq('id', data.household_id)
+    .single();
+  if (household.error || household.data?.clearing_data)
+    throw new Error('Forelder rydder data. Prøv igjen senere.');
   return { client, profile: learnerProfile(data), device };
 }

@@ -91,4 +91,23 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await expect(
     page.getByRole('heading', { name: 'Foreldresiden', exact: true }),
   ).toBeVisible();
+  await page
+    .getByRole('link', { name: 'Se fremgang, økter og innstillinger for Leo' })
+    .click();
+  await expect(
+    page.getByRole('heading', { name: 'Innsyn for Leo' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Profilhukommelse' }),
+  ).toBeVisible();
+  const learnerId = new URL(page.url()).pathname.split('/').at(-1)!;
+  const exported = await page.request.get(
+    `/api/parent/export?learnerId=${learnerId}`,
+  );
+  expect(exported.status()).toBe(200);
+  const data = await exported.json();
+  expect(data.sessions.length).toBeGreaterThanOrEqual(2);
+  expect(data.messages.length).toBeGreaterThan(0);
+  expect(data.attempts.length).toBeGreaterThan(0);
+  expect(data.login_account.email).toBe(email);
 });

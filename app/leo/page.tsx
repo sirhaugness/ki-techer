@@ -1,3 +1,6 @@
+import { after } from 'next/server';
+import { reflectPending } from '@/lib/profile/repository';
+import { homeChapter, maintainLearner } from '@/lib/profile/home';
 import { leoAccess } from '@/lib/learning/access';
 import { fixtureEnabled, fixture, resetFixture } from '@/lib/learning/fixture';
 import { latestSession } from '@/lib/learning/repository';
@@ -21,6 +24,12 @@ export default async function LeoPage({
   const f = mock ? fixture() : null;
   const profile = f?.profile ?? (await leoAccess()).profile;
   const state = f ? f.state : await latestSession(profile.id);
+  if (!mock)
+    after(async () => {
+      await maintainLearner(profile.id);
+      await reflectPending(profile.id, profile.householdId);
+    });
+  const story = await homeChapter(profile);
   const parts =
     state?.parts ??
     ([1, 2, 3, 4] as const).map((id) => progressForPart(id, {}));
@@ -29,6 +38,7 @@ export default async function LeoPage({
       <LeoExperience
         key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
         profile={profile}
+        story={story}
         initial={state ? publicView(state) : null}
         parts={parts}
         diagnosticComplete={state?.diagnosticComplete ?? false}

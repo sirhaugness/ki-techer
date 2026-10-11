@@ -112,3 +112,33 @@ Supabase Auth-feilkoder gir konkrete norske meldinger ved SMTP-begrensning, send
 - Automatisk verifisering bruker falsk mikrofon og lydfixture, pluss codec-/avbrudds-/tilgangstester. Fysisk iPad Safari/Chrome, ekte norsk uttale og ekte modell-eval krever Preview-test og kan ikke erklæres bestått av mock-resultater.
 
 Fasitvernet deler én kontroll for matematiske tallpåstander mellom samtaler og interesseinnramming. Unicode-tall og sammensatte norske tallord/brøkord avvises før hintnivå 4, også når de ikke matcher fasiten direkte. Iterativ ordsegmentering unngår eksponentiell regex-backtracking. Vanlig «en/et» alene kan brukes i rammetekst med mindre det faktisk røper svaret én. Ukontrollerte matematiske påstander fra KI-en erstattes med betrodd fallback eller det opprinnelige generatorspørsmålet.
+
+## M7 — profil og fortelling (11. oktober 2026)
+
+Refleksjon bruker `OPENAI_MODEL_REFLECT`, godkjente meldingsutdrag, øktstatistikk, verktøynavn/resultatstatus, bandit og eksisterende observasjoner. Fasit, rå verktøyargumenter og sensitiv tekst sendes ikke med. To nye forsøk ved feil; deretter et nøkternt sammendrag uten oppdiktede profilfakta. Nexts `after` kjører etter lagret avslutning. Databasefelt for ventende/reflektert økt og fem minutters lease gjør at neste hjem-besøk kan plukke opp avbrutt arbeid.
+
+Fletting og interesseoppdatering skjer i én service-only SQL-transaksjon. Modellen kan foreslå operasjoner, men får ikke bestemme confidence: start 0,4, ny økt +0,15, motbevis −0,2, arkiv under 0,2 og maks 25 aktive/låste. Samme økt teller én gang per observasjon. «Arkiver» behandles som motbevis, slik at modellen ikke kan omgå terskelen. Låste, avviste og arkiverte observasjoner endres aldri automatisk. Forelders profilendringer skal bruke samme elevlås. Agentkonteksten bruker bare aktive med confidence ≥0,6 og låste.
+
+Interessevekt oppdateres forsiktig fra Leos rapporterte slutthumør, med vekt avgrenset til 0,25–3. Riktige svar er ikke et engasjementsmål. Samme interesse kan fortsatt brukes maksimalt to ganger på rad. Fortellingen bruker trygge, norske maler; sterkeste aktive interesse velger ramme, og avsluttede økter velger neste kapittel uten tilfeldige belønninger. Skoletema modereres og gjenkjennes konservativt for divisjon, multiplikasjon, geometri og algoritmer; usikre temaer lagres ikke. Temaet påvirker kandidater bare i sju dager. «Vet ikke» er alltid et greit svar.
+
+## M8 — forelders innsyn og personvern (11. oktober 2026)
+
+Alle foreldresider, eksport, diplom og mutasjoner sjekker både innlogging, Leo-lås og medlemskap i elevens husholdning før servernøkkelen brukes. Nye RPC-er er service-only og security invoker. Dashbordet viser 20 økter per side, de siste 100 sikkerhetsflaggene og to uker med trender; detaljinnsyn og JSON-eksport aggregeres i SQL slik at Supabases REST-grense ikke kutter bort historikk. Eksport inkluderer referansedata og lydcache-referanser, men aldri PIN-hash, nøkler eller innloggingstokener.
+
+Forelders profilendringer bruker samme elevlås som refleksjon. Redigering beholder bevislenker og merkes som forelders endring; låst/avvist beskyttes mot automatikk. Ny kartlegging tillates bare etter avsluttet økt og bevarer mestring og medaljong. Diplomet krever lagret tildeling og har A4-layout uten navigasjon på utskrift.
+
+«Slett alle appdata» fjerner hele husholdningens elevprofiler og avhengige læringsdata, PIN, forbrukslogger og privat lyd, men beholder innloggingskontoen slik at forelder kan starte på nytt. En separat bekreftet handling på profilsiden sletter også den aktuelle forelders Auth-konto etter global utlogging. Den sletter ikke en annen forelders innloggingskonto. Appdatasletting starter med en varig ryddeflagg; ved Storage-feil kan forelder prøve igjen. Databasegrenser avviser gamle økt-/lydforespørsler etter en personvern-nullstilling. Gamle samtalelogger slettes også fra øktsnapshotets meldingskopi, mens matematisk evidens bevares.
+
+## M9 — grenser og opprydding
+
+Månedsbudsjett følger Europe/Oslo, per husholdning. Laveste elevgrense og Vercels overgrense gjelder. 80 % gir foreldervarsel; 100 % eller utilgjengelig budsjettkontroll gir deterministisk læring uten betalte KI-kall. PostgreSQL reserverer et konservativt beløp under radlås før hvert kall og frigir bare kjent ubrukt beløp. Timeout beholder reservasjonen. Estimatet er ikke en leverandørfaktura; budsjettet verner mot samtidige kall og merker perioden selv ved månedsbytte.
+
+Rate limiting lagres per autorisert låst enhet/minutt: 30 app-, 12 TTS- og 6 STT-forespørsler. Faktisk strømstørrelse begrenses, også uten Content-Length. Eleven får vennlig beskjed og kan bruke tastatur ved talefeil. Cached lyd/enhetsstemme kan brukes selv om nye KI-kall er stoppet. Forelders tale-av går foran dette.
+
+Oppbevaring ryddes ved autorisert besøk fremfor en ny cron-tjeneste: samtaler/verktøylogger etter valgt 1–36 måneder, skoletema etter 7 dager, privat opplesingslyd etter 30 dager (maks 100 per besøk), reservasjoner etter 12 måneder, månedsrader etter 24 måneder og minuttellere etter 2 timer. Mestring beholdes. Eksport og sletting omfatter også de nye tekniske tabellene. Inaktive kontoer ryddes ved neste besøk; dette er eksplisitt i personvern/deploy-veiledning.
+
+Lighthouse legges i lokal fullsjekk og CI med mock-only server og lagrede rapporter. Automatisk tilgjengelighet er kontrollert på seks visninger; faktisk iPad, skjermleser, KI-uttale og hosted Preview må vurderes separat. Ingen nye miljønavn eller produksjonsendringer.
+
+Fallback bevarer M4s forståelsesvern: en fritekstforklaring får ikke forståelse=2 uten godkjent rubrikk. Øvingssvar, hint, eksisterende mestring og tilgjengelige mesterutfordringer virker fortsatt, og tildeling er testet med null-provider. Ingen budsjettregel gir gratis mestring; ny forståelsesvurdering venter på fungerende KI.
+
+Hosted Supabase tildeler også direkte EXECUTE til anon ved funksjonsopprettelse. M1s PUBLIC-revoke er supplert med eksplisitt anon-revoke for de tre auth.uid()-avgrensede bootstrap/RLS-funksjonene. PGlite-testene etterligner disse default-grantene og krever at ingen SECURITY DEFINER-funksjon er anonymt kjørbar. Dette ble funnet ved M9s hosted advisor-kontroll; migrasjonen er en ny fil fordi de tidligere allerede er brukt på dev.

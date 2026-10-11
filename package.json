@@ -14,8 +14,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "simulate": "node --import tsx scripts/simulate.ts",
-    "check": "npm run lint && npm run typecheck && npm run format:check && npm test && npm run simulate && npm run test:e2e && npm run build",
-    "eval:agent": "node --conditions react-server --env-file-if-exists=.env.local --import tsx scripts/eval-agent.ts"
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm test && npm run simulate && npm run test:e2e && npm run build && npm run audit:a11y",
+    "eval:agent": "node --conditions react-server --env-file-if-exists=.env.local --import tsx scripts/eval-agent.ts",
+    "audit:a11y": "node scripts/audit-accessibility.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.4.0",
@@ -45,10 +46,12 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
     "@vitest/coverage-v8": "5.0.3",
+    "chrome-launcher": "1.2.2",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.0",
     "eslint-config-prettier": "10.1.8",
     "jsdom": "30.1.2",
+    "lighthouse": "13.5.0",
     "msw": "2.15.0",
     "prettier": "3.9.9",
     "tailwindcss": "4.3.3",
