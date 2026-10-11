@@ -46,6 +46,10 @@ Test Supabase og OpenAI med mocks, aldri ekte nøkler eller eksterne tjenester i
 Full Auth-e2e kan bruke en lokal Supabase-stack med testnøkler. Brukerens eksplisitte migrasjonsworkflow er separat og bruker repository secrets mot dev/prod.
 Les `docs/SPEC.md` nøye og bygg én milepæl av gangen. Dokumenter rimelige valg i DECISIONS.
 
+## Tilgang, oppsett og Preview
+
+Hvis det trengs nye miljøvariabler, Redirect URLs eller hemmeligheter, legg dem inn selv via connectorer eller CLI og bekreft at de virker. Test Preview selv før du sier at du er ferdig. Endre aldri noe i produksjon (leo-prod eller Production-variabler i Vercel) uten å spørre først. Spør meg bare om det du ikke har tilgang til.
+
 ## Ferdigkriterier
 
 Relevante tester, lint, typecheck, formatering og build er grønne.
