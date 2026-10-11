@@ -80,44 +80,64 @@ export function LeoExperience({
         <Link href="/leo/interesser">Mine interesser</Link>
       </nav>
       {!view ? (
-        <>
-          <div className="leo-welcome">
-            <div>
-              <p className="eyebrow">DITT MATTEEVENTYR</p>
-              <h1>Hei, {profile.firstName}!</h1>
-              <p aria-label={`Din figur: ${profile.avatar}`}>
-                {profile.avatar === 'stjerne'
-                  ? '⭐'
-                  : profile.avatar === 'fjell'
-                    ? '⛰️'
-                    : '🌱'}
-              </p>
-              <p>
-                Jeg heter {profile.tutorName}. Vi utforsker matte sammen, steg
-                for steg.
-              </p>
-            </div>
-            <Tutor />
+        <div className="leo-welcome">
+          <div>
+            <p className="eyebrow">DITT MATTEEVENTYR</p>
+            <h1>Hei, {profile.firstName}!</h1>
+            <p aria-label={`Din figur: ${profile.avatar}`}>
+              {profile.avatar === 'stjerne'
+                ? '⭐'
+                : profile.avatar === 'fjell'
+                  ? '⛰️'
+                  : '🌱'}
+            </p>
+            <p>
+              Jeg heter {profile.tutorName}. Vi utforsker matte sammen, steg for
+              steg.
+            </p>
           </div>
-          <SpeechControls
-            source="home"
-            initialAuto={profile.settings.auto_read === true}
-            view={{
-              id: profile.id,
-              revision: 0,
-              mode: 'practice',
-              task: null,
-              speech: homeSpeech(profile.tutorName),
-              parts: displayedParts,
-              ended: true,
-              correct: null,
-              hintLevel: 0,
-              pauseOffered: false,
-              celebration: null,
-              diagnosticComplete,
-              masterProgress: null,
-            }}
-          />
+          <Tutor />
+        </div>
+      ) : (
+        <>
+          <div className="session-title">
+            <h1>
+              {view.mode === 'diagnostic'
+                ? 'Bli kjent'
+                : view.mode === 'master'
+                  ? 'Mesterutfordring'
+                  : 'Vi øver sammen'}
+            </h1>
+            <Tutor thinking={busy} />
+          </div>
+          <div className="tutor-speech" aria-live="polite">
+            <p>{view.speech}</p>
+          </div>
+        </>
+      )}
+      <SpeechControls
+        source={view ? 'all' : 'home'}
+        initialAuto={profile.settings.auto_read === true}
+        view={
+          view ?? {
+            id: profile.id,
+            revision: 0,
+            mode: 'practice',
+            task: null,
+            speech: homeSpeech(profile.tutorName),
+            parts: displayedParts,
+            ended: true,
+            correct: null,
+            hintLevel: 0,
+            pauseOffered: false,
+            celebration: null,
+            diagnosticComplete,
+            masterProgress: null,
+          }
+        }
+      />
+      {!view ? (
+        <>
           <div className="medallion-home">
             <Medallion parts={displayedParts} />
             <div>
@@ -207,23 +227,6 @@ export function LeoExperience({
         </>
       ) : (
         <>
-          <div className="session-title">
-            <h1>
-              {view.mode === 'diagnostic'
-                ? 'Bli kjent'
-                : view.mode === 'master'
-                  ? 'Mesterutfordring'
-                  : 'Vi øver sammen'}
-            </h1>
-            <Tutor thinking={busy} />
-          </div>
-          <div className="tutor-speech" aria-live="polite">
-            <p>{view.speech}</p>
-          </div>
-          <SpeechControls
-            view={view}
-            initialAuto={profile.settings.auto_read === true}
-          />
           {view.celebration && (
             <div className="celebration" role="status">
               <span aria-hidden="true">✦</span>
