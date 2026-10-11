@@ -109,6 +109,68 @@ describe('agent tools', () => {
   });
 });
 describe('loop and guards', () => {
+  it.each(['trettitre', 'en halv', '３３'])(
+    'rejects numerical answer claims in interest framing: %s',
+    async (number) => {
+      const item = {
+        ...generate('mult-telling-grupper', 1, seededRng(8)),
+        question: 'Hva er 30 + 3?',
+        expression: '30+3',
+        answer: 33,
+      };
+      const provider = mockProvider([
+        {
+          calls: [],
+          value: {
+            story: `Dinosauren har ${number} leker.`,
+            question: item.question,
+            expression: item.expression,
+            visual_spec: { type: 'ingen', data: { count: 0, groups: 1 } },
+          },
+        },
+      ]);
+      expect(await contextualize(provider, item, 'Dinosaurer')).toBe(
+        item.question,
+      );
+    },
+  );
+  it.each([
+    'åtte',
+    'trettitre',
+    'tjue-en',
+    'førti åtte',
+    'ett tusen fire hundre',
+    'femogtredve',
+    'hundre og fem',
+    'énhalv',
+    'en halv',
+    'nullkommafem',
+    '３３',
+    '٣٣',
+    'ⅩⅩⅩⅢ',
+  ])('rejects Norwegian number words before hint four: %s', (words) => {
+    const item = generate('mult-telling-grupper', 1, seededRng(8));
+    const response = { ...fallbackResponse(), speech: `Svaret er ${words}.` };
+    expect(guardResponse(response, item, 3)).toBeNull();
+    expect(guardResponse(response, item, 4)).not.toBeNull();
+  });
+  it('handles long compound-number text without regex backtracking and keeps ordinary guidance', () => {
+    const item = generate('mult-telling-grupper', 1, seededRng(8));
+    expect(
+      guardResponse(
+        { ...fallbackResponse(), speech: 'femti'.repeat(50) + 'x.' },
+        item,
+        0,
+      ),
+    ).not.toBeNull();
+    expect(
+      guardResponse(
+        { ...fallbackResponse(), speech: 'Prøv et lite steg med klossene.' },
+        item,
+        0,
+      ),
+    ).not.toBeNull();
+  });
   it('executes tools then validates a structured response', async () => {
     const rt = runtime(
       mockProvider([

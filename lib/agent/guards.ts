@@ -23,6 +23,68 @@ const numberWords = [
   'nitten',
   'tjue',
 ];
+// Unicode letter boundaries matter for «åtte» and «én». Reject mathematical
+// number phrases before a full solution, including compounds such as
+// «trettitre» and «ett tusen fire hundre», rather than matching only 0–20.
+const numeralAtoms = [
+  ...numberWords.filter((word) => word !== 'en'),
+  'syv',
+  'tyve',
+  'tretti',
+  'tredve',
+  'førti',
+  'femti',
+  'seksti',
+  'sytti',
+  'åtti',
+  'nitti',
+  'hundre',
+  'tusen',
+  'million',
+  'millioner',
+  'milliard',
+  'milliarder',
+  'halv',
+  'halve',
+  'halvpart',
+  'halvparten',
+  'kvart',
+  'tredel',
+  'tredjedel',
+  'fjerdedel',
+];
+const numeralAtomsWithOne = [
+  ...numeralAtoms,
+  'en',
+  'én',
+  'et',
+  'ett',
+  'og',
+  'komma',
+  'minus',
+];
+function mathematicalWords(text: string): boolean {
+  const words =
+    text
+      .toLocaleLowerCase('nb-NO')
+      .normalize('NFKC')
+      .match(/\p{L}+/gu) ?? [];
+  return words.some((word) => {
+    if (['en', 'én', 'et', 'ett', 'og', 'komma', 'minus'].includes(word))
+      return false;
+    // Dynamic programming avoids ambiguous regex repetition/backtracking.
+    const reachable = new Set([0]);
+    for (let i = 0; i < word.length; i++) {
+      if (!reachable.has(i)) continue;
+      for (const atom of numeralAtomsWithOne)
+        if (word.startsWith(atom, i)) reachable.add(i + atom.length);
+    }
+    return reachable.has(word.length);
+  });
+}
+export function containsMathClaim(text: string): boolean {
+  return /[\p{N}=÷×]/u.test(text) || mathematicalWords(text);
+}
 export function conciseNorwegian(text: string): boolean {
   return (
     text.length <= 360 &&
@@ -44,7 +106,13 @@ export function leaksAnswer(text: string, item: GeneratedItem): boolean {
       if (tokens.some((n) => Number(n.replace(',', '.')) === answer))
         return true;
       const word = numberWords[answer];
-      return !!word && new RegExp(`\\b${word}\\b`, 'u').test(normalized);
+      return (
+        !!word &&
+        new RegExp(
+          `(?<![\\p{L}\\p{N}])${answer === 1 ? '(?:en|én|et|ett)' : word}(?![\\p{L}\\p{N}])`,
+          'iu',
+        ).test(normalized)
+      );
     }
     return (
       typeof answer === 'string' &&
@@ -70,7 +138,7 @@ export function guardResponse(
   if (
     item &&
     allowedHintLevel < 4 &&
-    (leaksAnswer(response.speech, item) || /\d|[=÷×]/.test(response.speech))
+    (leaksAnswer(response.speech, item) || containsMathClaim(response.speech))
   )
     return null;
   return response;
