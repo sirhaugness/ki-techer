@@ -4,6 +4,9 @@ import { progressForPart } from '../engine/medallion';
 import { sessionPhase } from '../engine/session';
 import { privateText } from '../ai/moderation';
 export type ContextInput = {
+  taskText?: string;
+  lastAnswer?: unknown;
+  helpHistory?: { itemId: string; question: string; reply: string }[];
   learner: { firstName: string; grade: number; tutorName: string };
   engine: CandidateContext;
   active: GeneratedItem | null;
@@ -23,9 +26,16 @@ export function buildContext(ctx: ContextInput): string {
           60000,
     ),
     active: ctx.active
-      ? { skillId: ctx.active.skillId, question: ctx.active.question }
+      ? {
+          skillId: ctx.active.skillId,
+          question: ctx.taskText ?? ctx.active.question,
+        }
       : null,
     answerResult: ctx.answerResult,
+    lastAnswer: privateText(JSON.stringify(ctx.lastAnswer) ?? '')
+      ? '[Skjermet]'
+      : ctx.lastAnswer,
+    helpHistory: ctx.helpHistory?.slice(-6),
     allowedHintLevel: ctx.allowedHintLevel,
     recentAttempts: ctx.engine.history.slice(-5),
     profile: ctx.observations

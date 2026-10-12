@@ -114,15 +114,14 @@ export async function POST(request: Request) {
       }
       return Response.json({ ok: true });
     }
-    const interestRows =
-      f?.interests ??
-      (
-        await access!.client
+    const fetchedInterests = f
+      ? null
+      : await access!.client
           .from('interests')
           .select('*')
-          .eq('learner_id', profile.id)
-      ).data ??
-      [];
+          .eq('learner_id', profile.id);
+    if (fetchedInterests?.error) throw new Error('Kunne ikke hente eventyret.');
+    const interestRows = f?.interests ?? fetchedInterests?.data ?? [];
     const interests = interestRows.map((i) => ({
       id: i.id,
       label: i.label,
@@ -132,6 +131,7 @@ export async function POST(request: Request) {
     if (cmd.command === 'interest') {
       // Preset labels are trusted app content; custom text requires moderation.
       const preset = [
+        'Star Wars',
         'Dinosaurer',
         'Fotball',
         'Verdensrommet',
@@ -146,52 +146,58 @@ export async function POST(request: Request) {
           },
           { status: 400 },
         );
-      if (interests.length >= 20)
+      const existing = interests.find(
+        (i) =>
+          i.label.toLocaleLowerCase('nb-NO') ===
+          cmd.label.toLocaleLowerCase('nb-NO'),
+      );
+      if (interests.length >= 20 && !existing)
         return Response.json(
-          { message: 'Du har mange interesser. Skru på en du allerede har.' },
+          { message: 'Velg et eventyr du allerede har.' },
           { status: 400 },
         );
-      if (
-        !interests.some(
-          (i) =>
-            i.label.toLocaleLowerCase('nb-NO') ===
-            cmd.label.toLocaleLowerCase('nb-NO'),
-        )
-      ) {
-        if (f)
-          f.interests.push({
-            id: randomUUID(),
-            label: cmd.label,
-            active: true,
-          });
-        else {
-          const { error } = await adminDb().from('interests').insert({
-            learner_id: profile.id,
-            label: cmd.label,
-            source: 'leo',
-          });
-          if (error) throw new Error('Kunne ikke lagre interessen.');
-        }
+      if (f) {
+        const selectedId = existing?.id ?? randomUUID();
+        if (!existing)
+          f.interests.push({ id: selectedId, label: cmd.label, active: false });
+        f.interests = f.interests.map((i) => ({
+          ...i,
+          active: i.id === selectedId,
+        }));
+      } else {
+        const { error } = await adminDb().rpc('select_adventure', {
+          target_learner: profile.id,
+          interest_id: existing?.id ?? null,
+          interest_label: cmd.label,
+        });
+        if (error) throw new Error('Kunne ikke velge eventyret.');
       }
       return Response.json({ ok: true });
     }
     if (cmd.command === 'toggleInterest') {
-      if (!interests.some((i) => i.id === cmd.id))
+      const selected = interests.find((i) => i.id === cmd.id);
+      if (!selected)
         return Response.json(
           { message: 'Fant ikke interessen.' },
           { status: 404 },
         );
-      if (f)
-        f.interests = f.interests.map((i) =>
-          i.id === cmd.id ? { ...i, active: cmd.active } : i,
+      if (!cmd.active)
+        return Response.json(
+          { message: 'Velg et annet eventyr for å bytte.' },
+          { status: 400 },
         );
+      if (f)
+        f.interests = f.interests.map((i) => ({
+          ...i,
+          active: i.id === cmd.id,
+        }));
       else {
-        const { error } = await adminDb()
-          .from('interests')
-          .update({ active: cmd.active })
-          .eq('id', cmd.id)
-          .eq('learner_id', profile.id);
-        if (error) throw new Error('Kunne ikke lagre valget.');
+        const { error } = await adminDb().rpc('select_adventure', {
+          target_learner: profile.id,
+          interest_id: cmd.id,
+          interest_label: selected.label,
+        });
+        if (error) throw new Error('Kunne ikke velge eventyret.');
       }
       return Response.json({ ok: true });
     }

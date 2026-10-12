@@ -18,7 +18,11 @@ export default async function LeoPage({
   const mock = fixtureEnabled(),
     query = await searchParams;
   if (mock && query.fixture) {
-    resetFixture(query.fixture === 'master');
+    resetFixture(
+      query.fixture === 'master',
+      ['practice', 'quiet'].includes(query.fixture),
+      query.fixture === 'quiet',
+    );
     redirect('/leo');
   }
   const f = mock ? fixture() : null;

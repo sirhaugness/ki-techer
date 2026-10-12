@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import type {
   LearningView,
@@ -9,6 +9,7 @@ import type {
 } from '@/lib/learning/types';
 import type { Answer } from '@/lib/engine/skills/generators';
 import type { PartProgress } from '@/lib/engine/medallion';
+import { TeacherDesk } from './teacher-desk';
 import { AnswerPanel } from './answer-panel';
 import { Manipulatives } from './manipulatives';
 import { SpeechControls } from './speech-controls';
@@ -27,9 +28,19 @@ export function LeoExperience({
   initial: LearningView | null;
   parts: PartProgress[];
   diagnosticComplete: boolean;
-  story: { title: string; number: number; text: string };
+  story: {
+    title: string;
+    number: number;
+    text: string;
+    completed?: number;
+    part?: 1 | 2 | 3 | 4 | null;
+    interest?: string | null;
+    icon?: string;
+  };
 }) {
   const router = useRouter();
+  const taskRef = useRef<HTMLElement>(null);
+  const sending = useRef(false);
   const [view, setView] = useState(initial && !initial.ended ? initial : null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -42,6 +53,8 @@ export function LeoExperience({
   const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
   async function send(command: Record<string, unknown>) {
+    if (sending.current) return;
+    sending.current = true;
     setBusy(true);
     setError('');
     setPending(command);
@@ -54,6 +67,16 @@ export function LeoExperience({
       const data = await response.json();
       if (!response.ok) throw new Error(data.message ?? 'Prøv igjen.');
       setView(data as LearningView);
+      const event = command.event as LearningEvent | undefined;
+      if (event?.type === 'next' || event?.type === 'mood')
+        requestAnimationFrame(() => {
+          const top = taskRef.current?.getBoundingClientRect().top;
+          if (top !== undefined && (top < 0 || top > window.innerHeight / 2))
+            taskRef.current?.scrollIntoView({
+              block: 'start',
+              behavior: 'instant',
+            });
+        });
       setPending(null);
       setExplanation('');
       setShowExplain(false);
@@ -62,6 +85,7 @@ export function LeoExperience({
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Prøv igjen.');
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   }
@@ -113,9 +137,11 @@ export function LeoExperience({
             </h1>
             <Tutor thinking={busy} />
           </div>
-          <div className="tutor-speech" aria-live="polite">
-            <p>{view.speech}</p>
-          </div>
+          {(!view.task || view.ended) && (
+            <div className="tutor-speech" aria-live="polite">
+              <p>{view.speech}</p>
+            </div>
+          )}
         </>
       )}
       {profile.settings.voice !== false && (
@@ -142,7 +168,9 @@ export function LeoExperience({
         />
       )}
       {profile.settings.voice === false && (
-        <p>Tale er slått av av forelder. Du kan bruke tastaturet.</p>
+        <p className="voice-note">
+          Tale er slått av. Du kan skrive til læreren.
+        </p>
       )}
       {!view ? (
         <>
@@ -150,6 +178,27 @@ export function LeoExperience({
             <h2>{story.title}</h2>
             <p>Kapittel {story.number}</p>
             <p>{story.text}</p>
+            {story.interest ? (
+              <button
+                className="primary"
+                disabled={busy}
+                onClick={() =>
+                  void send({
+                    command: 'start',
+                    mode: diagnosticComplete ? 'practice' : 'diagnostic',
+                    part: diagnosticComplete ? (story.part ?? null) : null,
+                  })
+                }
+              >
+                {story.completed ? 'Fortsett eventyret' : 'Start eventyret'}
+              </button>
+            ) : (
+              <Link href="/leo/interesser">Velg ditt eventyr</Link>
+            )}
+            <p className="home-note">
+              Eventyret følger deg i Basecamp og på kartet. Du kan bytte
+              interesse og beholde matten du har lært.
+            </p>
           </section>
           <div className="medallion-home">
             <Medallion parts={displayedParts} />
@@ -245,7 +294,7 @@ export function LeoExperience({
               Vi øver med faste oppgaver og rolige hint i dag.
             </p>
           )}
-          {view.celebration && (
+          {view.celebration && view.ended && (
             <div className="celebration" role="status">
               <span aria-hidden="true">✦</span>
               <h2>{view.celebration}</h2>
@@ -299,7 +348,16 @@ export function LeoExperience({
             </section>
           ) : (
             <>
-              <section className="task-card">
+              <section className="task-card" ref={taskRef} aria-busy={busy}>
+                {view.adventure && (
+                  <p className="adventure-label">
+                    {view.adventure.icon} {view.adventure.title} · Kapittel{' '}
+                    {view.adventure.number}
+                  </p>
+                )}
+                <p className="adventure-scene">
+                  {view.adventure?.scene ?? view.task.skillTitle}
+                </p>
                 <p className="eyebrow">{view.task.skillTitle}</p>
                 <h2 id="task-question">{view.task.question}</h2>
                 {view.task.visual.shape && (
@@ -310,92 +368,115 @@ export function LeoExperience({
                     onAnswer={() => {}}
                   />
                 )}
-                {!view.task.resolved && (
-                  <>
-                    <RecordButton
-                      disabled={busy || profile.settings.voice === false}
-                      onText={setTranscript}
-                    />
-                    {transcript && (
-                      <div className="card">
-                        <label>
-                          Dette hørte vi. Du kan rette teksten.
-                          <input
-                            value={transcript}
-                            maxLength={600}
-                            onChange={(e) => setTranscript(e.target.value)}
-                          />
-                        </label>
-                        <button
-                          disabled={
-                            busy ||
-                            parseVoiceAnswer(
-                              transcript,
-                              view.task.answerType,
-                              view.task.choices,
-                            ) === null
-                          }
-                          onClick={() => {
-                            const answer = parseVoiceAnswer(
-                              transcript,
-                              view.task!.answerType,
-                              view.task!.choices,
-                            );
-                            if (answer !== null)
-                              turn({
-                                type: 'answer',
-                                itemId: view.task!.id,
-                                answer,
-                                inputMode: 'tale',
-                              });
-                          }}
-                        >
-                          Bruk talesvaret
-                        </button>
-                        {parseVoiceAnswer(
-                          transcript,
-                          view.task.answerType,
-                          view.task.choices,
-                        ) === null && (
-                          <p>
-                            Vi trenger ett tydelig svar. Rett teksten eller bruk
-                            tastaturet.
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </>
-                )}
-                {view.task.resolved ? (
-                  <>
-                    <p role="status">
-                      {view.mode === 'master' || view.mode === 'diagnostic'
-                        ? 'Svaret ditt er lagret.'
-                        : 'Du fant en løsning.'}
-                    </p>
-                    <button
-                      className="primary"
-                      disabled={busy}
-                      onClick={() => turn({ type: 'next' })}
+                {!view.task.resolved &&
+                  profile.settings.voice !== false &&
+                  !view.task.expressionRequired && (
+                    <>
+                      <RecordButton
+                        disabled={busy || profile.settings.voice === false}
+                        onText={setTranscript}
+                      />
+                      {transcript && (
+                        <div className="card">
+                          <label>
+                            Dette hørte vi. Du kan rette teksten.
+                            <input
+                              value={transcript}
+                              maxLength={600}
+                              onChange={(e) => setTranscript(e.target.value)}
+                            />
+                          </label>
+                          <button
+                            disabled={
+                              busy ||
+                              parseVoiceAnswer(
+                                transcript,
+                                view.task.answerType,
+                                view.task.choices,
+                              ) === null
+                            }
+                            onClick={() => {
+                              const answer = parseVoiceAnswer(
+                                transcript,
+                                view.task!.answerType,
+                                view.task!.choices,
+                              );
+                              if (answer !== null)
+                                turn({
+                                  type: 'answer',
+                                  itemId: view.task!.id,
+                                  answer,
+                                  inputMode: 'tale',
+                                });
+                            }}
+                          >
+                            Bruk talesvaret
+                          </button>
+                          {parseVoiceAnswer(
+                            transcript,
+                            view.task.answerType,
+                            view.task.choices,
+                          ) === null && (
+                            <p>
+                              Vi trenger ett tydelig svar. Rett teksten eller
+                              bruk tastaturet.
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                <div className="answer-feedback" aria-live="polite">
+                  {view.task.resolved ? (
+                    <strong>
+                      {view.correct
+                        ? view.celebration
+                          ? `✓ ${view.celebration}`
+                          : '✓ Riktig! Oppdraget er løst.'
+                        : 'Svaret er lagret. Vi øver videre sammen.'}
+                    </strong>
+                  ) : view.correct === false ? (
+                    <strong>
+                      {view.lastAnswerCorrect && view.task.expressionRequired
+                        ? '✓ Tallsvaret stemmer. Se på regnestykket.'
+                        : 'Prøv igjen. Læreren hjelper deg.'}
+                    </strong>
+                  ) : (
+                    <span>Skriv svaret, og trykk «Sjekk svaret».</span>
+                  )}
+                  {view.correct && view.task.resolved && (
+                    <span
+                      key={view.task.id}
+                      className="answer-sparkles"
+                      aria-hidden="true"
                     >
-                      Neste oppgave
-                    </button>
-                  </>
-                ) : (
-                  <AnswerPanel
-                    key={view.task.id}
-                    task={view.task}
-                    busy={busy}
-                    onAnswer={(answer) =>
-                      turn({
-                        type: 'answer',
-                        itemId: view.task!.id,
-                        answer: answer as Answer,
-                        inputMode: 'tastatur',
-                      })
-                    }
-                  />
-                )}
+                      {view.adventure?.icon ?? '✨'} ✦ ✦
+                    </span>
+                  )}
+                </div>
+                <AnswerPanel
+                  key={view.task.id}
+                  task={view.task}
+                  busy={busy}
+                  teacher={
+                    <TeacherDesk
+                      view={view}
+                      busy={busy}
+                      name={profile.tutorName}
+                      voice={profile.settings.voice !== false}
+                      onAsk={(text) => turn({ type: 'ask', text })}
+                    />
+                  }
+                  onNext={() => turn({ type: 'next' })}
+                  onAnswer={(answer) =>
+                    turn({
+                      type: 'answer',
+                      itemId: view.task!.id,
+                      answer: answer as Answer,
+                      inputMode: 'tastatur',
+                    })
+                  }
+                />
               </section>
               {view.mode !== 'master' && (
                 <>
@@ -429,11 +510,13 @@ export function LeoExperience({
                           maxLength={600}
                         />
                       </label>
-                      <RecordButton
-                        label="Hold for å forklare"
-                        disabled={busy || profile.settings.voice === false}
-                        onText={setExplanation}
-                      />
+                      {profile.settings.voice !== false && (
+                        <RecordButton
+                          label="Hold for å forklare"
+                          disabled={busy || profile.settings.voice === false}
+                          onText={setExplanation}
+                        />
+                      )}
                       <button disabled={busy || !explanation.trim()}>
                         Send forklaringen
                       </button>
@@ -442,7 +525,13 @@ export function LeoExperience({
                   {!view.task.visual.shape && (
                     <details
                       className="manipulative-details"
-                      open={view.task.showVisual}
+                      open={
+                        view.helpHistory?.some(
+                          (h) =>
+                            h.itemId === view.task?.id &&
+                            h.question === 'Vis meg med en tegning',
+                        ) ?? false
+                      }
                     >
                       <summary>Utforsk med tegning og klosser</summary>
                       <Manipulatives
@@ -516,11 +605,13 @@ export function LeoExperience({
                       onChange={(e) => setReflection(e.target.value)}
                     />
                   </label>
-                  <RecordButton
-                    label="Hold for å fortelle hva du lærte"
-                    disabled={busy || profile.settings.voice === false}
-                    onText={setReflection}
-                  />
+                  {profile.settings.voice !== false && (
+                    <RecordButton
+                      label="Hold for å fortelle hva du lærte"
+                      disabled={busy || profile.settings.voice === false}
+                      onText={setReflection}
+                    />
+                  )}
                   <fieldset>
                     <legend>Hvordan kjennes det nå?</legend>
                     <div className="button-row">
@@ -559,7 +650,9 @@ export function LeoExperience({
           )}
         </>
       )}
-      {busy && <p role="status">Læreren tenker …</p>}
+      <div className="request-status" role="status">
+        {busy ? 'Læreren tenker …' : ''}
+      </div>
       {error && (
         <div role="alert" className="error-box">
           <p>{error}</p>

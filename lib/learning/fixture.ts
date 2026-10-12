@@ -34,10 +34,23 @@ export function fixture() {
     interests: [],
   });
 }
-export function resetFixture(master = false) {
+export function resetFixture(master = false, ready = false, quiet = false) {
   const f = fixture();
   f.state = null;
   f.interests = [];
+  f.profile.settings.voice = !quiet;
+  if (ready) {
+    f.state = createSession(
+      f.profile,
+      null,
+      new Date().toISOString(),
+      0,
+      'practice',
+      null,
+    );
+    f.state.diagnosticComplete = true;
+    f.state.endedAt = new Date().toISOString();
+  }
   if (master) {
     const now = new Date().toISOString(),
       yesterday = new Date(Date.now() - 86400000).toISOString();

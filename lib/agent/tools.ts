@@ -18,7 +18,11 @@ import {
 } from '../engine/medallion';
 import { validateProposal } from '../engine/validate';
 import type { Rng } from '../engine/random';
-import { contextualize } from '../ai/contextualize';
+import {
+  activeInterest,
+  adventureTask,
+  type StoryProgress,
+} from '../profile/story';
 import { approved } from '../ai/moderation';
 import type { AiProvider, ToolDefinition } from '../ai/provider';
 import { representationSchema, visualSchema } from './schemas';
@@ -87,9 +91,14 @@ export type ActiveTask = {
   representation: z.infer<typeof representationSchema>;
   strategy: Record<string, string>;
   resolved: boolean;
+  expressionRequired?: boolean;
+  interestId?: string;
+  interestLabel?: string;
+  storyCompleted?: number;
 };
 export type AgentRuntime = {
   taskCreationAllowed?: boolean;
+  storyProgress?: StoryProgress;
   masterStartAllowed?: boolean;
   context: CandidateContext;
   rng: Rng;
@@ -159,30 +168,25 @@ export async function executeTool(
         list,
       );
       if (!check.ok) return { ok: false, result: check.reason };
-      const interest = runtime.interests.find(
-        (i) => i.id === a.interesse_id && i.active,
-      );
+      const interest = activeInterest(runtime.interests);
+      if (a.interesse_id && a.interesse_id !== interest?.id)
+        return { ok: false, result: 'Velg elevens aktive eventyr.' };
       if (a.interesse_id && !interest)
         return { ok: false, result: 'Interessen er ikke aktiv.' };
-      if (
-        a.interesse_id &&
-        runtime.usedInterests.slice(-2).length === 2 &&
-        runtime.usedInterests.slice(-2).every((id) => id === a.interesse_id)
-      )
-        return { ok: false, result: 'Velg en annen ramme denne gangen.' };
       const item = generate(
         a.skill_id,
         a.vanskegrad as 1 | 2 | 3 | 4 | 5,
         runtime.rng,
         runtime.active?.item,
       );
-      const text = await contextualize(
-        runtime.provider,
-        item,
-        a.kontekst_stil === 'interessefortelling'
-          ? (interest?.label ?? null)
-          : null,
-      );
+      const adventure = interest
+        ? adventureTask(
+            item,
+            interest.label,
+            runtime.storyProgress?.[interest.id]?.completed ?? 0,
+          )
+        : null;
+      const text = adventure?.text ?? item.question;
       runtime.active = {
         id: runtime.uuid(),
         item,
@@ -192,7 +196,7 @@ export async function executeTool(
           list.find((c) => c.skill_id === a.skill_id)?.anbefalt_strategi ?? {},
         resolved: false,
       };
-      runtime.usedInterests.push(a.interesse_id);
+      runtime.usedInterests.push(interest?.id ?? null);
       return {
         ok: true,
         result: {
@@ -203,6 +207,11 @@ export async function executeTool(
       };
     }
     case 'foreslå_egen_oppgave': {
+      if (activeInterest(runtime.interests))
+        return {
+          ok: false,
+          result: 'Bruk generatoren for elevens valgte eventyr.',
+        };
       if (runtime.taskCreationAllowed === false)
         return { ok: false, result: 'Fullfør denne turen først.' };
       const a = toolSchemas.foreslå_egen_oppgave.parse(args);
@@ -267,7 +276,7 @@ export async function executeTool(
       return { ok: true, result: { id: runtime.active.id, question: a.tekst } };
     }
     case 'vis_representasjon': {
-      if (!runtime.active || runtime.masterTest)
+      if (!runtime.active)
         return { ok: false, result: 'En vanlig øvingsoppgave må være aktiv.' };
       const visual = visualSchema.parse(args);
       const params = Object.values(runtime.active.item.params);

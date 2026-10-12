@@ -13,6 +13,7 @@ import { answerSchema } from '../engine/skills/generators';
 export const eventSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('next') }),
   z.object({ type: z.literal('hint') }),
+  z.object({ type: z.literal('ask'), text: z.string().trim().min(1).max(600) }),
   z.object({ type: z.literal('school'), text: z.string().trim().max(240) }),
   z.object({
     type: z.literal('answer'),
@@ -52,6 +53,10 @@ export type Interest = {
 };
 export type Snapshot = {
   version: 1;
+  storyProgress?: import('../profile/story').StoryProgress;
+  lastAnswer?: unknown;
+  lastAnswerCorrect?: boolean;
+  helpHistory?: { itemId: string; question: string; reply: string }[];
   fallbackMode?: boolean;
   revision: number;
   id: string;
@@ -67,7 +72,7 @@ export type Snapshot = {
   focusSkillId: string | null;
   selectedPart: 1 | 2 | 3 | 4 | null;
   masterTest: MasterTest | null;
-  masterAnswers: { itemId: string; correct: boolean; hintLevel: 0 }[];
+  masterAnswers: { itemId: string; correct: boolean; hintLevel: number }[];
   diagnosticIndex: number;
   diagnosticDifficulty: 1 | 2 | 3 | 4 | 5;
   diagnosticComplete: boolean;
@@ -111,6 +116,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  expressionRequired?: boolean;
   showVisual: boolean;
   id: string;
   question: string;
@@ -127,6 +133,9 @@ export type PublicTask = {
   skillTitle: string;
 };
 export type LearningView = {
+  adventure?: ReturnType<typeof import('../profile/story').chapter>;
+  helpHistory?: { itemId: string; question: string; reply: string }[];
+  lastAnswerCorrect?: boolean;
   fallbackMode?: boolean;
   id: string;
   revision: number;

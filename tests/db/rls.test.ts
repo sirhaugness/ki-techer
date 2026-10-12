@@ -824,3 +824,65 @@ describe('PostgreSQL RLS', () => {
     await db.exec('reset role');
   });
 });
+
+it('selects exactly one adventure atomically, rejects foreign IDs and protects direct writes', async () => {
+  await db.exec('reset role');
+  const user = randomUUID(),
+    own = randomUUID();
+  await db.query('insert into auth.users(id) values ($1)', [user]);
+  await asUser(user);
+  const household = await db.query<{ id: string }>(
+    'select public.ensure_household() as id',
+  );
+  await db.query(
+    'insert into public.learners(id,household_id,first_name) values($1,$2,$3)',
+    [own, household.rows[0].id, 'Leo'],
+  );
+  await db.exec('reset role');
+  const one = await db.query<{ id: string }>(
+    'select public.select_adventure($1,null,$2) as id',
+    [ids.lb, 'Star Wars'],
+  );
+  const two = await db.query<{ id: string }>(
+    'select public.select_adventure($1,null,$2) as id',
+    [ids.lb, 'Dinosaurer'],
+  );
+  expect(
+    (
+      await db.query(
+        'select label from public.interests where learner_id=$1 and active',
+        [ids.lb],
+      )
+    ).rows,
+  ).toEqual([{ label: 'Dinosaurer' }]);
+  await expect(
+    db.query('update public.interests set active=true where id=$1', [
+      one.rows[0].id,
+    ]),
+  ).rejects.toThrow();
+  await expect(
+    db.query('select public.select_adventure($1,$2,$3)', [
+      own,
+      two.rows[0].id,
+      'Dinosaurer',
+    ]),
+  ).rejects.toThrow('Unknown interest');
+  await db.query('select public.select_adventure($1,$2,$3)', [
+    ids.lb,
+    one.rows[0].id,
+    'Star Wars',
+  ]);
+  expect(
+    (
+      await db.query(
+        'select label from public.interests where learner_id=$1 and active',
+        [ids.lb],
+      )
+    ).rows,
+  ).toEqual([{ label: 'Star Wars' }]);
+  await asUser(ids.a);
+  await expect(
+    db.query('select public.select_adventure($1,null,$2)', [ids.lb, 'Dyr']),
+  ).rejects.toThrow();
+  await db.exec('reset role');
+});

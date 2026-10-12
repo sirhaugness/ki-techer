@@ -118,6 +118,14 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      select_adventure: {
+        Args: {
+          target_learner: string;
+          interest_id: string | null;
+          interest_label: string;
+        };
+        Returns: string;
+      };
       budget_status: {
         Args: { target_household: string; configured_limit: number };
         Returns: Json;

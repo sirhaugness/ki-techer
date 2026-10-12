@@ -1,24 +1,33 @@
 import 'server-only';
 import { adminDb } from '../db/server';
 import { fixture, fixtureEnabled } from '../learning/fixture';
-import { chapter } from './story';
+import { chapter, activeInterest } from './story';
+import { latestSession } from '../learning/repository';
 import type { LearnerProfile } from '../learning/types';
 export async function homeChapter(profile: LearnerProfile) {
   if (fixtureEnabled()) {
     const f = fixture();
-    return chapter(f.interests, f.state?.endedAt ? 1 : 0);
+    const active = activeInterest(f.interests);
+    const progress = active ? f.state?.storyProgress?.[active.id] : null;
+    return chapter(
+      f.interests,
+      progress?.completed ?? 0,
+      progress?.part ?? null,
+    );
   }
   const db = adminDb();
-  const [interestRows, completed] = await Promise.all([
+  const [interestRows, state] = await Promise.all([
     db.from('interests').select('*').eq('learner_id', profile.id),
-    db
-      .from('sessions')
-      .select('id', { count: 'exact', head: true })
-      .eq('learner_id', profile.id)
-      .not('ended_at', 'is', null),
+    latestSession(profile.id),
   ]);
-  if (interestRows.error || completed.error) return chapter([], 0);
-  return chapter(interestRows.data ?? [], completed.count ?? 0);
+  if (interestRows.error) throw new Error('Kunne ikke hente eventyret.');
+  const active = activeInterest(interestRows.data ?? []);
+  const progress = active ? state?.storyProgress?.[active.id] : null;
+  return chapter(
+    interestRows.data ?? [],
+    progress?.completed ?? 0,
+    progress?.part ?? null,
+  );
 }
 export async function maintainLearner(learnerId: string) {
   const { error } = await adminDb().rpc('maintain_learner', {

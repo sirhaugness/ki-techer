@@ -3,6 +3,12 @@ import { integer, pick, type Rng } from '../random';
 import { skillById, type Difficulty } from './graph';
 import { type MisconceptionCode } from '../misconceptions';
 export const answerSchema = z.union([
+  z
+    .object({
+      value: z.number().finite(),
+      expression: z.string().trim().min(1).max(120),
+    })
+    .strict(),
   z.number().finite(),
   z.string().min(1),
   z.array(z.string()),

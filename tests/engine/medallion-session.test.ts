@@ -82,14 +82,15 @@ describe('medallion', () => {
     expect(() =>
       finishMasterTest(p, t, [...answers.slice(0, 9), answers[0]], nextDay),
     ).toThrow();
-    expect(() =>
-      finishMasterTest(
-        p,
-        t,
-        answers.map((a) => ({ ...a, hintLevel: 1 })),
-        nextDay,
-      ),
-    ).toThrow();
+    const helped = finishMasterTest(
+      p,
+      t,
+      answers.map((a) => ({ ...a, hintLevel: 1 })),
+      nextDay,
+    );
+    expect(helped.score).toBe(0);
+    expect(helped.passed).toBe(false);
+    expect(helped.progress.targetedSkills.length).toBeGreaterThan(0);
     expect(() => startMasterTest(p, nextDay, 't', ids.slice(0, 7))).toThrow();
   });
   it('targets failures, allows retry only next day and never removes earned parts', () => {

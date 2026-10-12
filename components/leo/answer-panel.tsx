@@ -1,18 +1,23 @@
 'use client';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { PublicTask } from '@/lib/learning/types';
 export function AnswerPanel({
   task,
   busy,
   onAnswer,
+  teacher,
+  onNext,
 }: {
   task: PublicTask;
   busy: boolean;
   onAnswer: (answer: unknown) => void;
+  teacher?: ReactNode;
+  onNext?: () => void;
 }) {
   const [values, setValues] = useState(['', '']),
     [field, setField] = useState(0),
-    [choice, setChoice] = useState('');
+    [choice, setChoice] = useState(''),
+    [expression, setExpression] = useState('');
   const two =
     task.answerType === 'remainder' || task.answerType === 'coordinate';
   const valid = values
@@ -21,6 +26,7 @@ export function AnswerPanel({
   const update = (value: string, index = field) =>
     setValues((v) => v.map((old, i) => (i === index ? value : old)));
   const submit = () => {
+    if (busy || task.resolved) return;
     if (task.answerType === 'choice') {
       if (choice) onAnswer(choice);
       return;
@@ -41,7 +47,9 @@ export function AnswerPanel({
         ? { quotient: n[0], remainder: n[1] }
         : task.answerType === 'coordinate'
           ? { x: n[0], y: n[1] }
-          : n[0],
+          : task.expressionRequired
+            ? { value: n[0], expression }
+            : n[0],
     );
   };
   return (
@@ -58,6 +66,7 @@ export function AnswerPanel({
             <button
               type="button"
               key={option}
+              disabled={busy || task.resolved}
               aria-pressed={choice === option}
               onClick={() => setChoice(option)}
             >
@@ -80,6 +89,7 @@ export function AnswerPanel({
                       : 'y (oppover)'
                     : 'Svaret ditt'}
                 <input
+                  disabled={busy || task.resolved}
                   value={values[i]}
                   onFocus={() => setField(i)}
                   onChange={(e) => update(e.target.value, i)}
@@ -95,11 +105,26 @@ export function AnswerPanel({
               </label>
             ))}
           </div>
+          {task.expressionRequired && (
+            <label className="expression-field">
+              b) Regnestykket ditt
+              <input
+                value={expression}
+                disabled={busy || task.resolved}
+                maxLength={120}
+                onChange={(e) => setExpression(e.target.value)}
+                placeholder="Bruk + eller ×"
+                autoComplete="off"
+              />
+            </label>
+          )}
+          {teacher}
           <div className="number-pad" aria-label="Talltastatur">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0', '⌫'].map(
               (key) => (
                 <button
                   type="button"
+                  disabled={busy || task.resolved}
                   key={key}
                   aria-label={
                     key === '⌫'
@@ -125,21 +150,35 @@ export function AnswerPanel({
           </div>
         </>
       )}
-      <button
-        className="primary"
-        type="submit"
-        disabled={
-          busy ||
-          task.resolved ||
-          (task.answerType === 'choice'
-            ? !choice
-            : task.answerType === 'sequence'
-              ? !values[0]
-              : !valid)
-        }
-      >
-        Sjekk svaret
-      </button>
+      {task.answerType === 'choice' && teacher}
+      <div className="answer-action">
+        {task.resolved ? (
+          <button
+            className="primary"
+            type="button"
+            disabled={busy}
+            onClick={onNext}
+          >
+            Fortsett eventyret
+          </button>
+        ) : (
+          <button
+            className="primary"
+            type="submit"
+            disabled={
+              busy ||
+              (task.expressionRequired && !expression.trim()) ||
+              (task.answerType === 'choice'
+                ? !choice
+                : task.answerType === 'sequence'
+                  ? !values[0]
+                  : !valid)
+            }
+          >
+            Sjekk svaret
+          </button>
+        )}
+      </div>
     </form>
   );
 }

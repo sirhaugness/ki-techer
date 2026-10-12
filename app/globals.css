@@ -587,3 +587,239 @@ button.print-hide {
     scroll-behavior: auto !important;
   }
 }
+
+/* One stable workspace. Inputs and keypad remain mounted after an answer. */
+.task-card {
+  position: relative;
+  scroll-margin-top: 12px;
+  overflow-anchor: none;
+}
+.task-card h2 {
+  overflow-wrap: anywhere;
+}
+.answer-feedback {
+  min-height: 64px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-block: 8px;
+  color: #214f3e;
+}
+.answer-sparkles {
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+  animation: adventure-spark 850ms ease-out both;
+}
+@keyframes adventure-spark {
+  from {
+    transform: translateY(16px) scale(0.7);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px) scale(1.15);
+    opacity: 0;
+  }
+}
+.adventure-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.teacher-desk {
+  min-width: 0;
+  background: #e6f1e9;
+  border: 2px solid #476e61;
+  border-radius: 18px;
+  padding: 12px;
+  align-self: start;
+}
+.teacher-message {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+.teacher-message svg {
+  width: 48px;
+  height: 58px;
+  flex-shrink: 0;
+}
+.teacher-message p {
+  font-size: 17px;
+  margin: 4px 0 10px;
+  min-height: 76px;
+}
+.teacher-desk > button {
+  width: 100%;
+}
+.teacher-help {
+  max-height: 290px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  margin-top: 12px;
+  padding: 4px;
+}
+.teacher-help[hidden] {
+  display: none;
+}
+.teacher-help label {
+  font-size: 17px;
+}
+.help-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.help-shortcuts button {
+  font-size: 16px;
+  padding: 8px;
+}
+.help-exchange {
+  border-bottom: 1px solid #9cb5a5;
+  font-size: 16px;
+}
+.voice-note {
+  color: #476459;
+  font-size: 14px;
+  margin-block: 8px;
+}
+.request-status {
+  min-height: 32px;
+  font-size: 16px;
+}
+.answer-action {
+  min-height: 58px;
+}
+.answer-action button {
+  width: 100%;
+}
+.answer-panel input {
+  scroll-margin-top: 16px;
+}
+@media (min-width: 850px) {
+  .answer-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+    grid-template-rows: auto auto auto;
+    gap: 12px 24px;
+  }
+  .answer-panel .answer-fields,
+  .answer-panel .choice-list {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .answer-panel .expression-field {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+  }
+  .answer-panel .number-pad {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 0;
+  }
+  .answer-panel .answer-action {
+    grid-column: 1;
+    grid-row: 4;
+  }
+  .answer-panel .teacher-desk {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    position: sticky;
+    top: 12px;
+  }
+}
+@media (max-width: 849px) {
+  .teacher-desk {
+    margin-block: 12px;
+  }
+  .teacher-message p {
+    min-height: 52px;
+  }
+  .teacher-help {
+    max-height: 230px;
+  }
+  .teacher-desk > button {
+    min-height: 48px;
+  }
+  .number-pad {
+    gap: 6px;
+  }
+  .number-pad button {
+    min-height: 48px;
+    padding: 8px;
+  }
+}
+@media (max-width: 600px) {
+  body {
+    font-size: 18px;
+  }
+  main {
+    padding: 12px;
+  }
+  .leo-nav {
+    margin-bottom: 12px;
+  }
+  .task-card h2 {
+    font-size: 22px;
+  }
+  .task-card label {
+    margin-block: 10px;
+  }
+}
+@media (max-width: 849px) {
+  .answer-panel {
+    position: relative;
+  }
+  .answer-panel .teacher-desk {
+    position: relative;
+  }
+  .answer-panel .teacher-help {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: -2px;
+    right: -2px;
+    height: 222px;
+    max-height: 222px;
+    margin: 0;
+    z-index: 2;
+    border: 2px solid #476e61;
+    border-radius: 12px;
+    padding: 12px;
+    background: #e6f1e9;
+  }
+  .answer-panel:has(.teacher-open) .number-pad {
+    visibility: hidden;
+  }
+  .answer-panel .number-pad {
+    min-height: 234px;
+  }
+  .answer-panel:has(.choice-list) .teacher-help {
+    position: static;
+    height: 222px;
+  }
+}
+.teacher-message > div {
+  min-width: 0;
+  flex: 1;
+}
+.teacher-message p {
+  height: 104px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .teacher-message p {
+    height: 128px;
+  }
+}
+.adventure-scene {
+  min-height: 58px;
+  font-size: 17px;
+  color: #3d5d50;
+}

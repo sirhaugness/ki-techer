@@ -27,7 +27,7 @@ Løsningen skal være produksjonsklar og gjennomtenkt fra start, men bygges i mi
 3. **Sokratisk veiledning håndheves i kode.** Serveren bestemmer hvilket hint-nivå som er tillatt. KI-svar som avslører fasit før det er tillatt, blir avvist og regenerert.
 4. **Mestring krever både vurdering og data.** Modellen kan *foreslå* at en ferdighet er mestret. Motoren godkjenner bare hvis datakriteriene i 7.1 er oppfylt. Medaljongbiter tildeles bare av motoren.
 5. **Barnesikkerhet og personvern først.** Minst mulig persondata til tredjepart, moderering av inn- og utdata, foreldrekontroll og innsyn.
-6. **Læring vektes over moro.** Tilpasningen optimaliserer for faktisk læring (riktig uten hjelp, også etter noen dager), med engasjement som viktig, men sekundært signal.
+6. **Moro, engasjement og faktisk læring er hovedmål.** Appen skal være morsom, engasjerende og gi faktisk læring. Engasjement er et hovedmål og skal prege historier, oppgaver, lærerens respons og feiringer. Leo skal oppleve mestring og få lyst til å fortsette. Selvstendig mestring og varig læring kontrolleres fortsatt uavhengig i kode. Gode pauser og muligheten til å avslutte beholdes.
 7. **Alt brukervendt innhold er på norsk bokmål**, tilpasset en 9-åring: korte setninger, konkrete ord, varm og rolig tone.
 8. **Fagnøytral arkitektur.** Matte er første fag, men agent, verktøy og datamodell skal kunne utvides til andre fag (f.eks. naturfag) ved å legge til ferdighetsgraf, verktøy og valideringsregler per fag.
 
@@ -324,7 +324,7 @@ Input: generatorens params og fasit, valgt interesse, representasjon, lesenivå.
 ```
 Validering (`lib/engine/validate.ts`): alle tall i teksten finnes i params; `mathjs.evaluate(expression)` = fasit; maks 3 setninger og ~15 ord per setning; moderering godkjent. To feil på rad → malbasert fallback. Godkjente oppgaver caches og kan gjenbrukes.
 
-Interessevariasjon: samme interesse maks 2 oppgaver på rad. Interessevekt justeres etter engasjement.
+Leo velger én aktiv interesse om gangen. Valget lagres og håndheves på serversiden, og styrer eventyret til Leo selv bytter. Variasjon kommer fra handling, oppgavetype og matematikk innenfor samme interesse. Interessevekt skal aldri overstyre dette valget.
 
 ### 8.4 Forklaringsvurdering (`evaluate.ts`)
 Vurderer Leos fritekstforklaringer med en rubrikk: `{ forstaelse: 0-2, strategi: "string", misoppfatning: "kode|null", tilbakemelding: "string (1 setning, oppmuntrende)" }`.
@@ -350,7 +350,7 @@ OpenAIs moderation-endepunkt på all fritekst fra Leo og all generert tekst før
 ### 9.2 Leo-delen (nettbrett først, også PC)
 - Store trykkflater (≥ 48 px), tekst ≥ 20 px, lettlest skrift, rolige farger, ingen nedtellingsklokker.
 - **Læreren** er en egendesignet, original figur (SVG) med noen få uttrykk (glad, tenker, oppmuntrende). Leo velger navn.
-- **Hjem:** **medaljongen** står sentralt. Tildelte deler skinner, og pågående del viser opplyste steiner. Under den ligger et kart over delene der Leo velger hvilken del han vil jobbe med (blant de tilgjengelige), og et pågående **kapittel i en fortelling** basert på hans sterkeste interesse.
+- **Hjem:** **medaljongen** står sentralt. Tildelte deler skinner, og pågående del viser opplyste steiner. Under den ligger et kart over delene der Leo velger hvilken del han vil jobbe med (blant de tilgjengelige), og et pågående **kapittel i en fortelling** basert på hans selvvalgte aktive interesse, med lagret progresjon fra fullførte oppdrag.
 - **Økt:** oppgavetekst + visuell representasjon, svar via stort talltastatur, tale eller manipulativ. Knapper: «Les høyt», «Jeg vil ha et hint», «Jeg vil forklare» (mikrofon). En diskret fremgangsindikator viser medaljongbiten som fylles.
 - **Manipulativer (interaktive komponenter):** dele-ut-verktøy (dra gjenstander inn i grupper, for delingsdivisjon), gruppe-verktøy (lag grupper på N, for målingsdivisjon), rutenett/array (rader × kolonner), tallinje med hopp, tierblokker, roterbare 3D-figurer (SVG/CSS) og et lite rutenett-spillbrett for algoritmer (gi en figur instruksjoner med løkker og vilkår).
 - **Mine interesser:** chips med bilder + legg til egen (tekst eller tale, moderert). Leo kan skru interesser av og på.
@@ -408,3 +408,12 @@ Arbeid milepæl for milepæl. Etter hver: kjør alle tester, oppdater `docs/PROG
 
 ## 13. AGENTS.md (lag denne i M0)
 Skal inneholde: prosjektmål i tre setninger, prinsippene fra seksjon 2, mappestruktur, kommandoer (`dev`, `test`, `lint`, `typecheck`, `simulate`, `eval:agent`), konvensjoner (TS strict, Zod på grenser, ingen fasit fra KI uten verifisering, all brukertekst på bokmål, `lib/engine` uten I/O, harde regler kun i motoren) og «definition of done» (tester grønne, PROGRESS.md oppdatert).
+
+
+## Videreutvikling: lærer ved pulten og sammenhengende eventyr
+
+Oppgave, svar og siste lærerbeskjed er én stabil arbeidsflate. «Spør læreren» er alltid tilgjengelig under oppgaver, også i mesterutfordringer. Samtalespørsmål er egne hendelser og erstatter aldri oppgaven eller skaper forståelsesevidens. Faglig hjelp registreres; hjulpne svar teller ikke som selvstendig mestring. Ved tjenestefeil finnes interessebaserte oppgaver og gradvis mer konkrete, regelstyrte forklaringer.
+
+Riktige svar kontrolleres før umiddelbar feiring. Tallsvaret og uttrykket i sammenhengende multiplikasjonsdeloppgaver kontrolleres separat og gir læringsevidens først når begge stemmer. Uttrykket må representere oppgavens grupper (også gjentatt addisjon godtas); en lik verdi alene beviser ikke riktig modell. Historieprogresjon lagres atomisk sammen med læringsøkten og økes én gang per fullført oppdrag. Fire oppdrag gir et nytt kapittel. Bytte av interesse bevarer både matematikk og hvert eventyrs utvikling.
+
+Innloggingen bruker vedvarende cookies og automatisk fornyelse med kortvarige tilgangstokener. Ingen egen økt- eller inaktivitetsgrense legges til i appen. Foreldre-PIN og eksplisitt utlogging beholdes. Produksjonsendringer krever egen godkjenning.

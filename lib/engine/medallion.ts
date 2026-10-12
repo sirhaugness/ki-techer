@@ -123,7 +123,11 @@ export function startMasterTest(
   };
 }
 const testAnswer = z
-  .object({ itemId: z.string(), correct: z.boolean(), hintLevel: z.literal(0) })
+  .object({
+    itemId: z.string(),
+    correct: z.boolean(),
+    hintLevel: z.number().int().min(0).max(4),
+  })
   .strict();
 export function finishMasterTest(
   progress: PartProgress,
@@ -146,10 +150,16 @@ export function finishMasterTest(
     parsed.some((a) => !test.items.some((i) => i.id === a.itemId))
   )
     throw new Error('Svarene må dekke alle oppgaver én gang.');
-  const score = parsed.filter((a) => a.correct).length / parsed.length,
+  const score =
+      parsed.filter((a) => a.correct && a.hintLevel === 0).length /
+      parsed.length,
     passed = score >= 0.8;
   const targetedSkills = test.items
-    .filter((i) => parsed.find((a) => a.itemId === i.id)?.correct === false)
+    .filter(
+      (i) =>
+        parsed.find((a) => a.itemId === i.id)?.correct === false ||
+        (parsed.find((a) => a.itemId === i.id)?.hintLevel ?? 0) > 0,
+    )
     .map((i) => i.skillId);
   return {
     score,
