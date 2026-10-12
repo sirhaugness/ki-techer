@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { LearningView } from '@/lib/learning/types';
 import { helpShortcuts } from '@/lib/learning/help-options';
 import { Tutor } from './art';
-import { Manipulatives } from './manipulatives';
+import { TaskDrawing } from './task-drawing';
 import { RecordButton } from './record-button';
 export function TeacherDesk({
   view,
@@ -67,13 +67,7 @@ export function TeacherDesk({
         </div>
         {sentences.length > 2 && <p>{view.speech}</p>}
         {history.some((h) => h.question === 'Vis meg med en tegning') &&
-          view.task && (
-            <Manipulatives
-              visual={view.task.visual}
-              disabled={true}
-              onAnswer={() => {}}
-            />
-          )}
+          view.task && <TaskDrawing task={view.task} />}
         {history.map((h, i) => (
           <div key={i} className="help-exchange">
             <p>

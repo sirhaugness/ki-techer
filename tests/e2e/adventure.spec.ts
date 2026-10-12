@@ -54,6 +54,13 @@ for (const viewport of [
       .getByRole('button', { name: 'Jeg forstår ikke', exact: true })
       .click();
     await expect(page.locator('.help-exchange')).toHaveCount(1);
+    await page
+      .getByRole('button', { name: 'Vis meg med en tegning', exact: true })
+      .click();
+    await expect(page.locator('.task-drawing')).toBeVisible();
+    await expect(page.getByLabel('Svaret ditt', { exact: true })).toHaveValue(
+      '999',
+    );
     await expect(page.locator('#task-question')).toHaveText(question);
     await page.getByRole('button', { name: 'Lukk lærerhjelpen' }).click();
     const after = await action.evaluate(

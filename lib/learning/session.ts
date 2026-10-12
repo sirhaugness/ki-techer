@@ -822,6 +822,16 @@ export function publicView(state: Snapshot): LearningView {
         ? {
             id: a.id,
             expressionRequired: a.expressionRequired ?? false,
+            illustrationSafe: [
+              'mult-telling-grupper',
+              'mult-tabell-2-5-10',
+              'mult-tabell-3-4',
+              'mult-tabell-6-9',
+              'div-deling-konkret',
+              'div-maaling-konkret',
+              'div-representasjoner',
+              'div-rutenett',
+            ].includes(item.skillId),
             question: a.text,
             answerType: item.answerType,
             choices: item.choices ?? [],
@@ -840,7 +850,12 @@ export function publicView(state: Snapshot): LearningView {
                       : typeof params.count === 'number'
                         ? params.count
                         : 0,
-              groups: typeof params.b === 'number' ? params.b : 1,
+              groups:
+                item.skillId.startsWith('mult-') && typeof params.a === 'number'
+                  ? params.a
+                  : typeof params.b === 'number'
+                    ? params.b
+                    : 1,
               shape: typeof params.shape === 'string' ? params.shape : null,
               steps: Array.isArray(params.steps) ? params.steps : [],
             },

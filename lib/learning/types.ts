@@ -116,6 +116,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  illustrationSafe?: boolean;
   expressionRequired?: boolean;
   showVisual: boolean;
   id: string;
