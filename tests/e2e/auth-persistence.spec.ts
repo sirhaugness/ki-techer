@@ -124,6 +124,7 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
       page.getByRole('heading', { name: 'Foreldresiden', exact: true }),
     ).toBeVisible();
     await page.getByRole('button', { name: 'Logg ut', exact: true }).click();
+    await expect(page).toHaveURL(/\/login/);
     await page.goto('http://127.0.0.1:3000/leo');
     await expect(page).toHaveURL(/\/login/);
   } finally {

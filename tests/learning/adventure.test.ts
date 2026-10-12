@@ -190,3 +190,32 @@ it('story templates preserve verified numeric answers across all skills, levels 
       expect(item).toEqual(before);
     }
 });
+
+it('allows verified task quantities in teaching speech without permitting a solution or invented numbers', async () => {
+  const { guardResponse } = await import('../../lib/agent/guards');
+  const item = generate('mult-telling-grupper', 1, seededRng(2));
+  const response = {
+    ...fallbackResponse('hint'),
+    speech: `Tegn ${item.params.a} tomme grupper først.`,
+  };
+  expect(guardResponse(response, item, 1, true)).not.toBeNull();
+  expect(
+    guardResponse(
+      { ...response, speech: `Svaret er ${item.answer}.` },
+      item,
+      1,
+      true,
+    ),
+  ).toBeNull();
+  expect(
+    guardResponse({ ...response, speech: 'Tegn 999 grupper.' }, item, 1, true),
+  ).toBeNull();
+  expect(
+    guardResponse(
+      { ...response, speech: `Regn ${item.params.a} × ${item.params.b}.` },
+      item,
+      1,
+      true,
+    ),
+  ).toBeNull();
+});

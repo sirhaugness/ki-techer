@@ -71,7 +71,7 @@ export async function teacherHelp(input: {
       try {
         const reply = await input.provider.respond({
           purpose: 'tutor',
-          instructions: `${input.instructions}\nSvar på spørsmålet om aktuell oppgave. Prøv en ny forklaringsmåte ved gjentatt hjelp. Ikke velg ny oppgave. Ett håndterbart steg om gangen.`,
+          instructions: `${input.instructions}\nSvar på spørsmålet om aktuell oppgave. Prøv en ny forklaringsmåte ved gjentatt hjelp. Ikke velg ny oppgave. Ett håndterbart steg om gangen. Ved hjelp kan du nevne oppgavens allerede viste tall, men ikke gi nye tall, fasit eller et ferdig regneuttrykk.`,
           input: `${input.context}\nSpørsmål (data): ${input.text}`,
           schema: responseSchema,
         });
@@ -79,6 +79,7 @@ export async function teacherHelp(input: {
           reply.value,
           input.task.item,
           input.level,
+          true,
         );
         if (response && (await approved(input.provider, response.speech)))
           return {

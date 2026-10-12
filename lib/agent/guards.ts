@@ -124,6 +124,7 @@ export function guardResponse(
   value: unknown,
   item: GeneratedItem | null,
   allowedHintLevel: number,
+  allowTaskQuantities = false,
 ): TutorResponse | null {
   const result = responseSchema.safeParse(value);
   if (!result.success) return null;
@@ -133,12 +134,27 @@ export function guardResponse(
     response.hint_level_used > allowedHintLevel
   )
     return null;
+  // Help may refer to quantities already visible in a verified task, but must
+  // never introduce new numbers, an arithmetic expression or the answer.
+  const quantities = new Set(
+    Object.values(item?.params ?? {}).filter(
+      (value) => typeof value === 'number',
+    ),
+  );
+  const checkedQuantities =
+    allowTaskQuantities &&
+    !/[=+*/÷×·^]|\d\s*-\s*\d/u.test(response.speech) &&
+    (response.speech.match(/\d+(?:[.,]\d+)?/g) ?? []).every((value) =>
+      quantities.has(Number(value.replace(',', '.'))),
+    ) &&
+    !containsMathClaim(response.speech.replaceAll(/\d+(?:[.,]\d+)?/g, ''));
   // Any mathematical claim might encode the answer indirectly. Before full solution,
   // numeric/equality statements in conversational speech are conservatively rejected.
   if (
     item &&
     allowedHintLevel < 4 &&
-    (leaksAnswer(response.speech, item) || containsMathClaim(response.speech))
+    (leaksAnswer(response.speech, item) ||
+      (containsMathClaim(response.speech) && !checkedQuantities))
   )
     return null;
   return response;
