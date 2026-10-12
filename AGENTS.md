@@ -69,3 +69,38 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Om eieren og samarbeid
+
+- Thor er nybegynner innen utvikling. Forklar enkelt på norsk, uten unødvendig sjargong.
+- Avslutt alltid med «Neste steg for deg:» og en kort sjekkliste.
+- Når Thor spør om noe uten å be om endringer: svar, ikke endre kode.
+- Oppdater docs/PROGRESS.md og PR-beskrivelsen med «Hva Thor må gjøre» etter hver oppgave.
+
+## Arbeidsflyt
+
+- Pull request = test mot leo-dev (Vercel Preview). Merge til main = produksjon (leo-prod).
+- Endre aldri noe i produksjon (leo-prod eller Production-variabler i Vercel) uten å spørre først.
+- Nye miljøvariabler, Redirect URLs eller hemmeligheter: legg dem inn selv via connector/CLI
+  hvis mulig og bekreft at de virker; ellers gi Thor nøyaktige steg.
+- Test Preview selv før du sier at du er ferdig. Kan du ikke, si tydelig hva Thor må teste.
+- Pirk og idéer samles i docs/BACKLOG.md.
+
+## Driftsoppsett (ingen hemmeligheter her)
+
+- Produksjon: https://ki-techer.vercel.app (Vercel-team: team-thor1, prosjekt: ki-techer)
+- Supabase: leo-dev (Preview) og leo-prod (Production, ref cijdabagprozgjaxusip)
+- Regel: Production-variabler i Vercel kommer fra leo-prod, Preview fra leo-dev.
+- NEXT_PUBLIC_*-variabler skal være type Config. Bare SUPABASE_SECRET_KEY og OPENAI_API_KEY er Secret.
+- Migrasjoner kjøres av GitHub Actions (supabase-migrations.yml): PR → leo-dev, merge → leo-prod.
+- Innlogging er e-postlenke via Supabase: lav e-postgrense per time, og lenken må åpnes
+  i samme nettleser som den ble bestilt fra.
+
+## Kjente fallgruver (har skjedd før)
+
+- Supabase-URL skal slutte på .supabase.co (ikke .com).
+- Site URL i Supabase må ha https://. Redirect URL for prod: https://ki-techer.vercel.app/auth/callback.
+  Preview dekkes av https://*-team-thor1.vercel.app/**.
+- URL og publishable key må komme fra samme Supabase-prosjekt.
+- Endringer i Vercel-variabler krever Redeploy.
+- Codex sitt skymiljø har begrenset nett og når ikke alltid vercel.com/vercel.app.
