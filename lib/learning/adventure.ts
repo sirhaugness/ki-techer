@@ -559,7 +559,9 @@ export async function planAdventure(input: {
     candidates = getCandidates(input.context, rng);
   if (!candidates.length)
     throw new Error('Ta en pause, og fortsett eventyret neste gang.');
-  const recent = input.learningEvidence ?? input.previous?.evidence ?? [];
+  const recent = input.previous?.evidence.length
+    ? input.previous.evidence
+    : (input.learningEvidence ?? []);
   const lastMissions = new Set(
     [...new Set(recent.map((e) => e.itemId))].slice(-6),
   );
