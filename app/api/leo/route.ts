@@ -23,10 +23,19 @@ import { approved } from '@/lib/ai/moderation';
 import { eventSchema } from '@/lib/learning/types';
 import { authOrigin } from '@/lib/auth/origin';
 import { dayKey } from '@/lib/engine/time';
+import { teacherHelp } from '@/lib/learning/help';
+import { buildContext } from '@/lib/agent/context';
+import { newBandit } from '@/lib/engine/bandit';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
 const commandSchema = z.discriminatedUnion('command', [
+  z.object({
+    command: z.literal('feedback'),
+    sessionId: z.uuid(),
+    itemId: z.uuid(),
+    revision: z.number().int().nonnegative(),
+  }),
   z
     .object({ command: z.literal('voiceSettings'), autoRead: z.boolean() })
     .strict(),
@@ -226,6 +235,64 @@ export async function POST(request: Request) {
     }
     let state = f ? f.state : await latestSession(profile.id);
     const now = new Date().toISOString();
+    if (cmd.command === 'feedback') {
+      if (
+        !state ||
+        state.id !== cmd.sessionId ||
+        state.revision !== cmd.revision ||
+        state.active?.id !== cmd.itemId
+      )
+        return Response.json(
+          { message: 'Oppgaven er endret.' },
+          { status: 409 },
+        );
+      const engine = {
+        states: state.states,
+        clock: state.clock,
+        now,
+        phase: 'hovedøkt' as const,
+        history: state.history,
+        focusSkillId: state.focusSkillId,
+        bandit: state.bandit ?? newBandit(),
+      };
+      const result = await teacherHelp({
+        provider,
+        task: state.active,
+        text: 'Hva var feil?',
+        level: state.hints.level,
+        lastAnswer: state.lastAnswer,
+        numericCorrect: state.lastAnswerCorrect,
+        instructions:
+          'Du er en varm mattelærer. Svar kort på norsk bokmål. Vurderingen i konteksten er kontrollert av programmet.',
+        context: buildContext({
+          learner: {
+            firstName: profile.firstName,
+            grade: profile.grade,
+            tutorName: profile.tutorName,
+          },
+          engine,
+          active: state.active.item,
+          taskText: state.active.text,
+          lastAnswer: state.lastAnswer,
+          answerResult: state.correct,
+          numericCorrect: state.lastAnswerCorrect,
+          allowedHintLevel: state.hints.level,
+          helpHistory: state.helpHistory?.filter(
+            (h) => h.itemId === cmd.itemId,
+          ),
+          messages: state.messages,
+          observations: [],
+        }),
+      });
+      return Response.json(
+        {
+          itemId: cmd.itemId,
+          speech: result.response.speech,
+          fallback: result.fallback,
+        },
+        { headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
     if (cmd.command === 'start') {
       if (state && !state.endedAt)
         return Response.json(publicView(state), {

@@ -27,6 +27,10 @@ export function openaiProvider(
             : process.env.OPENAI_MODEL_FAST;
       if (!model) throw new Error('Modelloppsettet mangler.');
       const started = Date.now();
+      const outputLimit = Math.max(
+        600,
+        Math.min(3200, request.maxOutputTokens ?? 1200),
+      );
       const ceiling = estimateCost(
         Buffer.byteLength(
           JSON.stringify({
@@ -38,7 +42,7 @@ export function openaiProvider(
             schema: z.toJSONSchema(request.schema),
           }),
         ) + 1000,
-        1200,
+        outputLimit,
       );
       const reservation = budget ? await budget.reserve(ceiling) : null;
       if (budget && !reservation)
@@ -68,7 +72,7 @@ export function openaiProvider(
             strict: true,
           })),
           parallel_tool_calls: false,
-          max_output_tokens: 1200,
+          max_output_tokens: outputLimit,
           text: {
             format: {
               type: 'json_schema',

@@ -1,0 +1,38 @@
+{
+  "star-wars": {
+    "file": "star-wars.jpg",
+    "source": "https://upload.wikimedia.org/wikipedia/en/3/39/BB-8%2C_Star_Wars_The_Force_Awakens.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+    "page": "https://en.wikipedia.org/wiki/BB-8",
+    "bytes": 22401
+  },
+  "dinosaurs": {
+    "file": "dinosaurs.jpg",
+    "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Sinosauropteryxfossil.jpg/330px-Sinosauropteryxfossil.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "page": "https://en.wikipedia.org/wiki/Dinosaur",
+    "bytes": 23920
+  },
+  "football": {
+    "file": "football.jpg",
+    "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Football_in_Bloomington%2C_Indiana%2C_1995.jpg/330px-Football_in_Bloomington%2C_Indiana%2C_1995.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "page": "https://en.wikipedia.org/wiki/Association_football",
+    "bytes": 29430
+  },
+  "space": {
+    "file": "space.jpg",
+    "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/The_station_pictured_from_the_SpaceX_Crew_Dragon_5.jpg/330px-The_station_pictured_from_the_SpaceX_Crew_Dragon_5.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "page": "https://en.wikipedia.org/wiki/International_Space_Station",
+    "bytes": 13238
+  },
+  "animals": {
+    "file": "animals.jpg",
+    "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Portrait_of_a_red_fox_in_Rautas_fj%C3%A4llurskog_%28cropped%29.jpg/330px-Portrait_of_a_red_fox_in_Rautas_fj%C3%A4llurskog_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "page": "https://en.wikipedia.org/wiki/Red_fox",
+    "bytes": 20969
+  },
+  "building": {
+    "file": "building.jpg",
+    "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Excavator_Postiguet_Beach_2.jpg/330px-Excavator_Postiguet_Beach_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+    "page": "https://en.wikipedia.org/wiki/Excavator",
+    "bytes": 23510
+  }
+}

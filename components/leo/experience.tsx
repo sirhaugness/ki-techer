@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type {
   LearningView,
@@ -17,6 +17,7 @@ import { RecordButton } from './record-button';
 import { homeSpeech } from '@/lib/voice/text';
 import { parseVoiceAnswer } from '@/lib/voice/parse';
 import { Medallion, Tutor, partTitles } from './art';
+import { AdventureScene } from './adventure-scene';
 export function LeoExperience({
   profile,
   initial,
@@ -41,6 +42,12 @@ export function LeoExperience({
   const router = useRouter();
   const taskRef = useRef<HTMLElement>(null);
   const sending = useRef(false);
+  const liveTask = useRef(initial?.task?.id);
+  const feedbackController = useRef<AbortController | null>(null);
+  const [teacherBusy, setTeacherBusy] = useState(false),
+    [teacherSpeech, setTeacherSpeech] = useState(''),
+    [teacherError, setTeacherError] = useState('');
+  useEffect(() => () => feedbackController.current?.abort(), []);
   const [view, setView] = useState(initial && !initial.ended ? initial : null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState('');
@@ -52,22 +59,71 @@ export function LeoExperience({
   const [transcript, setTranscript] = useState('');
   const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
+  async function requestFeedback(current: LearningView) {
+    if (!current.task) return;
+    feedbackController.current?.abort();
+    const controller = new AbortController();
+    feedbackController.current = controller;
+    const taskId = current.task.id;
+    setTeacherBusy(true);
+    setTeacherError('');
+    try {
+      const response = await fetch('/api/leo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command: 'feedback',
+          sessionId: current.id,
+          itemId: taskId,
+          revision: current.revision,
+        }),
+        signal: AbortSignal.any([
+          controller.signal,
+          AbortSignal.timeout(25000),
+        ]),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error('Læreren fikk ikke svart nå.');
+      if (liveTask.current === taskId && !controller.signal.aborted) {
+        setTeacherSpeech(data.speech);
+        if (data.fallback)
+          setTeacherError(
+            `${profile.tutorName} bruker den faste hjelpen nå. Du kan prøve å spørre igjen.`,
+          );
+      }
+    } catch {
+      if (liveTask.current === taskId && !controller.signal.aborted)
+        setTeacherError(
+          'Læreren fikk ikke svart nå. Du kan fortsette eller prøve igjen.',
+        );
+    } finally {
+      if (feedbackController.current === controller) setTeacherBusy(false);
+    }
+  }
   async function send(command: Record<string, unknown>) {
     if (sending.current) return;
     sending.current = true;
     setBusy(true);
     setError('');
     setPending(command);
+    feedbackController.current?.abort();
+    setTeacherBusy(false);
+    setTeacherSpeech('');
+    setTeacherError('');
     try {
       const response = await fetch('/api/leo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(command),
+        signal: AbortSignal.timeout(60000),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message ?? 'Prøv igjen.');
       setView(data as LearningView);
+      liveTask.current = (data as LearningView).task?.id;
       const event = command.event as LearningEvent | undefined;
+      if (event?.type === 'answer' && data.mode === 'practice')
+        void requestFeedback(data as LearningView);
       if (event?.type === 'next' || event?.type === 'mood')
         requestAnimationFrame(() => {
           const top = taskRef.current?.getBoundingClientRect().top;
@@ -100,6 +156,11 @@ export function LeoExperience({
       });
   }
   const displayedParts = view?.parts ?? parts;
+  const interestChanged =
+    view?.mode === 'practice' &&
+    !!view.task &&
+    !!story.interest &&
+    view.adventure?.interest !== story.interest;
   return (
     <div className="leo-experience">
       <nav className="leo-nav">
@@ -327,6 +388,22 @@ export function LeoExperience({
                 Tilbake til kartet
               </button>
             </section>
+          ) : interestChanged ? (
+            <section className="card">
+              <h2>Videre til {story.interest}</h2>
+              <p>
+                {view.adventure?.interest ?? 'Det forrige eventyret'} settes på
+                pause. Du beholder alt du har lært og kan komme tilbake senere.
+              </p>
+              <button
+                type="button"
+                className="primary"
+                disabled={busy}
+                onClick={() => turn({ type: 'next' })}
+              >
+                Fortsett eventyret om {story.interest}
+              </button>
+            </section>
           ) : !view.task ? (
             <section className="card">
               <h2>Hvordan kjennes dagen?</h2>
@@ -350,10 +427,16 @@ export function LeoExperience({
             <>
               <section className="task-card" ref={taskRef} aria-busy={busy}>
                 {view.adventure && (
-                  <p className="adventure-label">
-                    {view.adventure.icon} {view.adventure.title} · Kapittel{' '}
-                    {view.adventure.number}
-                  </p>
+                  <>
+                    <p className="adventure-label">
+                      {view.adventure.icon} {view.adventure.title} · Kapittel{' '}
+                      {view.adventure.number}
+                    </p>
+                    <AdventureScene
+                      key={view.adventure.interest}
+                      adventure={view.adventure}
+                    />
+                  </>
                 )}
                 <p className="adventure-scene">
                   {view.adventure?.scene ?? view.task.skillTitle}
@@ -426,7 +509,11 @@ export function LeoExperience({
                       )}
                     </>
                   )}
-                <div className="answer-feedback" aria-live="polite">
+                <div
+                  key={`${view.task.id}-${view.revision}`}
+                  className={`answer-feedback ${view.correct === false ? 'answer-retry' : view.correct ? 'answer-success' : ''}`}
+                  aria-live="polite"
+                >
                   {view.task.resolved ? (
                     <strong>
                       {view.correct
@@ -439,7 +526,7 @@ export function LeoExperience({
                     <strong>
                       {view.lastAnswerCorrect && view.task.expressionRequired
                         ? '✓ Tallsvaret stemmer. Se på regnestykket.'
-                        : 'Prøv igjen. Læreren hjelper deg.'}
+                        : '↻ Prøv igjen. Læreren hjelper deg.'}
                     </strong>
                   ) : (
                     <span>Skriv svaret, og trykk «Sjekk svaret».</span>
@@ -454,20 +541,63 @@ export function LeoExperience({
                     </span>
                   )}
                 </div>
+                {view.adventure && (
+                  <p className="story-outcome" role="status">
+                    {view.adventure.outcome ??
+                      'Løs oppdraget for å hjelpe vennene videre.'}
+                  </p>
+                )}
+                {view.adventure?.choice && (
+                  <fieldset className="story-choice">
+                    <legend>Bruk resultatet ditt til å velge veien</legend>
+                    <p>
+                      Du har {view.adventure.choice.budget}{' '}
+                      {view.adventure.choice.unit}. Velg en vei du har nok
+                      forsyninger til.
+                    </p>
+                    {view.adventure.choice.options.map((option) => (
+                      <button
+                        type="button"
+                        key={option.id}
+                        disabled={
+                          busy || option.cost > view.adventure!.choice!.budget
+                        }
+                        onClick={() =>
+                          turn({
+                            type: 'choice',
+                            itemId: view.task!.id,
+                            option: option.id,
+                          })
+                        }
+                      >
+                        {option.label} · {option.cost}{' '}
+                        {view.adventure?.choice?.unit}
+                      </button>
+                    ))}
+                  </fieldset>
+                )}
                 <AnswerPanel
                   key={view.task.id}
                   task={view.task}
                   busy={busy}
                   teacher={
                     <TeacherDesk
-                      view={view}
-                      busy={busy}
+                      view={
+                        teacherSpeech
+                          ? { ...view, speech: teacherSpeech }
+                          : view
+                      }
+                      busy={busy || teacherBusy}
                       name={profile.tutorName}
                       voice={profile.settings.voice !== false}
                       onAsk={(text) => turn({ type: 'ask', text })}
                     />
                   }
-                  onNext={() => turn({ type: 'next' })}
+                  onNext={
+                    view.adventure?.choice
+                      ? undefined
+                      : () => turn({ type: 'next' })
+                  }
                   onAnswer={(answer) =>
                     turn({
                       type: 'answer',
@@ -477,6 +607,18 @@ export function LeoExperience({
                     })
                   }
                 />
+                {teacherError && (
+                  <div className="teacher-error" role="status">
+                    <p>{teacherError}</p>
+                    <button
+                      type="button"
+                      disabled={teacherBusy || busy}
+                      onClick={() => void requestFeedback(view)}
+                    >
+                      Prøv læreren igjen
+                    </button>
+                  </div>
+                )}
               </section>
               {view.mode !== 'master' && (
                 <>

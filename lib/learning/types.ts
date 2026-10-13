@@ -12,6 +12,11 @@ import { answerSchema } from '../engine/skills/generators';
 
 export const eventSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('next') }),
+  z.object({
+    type: z.literal('choice'),
+    itemId: z.uuid(),
+    option: z.number().int().min(0).max(1),
+  }),
   z.object({ type: z.literal('hint') }),
   z.object({ type: z.literal('ask'), text: z.string().trim().min(1).max(600) }),
   z.object({ type: z.literal('school'), text: z.string().trim().max(240) }),
@@ -54,8 +59,11 @@ export type Interest = {
 export type Snapshot = {
   version: 1;
   storyProgress?: import('../profile/story').StoryProgress;
+  adventures?: Record<string, import('./adventure').Adventure>;
+  learningEvidence?: import('./adventure').AdventureEvidence[];
   lastAnswer?: unknown;
   lastAnswerCorrect?: boolean;
+  helpKind?: 'text' | 'calculation' | 'general';
   helpHistory?: { itemId: string; question: string; reply: string }[];
   fallbackMode?: boolean;
   revision: number;
@@ -116,6 +124,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  submittedAnswer?: import('../engine/skills/generators').Answer;
   illustrationSafe?: boolean;
   expressionRequired?: boolean;
   showVisual: boolean;
@@ -134,7 +143,8 @@ export type PublicTask = {
   skillTitle: string;
 };
 export type LearningView = {
-  adventure?: ReturnType<typeof import('../profile/story').chapter>;
+  adventure?: ReturnType<typeof import('../profile/story').chapter> &
+    Partial<ReturnType<typeof import('./adventure').adventureView>>;
   helpHistory?: { itemId: string; question: string; reply: string }[];
   lastAnswerCorrect?: boolean;
   fallbackMode?: boolean;

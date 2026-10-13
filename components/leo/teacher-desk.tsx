@@ -34,7 +34,7 @@ export function TeacherDesk({
         <div>
           <strong>{name}</strong>
           <p role="status" aria-live="polite">
-            {busy ? 'Jeg tenker …' : short}
+            {busy ? `${name} ser på regnestykket ditt …` : short}
           </p>
         </div>
       </div>
@@ -47,72 +47,80 @@ export function TeacherDesk({
         {open ? 'Lukk lærerhjelpen' : 'Spør læreren'}
       </button>
       <div id="teacher-help" className="teacher-help" hidden={!open}>
-        {view.mode === 'master' && (
-          <p className="home-note">
-            Du kan få hjelp. Oppgaver med hjelp teller som øving i denne
-            utfordringen.
-          </p>
-        )}
-        <div className="help-shortcuts">
-          {helpShortcuts.map((option) => (
-            <button
-              type="button"
-              key={option}
+        <div className="teacher-composer">
+          <label>
+            Spørsmål til læreren
+            <input
+              value={text}
+              maxLength={600}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  if (!busy && text.trim()) {
+                    onAsk(text);
+                    setText('');
+                  }
+                }
+              }}
+              placeholder="Hvorfor skal jeg gange?"
+            />
+          </label>
+          {voice && (
+            <RecordButton
+              label="Hold for å spørre læreren"
               disabled={busy}
-              onClick={() => onAsk(option)}
-            >
-              {option}
-            </button>
+              onText={setText}
+            />
+          )}
+          <button
+            type="button"
+            disabled={busy || !text.trim()}
+            onClick={() => {
+              onAsk(text);
+              setText('');
+            }}
+          >
+            Send spørsmålet
+          </button>
+        </div>
+        <div
+          className="teacher-dialog"
+          tabIndex={0}
+          aria-label="Tidligere dialog"
+        >
+          {view.mode === 'master' && (
+            <p className="home-note">
+              Du kan få hjelp. Oppgaver med hjelp teller som øving i denne
+              utfordringen.
+            </p>
+          )}
+          <div className="help-shortcuts">
+            {helpShortcuts.map((option) => (
+              <button
+                type="button"
+                key={option}
+                disabled={busy}
+                onClick={() => onAsk(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          {sentences.length > 2 && <p>{view.speech}</p>}
+          {history.some((h) => h.question === 'Vis meg med en tegning') &&
+            view.task && <TaskDrawing task={view.task} />}
+          {[...history].reverse().map((h, i) => (
+            <div key={i} className="help-exchange">
+              <p>
+                <strong>Du:</strong> {h.question}
+              </p>
+              <p>
+                <strong>{name}:</strong> {h.reply}
+              </p>
+            </div>
           ))}
         </div>
-        {sentences.length > 2 && <p>{view.speech}</p>}
-        {history.some((h) => h.question === 'Vis meg med en tegning') &&
-          view.task && <TaskDrawing task={view.task} />}
-        {history.map((h, i) => (
-          <div key={i} className="help-exchange">
-            <p>
-              <strong>Du:</strong> {h.question}
-            </p>
-            <p>
-              <strong>{name}:</strong> {h.reply}
-            </p>
-          </div>
-        ))}
-        <label>
-          Spørsmål til læreren
-          <input
-            value={text}
-            maxLength={600}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                if (!busy && text.trim()) {
-                  onAsk(text);
-                  setText('');
-                }
-              }
-            }}
-            placeholder="Hvorfor skal jeg gange?"
-          />
-        </label>
-        {voice && (
-          <RecordButton
-            label="Hold for å spørre læreren"
-            disabled={busy}
-            onText={setText}
-          />
-        )}
-        <button
-          type="button"
-          disabled={busy || !text.trim()}
-          onClick={() => {
-            onAsk(text);
-            setText('');
-          }}
-        >
-          Send spørsmålet
-        </button>
       </div>
     </aside>
   );

@@ -19,7 +19,11 @@ import {
   canStartMasterTest,
 } from '../engine/medallion';
 import { skills, skillById } from '../engine/skills/graph';
-import { generate, checkAnswer } from '../engine/skills/generators';
+import {
+  generate,
+  checkAnswer,
+  answerSchema,
+} from '../engine/skills/generators';
 import { seededRng } from '../engine/random';
 import { newHints, advanceHint } from '../engine/hints';
 import { newBandit, forget, updateArm } from '../engine/bandit';
@@ -44,6 +48,11 @@ import {
 import { activeInterest, adventureTask, chapter } from '../profile/story';
 import { teacherHelp, concreteHelp } from './help';
 import { checkMultiplicationExpression } from '../engine/expression-answer';
+import {
+  planAdventure,
+  adventureView,
+  type AdventureEvidence,
+} from './adventure';
 
 const diagnosticSkills = [
   'mult-tabell-3-4',
@@ -94,10 +103,31 @@ export function createSession(
       ))
   )
     throw new Error('Mesterutfordringen kan tas tidligst neste dag.');
+  const adventures = structuredClone(previous?.adventures ?? {});
+  const lastAdventure = previous?.active?.interestId
+    ? adventures[previous.active.interestId]
+    : undefined;
+  if (
+    lastAdventure &&
+    previous?.active &&
+    lastAdventure.tasks[lastAdventure.index]?.id === previous.active.id
+  ) {
+    if (!previous.active.resolved || lastAdventure.pendingChoice)
+      lastAdventure.paused = {
+        active: structuredClone(previous.active),
+        hints: structuredClone(previous.hints),
+        lastAnswer: previous.lastAnswer,
+        correct: previous.correct,
+        lastAnswerCorrect: previous.lastAnswerCorrect,
+      };
+    else lastAdventure.index++;
+  }
   return {
     version: 1,
     storyProgress: structuredClone(previous?.storyProgress ?? {}),
-    helpHistory: [],
+    adventures,
+    learningEvidence: structuredClone(previous?.learningEvidence ?? []),
+    helpHistory: structuredClone(previous?.helpHistory ?? []),
     revision: 0,
     id: randomUUID(),
     clock: startSession(settings, now, usedMinutes),
@@ -230,8 +260,11 @@ export async function learningTurn(
       allowedHintLevel: state.hints.level,
       taskText: runtime.active?.text,
       lastAnswer: state.lastAnswer,
-      helpHistory: state.helpHistory,
+      helpHistory: state.helpHistory?.filter(
+        (h) => h.itemId === runtime.active?.id,
+      ),
       answerResult: state.correct,
+      numericCorrect: state.lastAnswerCorrect,
       observations,
       messages: state.messages,
     });
@@ -261,6 +294,78 @@ export async function learningTurn(
     return result;
   };
   const nextTask = async () => {
+    const interest = activeInterest(interests);
+    if (state.mode === 'practice' && interest) {
+      state.adventures ??= {};
+      let adventure = state.adventures[interest.id];
+      if (
+        runtime.active?.interestId &&
+        runtime.active.interestId !== interest.id
+      ) {
+        const old = state.adventures[runtime.active.interestId];
+        if (old)
+          old.paused = {
+            active: runtime.active,
+            hints: state.hints,
+            lastAnswer: state.lastAnswer,
+            correct: state.correct,
+            lastAnswerCorrect: state.lastAnswerCorrect,
+          };
+        runtime.active = null;
+      }
+      if (adventure?.paused) {
+        const paused = adventure.paused;
+        runtime.active = paused.active;
+        state.hints = paused.hints;
+        state.lastAnswer = paused.lastAnswer;
+        state.correct = paused.correct;
+        state.lastAnswerCorrect = paused.lastAnswerCorrect;
+        delete adventure.paused;
+        state.response = {
+          ...fallbackResponse(),
+          speech: 'Vi fortsetter der du slapp. Vennene dine venter på deg.',
+        };
+        return;
+      }
+      if (runtime.active && !runtime.active.resolved)
+        throw new Error('Prøv den aktive oppgaven først.');
+      if (adventure?.pendingChoice) throw new Error('Velg veien videre først.');
+      if (
+        adventure &&
+        runtime.active?.id === adventure.tasks[adventure.index]?.id
+      )
+        adventure.index++;
+      if (!adventure || adventure.index >= adventure.tasks.length) {
+        adventure = await planAdventure({
+          label: interest.label,
+          interestId: interest.id,
+          previous: adventure,
+          context: runtime.context,
+          provider,
+          uuid: randomUUID,
+          seed: Number.parseInt(eventId.replaceAll('-', '').slice(0, 8), 16),
+          learningEvidence: state.learningEvidence,
+        });
+        state.adventures[interest.id] = adventure;
+        if (adventure.source === 'fallback') state.fallbackMode = true;
+      }
+      state.hints = newHints();
+      state.correct = null;
+      state.lastAnswer = undefined;
+      state.lastAnswerCorrect = undefined;
+      state.helpKind = undefined;
+      state.taskStartedAt = now;
+      runtime.active = structuredClone(adventure.tasks[adventure.index]);
+      state.focusSkillId ??= runtime.active.item.skillId;
+      state.response = {
+        ...fallbackResponse('ny_oppgave'),
+        speech:
+          adventure.index === 0
+            ? adventure.plan.opening
+            : 'Historien fortsetter. Spør meg hvis du vil ha hjelp.',
+      };
+      return;
+    }
     if (runtime.active && !runtime.active.resolved)
       throw new Error('Prøv den aktive oppgaven først.');
     state.hints = newHints();
@@ -367,7 +472,27 @@ export async function learningTurn(
     state.moodStart = event.mood;
     await nextTask();
   } else if (event.type === 'next') await nextTask();
-  else if (event.type === 'school') {
+  else if (event.type === 'choice') {
+    const active = runtime.active;
+    const adventure = active?.interestId
+      ? state.adventures?.[active.interestId]
+      : undefined;
+    if (
+      !active ||
+      active.id !== event.itemId ||
+      !active.resolved ||
+      !adventure?.pendingChoice
+    )
+      throw new Error('Dette valget er ikke aktivt.');
+    const choice = adventure.plan.choices[event.option];
+    adventure.pendingChoice = false;
+    adventure.choices = [...adventure.choices, choice.label].slice(-12);
+    const budget = Number(active.item.answer),
+      cost = Math.max(0, budget - event.option);
+    const consequence = `${choice.consequence} Dere bruker ${cost} ${adventure.plan.cargo} og har ${budget - cost} igjen.`;
+    adventure.memory = [...adventure.memory, consequence].slice(-24);
+    state.response = { ...fallbackResponse('ros'), speech: consequence };
+  } else if (event.type === 'school') {
     if (state.mode === 'master')
       throw new Error('Skoletema kan noteres etter utfordringen.');
     if (event.text) {
@@ -392,6 +517,11 @@ export async function learningTurn(
     if (!active.resolved)
       state.hints = advanceHint(state.hints, { id: eventId, type: 'request' });
     const text = event.type === 'ask' ? event.text : 'Jeg forstår ikke';
+    state.helpKind = /tekst|ordet|ordene|lese|betyr/i.test(text)
+      ? 'text'
+      : /regne|gange|dele|feil/i.test(text)
+        ? 'calculation'
+        : 'general';
     const context = buildContext({
       learner: {
         firstName: profile.firstName,
@@ -402,9 +532,12 @@ export async function learningTurn(
       active: active.item,
       taskText: active.text,
       lastAnswer: state.lastAnswer,
-      helpHistory: state.helpHistory,
+      helpHistory: state.helpHistory?.filter(
+        (h) => h.itemId === runtime.active?.id,
+      ),
       allowedHintLevel: state.hints.level,
       answerResult: state.correct,
+      numericCorrect: state.lastAnswerCorrect,
       observations,
       messages: state.messages,
     });
@@ -415,6 +548,8 @@ export async function learningTurn(
       level: state.hints.level,
       context,
       instructions,
+      lastAnswer: state.lastAnswer,
+      numericCorrect: state.lastAnswerCorrect,
     });
     state.response = result.response;
     if (result.fallback) state.fallbackMode = true;
@@ -465,12 +600,52 @@ export async function learningTurn(
     state.lastAnswer = event.answer;
     state.lastAnswerCorrect = numericCorrect;
     state.correct = correct;
+    if (state.mode === 'practice') {
+      const evidence: AdventureEvidence = {
+        itemId: active.id,
+        skillId: active.item.skillId,
+        difficulty: active.item.difficulty,
+        answer: event.answer,
+        expression: compound?.expression ?? null,
+        correct,
+        numericCorrect,
+        hintLevel: hint,
+        helpKind: state.helpKind,
+        issue: numericCorrect
+          ? correct
+            ? 'none'
+            : 'notation'
+          : state.helpKind === 'text'
+            ? 'text'
+            : 'calculation',
+        support: hint > 0 ? 'supported' : 'independent',
+      };
+      state.learningEvidence = [
+        ...(state.learningEvidence ?? []),
+        evidence,
+      ].slice(-180);
+      const adventure = active.interestId
+        ? state.adventures?.[active.interestId]
+        : undefined;
+      if (adventure) {
+        adventure.evidence = [...adventure.evidence, evidence].slice(-180);
+        if (correct) {
+          adventure.tasks[adventure.index].resolved = true;
+          adventure.memory = [
+            ...adventure.memory,
+            adventure.plan.missions[adventure.index].outcome,
+          ].slice(-24);
+          adventure.pendingChoice =
+            adventure.index === 2 && typeof active.item.answer === 'number';
+        }
+      }
+    }
     const timeMs = Math.max(
       0,
       Date.parse(now) - Date.parse(state.taskStartedAt),
     );
     const misconception = detectMisconception(
-      event.answer,
+      compound ? compound.value : event.answer,
       active.item.commonWrongAnswers,
     );
     events.attempts.push({
@@ -555,13 +730,16 @@ export async function learningTurn(
       };
     } else {
       const previous = runtime.states[active.item.skillId] ?? initialState();
-      let next = recordAttempt(previous, {
-        id: eventId,
-        at: now,
-        difficulty: active.item.difficulty,
-        correct,
-        hintLevel: hint,
-      });
+      let next =
+        numericCorrect && !correct
+          ? previous
+          : recordAttempt(previous, {
+              id: eventId,
+              at: now,
+              difficulty: active.item.difficulty,
+              correct,
+              hintLevel: hint,
+            });
       runtime.states[active.item.skillId] = next;
       if (!previous.masteredAt && next.masteredAt)
         state.celebration = `Du har mestret ${skillById(active.item.skillId).title}!`;
@@ -574,16 +752,19 @@ export async function learningTurn(
         state.cards[active.item.skillId] = serializeCard(card);
         next.nextReviewAt = card.due.toISOString();
       }
-      runtime.context.history = [
-        ...state.history,
-        {
-          skillId: active.item.skillId,
-          difficulty: active.item.difficulty as 1 | 2 | 3 | 4 | 5,
-          representation: active.representation,
-          correct,
-          phase: runtime.context.phase,
-        },
-      ];
+      runtime.context.history =
+        numericCorrect && !correct
+          ? state.history
+          : [
+              ...state.history,
+              {
+                skillId: active.item.skillId,
+                difficulty: active.item.difficulty as 1 | 2 | 3 | 4 | 5,
+                representation: active.representation,
+                correct,
+                phase: runtime.context.phase,
+              },
+            ];
       state.history = runtime.context.history as typeof state.history;
       for (const [dimension, arm] of Object.entries(active.strategy))
         if (
@@ -597,12 +778,19 @@ export async function learningTurn(
             arm,
             credit(correct, hint) * 0.5,
           );
-      state.hints = advanceHint(state.hints, {
-        id: eventId,
-        type: correct ? 'correct' : 'wrong',
-      });
+      state.hints =
+        numericCorrect && !correct
+          ? state.hints
+          : advanceHint(state.hints, {
+              id: eventId,
+              type: correct ? 'correct' : 'wrong',
+            });
       active.resolved = correct;
-      const result = await invokeAgent();
+      // Numeric judgement is returned immediately; model explanation is a separate help turn.
+      const result = {
+        fallback: true,
+        response: fallbackResponse(correct ? 'ros' : 'hint'),
+      };
       if (correct && result.fallback) {
         const claimArgs = {
           skill_id: active.item.skillId,
@@ -649,8 +837,20 @@ export async function learningTurn(
     const result = await evaluateExplanation(
       provider,
       event.text,
-      runtime.active.item.question,
+      runtime.active.text,
+      {
+        answer: state.lastAnswer,
+        numericCorrect: state.lastAnswerCorrect,
+        complete: state.correct,
+      },
     );
+    const evidence = state.learningEvidence
+      ?.filter((e) => e.itemId === runtime.active!.id)
+      .at(-1);
+    if (evidence && !privateText(event.text)) {
+      evidence.explanation = event.text;
+      evidence.understanding = result.forstaelse;
+    }
     // A rubric cannot replace answer evidence; preserve data criterion and
     // attach understanding only after the independently correct, unaided answer.
     const skillState = runtime.states[runtime.active.item.skillId];
@@ -675,6 +875,11 @@ export async function learningTurn(
       fallbackResponse();
     const reply = await invokeAgent(event.text);
     if (!reply.fallback) state.response = reply.response;
+    if (runtime.active.resolved && state.correct)
+      state.response = {
+        ...state.response,
+        speech: `Tallsvaret ditt er riktig. ${result.forstaelse === 2 ? 'Forklaringen viser hvordan du tenkte.' : 'Vi kan se videre på forklaringen sammen, eller fortsette eventyret.'}`,
+      };
   } else if (event.type === 'end') {
     state.moodEnd = event.mood;
     if (event.reflection) {
@@ -685,7 +890,15 @@ export async function learningTurn(
     runtime.ended = true;
     state.response = fallbackResponse('avslutt');
   }
-  if (runtime.active && runtime.active.id !== original.active?.id) {
+  if (
+    runtime.active &&
+    runtime.active.id !== original.active?.id &&
+    !(
+      state.mode === 'practice' &&
+      runtime.active.interestId &&
+      state.adventures?.[runtime.active.interestId]
+    )
+  ) {
     const interest = activeInterest(interests);
     if (interest) {
       const completed = state.storyProgress?.[interest.id]?.completed ?? 0;
@@ -712,8 +925,12 @@ export async function learningTurn(
       };
     }
     state.lastAnswerCorrect = undefined;
+    state.lastAnswer = undefined;
   }
   if (event.type === 'answer' && state.correct && !state.celebration) {
+    const adventure = runtime.active?.interestId
+      ? state.adventures?.[runtime.active.interestId]
+      : undefined;
     const praise = [
       'Ja! Du fant veien videre!',
       'Det stemmer! Du fikk gruppene til å passe.',
@@ -721,11 +938,12 @@ export async function learningTurn(
     ];
     state.response = {
       ...state.response,
-      speech:
-        praise[
-          (state.storyProgress?.[runtime.active?.interestId ?? '']?.completed ??
-            state.revision) % praise.length
-        ],
+      speech: adventure
+        ? `Riktig! ${adventure.memory.at(-1)}`
+        : praise[
+            (state.storyProgress?.[runtime.active?.interestId ?? '']
+              ?.completed ?? state.revision) % praise.length
+          ],
     };
   }
   state.active = runtime.active;
@@ -802,25 +1020,37 @@ export function publicView(state: Snapshot): LearningView {
     helpHistory: state.helpHistory ?? [],
     lastAnswerCorrect: state.lastAnswerCorrect,
     adventure: state.active?.interestId
-      ? chapter(
-          [
-            {
-              id: state.active.interestId,
-              label: state.active.interestLabel ?? '',
-              active: true,
-            },
-          ],
-          state.storyProgress?.[state.active.interestId]?.completed ?? 0,
-          state.selectedPart,
-        )
+      ? state.mode === 'practice' && state.adventures?.[state.active.interestId]
+        ? adventureView(
+            state.adventures[state.active.interestId],
+            state.active.interestLabel ?? '',
+            state.storyProgress?.[state.active.interestId]?.completed ?? 0,
+            state.selectedPart,
+          )
+        : chapter(
+            [
+              {
+                id: state.active.interestId,
+                label: state.active.interestLabel ?? '',
+                active: true,
+              },
+            ],
+            state.storyProgress?.[state.active.interestId]?.completed ?? 0,
+            state.selectedPart,
+          )
       : undefined,
-    fallbackMode: state.fallbackMode ?? false,
+    fallbackMode:
+      (state.fallbackMode ?? false) ||
+      (state.mode === 'practice' &&
+        !!a?.interestId &&
+        state.adventures?.[a.interestId]?.source === 'fallback'),
     revision: state.revision,
     mode: state.mode,
     task:
       a && item
         ? {
             id: a.id,
+            submittedAnswer: answerSchema.safeParse(state.lastAnswer).data,
             expressionRequired: a.expressionRequired ?? false,
             illustrationSafe: [
               'mult-telling-grupper',
