@@ -218,6 +218,52 @@ it('a correct numerical result with incomplete notation does not penalize the ar
   expect(s.lastAnswerCorrect).toBe(true);
   expect(s.active!.resolved).toBe(false);
 });
+it('uses every mission from the preceding chapter even when another interest was played in between', async () => {
+  let s = (await turn(start(), { type: 'next' })).state;
+  const previous = s.adventures![star.id];
+  previous.evidence = previous.tasks.flatMap((task, i) => {
+    const correct: AdventureEvidence = {
+      itemId: task.id,
+      skillId: task.item.skillId,
+      difficulty: task.item.difficulty,
+      answer: task.item.answer,
+      expression: task.item.expression,
+      correct: true,
+      numericCorrect: true,
+      hintLevel: 0,
+      issue: 'none',
+      support: 'independent',
+    };
+    return i === 0 || i === 3
+      ? [
+          {
+            ...correct,
+            correct: false,
+            numericCorrect: false,
+            issue: 'calculation' as const,
+          },
+          correct,
+        ]
+      : [correct];
+  });
+  // The global recent window contains other-world missions and has dropped the earliest one.
+  s.learningEvidence = previous.evidence.filter(
+    (e) => e.itemId !== previous.tasks[0].id,
+  );
+  previous.index = 5;
+  previous.tasks.forEach((task) => {
+    task.resolved = true;
+  });
+  s.active = structuredClone(previous.tasks[5]);
+  s = (await turn(s, { type: 'next' })).state;
+  expect(
+    s.adventures![star.id].assessment?.['mult-telling-grupper']
+      .calculationErrors,
+  ).toBe(2);
+  expect(
+    s.adventures![star.id].assessment?.['mult-telling-grupper'].change,
+  ).toBe(-1);
+});
 it('rejects corrupted numeric, coordinate, remainder and choice tasks before display', () => {
   for (const id of [
     'mult-telling-grupper',
