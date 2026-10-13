@@ -97,7 +97,7 @@ export async function teacherHelp(input: {
     return {
       response: {
         ...fallback,
-        speech: `Tallsvaret ditt stemmer. ${compound?.expression ? 'Regnestykket viser ikke mengdene i oppgaven ennå.' : 'Skriv også regnestykket ditt.'} Du kan bruke x, X, ×, * eller gjentatt addisjon. Oppdraget venter på regnemåten.`,
+        speech: `Tallsvaret ditt stemmer. ${compound?.expression ? 'Regnestykket viser ikke mengdene i oppgaven ennå.' : 'Skriv også regnestykket ditt.'} ${input.level >= 2 ? concreteHelp(input.task, input.level, input.text) : 'Du kan bruke x, X, ×, * eller gjentatt addisjon. Oppdraget venter på regnemåten.'}`,
       },
       text: input.text,
       fallback: false,
@@ -105,6 +105,7 @@ export async function teacherHelp(input: {
   }
   if (
     input.numericCorrect === false &&
+    input.text === 'Hva var feil?' &&
     compound &&
     checkMultiplicationExpression(
       compound.expression,
