@@ -8,10 +8,10 @@ Løsningen skal være trygg, lett å bruke og kreve lite arbeid fra forelder.
 
 1. Modellen bestemmer pedagogikken; koden husker, verifiserer og håndhever grenser.
 2. Fasit kommer aldri fra KI alene: generator eller uavhengig kodekontroll kreves.
-3. Sokratisk veiledning og tillatt hint-nivå håndheves i kode.
+3. Tilpasset veiledning gis ett steg om gangen; tillatt hint-nivå og korrekt hjelperegistrering håndheves i kode.
 4. Mestring krever både vurdering og data; motoren tildeler medaljongdeler.
 5. Barnesikkerhet, minst mulig persondata, moderering og foreldreinnsyn først.
-6. Faktisk læring veier tyngre enn moro og engasjement.
+6. Appen skal være morsom, engasjerende og gi faktisk læring. Engasjement er et hovedmål og skal prege historier, oppgaver, lærerens respons og feiringer. Leo skal oppleve mestring og få lyst til å fortsette.
 7. All brukertekst er norsk bokmål, kort og forståelig for en niåring.
 8. Arkitekturen er fagnøytral og kan utvides med flere ferdighetsgrafer.
 

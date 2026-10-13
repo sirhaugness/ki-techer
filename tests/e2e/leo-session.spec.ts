@@ -16,7 +16,7 @@ test('tablet diagnostics → interests → practice, hints, manipulatives, reloa
   for (let i = 0; i < 10; i++) {
     await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
     await page.getByRole('button', { name: 'Sjekk svaret' }).click();
-    await page.getByRole('button', { name: 'Neste oppgave' }).click();
+    await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
   }
   await expect(
     page.getByRole('heading', { name: 'Nå er vi klare for matteeventyret' }),
@@ -35,7 +35,12 @@ test('tablet diagnostics → interests → practice, hints, manipulatives, reloa
     page.getByText('Vi øver med faste oppgaver og rolige hint i dag.'),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Jeg vil ha et hint' }).click();
-  await expect(page.getByText('Kan du tegne eller lage grupper')).toBeVisible();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'grupper' }).first(),
+  ).toBeVisible();
+  await page
+    .getByText('Utforsk med tegning og klosser', { exact: true })
+    .click();
   await expect(
     page.getByRole('heading', { name: 'Bygg et rutenett' }),
   ).toBeVisible();
@@ -135,7 +140,7 @@ test('seeded master challenge completes on tablet without hint or answer data', 
     const data = await (await response).json();
     expect(data.task).not.toHaveProperty('answer');
     if (i < 9)
-      await page.getByRole('button', { name: 'Neste oppgave' }).click();
+      await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
   }
   await expect(
     page.getByRole('heading', { name: 'Du har fått del 4 av medaljongen!' }),

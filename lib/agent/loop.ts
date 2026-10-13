@@ -18,7 +18,7 @@ export const fallbackResponse = (
       : action === 'hint'
         ? 'Se på hva oppgaven spør om. Kan du vise det med klossene?'
         : action === 'ros'
-          ? 'Du fant en løsning. Hvordan tenkte du?'
+          ? 'Riktig! Du prøvde og fant veien videre.'
           : 'Vi tar det steg for steg. Hva vil du prøve først?',
   action,
   hint_level_used: 0,

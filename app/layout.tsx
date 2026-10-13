@@ -15,7 +15,7 @@ export default function RootLayout({
         <a href="#hovedinnhold" className="skip-link">
           Gå til innhold
         </a>
-        <main id="hovedinnhold" className="mx-auto max-w-3xl p-6 md:p-12">
+        <main id="hovedinnhold" className="mx-auto max-w-6xl p-6 md:p-12">
           {children}
         </main>
       </body>

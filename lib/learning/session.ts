@@ -41,6 +41,10 @@ import {
   type LearningView,
 } from './types';
 
+import { activeInterest, adventureTask, chapter } from '../profile/story';
+import { teacherHelp, concreteHelp } from './help';
+import { checkMultiplicationExpression } from '../engine/expression-answer';
+
 const diagnosticSkills = [
   'mult-tabell-3-4',
   'div-deling-konkret',
@@ -92,6 +96,8 @@ export function createSession(
     throw new Error('Mesterutfordringen kan tas tidligst neste dag.');
   return {
     version: 1,
+    storyProgress: structuredClone(previous?.storyProgress ?? {}),
+    helpHistory: [],
     revision: 0,
     id: randomUUID(),
     clock: startSession(settings, now, usedMinutes),
@@ -150,9 +156,11 @@ export async function learningTurn(
   if (state.seenEvents.includes(eventId))
     return { state, events, replayed: true };
   state.fallbackMode = !provider;
+  state.celebration = null;
   if (state.endedAt) throw new Error('Økten er allerede avsluttet.');
   const phase = sessionPhase(state.clock, now);
   const runtime: AgentRuntime = {
+    storyProgress: state.storyProgress,
     taskCreationAllowed: event.type === 'next' || event.type === 'mood',
     masterStartAllowed: state.mode === 'master',
     context: {
@@ -219,7 +227,10 @@ export async function learningTurn(
       },
       engine: runtime.context,
       active: runtime.active?.item ?? null,
-      allowedHintLevel: state.mode === 'master' ? 0 : state.hints.level,
+      allowedHintLevel: state.hints.level,
+      taskText: runtime.active?.text,
+      lastAnswer: state.lastAnswer,
+      helpHistory: state.helpHistory,
       answerResult: state.correct,
       observations,
       messages: state.messages,
@@ -229,7 +240,7 @@ export async function learningTurn(
       context,
       instructions,
       text,
-      allowedHintLevel: state.mode === 'master' ? 0 : state.hints.level,
+      allowedHintLevel: state.hints.level,
       logTool,
       flag,
     });
@@ -336,16 +347,7 @@ export async function learningTurn(
         };
         return;
       }
-      const interest = [...interests]
-        .sort((a, b) => (b.weight ?? 1) - (a.weight ?? 1))
-        .find(
-          (i) =>
-            i.active &&
-            !(
-              state.usedInterests.slice(-2).length === 2 &&
-              state.usedInterests.slice(-2).every((id) => id === i.id)
-            ),
-        );
+      const interest = activeInterest(interests);
       await executeTool(runtime, 'lag_oppgave', {
         skill_id: candidate.skill_id,
         vanskegrad: candidate.foreslått_vanskegrad,
@@ -384,35 +386,84 @@ export async function learningTurn(
         ...fallbackResponse(),
         speech: 'Det er helt greit. Vi utforsker matte sammen.',
       };
-  } else if (event.type === 'hint') {
-    if (state.mode === 'master')
-      throw new Error('Mesterutfordringen gjøres uten hint.');
-    if (!runtime.active || runtime.active.resolved)
-      throw new Error('Velg en oppgave først.');
-    state.hints = advanceHint(state.hints, { id: eventId, type: 'request' });
-    const result = await invokeAgent();
+  } else if (event.type === 'hint' || event.type === 'ask') {
+    const active = runtime.active;
+    if (!active) throw new Error('Velg en oppgave først.');
+    if (!active.resolved)
+      state.hints = advanceHint(state.hints, { id: eventId, type: 'request' });
+    const text = event.type === 'ask' ? event.text : 'Jeg forstår ikke';
+    const context = buildContext({
+      learner: {
+        firstName: profile.firstName,
+        grade: profile.grade,
+        tutorName: profile.tutorName,
+      },
+      engine: runtime.context,
+      active: active.item,
+      taskText: active.text,
+      lastAnswer: state.lastAnswer,
+      helpHistory: state.helpHistory,
+      allowedHintLevel: state.hints.level,
+      answerResult: state.correct,
+      observations,
+      messages: state.messages,
+    });
+    const result = await teacherHelp({
+      provider,
+      task: active,
+      text,
+      level: state.hints.level,
+      context,
+      instructions,
+    });
     state.response = result.response;
-    if (result.fallback) {
-      const speech =
-        state.hints.level === 4
-          ? `Svaret er ${typeof runtime.active.item.answer === 'object' ? JSON.stringify(runtime.active.item.answer) : runtime.active.item.answer}. Se på hvordan gruppene passer sammen.`
-          : state.hints.level === 3
-            ? 'Prøv først et mindre, lignende eksempel med andre tall. Vis deretter den opprinnelige oppgaven med klosser.'
-            : state.hints.level === 2
-              ? 'Finn først hva du vet og hva du skal finne. Ta et lite steg med klossene.'
-              : 'Kan du tegne eller lage grupper som passer til oppgaven?';
-      state.response = {
-        ...fallbackResponse('hint'),
-        speech,
+    if (result.fallback) state.fallbackMode = true;
+    state.helpHistory = [
+      ...(state.helpHistory ?? []),
+      {
+        itemId: active.id,
+        question: result.text,
+        reply: result.response.speech,
+      },
+    ].slice(-12);
+    const message = { role: 'leo', text: result.text };
+    state.messages = [...state.messages, message].slice(-12);
+    events.messages.push({
+      id: randomUUID(),
+      ...message,
+      meta: {
+        kind: 'question',
+        item_id: active.id,
         hint_level_used: state.hints.level,
-      };
-    }
+      },
+    });
+    if (result.text.startsWith('[Spørsmål')) await flag('upassende');
   } else if (event.type === 'answer') {
     const active = runtime.active;
     if (!active || active.resolved || active.id !== event.itemId)
       throw new Error('Denne oppgaven er ikke aktiv lenger.');
-    const correct = checkAnswer(active.item, event.answer),
-      hint = state.mode === 'master' ? 0 : state.hints.level;
+    const compound =
+      typeof event.answer === 'object' &&
+      !Array.isArray(event.answer) &&
+      'value' in event.answer
+        ? event.answer
+        : null;
+    const numericCorrect = checkAnswer(
+      active.item,
+      compound ? compound.value : event.answer,
+    );
+    const correct =
+      numericCorrect &&
+      (!active.expressionRequired ||
+        (!!compound &&
+          checkMultiplicationExpression(
+            compound.expression,
+            Number(active.item.params.a),
+            Number(active.item.params.b),
+          )));
+    const hint = state.hints.level;
+    state.lastAnswer = event.answer;
+    state.lastAnswerCorrect = numericCorrect;
     state.correct = correct;
     const timeMs = Math.max(
       0,
@@ -441,9 +492,20 @@ export async function learningTurn(
         code: misconception,
         description: misconceptions[misconception].description,
       });
+    if (correct && active.interestId) {
+      state.storyProgress ??= {};
+      const progress = state.storyProgress[active.interestId] ?? {
+        completed: 0,
+        part: state.selectedPart,
+      };
+      state.storyProgress[active.interestId] = {
+        completed: progress.completed + 1,
+        part: state.selectedPart,
+      };
+    }
     if (state.mode === 'master') {
       active.resolved = true;
-      state.masterAnswers.push({ itemId: active.id, correct, hintLevel: 0 });
+      state.masterAnswers.push({ itemId: active.id, correct, hintLevel: hint });
       if (state.masterAnswers.length === runtime.masterTest!.items.length) {
         const test = runtime.masterTest!,
           part = runtime.parts.find((p) => p.id === test.part)!;
@@ -570,7 +632,13 @@ export async function learningTurn(
           : {
               ...fallbackResponse(),
               speech:
-                'Det passet ikke helt. Du kan prøve igjen eller be om et hint.',
+                active.expressionRequired && numericCorrect
+                  ? 'Tallsvaret stemmer! Skriv et regnestykke som viser gruppene i oppgaven.'
+                  : concreteHelp(
+                      active,
+                      Math.max(1, state.hints.level),
+                      'Jeg forstår ikke',
+                    ),
             }
         : result.response;
     }
@@ -616,6 +684,49 @@ export async function learningTurn(
     }
     runtime.ended = true;
     state.response = fallbackResponse('avslutt');
+  }
+  if (runtime.active && runtime.active.id !== original.active?.id) {
+    const interest = activeInterest(interests);
+    if (interest) {
+      const completed = state.storyProgress?.[interest.id]?.completed ?? 0;
+      const adventure = adventureTask(
+        runtime.active.item,
+        interest.label,
+        completed,
+      );
+      runtime.active.text =
+        state.mode === 'practice'
+          ? adventure.text
+          : adventure.text
+              .replace(' b) Skriv et regnestykke som viser dette.', '')
+              .replace(' a) ', ' ');
+      runtime.active.expressionRequired =
+        adventure.expressionRequired && state.mode === 'practice';
+      runtime.active.interestId = interest.id;
+      runtime.active.interestLabel = interest.label;
+      runtime.active.storyCompleted = completed;
+      state.response = {
+        ...state.response,
+        speech:
+          'Oppdraget venter! Prøv det første steget, eller spør meg om hjelp.',
+      };
+    }
+    state.lastAnswerCorrect = undefined;
+  }
+  if (event.type === 'answer' && state.correct && !state.celebration) {
+    const praise = [
+      'Ja! Du fant veien videre!',
+      'Det stemmer! Du fikk gruppene til å passe.',
+      'Riktig! Du prøvde og løste oppdraget.',
+    ];
+    state.response = {
+      ...state.response,
+      speech:
+        praise[
+          (state.storyProgress?.[runtime.active?.interestId ?? '']?.completed ??
+            state.revision) % praise.length
+        ],
+    };
   }
   state.active = runtime.active;
   state.states = runtime.states;
@@ -688,6 +799,21 @@ export function publicView(state: Snapshot): LearningView {
     ) ?? (division ? 'grupper' : 'rutenett');
   return {
     id: state.id,
+    helpHistory: state.helpHistory ?? [],
+    lastAnswerCorrect: state.lastAnswerCorrect,
+    adventure: state.active?.interestId
+      ? chapter(
+          [
+            {
+              id: state.active.interestId,
+              label: state.active.interestLabel ?? '',
+              active: true,
+            },
+          ],
+          state.storyProgress?.[state.active.interestId]?.completed ?? 0,
+          state.selectedPart,
+        )
+      : undefined,
     fallbackMode: state.fallbackMode ?? false,
     revision: state.revision,
     mode: state.mode,
@@ -695,6 +821,17 @@ export function publicView(state: Snapshot): LearningView {
       a && item
         ? {
             id: a.id,
+            expressionRequired: a.expressionRequired ?? false,
+            illustrationSafe: [
+              'mult-telling-grupper',
+              'mult-tabell-2-5-10',
+              'mult-tabell-3-4',
+              'mult-tabell-6-9',
+              'div-deling-konkret',
+              'div-maaling-konkret',
+              'div-representasjoner',
+              'div-rutenett',
+            ].includes(item.skillId),
             question: a.text,
             answerType: item.answerType,
             choices: item.choices ?? [],
@@ -713,7 +850,12 @@ export function publicView(state: Snapshot): LearningView {
                       : typeof params.count === 'number'
                         ? params.count
                         : 0,
-              groups: typeof params.b === 'number' ? params.b : 1,
+              groups:
+                item.skillId.startsWith('mult-') && typeof params.a === 'number'
+                  ? params.a
+                  : typeof params.b === 'number'
+                    ? params.b
+                    : 1,
               shape: typeof params.shape === 'string' ? params.shape : null,
               steps: Array.isArray(params.steps) ? params.steps : [],
             },
@@ -722,8 +864,8 @@ export function publicView(state: Snapshot): LearningView {
     speech: state.response.speech,
     parts: state.parts,
     ended: !!state.endedAt,
-    correct: state.mode === 'master' && !state.endedAt ? null : state.correct,
-    hintLevel: state.mode === 'master' ? 0 : state.hints.level,
+    correct: state.correct,
+    hintLevel: state.hints.level,
     pauseOffered: state.pauseOffered,
     celebration: state.celebration,
     diagnosticComplete: state.diagnosticComplete,

@@ -60,7 +60,7 @@ test('read aloud, auto preference, hold-to-speak, visible editable transcript an
   ).toBeVisible();
   await page.getByRole('button', { name: 'Bruk talesvaret' }).click();
   await expect(
-    page.getByRole('button', { name: 'Neste oppgave' }),
+    page.getByRole('button', { name: 'Fortsett eventyret' }),
   ).toBeVisible();
 });
 test('denied microphone leaves text answer available', async ({ page }) => {

@@ -46,9 +46,17 @@ export function Interests({
     <>
       <Link href="/leo">← Tilbake til kartet</Link>
       <h1 className="my-6 text-4xl font-bold">Mine interesser</h1>
-      <p>Hva liker du? Vi kan bruke det når vi utforsker matte.</p>
+      <p>
+        Velg ett eventyr. Det følger deg til du selv bytter. Du beholder alt du
+        har lært i matte.
+      </p>
+      <p className="home-note">
+        Hvis du er midt i en oppgave, fullfører du den først. Neste oppdrag
+        følger det nye eventyret.
+      </p>
       <div className="interest-presets">
         {[
+          ['🌟', 'Star Wars'],
           ['🦕', 'Dinosaurer'],
           ['⚽', 'Fotball'],
           ['🚀', 'Verdensrommet'],
@@ -75,7 +83,7 @@ export function Interests({
               void save({
                 command: 'toggleInterest',
                 id: i.id,
-                active: !i.active,
+                active: true,
               })
             }
           >
@@ -99,11 +107,13 @@ export function Interests({
             maxLength={40}
           />
         </label>
-        <RecordButton
-          label="Hold for å fortelle hva du liker"
-          disabled={busy || !voiceEnabled}
-          onText={(text) => setLabel(text.slice(0, 40))}
-        />
+        {voiceEnabled && (
+          <RecordButton
+            label="Hold for å fortelle hva du liker"
+            disabled={busy || !voiceEnabled}
+            onText={(text) => setLabel(text.slice(0, 40))}
+          />
+        )}
         <button disabled={busy || !label.trim()}>Lagre interesse</button>
       </form>
       <form

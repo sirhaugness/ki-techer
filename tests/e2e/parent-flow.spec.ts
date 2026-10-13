@@ -66,7 +66,7 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   for (let i = 0; i < 10; i++) {
     await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
     await page.getByRole('button', { name: 'Sjekk svaret' }).click();
-    await page.getByRole('button', { name: 'Neste oppgave' }).click();
+    await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
   }
   await page.getByRole('button', { name: 'Tilbake til kartet' }).click();
   await page.getByRole('button', { name: 'Start en matteøkt' }).click();

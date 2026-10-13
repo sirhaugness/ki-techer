@@ -137,7 +137,7 @@ describe('persistent learning session', () => {
       createSession(profile, null, now, 30, 'practice', null),
     ).toThrow('dagens øving');
   });
-  it('requires another day, denies master hints, covers all skills and awards only after ten checked answers', async () => {
+  it('requires another day, covers all skills and awards only after ten checked unaided answers', async () => {
     const previous = createSession(
       profile,
       null,
@@ -167,7 +167,6 @@ describe('persistent learning session', () => {
     ).toThrow('neste dag');
     let state = createSession(profile, previous, now, 0, 'master', 4);
     state = (await turn(state, { type: 'next' })).state;
-    await expect(turn(state, { type: 'hint' })).rejects.toThrow('uten hint');
     for (let i = 0; i < 10; i++) {
       if (i) state = (await turn(state, { type: 'next' })).state;
       const result = await turn(state, {
@@ -177,7 +176,7 @@ describe('persistent learning session', () => {
         inputMode: 'tastatur',
       });
       state = result.state;
-      if (i < 9) expect(publicView(state).correct).toBeNull();
+      if (i < 9) expect(publicView(state).correct).toBe(true);
     }
     expect(state.parts.find((p) => p.id === 4)?.status).toBe('tildelt');
     expect(state.celebration).toContain('del 4');

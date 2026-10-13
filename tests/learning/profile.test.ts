@@ -27,11 +27,11 @@ it('chapters follow the strongest active interest and continue across sessions',
     { id: 'b', label: 'Fotball', active: true, weight: 2 },
     { id: 'c', label: 'Dyr', active: false, weight: 3 },
   ];
-  expect(chapter(interests, 2)).toMatchObject({
+  expect(chapter(interests, 8)).toMatchObject({
     title: 'Matteeventyret: Fotball',
     number: 3,
   });
-  expect(chapter(interests, 0).text).not.toBe(chapter(interests, 1).text);
+  expect(chapter(interests, 0).text).not.toBe(chapter(interests, 4).text);
   expect(chapter([], 0).title).toBe('Matteeventyret');
 });
 it('school topics expire after exactly seven days; uncertain topics are not saved', async () => {

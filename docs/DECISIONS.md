@@ -119,7 +119,7 @@ Refleksjon bruker `OPENAI_MODEL_REFLECT`, godkjente meldingsutdrag, øktstatisti
 
 Fletting og interesseoppdatering skjer i én service-only SQL-transaksjon. Modellen kan foreslå operasjoner, men får ikke bestemme confidence: start 0,4, ny økt +0,15, motbevis −0,2, arkiv under 0,2 og maks 25 aktive/låste. Samme økt teller én gang per observasjon. «Arkiver» behandles som motbevis, slik at modellen ikke kan omgå terskelen. Låste, avviste og arkiverte observasjoner endres aldri automatisk. Forelders profilendringer skal bruke samme elevlås. Agentkonteksten bruker bare aktive med confidence ≥0,6 og låste.
 
-Interessevekt oppdateres forsiktig fra Leos rapporterte slutthumør, med vekt avgrenset til 0,25–3. Riktige svar er ikke et engasjementsmål. Samme interesse kan fortsatt brukes maksimalt to ganger på rad. Fortellingen bruker trygge, norske maler; sterkeste aktive interesse velger ramme, og avsluttede økter velger neste kapittel uten tilfeldige belønninger. Skoletema modereres og gjenkjennes konservativt for divisjon, multiplikasjon, geometri og algoritmer; usikre temaer lagres ikke. Temaet påvirker kandidater bare i sju dager. «Vet ikke» er alltid et greit svar.
+Interessevekt oppdateres forsiktig fra Leos rapporterte slutthumør, med vekt avgrenset til 0,25–3. Riktige svar er ikke et engasjementsmål. Disse opprinnelige valgene om interessevariasjon og øktbaserte kapitler er erstattet av beslutningen om selvvalgt eventyr nedenfor. Skoletema modereres og gjenkjennes konservativt for divisjon, multiplikasjon, geometri og algoritmer; usikre temaer lagres ikke. Temaet påvirker kandidater bare i sju dager. «Vet ikke» er alltid et greit svar.
 
 ## M8 — forelders innsyn og personvern (11. oktober 2026)
 
@@ -142,3 +142,15 @@ Lighthouse legges i lokal fullsjekk og CI med mock-only server og lagrede rappor
 Fallback bevarer M4s forståelsesvern: en fritekstforklaring får ikke forståelse=2 uten godkjent rubrikk. Øvingssvar, hint, eksisterende mestring og tilgjengelige mesterutfordringer virker fortsatt, og tildeling er testet med null-provider. Ingen budsjettregel gir gratis mestring; ny forståelsesvurdering venter på fungerende KI.
 
 Hosted Supabase tildeler også direkte EXECUTE til anon ved funksjonsopprettelse. M1s PUBLIC-revoke er supplert med eksplisitt anon-revoke for de tre auth.uid()-avgrensede bootstrap/RLS-funksjonene. PGlite-testene etterligner disse default-grantene og krever at ingen SECURITY DEFINER-funksjon er anonymt kjørbar. Dette ble funnet ved M9s hosted advisor-kontroll; migrasjonen er en ny fil fordi de tidligere allerede er brukt på dev.
+
+## Lærer ved pulten og selvvalgt eventyr (2026-10-12)
+
+Engasjement og faktisk læring er hovedmål. Den eksisterende generator-, mestrings-, PIN- og transaksjonsmotoren beholdes. Spørsmål er en separat `ask`-hendelse. Lærerhjelp har ingen verktøy som kan skifte oppgave, avslutte økten eller foreslå mestring. Oppgave, siste svar og spørsmål/hjelp følger med i modellkonteksten. Manglende moderering skjuler fritekst fra lagring/modell; de faste snarveiene og kontrollerte hjelpemalene er alltid tilgjengelige. Hjelp i mesterutfordringer senker selvstendig poengsum, men lar eleven fortsette.
+
+Én aktiv interesse håndheves med unik delindeks. Valg skjer i en RPC med radlås på eleven og eksisterende husholdningskontroll i API-et. Migrasjonen beholder én sterkest vektet aktiv interesse for gamle profiler; dette er kun konvertering, aldri automatisk interessebytte etterpå. Nye/eksisterende valg bruker samme atomiske transaksjon.
+
+Historien består av navngitte figurer, sted, mål og oppdragsfaser. Kontrollerte maler bruker generatorens tall, og samtale-KI kan aldri omskrive fasit eller historielogikken. Progresjon per interesse ligger i den eksisterende versjonerte økttilstanden, føres videre til neste økt og committes atomisk sammen med svarevidens. Fire korrekt fullførte oppdrag gir nytt kapittel; hjelp og tekniske feil gir ingen ekstra progresjon. Matematisk fremgang påvirkes ikke av interessebytte. Pågående oppgave fullføres i sitt gamle eventyr; neste oppdrag bruker det nye valget.
+
+Multiplikasjonsoppdrag har tall og et uttrykk som samlet svar. Et trygt AST-vern godtar multiplikasjon i begge rekkefølger og gjentatt addisjon, med parenteser og valgfri likhet med korrekt resultat. Det avviser funksjoner, symboler, tildelinger og uttrykk med samme verdi som modellerer andre tall. Læringsmotoren registrerer ett svar når begge delene kontrolleres. Andre oppgavetyper beholder sine etablerte svarformer.
+
+Svarfeltene blir stående etter vurdering. På smale skjermer åpnes lærerhjelp i plassen til talltastaturet, mens svarfelt og hovedhandling forblir synlige og beholder plasseringen. Feiring er et dekorativt overlegg, nøkkelsatt med oppgave-ID og slått av ved redusert bevegelse. Ingen animasjon må fullføres før eleven fortsetter.
