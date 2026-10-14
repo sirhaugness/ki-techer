@@ -783,6 +783,42 @@ export function StoryWorld({
               stroke="#587992"
               strokeWidth="6"
             />
+            {scene.effect === 'build' && solved && (
+              <g className="story-built-object">
+                <path
+                  d="M0 10 85-34 412-34 327 10Z"
+                  fill="#d0e0eb"
+                  stroke="#edf8ff"
+                  strokeWidth="5"
+                />
+                <path
+                  d="M327 10 412-34v134l-85 43Z"
+                  fill="#8199b0"
+                  stroke="#edf8ff"
+                  strokeWidth="5"
+                />
+                <rect
+                  x="0"
+                  y="10"
+                  width="327"
+                  height="133"
+                  fill="#a9bdcc"
+                  stroke="#edf8ff"
+                  strokeWidth="5"
+                />
+                <path
+                  d="M109 10v133m109-133v133M0 75h327"
+                  stroke="#526b82"
+                  strokeWidth="5"
+                />
+                <path
+                  d="m141 76 22 22 41-50"
+                  fill="none"
+                  stroke="#134d42"
+                  strokeWidth="10"
+                />
+              </g>
+            )}
             {scene.action === 'fill' && (
               <>
                 <path

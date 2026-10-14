@@ -38,7 +38,22 @@ export function storyFixtureProvider(): AiProvider {
       const mult = menu.find((m) => m.kind === 'groups') ?? menu[0];
       const missing = menu.find((m) => m.kind === 'missing') ?? mult;
       const twice = menu.find((m) => m.kind === 'double') ?? mult;
-      const selected = [mult, missing, twice, mult, missing, twice];
+      const used = new Set<number>();
+      const take = (kind: string) => {
+        const next =
+          menu.find((m) => m.kind === kind && !used.has(m.index)) ??
+          menu.find((m) => !used.has(m.index))!;
+        used.add(next.index);
+        return next;
+      };
+      const selected = [
+        take(mult.kind),
+        take(missing.kind),
+        take(twice.kind),
+        take(mult.kind),
+        take(missing.kind),
+        take(twice.kind),
+      ];
       const companion = space ? 'BB-8' : 'Dina';
       const templates = (m: MenuItem) =>
         m.kind === 'groups'

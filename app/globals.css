@@ -1870,6 +1870,7 @@ button.print-hide {
   opacity: 1;
   animation: story-sparks 550ms ease-in-out 3 alternate;
 }
+.story-world[data-state='solved'][data-effect='build'] .story-built-object,
 .story-world[data-state='solved'][data-effect='build'] .story-bridge-plank {
   animation: story-build 600ms ease-out both;
 }
@@ -2166,6 +2167,7 @@ button.print-hide {
   transform: translate(680px, 240px);
   animation: story-droid-travel 1900ms ease-in-out both;
 }
+.story-world[data-state='solved'][data-effect='build'] .story-built-object,
 .story-world[data-state='solved'][data-effect='build'] .ship-wings,
 .story-world[data-state='solved'][data-effect='build'] .story-creature {
   animation: story-assemble 1400ms ease-out both;

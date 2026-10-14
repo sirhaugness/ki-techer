@@ -21,6 +21,7 @@ import {
 import { skills, skillById } from '../engine/skills/graph';
 import { generate, answerSchema } from '../engine/skills/generators';
 import { seededRng } from '../engine/random';
+import { bindStoryProblem } from '../engine/story-problem';
 import { newHints, advanceHint } from '../engine/hints';
 import { newBandit, forget, updateArm } from '../engine/bandit';
 import { scheduleReview, serializeCard } from '../engine/scheduler';
@@ -1200,7 +1201,9 @@ export function publicView(
         ? {
             id: a.id,
             scene:
-              a.scene ??
+              (a.scene
+                ? { ...a.scene, retry: bindStoryProblem(a.scene.retry, item) }
+                : undefined) ??
               (useStoryScene &&
               a.interaction &&
               a.interestId &&

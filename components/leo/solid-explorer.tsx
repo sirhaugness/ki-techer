@@ -10,6 +10,7 @@ export function SolidExplorer({
   count: number;
   property?: string;
 }) {
+  const [tilt, setTilt] = useState(0.4);
   const [angle, setAngle] = useState(0.55),
     [marked, setMarked] = useState<Set<number>>(() => new Set());
   const source = solidFor(shape);
@@ -18,8 +19,8 @@ export function SolidExplorer({
       depth = z * Math.cos(angle) - x * Math.sin(angle);
     return {
       x: 170 + rotatedX * 65,
-      y: 125 + (y * 0.88 - depth * 0.36) * 65,
-      depth,
+      y: 125 + (y * Math.cos(tilt) - depth * Math.sin(tilt)) * 65,
+      depth: depth * Math.cos(tilt) + y * Math.sin(tilt),
     };
   });
   const edges = solidEdges(source),
@@ -128,6 +129,9 @@ export function SolidExplorer({
         </button>
         <button type="button" onClick={() => setAngle((a) => a + 0.55)}>
           Roter ↷
+        </button>
+        <button type="button" onClick={() => setTilt((t) => t + 0.55)}>
+          Vipp opp/ned
         </button>
         <button type="button" onClick={() => setMarked(new Set())}>
           Fjern merkene

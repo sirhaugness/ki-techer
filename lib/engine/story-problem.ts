@@ -17,6 +17,24 @@ export function storyQuantities(item: GeneratedItem): Record<string, number> {
     return m.mode === 'doble'
       ? { amount: m.known, a: m.known }
       : { amount: m.total, total: m.total };
+  const p = item.params;
+  const number = (name: string) => Number(p[name]);
+  if (item.skillId === 'div-med-rest')
+    return { total: number('total'), b: number('b') };
+  if (item.skillId === 'hverdag-handel')
+    return { budget: number('budget'), a: number('a'), b: number('b') };
+  if (item.skillId === 'hverdag-ukjent')
+    return { total: number('a') * number('b'), b: number('b') };
+  if (['vurdere-modell', 'forklare-tenkemaate'].includes(item.skillId))
+    return { total: number('total'), b: number('b') };
+  if (item.skillId === 'mult-kommutativ-strategi')
+    return { a: number('a'), b: number('b') };
+  if (item.skillId === 'fire-regnearter-sammenheng')
+    return p.operation === '-'
+      ? { total: number('a') + number('b'), b: number('b') }
+      : p.operation === '/'
+        ? { total: number('a') * number('b'), b: number('b') }
+        : { a: number('a'), b: number('b') };
   return Object.fromEntries(
     Object.entries(item.params).filter(
       (entry): entry is [string, number] => typeof entry[1] === 'number',
@@ -43,7 +61,13 @@ export function validateStoryProblem(
   try {
     bindStoryProblem(template, item);
     // Character names may contain digits; all mathematical quantities must be bound.
-    if (/\d/.test(template.replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, '')))
+    if (
+      /\d/.test(
+        template
+          .replaceAll(/[‐‑–—]/g, '-')
+          .replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, ''),
+      )
+    )
       return false;
     const names = new Set(
       [...template.matchAll(/\{\{([a-z]+)\}\}/g)].map((m) => m[1]),
@@ -64,9 +88,7 @@ export function validateStoryProblem(
         names.has('amount') ||
         (m.mode === 'doble' ? names.has('a') : names.has('total'))
       );
-    return Object.entries(item.params)
-      .filter(([, v]) => typeof v === 'number')
-      .every(([key]) => names.has(key));
+    return Object.keys(storyQuantities(item)).every((key) => names.has(key));
   } catch {
     return false;
   }

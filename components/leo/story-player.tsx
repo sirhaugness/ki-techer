@@ -54,7 +54,12 @@ export function StoryPlayer({
       !Array.isArray(previous) &&
       'remainder' in previous
       ? String(previous.remainder)
-      : '',
+      : previous &&
+          typeof previous === 'object' &&
+          !Array.isArray(previous) &&
+          'y' in previous
+        ? String(previous.y)
+        : '',
   );
   const [allocations, setAllocations] = useState<number[]>(
     previous &&
@@ -218,7 +223,17 @@ export function StoryPlayer({
             <Manipulatives
               visual={task.visual}
               disabled={disabled}
-              onAnswer={() => {}}
+              onAnswer={(answer) => {
+                if (
+                  answer &&
+                  typeof answer === 'object' &&
+                  'x' in answer &&
+                  'y' in answer
+                ) {
+                  update(String(answer.x));
+                  setSecond(String(answer.y));
+                }
+              }}
             />
           )}
           <p className="story-clue">{scene.clue}</p>

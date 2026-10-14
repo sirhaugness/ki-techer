@@ -43,6 +43,38 @@ describe('story-driven saga', () => {
       false,
     );
   });
+  it('keeps native remainder and shopping answers out of story quantities', () => {
+    const rest = generate('div-med-rest', 2, seededRng(4));
+    expect(storyQuantities(rest)).toEqual({
+      total: rest.params.total,
+      b: rest.params.b,
+    });
+    expect(
+      validateStoryProblem(
+        'Fordel {{total}} krystaller med {{b}} i hver pose. Hvor mange fulle poser og hvor mye til overs?',
+        rest,
+      ),
+    ).toBe(true);
+    expect(
+      validateStoryProblem('{{total}} {{b}} {{a}} {{remainder}}', rest),
+    ).toBe(false);
+    const trade = generate('hverdag-handel', 2, seededRng(4));
+    expect(storyQuantities(trade)).not.toHaveProperty('c');
+    expect(
+      validateStoryProblem(
+        'Du har {{budget}} kreditter og kjøper {{a}} deler til {{b}} hver. Hvor mye har du igjen?',
+        trade,
+      ),
+    ).toBe(true);
+    const unknown = generate('hverdag-ukjent', 2, seededRng(4));
+    expect(storyQuantities(unknown)).not.toHaveProperty('a');
+    expect(
+      validateStoryProblem(
+        'Du sparer {{b}} hver dag og har {{total}}. Hvor mange dager?',
+        unknown,
+      ),
+    ).toBe(true);
+  });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
       const interest = { id: randomUUID(), label, active: true };
@@ -80,6 +112,9 @@ describe('story-driven saga', () => {
         for (let mission = 0; mission < 6; mission++) {
           const active = state.active!;
           if (chapter === 1 && mission === 0) {
+            active.scene!.retry =
+              'Bruk {{groups}} grupper med {{each}} i hver.';
+            expect(publicView(state).task!.scene!.retry).not.toMatch(/[{}]/);
             const wrong = await turn({
               type: 'answer',
               itemId: active.id,
