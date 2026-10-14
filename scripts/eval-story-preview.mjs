@@ -298,9 +298,12 @@ try {
         i === 0 &&
         !task.expressionRequired &&
         task.interaction.kind !== 'grouping' &&
-        task.scene.action !== 'route'
+        task.scene.action !== 'route' &&
+        task.answerType !== 'choice'
       ) {
         await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
+        if (task.answerType === 'coordinate')
+          await page.getByLabel('y (oppover)', { exact: true }).fill('0');
         await command(
           () =>
             page

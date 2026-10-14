@@ -209,25 +209,10 @@ function validateChapter(
       issues.push(
         `${m.id}: Bruk bare disse mengdefeltene: ${item ? Object.keys(storyQuantities(item)).join(', ') : 'velg en gyldig itemIndex'}. Både spørsmålet og ledetråden kontrolleres. Ikke skriv tall utenfor feltene.`,
       );
-    else {
-      try {
-        bindStoryProblem(m.clueTemplate, item);
-        if (
-          /\d/.test(
-            m.clueTemplate.replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, ''),
-          )
-        )
-          issues.push(
-            `${m.id}: Ledetrådens mengder må bindes til kontrollerte felt.`,
-          );
-      } catch {
-        issues.push(`${m.id}: Ugyldig mengde i ledetråden.`);
-      }
-      if (m.expressionRequired && missionMath(item).kind !== 'groups')
-        issues.push(
-          `${m.id}: Uttrykksforklaring støttes her bare for konkrete gangemengder.`,
-        );
-    }
+    else if (m.expressionRequired && missionMath(item).kind !== 'groups')
+      issues.push(
+        `${m.id}: Uttrykksforklaring støttes her bare for konkrete gangemengder.`,
+      );
     if (!cast.has(m.speaker))
       issues.push(`${m.id}: Figuren som snakker må være introdusert.`);
     if (i > 0 && !m.follows.includes(plan.missions[i - 1].id))

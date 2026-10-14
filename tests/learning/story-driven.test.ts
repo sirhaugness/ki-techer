@@ -12,6 +12,7 @@ import {
 } from '../../lib/engine/story-problem';
 import { generate } from '../../lib/engine/skills/generators';
 import { seededRng } from '../../lib/engine/random';
+import type { StoryChapter } from '../../lib/learning/story-contract';
 import type { LearningEvent, Snapshot } from '../../lib/learning/types';
 
 const now = '2026-10-14T20:00:00Z';
@@ -148,6 +149,18 @@ describe('story-driven saga', () => {
           expect(input.correction.length).toBeGreaterThan(0);
         }
         const result = await respond(request);
+        const plan = result.value as StoryChapter;
+        const geometry = input.items.find(
+          (item: { skill: string }) =>
+            item.skill === 'figur-3d-kanter-hjorner-flater',
+        );
+        plan.missions[1].itemIndex = geometry.index;
+        plan.missions[1].questionTemplate = geometry.question.replace(
+          /^Du ser \d+/,
+          'Du ser {{count}}',
+        );
+        plan.missions[1].clueTemplate =
+          'C‑3PO undersøker {{count}} 3D-figurer.';
         if (plans === 1)
           (
             result.value as { missions: { questionTemplate: string }[] }
@@ -169,6 +182,9 @@ describe('story-driven saga', () => {
     expect(plans).toBe(2);
     expect(publicView(result.state).task!.question).not.toContain('unknown');
     expect(result.events.items).toHaveLength(1);
+    const secondTask = Object.values(result.state.adventures!)[0].tasks[1];
+    expect(secondTask.scene!.clue).toContain('3D-figurer');
+    expect(secondTask.scene!.clue).not.toContain('{{');
   });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
