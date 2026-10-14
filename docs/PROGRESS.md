@@ -267,6 +267,7 @@ Foreløpig verifisert: fire nye enhetstester, eksisterende relevante regresjonst
 Ekte modell og innlogget Preview er ennå ikke verifisert. PR opprettes som utkast mens dette kontrolleres. Ingen produksjonsendringer eller nye nøkler. Eksisterende OpenAI-nøkkel i Preview gjenbrukes.
 
 **Hva Thor må gjøre:** Ingen oppsett. Vurdere den spillbare Preview etter sluttverifisering.
+
 ## 2026-10-14: gjenbrukbart agentteam i Codex Cloud
 
 Opprettet [designer](agent-team/designer.md), [tutor-evaluator](agent-team/tutor-evaluator.md), [reviewer](agent-team/reviewer.md) og [arbeidsflyt](agent-team/workflow.md). Én ny instruksjon i AGENTS.md kobler hovedagenten til arbeidsflyten og relevante underagenter. Rollefilene leses og gis til faktiske underagenter; de registrerer ikke native agenttyper. Bare hovedagenten endrer appkode som standard, høyst tre underagenter kjører samtidig, og delte tester samordnes.
@@ -286,3 +287,9 @@ Opprettet [designer](agent-team/designer.md), [tutor-evaluator](agent-team/tutor
 **Tilgang og Preview:** Ingen nødvendige underagentverktøy mangler. Prosjektavhengigheter var ikke installert; kun den fastlåste formatereren ble hentet i `/tmp` uten endring av package.json eller lockfil. Nettverkskommandoer krever miljøets nettverkstilgang; GitHub-tilgang er bekreftet. PR/CI/Preview-lenker og observert sluttstatus dokumenteres i PR-beskrivelsen etter publisering. Ingen innlogget appflyt eller ekte modellrespons er testet; status oppdateres i PR-en etter observasjon.
 
 **Hva Thor må gjøre:** Les agentoppsettets PR og kontroller at sjekkene er grønne før eventuell merge. Etter eventuell godkjenning av dokumentasjonsendringen kan arbeidsflyten brukes fra main; merge til main berører produksjonsløpet og utføres ikke av agenten i denne oppgaven. Neste appoppgave gis som vanlig til én hovedagent, som velger og starter relevante spesialister selv. Ingen ny nøkkel eller manuell registrering av agenttyper trengs.
+
+## 2026-10-15: rettet formatering i PR #11
+
+Prettier 3.9.9 rettet en manglende blanklinje i `docs/PROGRESS.md` som stoppet GitHub-sjekken `format:check`. Hele prosjektets `npm run format:check` og `git diff --check` er bestått. Bare dokumentasjonen er endret; appflyt og innlogget Preview er ikke testet på nytt i denne oppgaven.
+
+**Hva Thor må gjøre:** Vent på de nye GitHub-sjekkene i PR #11 og kontroller at de er grønne før eventuell merge. Vurder fortsatt den spillbare Preview som beskrevet i PR-en.
