@@ -157,7 +157,10 @@ export function openaiProvider(
               },
             },
           },
-          { timeout: outputLimit > 3200 ? 90000 : 20000 },
+          {
+            timeout:
+              outputLimit > 3200 ? 90000 : outputLimit > 1200 ? 35000 : 20000,
+          },
         );
         input = result.usage?.input_tokens ?? 0;
         output = result.usage?.output_tokens ?? 0;
