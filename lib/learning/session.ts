@@ -558,7 +558,11 @@ export async function learningTurn(
       adventure.pendingChoice = false;
       delete adventure.choiceError;
       adventure.choices = [...adventure.choices, choice.label].slice(-12);
-      const consequence = `${choice.consequence} Dere bruker ${cost} ${active.interaction?.object ?? adventure.plan.cargo} og har ${budget - cost} igjen.`;
+      const resource =
+        adventure.story?.decision.resource ??
+        active.interaction?.object ??
+        adventure.plan.cargo;
+      const consequence = `${choice.consequence} Dere bruker ${cost} ${resource} og har ${budget - cost} igjen.`;
       adventure.route = {
         option: event.option,
         label: choice.label,

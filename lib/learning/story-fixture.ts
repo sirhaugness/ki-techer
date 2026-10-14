@@ -327,6 +327,7 @@ export function storyFixtureProvider(): AiProvider {
           afterMission: missions[2].id,
           payoffMission: missions[4].id,
           prompt: 'Hvilken vei vil du følge med forsyningene vi har?',
+          resource: missions[2].object,
           options: [
             {
               label: space

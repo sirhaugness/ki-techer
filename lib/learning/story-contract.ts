@@ -124,6 +124,7 @@ export const storyChapterSchema = z.object({
     afterMission: z.string().min(1).max(40),
     payoffMission: z.string().min(1).max(40),
     prompt: short,
+    resource: z.string().min(1).max(100),
     options: z
       .array(
         z.object({

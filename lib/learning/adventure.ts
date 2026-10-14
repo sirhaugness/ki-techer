@@ -947,7 +947,10 @@ export function adventureView(
         ? {
             budget,
             error: adventure.choiceError,
-            unit: task.interaction?.object ?? adventure.plan.cargo,
+            unit:
+              adventure.story?.decision.resource ??
+              task.interaction?.object ??
+              adventure.plan.cargo,
             prompt: adventure.story?.decision.prompt,
             options: adventure.plan.choices.map((c, i) => ({
               ...c,

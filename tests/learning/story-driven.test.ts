@@ -169,6 +169,13 @@ describe('story-driven saga', () => {
           ).missions[0].questionTemplate += ' {{unknown}}';
         return result;
       }
+      if (input.plan) {
+        expect(input.history).toBeUndefined();
+        expect(input.immutableHistory.chapters).toBeDefined();
+        expect(
+          input.immutableHistory.chapters.some((c: object) => 'choices' in c),
+        ).toBe(false);
+      }
       return respond(request);
     };
     const result = await learningTurn(
@@ -329,6 +336,11 @@ describe('story-driven saga', () => {
           records.push(latest.saga!.chapters.at(-1)!.events.at(-1)!.id);
           if (latest.pendingChoice) {
             const choice = view.adventure!.choice!;
+            // The quantity being spent can differ from the scene's subject.
+            latest.story!.decision.resource = 'tau-lengder';
+            expect(publicView(state).adventure!.choice!.unit).toBe(
+              'tau-lengder',
+            );
             await turn({
               type: 'choice',
               itemId: active.id,
@@ -342,6 +354,11 @@ describe('story-driven saga', () => {
               option: 0,
               remaining: choice.budget - choice.options[0].cost,
             });
+            expect(
+              state
+                .adventures![interest.id].saga!.chapters.at(-1)!
+                .choices.at(-1),
+            ).toContain('tau-lengder');
           }
           if (mission < 5 || chapter < 3) await turn({ type: 'next' });
         }
