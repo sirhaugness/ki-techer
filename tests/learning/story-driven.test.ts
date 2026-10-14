@@ -188,6 +188,60 @@ describe('story-driven saga', () => {
     expect(secondTask.scene!.clue).toContain('3D-figurer');
     expect(secondTask.scene!.clue).not.toContain('{{');
   });
+  it('continues a saved legacy story after its current answer without replaying unstarted old tasks', async () => {
+    const interest = { id: randomUUID(), label: 'Star Wars', active: true };
+    const old = await learningTurn(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'next' },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      null,
+      'Bokmål.',
+    );
+    const active = old.state.active!;
+    const solved = await learningTurn(
+      old.state,
+      {
+        type: 'answer',
+        itemId: active.id,
+        answer: active.expressionRequired
+          ? {
+              value: Number(active.item.answer),
+              expression: active.item.expression!,
+            }
+          : active.item.answer,
+        inputMode: 'tastatur',
+      },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      null,
+      'Bokmål.',
+    );
+    expect(solved.state.correct).toBe(true);
+    const continued = await learningTurn(
+      solved.state,
+      { type: 'next' },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      storyFixtureProvider(),
+      'Bokmål.',
+    );
+    const adventure = continued.state.adventures![interest.id];
+    expect(adventure.number).toBe(2);
+    expect(adventure.source).toBe('model');
+    expect(adventure.saga!.chapters[0].events).toHaveLength(1);
+    expect(adventure.saga!.chapters[0].events[0].outcome).toContain(
+      solved.state.adventures![interest.id].memory[0],
+    );
+    expect(continued.state.history).toEqual(solved.state.history);
+    expect(continued.events.items).toHaveLength(1);
+  });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
       const interest = { id: randomUUID(), label, active: true };

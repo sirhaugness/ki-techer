@@ -345,7 +345,11 @@ export async function learningTurn(
         runtime.active?.id === adventure.tasks[adventure.index]?.id
       )
         adventure.index++;
-      if (!adventure || adventure.index >= adventure.tasks.length) {
+      if (
+        !adventure ||
+        adventure.index >= adventure.tasks.length ||
+        (!adventure.story && !!provider?.research)
+      ) {
         adventure = await planAdventure({
           label: interest.label,
           interestId: interest.id,
