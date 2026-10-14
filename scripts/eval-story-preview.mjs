@@ -159,7 +159,19 @@ try {
       title: await page.title(),
     }),
   );
-  for (const interest of ['Star Wars', 'Dinosaurer']) {
+  const interests = process.env.EVAL_INTERESTS?.split('|') ?? [
+    'Star Wars',
+    'Dinosaurer',
+  ];
+  const missionLimit = Number(process.env.EVAL_MISSION_LIMIT ?? 6);
+  if (
+    !interests.every((i) => ['Star Wars', 'Dinosaurer'].includes(i)) ||
+    !Number.isInteger(missionLimit) ||
+    missionLimit < 1 ||
+    missionLimit > 6
+  )
+    throw new Error('Invalid evaluation scope.');
+  for (const interest of interests) {
     await page.getByRole('link', { name: 'Mine interesser' }).click();
     await command(
       () =>
@@ -228,11 +240,32 @@ try {
       .locator('.story-player')
       .screenshot({ path: `${output}/${prefix}-opening.png` });
     const initial = structuredClone(view);
-    for (let i = view.adventure.mission - 1; i < 6; i++) {
+    const firstMission = view.adventure.mission - 1;
+    for (
+      let i = firstMission;
+      i < Math.min(6, firstMission + missionLimit);
+      i++
+    ) {
+      await page.locator('.story-player').screenshot({
+        path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-before.png`,
+      });
+      if (view.task.resolved && !view.adventure.choice) {
+        await command(
+          () =>
+            page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
+          'resume-chapter-transition',
+        );
+        continue;
+      }
       const task = view.task,
         m = task.interaction.math;
       let answer;
-      if (m.kind === 'groups') answer = m.total;
+      if (task.answerType === 'coordinate')
+        answer = {
+          x: task.visual.steps.filter((s) => s === 'høyre').length,
+          y: task.visual.steps.filter((s) => s === 'opp').length,
+        };
+      else if (m.kind === 'groups') answer = m.total;
       else if (m.kind === 'missing') answer = m.total - m.known;
       else if (m.kind === 'double')
         answer = m.mode === 'doble' ? m.total : m.each;
@@ -279,7 +312,14 @@ try {
           .locator('.story-player')
           .screenshot({ path: `${output}/${prefix}-retry.png` });
       }
-      if (task.interaction.kind === 'grouping')
+      if (task.answerType === 'coordinate') {
+        await page
+          .getByLabel('Svaret ditt', { exact: true })
+          .fill(String(answer.x));
+        await page
+          .getByLabel('y (oppover)', { exact: true })
+          .fill(String(answer.y));
+      } else if (task.interaction.kind === 'grouping')
         for (let j = 0; j < m.groups; j++)
           await page
             .getByLabel(`Antall i ${task.scene.container} ${j + 1}`, {
@@ -312,6 +352,9 @@ try {
       );
       if (!view.correct)
         throw new Error('The independently derived answer was not accepted.');
+      await page.locator('.story-player').screenshot({
+        path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-solved.png`,
+      });
       if (i === 0)
         await page
           .locator('.story-player')
@@ -340,8 +383,9 @@ try {
       );
     }
     if (
-      view.adventure.number !== initial.adventure.number + 1 ||
-      view.adventure.journey.chapters.at(-2).events.length !== 6
+      missionLimit === 6 &&
+      (view.adventure.number !== initial.adventure.number + 1 ||
+        view.adventure.journey.chapters.at(-2).events.length !== 6)
     )
       throw new Error('History did not survive chapter transition.');
     await page

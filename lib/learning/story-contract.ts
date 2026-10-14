@@ -75,6 +75,7 @@ export const storyMissionSchema = z.object({
     'map',
     'storage',
     'creature',
+    'person',
   ]),
   action: z.enum([
     'load',

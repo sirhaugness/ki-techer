@@ -464,6 +464,15 @@ export function StoryWorld({
   const forest = ['forest', 'river'].includes(scene.backdrop);
   const cave = scene.backdrop === 'cave';
   const solved = state === 'solved';
+  const rescuedActor =
+    scene.cast.find((actor) =>
+      /fanget|savnet|reddes|fange/i.test(actor.role),
+    ) ??
+    scene.cast.find(
+      (actor) => canonicalActor(actor).appearance === 'princess',
+    ) ??
+    scene.cast.find((actor) => actor.appearance !== 'player') ??
+    scene.cast[0];
   const ship = scene.subject === 'starship';
   const count = allocations.length
     ? allocations.reduce((total, n) => total + n, 0)
@@ -769,6 +778,22 @@ export function StoryWorld({
               />
             ))}
           </g>
+        ) : scene.subject === 'person' ? (
+          <g transform="translate(460 240)">
+            <path
+              d="M-60-110h200v200H-60Z"
+              fill="#172c45"
+              stroke="#9db4cd"
+              strokeWidth="8"
+            />
+            {!solved && (
+              <path
+                d="M-30-105v190m45-190v190m45-190v190m45-190v190"
+                stroke="#7d8ca2"
+                strokeWidth="8"
+              />
+            )}
+          </g>
         ) : (
           <g transform="translate(300 164)">
             <path
@@ -839,6 +864,23 @@ export function StoryWorld({
             )}
           </g>
         )}
+        {scene.effect === 'rescue' &&
+          ['person', 'gate'].includes(scene.subject) &&
+          rescuedActor &&
+          (solved || scene.subject === 'person') && (
+            <g className="story-rescued-friend" transform="translate(500 315)">
+              <path
+                d="M-22-56h44l18 67h-80Z"
+                fill="#a399d3"
+                stroke="#e7e5ff"
+                strokeWidth="3"
+              />
+              <path d="M-18 8v30m36-30v30" stroke="#cedeea" strokeWidth="12" />
+              <g transform="translate(-40 -134)">
+                <ActorPortrait actor={rescuedActor} />
+              </g>
+            </g>
+          )}
         {!ship &&
           scene.action !== 'route' &&
           scene.effect !== 'signal' &&

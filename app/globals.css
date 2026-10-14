@@ -1853,6 +1853,7 @@ button.print-hide {
   opacity: 1;
   animation: story-thrust 350ms ease-in-out 6 alternate;
 }
+.story-world[data-state='solved'][data-effect='rescue'] .story-door,
 .story-world[data-state='solved'][data-effect='open'] .story-door {
   transform: translateY(-205px);
   animation: story-open 1700ms ease-in-out both;
@@ -2255,5 +2256,23 @@ button.print-hide {
   to {
     opacity: 1;
     filter: blur(0);
+  }
+}
+
+.story-rescued-friend .actor-portrait {
+  width: 80px;
+  height: 80px;
+}
+.story-world[data-state='solved'] .story-rescued-friend {
+  animation: story-friend-arrives 1700ms ease-out both;
+}
+@keyframes story-friend-arrives {
+  from {
+    opacity: 0;
+    transform: translate(500px, 250px) scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: translate(620px, 315px) scale(1);
   }
 }
