@@ -159,6 +159,38 @@ try {
       title: await page.title(),
     }),
   );
+  if (process.env.EVAL_RESTART_SESSION === '1') {
+    await page.evaluate(async () => {
+      const start = await fetch('/api/leo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command: 'start',
+          mode: 'practice',
+          part: null,
+        }),
+      });
+      const current = await start.json();
+      if (!current.ended) {
+        const response = await fetch('/api/leo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command: 'turn',
+            sessionId: current.id,
+            revision: current.revision,
+            requestId: crypto.randomUUID(),
+            event: { type: 'end', mood: 'rolig', reflection: '' },
+          }),
+        });
+        if (!response.ok)
+          throw new Error(
+            'Could not close the temporary evaluation session normally.',
+          );
+      }
+    });
+    await page.reload({ waitUntil: 'networkidle' });
+  }
   const interests = process.env.EVAL_INTERESTS?.split('|') ?? [
     'Star Wars',
     'Dinosaurer',
@@ -399,6 +431,10 @@ try {
       first: initial,
       continuation: structuredClone(view),
     });
+    await writeFile(
+      `${output}/results.json`,
+      JSON.stringify({ results, errors }, null, 2),
+    );
   }
   await writeFile(
     `${output}/results.json`,

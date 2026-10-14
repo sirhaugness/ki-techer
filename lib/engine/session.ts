@@ -44,7 +44,7 @@ export function startSession(
   z.number().finite().nonnegative().parse(usedMinutesToday);
   if (!inWindow(settings, now))
     throw new Error('Det er utenfor tiden dere har valgt for øving.');
-  const remaining = settings.dailyMaxMinutes - usedMinutesToday;
+  const remaining = Math.floor(settings.dailyMaxMinutes - usedMinutesToday);
   if (remaining <= 0) throw new Error('Vi er ferdige med dagens øving.');
   return {
     startedAt: now,

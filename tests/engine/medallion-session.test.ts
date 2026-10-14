@@ -147,6 +147,12 @@ describe('session hard limits', () => {
     expect(startSession(defaultSessionSettings, now, 28).plannedMinutes).toBe(
       2,
     );
+    expect(startSession(defaultSessionSettings, now, 27.6).plannedMinutes).toBe(
+      2,
+    );
+    expect(() => startSession(defaultSessionSettings, now, 29.6)).toThrow(
+      'Vi er ferdige med dagens øving.',
+    );
     expect(() => startSession(defaultSessionSettings, now, 30)).toThrow(
       'dagens',
     );
