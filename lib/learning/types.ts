@@ -125,6 +125,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  scene?: import('./story-contract').StoryScene;
   interaction?: import('../engine/mission').MissionInteraction;
   submittedAnswer?: import('../engine/skills/generators').Answer;
   illustrationSafe?: boolean;

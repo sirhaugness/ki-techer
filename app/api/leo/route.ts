@@ -26,9 +26,11 @@ import { dayKey } from '@/lib/engine/time';
 import { teacherHelp } from '@/lib/learning/help';
 import { buildContext } from '@/lib/agent/context';
 import { newBandit } from '@/lib/engine/bandit';
+import { storyFixtureProvider } from '@/lib/learning/story-fixture';
+import { StoryPlanningError } from '@/lib/learning/story-planner';
 
 export const runtime = 'nodejs';
-export const maxDuration = 120;
+export const maxDuration = 300;
 const commandSchema = z.discriminatedUnion('command', [
   z.object({
     command: z.literal('feedback'),
@@ -100,7 +102,9 @@ export async function POST(request: Request) {
         { status: 429, headers: { 'Retry-After': '60' } },
       );
     const provider = mock
-      ? null
+      ? f?.storyDriven
+        ? storyFixtureProvider()
+        : null
       : await controlledProvider(profile.householdId);
     const cmd = parsed.data;
     if (cmd.command === 'voiceSettings') {
@@ -384,7 +388,13 @@ export async function POST(request: Request) {
     return Response.json(publicView(result.state), {
       headers: { 'Cache-Control': 'no-store' },
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof StoryPlanningError)
+      return Response.json({ message: error.message }, { status: 503 });
+    console.error('[leo-api]', {
+      error: error instanceof Error ? error.name : 'unknown',
+      status: (error as { status?: number })?.status,
+    });
     return Response.json(
       {
         message:

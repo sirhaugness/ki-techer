@@ -255,3 +255,15 @@ Et beregnet rutevalg gir inventar/følgesvenn og endrer en senere scene. Feil re
 **GitHub og Preview:** [Kvalitet 38615071859](https://github.com/sirhaugness/ki-techer/actions/runs/38615071859) er grønn for kodecommit `3448195`: både `checks` og `supabase-e2e` er bestått, inkludert ekte lokal Supabase/Auth. [Dev-migrasjonsworkflow 38615071850](https://github.com/sirhaugness/ki-techer/actions/runs/38615071850) er grønn; denne oppgaven har ingen nye migrasjoner. [PR #10](https://github.com/sirhaugness/ki-techer/pull/10) er utkast. [Preview for verifisert kode](https://ki-techer-44jbaktxt-team-thor1.vercel.app) er READY og bekreftet mot samme SHA. Vercels autentiserte fetch gir HTTP 200 med korrekt norsk innlogging på `/login`; `/leo` krever appinnlogging. Dette bekrefter bygg og tilgang, ikke innlogget hosted spill eller ekte modellkvalitet. Denne avsluttende oppdateringen gjelder dokumentasjon.
 
 **Hva Thor må gjøre:** Åpne Preview, logg inn som vanlig, og prøv ett helt kapittel samt en egen interesse. Vurder modellens språk og sammenheng før eventuell merge. Godkjenningen av eksisterende Preview-nøkkel er lagret; du trenger ikke svare på nøkkelvalget igjen.
+
+## Eventyret som driver spillet — 14. oktober 2026 (pågående)
+
+Retningen er avklart med Thor i `docs/STORY-DRIVEN-ADVENTURE.md`. Ny branch `feat/story-driven-adventure` bygger på oppdatert main etter PR #10. Ingen fast åpning: modellen undersøker interessen med faktisk nettsøk, får oversikt over alle lagrede kapitler og skriver en årsakskoblet fortsettelse. Kapittelarkivet bevarer hendelser og valg uten å kutte eldre kapitler. Bruk og forbruk av gjenstander skilles.
+
+En samlet oppdragskontrakt styrer sted, rollefigurer, naturlig problem, kontrollerte mengder, spillerhandling, støtte og synlig konsekvens. En separat modellkontroll vurderer historielogikk og matematisk sammenheng før visning. Ny spillflate har scenebilder, manipulasjon av mengder og fordeling, konkret feilreaksjon og animert fremdrift. Kostnader og plassering av valg kommer fra planen; valget påvirker et senere oppdrag.
+
+Foreløpig verifisert: fire nye enhetstester, eksisterende relevante regresjonstester, to nye nettlesertester gjennom hele kapitler i Star Wars og Dinosaurer, lagring/oppfriskning, valgkonsekvens og neste kapittel. Typecheck og lint har passert. Produksjonsbygg med webpack har passert; lokal Turbopack-bygging møter sandboxfeil ved binding av intern port. Skjermbilder er gjennomgått og desktopoppsettet forbedres før sluttverifisering.
+
+Ekte modell og innlogget Preview er ennå ikke verifisert. PR opprettes som utkast mens dette kontrolleres. Ingen produksjonsendringer eller nye nøkler. Eksisterende OpenAI-nøkkel i Preview gjenbrukes.
+
+**Hva Thor må gjøre:** Ingen oppsett. Vurdere den spillbare Preview etter sluttverifisering.

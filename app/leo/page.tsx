@@ -20,9 +20,10 @@ export default async function LeoPage({
   if (mock && query.fixture) {
     resetFixture(
       query.fixture === 'master',
-      ['practice', 'quiet'].includes(query.fixture),
-      query.fixture === 'quiet',
+      ['practice', 'quiet', 'story'].includes(query.fixture),
+      ['quiet', 'story'].includes(query.fixture),
     );
+    if (query.fixture === 'story') fixture().storyDriven = true;
     redirect('/leo');
   }
   const f = mock ? fixture() : null;
