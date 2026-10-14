@@ -79,6 +79,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Arbeidsflyt
 
+- Bruk [agentteamets arbeidsflyt](docs/agent-team/workflow.md): Hovedagenten eier oppgaven fra undersøkelse til verifisert testversjon og starter selv relevante underagenter. Les og gi dem rollefilen ved behov: designer for vesentlig UX, tutor-evaluator for lærer/historie og reviewer for vesentlig kode. Spesialistene undersøker og rapporterer; bare hovedagenten endrer appkode som standard. Bruk høyst tre samtidige underagenter innenfor miljøets grenser, og samordne tester som deler app, konto eller database. Små tekstendringer trenger ikke hele teamet. Rollefilene registrerer ikke native agenttyper.
 - Pull request = test mot leo-dev (Vercel Preview). Merge til main = produksjon (leo-prod).
 - Endre aldri noe i produksjon (leo-prod eller Production-variabler i Vercel) uten å spørre først.
 - Nye miljøvariabler, Redirect URLs eller hemmeligheter: legg dem inn selv via connector/CLI
