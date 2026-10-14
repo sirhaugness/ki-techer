@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { chromium } from '@playwright/test';
 import { fetch as trustedFetch, EnvHttpProxyAgent } from 'undici';
 import { X509Certificate, createHash } from 'node:crypto';
+import { solidFor, solidEdges } from '../lib/engine/solids.ts';
 const [
   publicFile,
   sessionFile,
@@ -178,35 +179,32 @@ try {
       exact: true,
     });
     const moodButton = page.getByRole('button', { name: '🙂 Rolig' });
+    const taskQuestion = page.locator('#task-question');
     await startButton
       .or(switchButton)
       .or(moodButton)
+      .or(taskQuestion)
       .waitFor({ state: 'visible', timeout: 60000 });
     if (await moodButton.isVisible()) {
       await command(() => moodButton.click(), 'research-and-first-chapter');
     } else if (await startButton.isVisible()) {
-      await command(
-        () =>
-          page
-            .getByRole('button', { name: 'Start eventyret', exact: true })
-            .click(),
-        'start',
-      );
-      await command(
-        () => page.getByRole('button', { name: '🙂 Rolig' }).click(),
-        'research-and-first-chapter',
-      );
+      await command(() => startButton.click(), 'start');
+      await command(() => moodButton.click(), 'research-and-first-chapter');
+    } else if (await switchButton.isVisible()) {
+      await command(() => switchButton.click(), 'switch-interest');
     } else {
-      await command(
-        () =>
-          page
-            .getByRole('button', {
-              name: `Fortsett eventyret om ${interest}`,
-              exact: true,
-            })
-            .click(),
-        'switch-interest',
-      );
+      view = await page.evaluate(async () => {
+        const r = await fetch('/api/leo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command: 'start',
+            mode: 'practice',
+            part: null,
+          }),
+        });
+        return r.json();
+      });
     }
     if (!view.task?.scene || view.adventure?.source !== 'model')
       throw new Error('The real researched story path was not used.');
@@ -215,7 +213,7 @@ try {
       .locator('.story-player')
       .screenshot({ path: `${output}/${prefix}-opening.png` });
     const initial = structuredClone(view);
-    for (let i = 0; i < 6; i++) {
+    for (let i = view.adventure.mission - 1; i < 6; i++) {
       const task = view.task,
         m = task.interaction.math;
       let answer;
@@ -225,7 +223,29 @@ try {
         answer = m.mode === 'doble' ? m.total : m.each;
       else if (m.kind === 'share') answer = m.each;
       else if (m.kind === 'measure') answer = m.total / m.each;
-      else throw new Error(`Manual evaluation needed for ${task.skillTitle}.`);
+      else if (task.visual.type === 'figur3d' && task.visual.shape) {
+        const solid = solidFor(task.visual.shape);
+        const quantity = /hjørner/.test(task.question)
+          ? solid.vertices.length
+          : /kanter/.test(task.question)
+            ? solidEdges(solid).length
+            : solid.faces.length;
+        answer = quantity * task.visual.count;
+      } else if (task.visual.type === 'figur2d' && task.visual.shape) {
+        const sides = task.visual.shape.includes('trekant')
+          ? 3
+          : task.visual.shape.includes('sekskant')
+            ? 6
+            : task.visual.shape.includes('åttekant')
+              ? 8
+              : 4;
+        answer = /rette vinkler/.test(task.question)
+          ? ['kvadrat', 'rektangel'].includes(task.visual.shape)
+            ? 4 * task.visual.count
+            : 0
+          : sides * task.visual.count;
+      } else
+        throw new Error(`Manual evaluation needed for ${task.skillTitle}.`);
       if (
         i === 0 &&
         !task.expressionRequired &&

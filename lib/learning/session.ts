@@ -374,8 +374,12 @@ export async function learningTurn(
       runtime.active = structuredClone(adventure.tasks[adventure.index]);
       if (runtime.active.scene) {
         runtime.active.scene.previousEvent =
-          adventure.outcomes?.[adventure.index - 1] ??
-          adventure.story?.continuity;
+          adventure.index > 0
+            ? adventure.outcomes?.[adventure.index - 1]
+            : adventure.saga?.chapters
+                .filter((c) => c.number < adventure.number)
+                .at(-1)
+                ?.events.at(-1)?.outcome;
         if (
           adventure.story &&
           adventure.route &&
@@ -1228,6 +1232,10 @@ export function publicView(
             skillTitle: skillById(item.skillId).title,
             showVisual: a.representation !== 'tall',
             visual: {
+              property:
+                typeof params.property === 'string'
+                  ? params.property
+                  : undefined,
               type: item?.skillId === 'div-maaling-konkret' ? 'maaling' : type,
               count:
                 typeof params.total === 'number'

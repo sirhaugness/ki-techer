@@ -2199,3 +2199,59 @@ button.print-hide {
     filter: drop-shadow(0 0 12px #edbc7a);
   }
 }
+.story-solid-explorer {
+  background: #1b3046;
+  border: 1px solid #54758b;
+  border-radius: 15px;
+  padding: 12px;
+  margin-bottom: 18px;
+}
+.story-solid-explorer svg {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+}
+.story-solid-explorer p {
+  font-size: 17px;
+  margin: 6px 0;
+  color: #c8e4ef;
+}
+.story-solid-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.story-solid-tools button {
+  font-size: 16px;
+  padding: 8px 12px;
+}
+.story-solid-explorer svg [role='button'] {
+  cursor: pointer;
+}
+.story-solid-explorer svg [role='button']:focus {
+  outline: none;
+  filter: drop-shadow(0 0 7px #ffe4a3);
+}
+.story-world[data-effect='reveal']:not([data-state='solved']) .story-holomap {
+  opacity: 0.28;
+}
+.story-world[data-state='solved'][data-effect='reveal'] .story-holomap {
+  opacity: 1;
+  animation: story-map-clear 1700ms ease-out both;
+}
+.story-player[data-action='decode'] .story-resource-control > button {
+  display: none;
+}
+.story-player[data-action='decode'] .story-resource-control {
+  max-width: 200px;
+}
+@keyframes story-map-clear {
+  from {
+    opacity: 0.28;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}

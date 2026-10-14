@@ -137,6 +137,7 @@ export type PublicTask = {
   answerType: 'number' | 'choice' | 'remainder' | 'sequence' | 'coordinate';
   choices: string[];
   visual: {
+    property?: string;
     type: string;
     count: number;
     groups: number;

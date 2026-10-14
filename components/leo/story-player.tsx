@@ -3,6 +3,7 @@ import { useState, type ReactNode, type Ref } from 'react';
 import type { LearningEvent, LearningView } from '@/lib/learning/types';
 import { StoryWorld, ResourceGlyph, ActorPortrait } from './story-world';
 import { RouteChoice } from './route-choice';
+import { SolidExplorer } from './solid-explorer';
 
 export function StoryPlayer({
   view,
@@ -139,6 +140,7 @@ export function StoryPlayer({
   return (
     <section
       className="story-player"
+      data-action={scene.action}
       ref={sectionRef}
       aria-busy={busy}
       aria-label="Det levende eventyret"
@@ -176,6 +178,13 @@ export function StoryPlayer({
         state={state}
         value={n}
         allocations={allocations}
+        targetCount={
+          task.interaction?.math.kind === 'groups'
+            ? task.interaction.math.total
+            : task.interaction?.math.kind === 'share'
+              ? task.interaction.math.total
+              : undefined
+        }
       />
       <div className="story-cast" aria-label="Med på oppdraget">
         {actors.map((actor) => (
@@ -197,6 +206,13 @@ export function StoryPlayer({
       {scene.branch && <p className="story-branch">◈ {scene.branch}</p>}
       <div className="story-play-layout">
         <div className="story-console">
+          {task.visual.type === 'figur3d' && task.visual.shape && (
+            <SolidExplorer
+              shape={task.visual.shape}
+              count={task.visual.count}
+              property={task.visual.property}
+            />
+          )}
           <p className="story-clue">{scene.clue}</p>
           <h3 id="task-question">{task.question}</h3>
           <form
@@ -378,7 +394,7 @@ export function StoryPlayer({
                     : `Prøv igjen. ${scene.retry}`}
                 </strong>
               ) : (
-                <span>{scene.purpose}</span>
+                <span>Løs utfordringen, så fortsetter reisen.</span>
               )}
             </div>
             <div className="story-actions">

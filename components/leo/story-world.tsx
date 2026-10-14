@@ -1,6 +1,7 @@
 'use client';
 import { useId } from 'react';
 import type { StoryActor, StoryScene } from '@/lib/learning/story-contract';
+import { canonicalActor } from '@/lib/learning/story-contract';
 
 export function ResourceGlyph({
   glyph,
@@ -142,7 +143,8 @@ export function ResourceGlyph({
   );
 }
 
-export function ActorPortrait({ actor }: { actor: StoryActor }) {
+export function ActorPortrait({ actor: source }: { actor: StoryActor }) {
+  const actor = canonicalActor(source);
   const droid =
     actor.appearance.includes('droid') || actor.appearance === 'robot';
   return (
@@ -194,6 +196,21 @@ export function ActorPortrait({ actor }: { actor: StoryActor }) {
           <circle cx="47" cy="27" r="5" fill="#fff0aa" />
           <path d="M32 38h16m8-8h7" stroke="#785526" strokeWidth="3" />
         </>
+      ) : actor.appearance === 'wookiee' ? (
+        <>
+          <path d="M13 76V28Q15 4 40 5t27 24v47" fill="#96734b" />
+          <path
+            d="m20 24 7-6m2 30 5-7m10-23 9 6m-27 37 9-6m14-17 8 6m-35 21 7 7"
+            stroke="#c6a06d"
+            strokeWidth="5"
+          />
+          <ellipse cx="40" cy="36" rx="17" ry="12" fill="#5c4635" />
+          <circle cx="31" cy="30" r="3" fill="#141d2b" />
+          <circle cx="49" cy="30" r="3" fill="#141d2b" />
+          <path d="M29 40h22" stroke="#ede0bf" strokeWidth="3" />
+          <path d="m23 76 29-26" stroke="#383b44" strokeWidth="9" />
+          <path d="m27 72 23-20" stroke="#c1c3c7" strokeWidth="3" />
+        </>
       ) : actor.appearance === 'dinosaur' || actor.appearance === 'animal' ? (
         <>
           <path
@@ -211,7 +228,10 @@ export function ActorPortrait({ actor }: { actor: StoryActor }) {
             fill={actor.appearance === 'pilot' ? '#c47347' : '#77a4a5'}
           />
           <ellipse cx="40" cy="33" rx="17" ry="22" fill="#f1c49c" />
-          <path d="M21 27q1-28 23-22 16 2 17 26l-10-13-27 9Z" fill="#5b4037" />
+          <path
+            d="M21 27q1-28 23-22 16 2 17 26l-10-13-27 9Z"
+            fill={actor.appearance === 'jedi' ? '#c7a161' : '#5b4037'}
+          />
           <circle cx="33" cy="33" r="2.5" fill="#29384b" />
           <circle cx="47" cy="33" r="2.5" fill="#29384b" />
           <path
@@ -366,11 +386,13 @@ export function StoryWorld({
   state,
   value,
   allocations,
+  targetCount,
 }: {
   scene: StoryScene;
   state: 'waiting' | 'working' | 'retry' | 'solved';
   value: number;
   allocations: number[];
+  targetCount?: number;
 }) {
   const id = useId().replaceAll(':', '');
   const space = ['space', 'base'].includes(scene.backdrop);
@@ -378,7 +400,10 @@ export function StoryWorld({
   const cave = scene.backdrop === 'cave';
   const solved = state === 'solved';
   const ship = scene.subject === 'starship';
-  const count = solved ? Math.max(value, 1) : value;
+  const count = allocations.length
+    ? allocations.reduce((total, n) => total + n, 0)
+    : value;
+  const bridgeSlots = Math.min(targetCount ?? Math.max(count, 12), 20);
   return (
     <div
       className="story-world"
@@ -580,7 +605,7 @@ export function StoryWorld({
             </g>
           </g>
         ) : scene.subject === 'map' ? (
-          <g transform="translate(205 82)">
+          <g transform="translate(205 82)" className="story-holomap">
             <path
               d="m0 35 150-35 190 43 222-29v232l-222 25-190-45L0 265Z"
               fill="#193c53"
@@ -655,23 +680,20 @@ export function StoryWorld({
         ) : scene.subject === 'bridge' ? (
           <g transform="translate(260 260)">
             <path d="M0 0h475M0 68h475" stroke="#96715a" strokeWidth="11" />
-            {Array.from(
-              { length: Math.min(Math.max(count, 1), 20) },
-              (_, i) => (
-                <rect
-                  key={i}
-                  className="story-bridge-plank"
-                  x={(i * 475) / Math.min(Math.max(count, 1), 20)}
-                  y="-3"
-                  width={450 / Math.min(Math.max(count, 1), 20)}
-                  height="76"
-                  rx="3"
-                  fill="#dfa76b"
-                  stroke="#f1c790"
-                  style={{ animationDelay: `${i * 80}ms` }}
-                />
-              ),
-            )}
+            {Array.from({ length: Math.min(count, 20) }, (_, i) => (
+              <rect
+                key={i}
+                className="story-bridge-plank"
+                x={(i * 475) / bridgeSlots}
+                y="-3"
+                width={450 / bridgeSlots}
+                height="76"
+                rx="3"
+                fill="#dfa76b"
+                stroke="#f1c790"
+                style={{ animationDelay: `${i * 80}ms` }}
+              />
+            ))}
           </g>
         ) : (
           <g transform="translate(300 164)">
@@ -783,7 +805,12 @@ export function StoryWorld({
         <span aria-hidden="true">◈</span> {scene.location}
       </div>
       <div className="story-world-counter" aria-live="polite">
-        {value} <span>{scene.object}</span>
+        {scene.action === 'decode'
+          ? state === 'waiting' && value === 0
+            ? '?'
+            : value
+          : value}{' '}
+        <span>{scene.action === 'decode' ? 'kode' : scene.object}</span>
       </div>
       {state === 'retry' && (
         <div className="story-world-retry" role="status">

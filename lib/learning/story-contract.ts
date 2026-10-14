@@ -16,6 +16,9 @@ export const storyActorSchema = z.object({
     'explorer',
     'player',
     'engineer',
+    'wookiee',
+    'smuggler',
+    'princess',
   ]),
 });
 export const storyMissionSchema = z.object({
@@ -114,7 +117,7 @@ export const storyChapterSchema = z.object({
   goal: short,
   hook: short,
   continuity: short,
-  cast: z.array(storyActorSchema).min(1).max(5),
+  cast: z.array(storyActorSchema).min(1).max(8),
   missions: z.array(storyMissionSchema).length(6),
   decision: z.object({
     afterMission: z.string().min(1).max(40),
@@ -137,6 +140,29 @@ export const storyChapterSchema = z.object({
 export type StoryMission = z.infer<typeof storyMissionSchema>;
 export type StoryChapter = z.infer<typeof storyChapterSchema>;
 export type StoryActor = z.infer<typeof storyActorSchema>;
+/** Keep known character art stable even when the planner chooses another sprite. */
+export function canonicalActor(actor: StoryActor): StoryActor {
+  const name = actor.name
+    .toLocaleLowerCase('nb-NO')
+    .replaceAll(/[\s\-‐‑–—]/g, '');
+  const appearance: StoryActor['appearance'] | undefined =
+    name === 'r2d2' || name === 'r2'
+      ? 'robot'
+      : name === 'bb8'
+        ? 'round-droid'
+        : name === 'c3po'
+          ? 'gold-droid'
+          : name === 'chewbacca' || name === 'chewie'
+            ? 'wookiee'
+            : name.includes('hansolo')
+              ? 'smuggler'
+              : name.includes('leia')
+                ? 'princess'
+                : name.includes('lukeskywalker')
+                  ? 'jedi'
+                  : undefined;
+  return appearance ? { ...actor, appearance } : actor;
+}
 export type StoryEvent = {
   id: string;
   mission: string;
