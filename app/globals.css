@@ -1822,6 +1822,9 @@ button.print-hide {
   border-color: #55708a;
   background: #192d42;
 }
+.story-player .story-choice legend {
+  color: #dcecf7;
+}
 .story-player .story-routes button {
   background: #263e53;
   color: #dcecf7;

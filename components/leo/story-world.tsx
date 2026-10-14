@@ -463,6 +463,16 @@ export function StoryWorld({
   const space = ['space', 'base'].includes(scene.backdrop);
   const forest = ['forest', 'river'].includes(scene.backdrop);
   const cave = scene.backdrop === 'cave';
+  const artwork =
+    scene.illustration === 'prehistoric-river'
+      ? forest && scene.artwork
+      : scene.illustration === 'crystal-cavern'
+        ? cave && scene.artwork
+        : scene.illustration === 'desert-hangar'
+          ? (scene.backdrop === 'desert' ||
+              /tatooine|mos eisley|ørken/i.test(scene.location)) &&
+            scene.artwork
+          : undefined;
   const solved = state === 'solved';
   const rescuedActor =
     scene.cast.find((actor) =>
@@ -593,9 +603,9 @@ export function StoryWorld({
             />
           </>
         )}
-        {scene.artwork && (
+        {artwork && (
           <image
-            href={scene.artwork}
+            href={artwork}
             width="1000"
             height="440"
             preserveAspectRatio="xMidYMid slice"
@@ -607,7 +617,7 @@ export function StoryWorld({
         <path
           d="M0 355Q500 300 1000 355v85H0Z"
           fill={`url(#${id}-ground)`}
-          opacity={scene.artwork ? 0.35 : 1}
+          opacity={artwork ? 0.35 : 1}
         />
         {scene.backdrop === 'river' && (
           <path
@@ -957,12 +967,8 @@ export function StoryWorld({
         <span aria-hidden="true">◈</span> {scene.location}
       </div>
       <div className="story-world-counter" aria-live="polite">
-        {scene.action === 'decode'
-          ? state === 'waiting' && value === 0
-            ? '?'
-            : value
-          : value}{' '}
-        <span>{scene.action === 'decode' ? 'kode' : scene.object}</span>
+        <span>Svaret ditt:</span>{' '}
+        {state === 'waiting' && value === 0 ? '?' : value}
       </div>
       {state === 'retry' && (
         <div className="story-world-retry" role="status">
