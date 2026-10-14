@@ -31,3 +31,9 @@ Testene lagrer åpning, løst scene, senere konsekvens og kapittel 2 for begge i
 Lokale spilltester bruker den isolerte testeleven og kontrollerte generatorer/reservekapitler. Modellkontrakten testes med modellerstatninger. Dette bekrefter ikke den ekte OpenAI-modellens fortellerkvalitet eller innlogget hosted spill. OpenAI-nøkkelen er bekreftet konfigurert som Secret for Preview i Vercel; den er ikke lest ut eller testet lokalt. Fysisk iPad/Safari og skjermleser er ikke prøvd. Reservehistorien for en helt ukjent interesse bruker et konkret verksted-/elveeventyr; selve interesseuniverset trenger en fungerende modellplan. Reservefortsettelser er forfatterlagde og har begrenset fortellingsbredde.
 
 **Hva Thor må gjøre:** Prøv den innloggede Preview-lenken med ekte modell, ett helt kapittel og én egen interesse. Vurder om karakterer, dialog og handling passer interessen før eventuell merge til produksjon.
+
+## Hosted Preview for kodecommit 3448195
+
+Vercel bekrefter READY for `3448195153bfa40017af93ad3da701df7974a249`, gren `feat/illustrated-chapter-world`, prosjekt `ki-techer` i `team-thor1`. [Preview](https://ki-techer-44jbaktxt-team-thor1.vercel.app) er kontrollert gjennom Vercels autentiserte fetch: `/login` gir HTTP 200 med riktig norsk e-postskjema; `/leo` uten appinnlogging gir også innloggingen. Dette er en kontroll av bygg og tilgangsgrense, ikke et innlogget spill med ekte modell. [PR #10](https://github.com/sirhaugness/ki-techer/pull/10) er utkast. Ingen produksjonsendring.
+
+[Kvalitet 38615071859](https://github.com/sirhaugness/ki-techer/actions/runs/38615071859) bekrefter grønn hovedjobb og grønn lokal Supabase/Auth-jobb for kodecommit `3448195`. [Dev-migrasjonsworkflow](https://github.com/sirhaugness/ki-techer/actions/runs/38615071850) er også grønn. Hosted innlogget OpenAI-spill er fortsatt ikke prøvd.
