@@ -17,6 +17,7 @@ const globalFixture = globalThis as typeof globalThis & {
     profile: LearnerProfile;
     state: Snapshot | null;
     interests: Interest[];
+    storyDriven?: boolean;
   };
 };
 export function fixture() {
@@ -38,6 +39,7 @@ export function resetFixture(master = false, ready = false, quiet = false) {
   const f = fixture();
   f.state = null;
   f.interests = [];
+  f.storyDriven = false;
   f.profile.settings.voice = !quiet;
   if (ready) {
     f.state = createSession(

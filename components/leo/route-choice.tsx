@@ -16,6 +16,7 @@ export function RouteChoice({
   return (
     <fieldset className="story-choice">
       <legend>Bruk regningen din til å velge veien</legend>
+      {choice.prompt && <p>{choice.prompt}</p>}
       <p>
         Dere har{' '}
         <strong>
@@ -28,7 +29,7 @@ export function RouteChoice({
           <button
             type="button"
             key={route.id}
-            disabled={busy}
+            disabled={busy || route.cost > choice.budget}
             aria-pressed={option === route.id}
             onClick={() => {
               setOption(route.id);

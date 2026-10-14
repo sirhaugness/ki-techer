@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { planStoryAdventure } from './story-planner';
+import type { StoryChapter, StorySaga } from './story-contract';
 import type { AiProvider } from '../ai/provider';
 import type { CandidateContext } from '../engine/candidates';
 import { getCandidates } from '../engine/candidates';
@@ -79,6 +81,8 @@ export type AdventureEvidence = {
   understanding?: number;
 };
 export type Adventure = {
+  story?: StoryChapter;
+  saga?: StorySaga;
   image?: { url: string; alt: string };
   number: number;
   index: number;
@@ -599,6 +603,11 @@ function compileTask(
 }
 
 export async function planAdventure(input: {
+  onProgress?: (message: string) => void;
+  research?: import('../ai/provider').UniverseResearch;
+  onResearch?: (
+    research: import('../ai/provider').UniverseResearch,
+  ) => Promise<void>;
   label: string;
   interestId: string;
   previous?: Adventure;
@@ -627,6 +636,18 @@ export async function planAdventure(input: {
   const focus = Object.entries(assessment).find(
     ([id, s]) => s.calculationErrors >= 2 && ids.includes(id),
   )?.[0];
+  if (input.provider?.research)
+    return planStoryAdventure({
+      ...input,
+      provider: input.provider,
+      candidates,
+      assessment,
+      focus,
+    });
+  if (input.previous?.story && !input.provider)
+    throw new Error(
+      'Eventyret kunne ikke skrives videre nå. Fremdriften din er beholdt. Prøv igjen.',
+    );
   const sequence = Array.from({ length: 6 }, (_, i) =>
     focus && i % 2 === 0 ? focus : ids[i % Math.min(ids.length, 3)],
   );
@@ -911,6 +932,14 @@ export function adventureView(
     mission: Math.min(adventure.index + 1, 6),
     total: 6,
     source: adventure.source,
+    journey: adventure.saga
+      ? {
+          title: adventure.saga.title,
+          goal: adventure.saga.goal,
+          chapters: adventure.saga.chapters,
+          inventory: adventure.saga.inventory,
+        }
+      : undefined,
     image: adventure.image,
     memory: adventure.memory.slice(-3),
     choice:
@@ -919,9 +948,12 @@ export function adventureView(
             budget,
             error: adventure.choiceError,
             unit: task.interaction?.object ?? adventure.plan.cargo,
+            prompt: adventure.story?.decision.prompt,
             options: adventure.plan.choices.map((c, i) => ({
               ...c,
-              cost: Math.max(0, budget - i - 1),
+              cost:
+                adventure.story?.decision.options[i].cost ??
+                Math.max(0, budget - i - 1),
               id: i,
             })),
           }

@@ -31,9 +31,17 @@ export type AiCall = {
   latency_ms: number;
   ok: boolean;
 };
+export type UniverseResearch = {
+  interest: string;
+  brief: string;
+  sources: { title: string; url: string }[];
+  researchedAt: string;
+};
 export interface AiProvider {
   respond(request: ModelRequest): Promise<ProviderReply>;
   moderate(text: string): Promise<boolean>;
+  /** Public interest only; no learner data is submitted to web search. */
+  research?(interest: string): Promise<UniverseResearch>;
 }
 // Deliberately conservative estimate, not an invoice. Pricing varies by model.
 export function estimateCost(input: number, output: number): number {
