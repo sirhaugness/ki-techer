@@ -354,7 +354,7 @@ export async function POST(request: Request) {
         { status: 409 },
       );
     const instructions = (
-      await readFile(process.cwd() + '/lib/agent/prompts/tutor.v1.md', 'utf8')
+      await readFile(process.cwd() + '/lib/agent/prompts/tutor.v2.md', 'utf8')
     )
       .replaceAll('{first_name}', profile.firstName)
       .replaceAll('{tutor_name}', profile.tutorName);

@@ -1,5 +1,9 @@
 # Beslutninger
 
+## Les historikken riktig
+
+Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se revisjonsbeslutningen nederst. Historiske resultater dokumenterer bare den undersøkte versjonen.
+
 ## M0
 
 - `docs/SPEC.md` var tom (ett linjeskift). Rotfilen `SPEC.md` inneholdt hele
@@ -176,3 +180,12 @@ Samhandling omfatter mengdeknapper med tegning, fordeling på brett, sammenligni
 `judgeTaskAnswer` gir én autoritativ vurdering for progresjon, evidens og hjelp. Gangeuttrykk bruker fortsatt den begrensede AST-kontrollen; uttrykksvalg godtar også vanlige regnetegn som kolon. Fordeling kontrolleres både som total og som like grupper. Læreren får situasjonen i spillverdenen sammen med matematikken og det allerede vurderte svaret. Tilpasningen baseres fortsatt på flere oppdrag, og notasjon eller ett hint senker ikke regnenivået. Gamle lagrede oppgaver får presentasjonsfeltene ved lesing/neste tur uten å miste oppgave-ID, svar, evidens eller progresjon. Alt lagres i eksisterende JSON-transaksjon; ingen ny migrasjon.
 
 Thor har godkjent gjenbruk av eksisterende OpenAI-oppsett i Preview. Dette er også notert i AGENTS.md slik at samme valg ikke etterspørres igjen. Produksjon eller nøkkelverdier endres ikke.
+
+## 2026-10-14: reviderte instruksjoner for Codex-teamet og KI-læreren
+
+- `docs/SPEC.md` er eneste fullstendige produktspesifikasjon. Rotfilen peker dit; den opprinnelige kopien finnes i git-historikken. AGENTS angir leserekkefølge og skiller Codex-roller fra lærerens runtime-prompter.
+- Avtalt retning er et sammenhengende eventyr der hendelser skaper matematikk og Leos handlinger får synlige, lagrede konsekvenser. Historikk påvirker fortsettelsen; ingen fast åpning eller obligatorisk figurgruppe. Variasjon er mer enn nye tall, navn eller svarfelt. Research krever faktiske kilder.
+- Tidligere valg om ordrette generatorspørsmål, tallfri ramme, fire/seks oppdrag, faste scenetyper og lokalt SVG-bibliotek beskriver eldre eller nåværende implementering. De er ikke permanente produktgrenser. Fasitvern, semantisk kontroll, hint, sikkerhet og uavhengig mestring beholdes. Skjema/guards/rendering må endres samlet når grensene utvides; denne revisjonen bygger ikke ny research-, minne- eller spillarkitektur.
+- Aktiv lærerprompt blir `tutor.v2`; v1 beholdes for sporbarhet. V2 skiller verktøytur fra hjelp uten verktøy, bruker motorens vurdering og tilpasser tallinstruksjoner til dagens guard. Lokale instruksjoner for hjelp, planlegging, kontekstualisering, forklaringsvurdering og refleksjon revideres innenfor eksisterende skjema.
+- Codex-teamet bruker samme produktmål og evidenskrav. Rene undersøkelser gir ingen fil-/PR-endringer; endringsoppgaver dokumenteres og verifiseres etter faktisk omfang. Designer vurderer hele årsakskjeden; tutor-evaluator sporer også direkte kodebestemte svar; reviewer kontrollerer kontrakter på tvers av filer.
+- Teknisk funksjon, ekte modellkvalitet og spillopplevelse rapporteres separat. Dagens 30-scenario-eval måler sluttrespons, ikke full pedagogisk kvalitet eller råforsøk. Utvidet evaluering står som gjenstående krav, ikke som et utført resultat. Eksisterende Preview-nøkkelgodkjenning og produksjonsgrenser beholdes.

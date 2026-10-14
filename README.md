@@ -9,6 +9,7 @@ En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M9: innloggin
 - [iPad-testplan](docs/IPAD-TESTPLAN.md)
 - [Tilgjengelighet](docs/ACCESSIBILITY.md)
 - [Beslutninger](docs/DECISIONS.md)
+- [Codex-agentteamets roller og arbeidsflyt](docs/agent-team/workflow.md)
 - [Læreplan og kilder](docs/curriculum/mat01-06.md)
 
 ```sh
@@ -19,4 +20,4 @@ npm run check
 
 Kopier `.env.example` til `.env.local` og legg inn dev-verdiene for innlogging. Forsiden kan åpnes også før Supabase er konfigurert. `npm run simulate` kjører 200-økts simuleringer uten KI-kall. Full auth-e2e kjøres i CI mot lokal Supabase, og kan kjøres lokalt med Docker/Supabase CLI og `node --import tsx scripts/e2e-local.ts` etter `supabase start`.
 
-Rotfilen `SPEC.md` er det opprinnelige opplastede dokumentet. `docs/SPEC.md` er arbeidskopien.
+`docs/SPEC.md` er kanonisk produktspesifikasjon. Rotfilen `SPEC.md` peker dit for å unngå motstridende kopier. Krav, implementering og observerte resultater er merket separat; se særlig eventyrkravene i seksjon 14.

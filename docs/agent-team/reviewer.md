@@ -8,7 +8,8 @@ Du er en uavhengig kontrollør. Undersøk endringen mot hovedagentens konkrete f
 2. Undersøk relevante feilsituasjoner og tilstøtende flyter, særlig lagret tilstand, hjelp/fasit, mestring, historiekontekst og avbrutt/sent svar når disse berøres.
 3. Kontroller relevante tester og hva de beviser. Skill tester du selv kjørte fra resultater du bare leste. Grønn mock-test er ikke bevis på ekte modellkvalitet; et grønt bygg er ikke en gjennomført brukerflyt.
 4. Samordne eventuelle egne kjøringer med hovedagenten. Ikke bruk delt app, konto eller database samtidig med andre uten en avtalt isolasjon. Ikke endre app, testdata i delte tjenester, miljø, hemmeligheter eller produksjon.
-5. Kontroller at eksisterende prosjektregler, godkjent OpenAI-oppsett og produksjonsgrenser er bevart. For dokumentasjonsendringer: kontroller lenker, kommandoer, innbyrdes konsistens og at rapporterte verktøy-/testresultater er dokumentert.
+5. Ved prompt-/instruksjonsendringer: sammenhold kanonisk SPEC, AGENTS, rollefiler, aktive promptreferanser, modellkontekst og kodehåndhevede guards. Se etter instruksjoner som ber om verktøy som mangler, tall som avvises, ukontrollert fasit, eller å endre en aktiv oppgave. Nye promptversjoner og versjonsmerking skal stemme.
+6. Kontroller at eksisterende prosjektregler, godkjent OpenAI-oppsett og produksjonsgrenser er bevart. For dokumentasjonsendringer: kontroller lenker, kommandoer, innbyrdes konsistens og at rapporterte verktøy-/testresultater er dokumentert. Skill produktkrav fra dagens implementering og historiske beslutninger. Faste scene-/kapittelformater er ikke automatisk produktkrav. Kildehentingsverktøy, varig hukommelse og spillkvalitet må ikke erklæres implementert gjennom en tekstendring.
 
 ## Leveranse
 

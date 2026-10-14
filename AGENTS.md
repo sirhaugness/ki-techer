@@ -1,64 +1,109 @@
 # Leo-læreren
 
 Leo-læreren skal hjelpe en niåring med å mestre matematikk på 4. trinn etter LK20.
-En KI-lærer velger pedagogiske aktiviteter, mens en deterministisk motor kontrollerer svar og mestring.
-Løsningen skal være trygg, lett å bruke og kreve lite arbeid fra forelder.
+En KI-lærer velger pedagogiske aktiviteter; en deterministisk motor kontrollerer svar og mestring.
+Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å lære og krever lite arbeid fra forelder.
+
+## Leserekkefølge og ansvar
+
+- Brukerens siste avtalte bestilling styrer oppdraget. [docs/SPEC.md](docs/SPEC.md) er kanonisk produktspesifikasjon; rotfilen SPEC.md peker dit.
+- Les relevant kode og [docs/PROGRESS.md](docs/PROGRESS.md) for dagens implementering og observerte resultater. [docs/DECISIONS.md](docs/DECISIONS.md) er datert beslutningshistorikk; eldre begrensninger skal ikke overstyre nyere krav.
+- Skill vedtatt krav, implementert kode og faktisk verifisert atferd. En dokumentasjons- eller promptendring betyr ikke at alle beskrevne funksjoner er bygget.
+- Codex-agentteamet utvikler og vurderer appen. KI-læreren kjører i appen med egne prompter, verktøy og kodegrenser. Rollefilene er arbeidsinstruksjoner for Codex, ikke lærerens systemprompt.
+- Undersøk relevante runtime-instruksjoner i `lib/agent/prompts/`, `lib/learning/help.ts`, `lib/learning/adventure.ts` og `lib/ai/` når lærer eller fortelling endres. Krav i Markdown når ikke modellen automatisk.
 
 ## Prinsipper
 
 1. Modellen bestemmer pedagogikken; koden husker, verifiserer og håndhever grenser.
-2. Fasit kommer aldri fra KI alene: generator eller uavhengig kodekontroll kreves.
-3. Tilpasset veiledning gis ett steg om gangen; tillatt hint-nivå og korrekt hjelperegistrering håndheves i kode.
-4. Mestring krever både vurdering og data; motoren tildeler medaljongdeler.
+2. Fasit kommer aldri fra KI alene: generator eller uavhengig kodekontroll kreves. Matematisk korrekthet erstatter ikke kontroll av om teksten, scenen og oppgaven betyr det samme.
+3. Tilpasset veiledning gis ett håndterbart steg om gangen. Hintnivå, hjelperegistrering og selvstendig mestring håndheves i kode.
+4. Mestring krever både vurdering og data; bare motoren tildeler medaljongdeler.
 5. Barnesikkerhet, minst mulig persondata, moderering og foreldreinnsyn først.
-6. Appen skal være morsom, engasjerende og gi faktisk læring. Engasjement er et hovedmål og skal prege historier, oppgaver, lærerens respons og feiringer. Leo skal oppleve mestring og få lyst til å fortsette.
-7. All brukertekst er norsk bokmål, kort og forståelig for en niåring.
+6. Engasjement og faktisk læring er hovedmål. Barnet skal forstå målet, oppleve meningsfulle handlinger og kunne ta pause eller avslutte uten press.
+7. Elevtekst er kort norsk bokmål for en niåring. Foreldretekst er enkelt bokmål med forklaring av tall og begrensninger.
 8. Arkitekturen er fagnøytral og kan utvides med flere ferdighetsgrafer.
 
-## Struktur
+## Eventyr og spillopplevelse
 
-- `app/`: App Router; senere `(leo)/`, `(forelder)/` og `api/`.
-- `components/ui/`: shadcn/ui-komponenter.
-- `lib/engine/`: ren motor uten I/O; senere ferdigheter, mastery, scheduler,
-  candidates, hints, bandit, session, medallion, misconceptions og validate.
-- `lib/agent/`: agent-løkke, verktøy, kontekst, guards og versjonerte prompter.
-- `lib/ai/`, `lib/db/`, `lib/voice/`: serverintegrasjoner i senere milepæler.
-- `supabase/migrations/`: SQL og RLS fra M1.
-- `scripts/`: simulering og agent-evaluering fra M3/M4.
-- `tests/`: Vitest, mocks og Playwright i `e2e/`.
-- `docs/`: SPEC, DECISIONS, PROGRESS, curriculum; senere PRIVACY og DEPLOY.
+- Hvert oppdrag er én situasjon: tidligere hendelse → matematisk utfordring → Leos handling → støtte ved feil → synlig konsekvens → videre historie. Tekst, bilde, tall og interaksjon skal beskrive samme handling.
+- Nye kapitler bygger på en overordnet historie og tidligere hendelser, valg, figurer, relasjoner, gjenstander, steder og uløste mål. Historikken skal påvirke fortsettelsen konkret.
+- Eksempler er illustrasjoner, ikke obligatoriske åpninger, figurer eller oppdragsrekkefølger. Ingen fast «laste energi og ta av»-åpning.
+- Variasjon vurderes i praktisk formål, hindring, matematisk modell og elevhandling. Nye tall, navn, bilder eller svarfelt alene er ikke tilstrekkelig.
+- Scenen gjør problemet forståelig før oppdraget, reagerer under arbeidet og viser støtte ved feil og konsekvens ved riktig svar. Feil straffes ikke. Redusert bevegelse skal bevare forståelig respons.
+- Læreren bruker samme autoritative svarvurdering som fremdriften, hjelper i den aktuelle situasjonen og beholder oppgaven mens eleven spør.
+- Research betyr faktisk kildeinnhenting og kildehenvisninger. Modellens forkunnskaper alene er ikke research. Ikke påstå at appen har researchverktøy uten å kontrollere implementasjonen.
+- Dagens faste kapittelskjema, tallfrie fortellerfelter og SVG-bibliotek er implementeringsgrenser, ikke varige produktkrav. Endre skjema, validering og rendering samlet når en oppgave skal utvide dem; en prompt må passe kodens faktiske kontrakt.
 
-## Kommandoer
+## Struktur og kommandoer
 
-- `npm run dev`: lokal utvikling.
-- `npm run lint`, `npm run typecheck`, `npm run format:check`: statiske sjekker.
-- `npm run test`: Vitest med mocks; `npm run test:e2e`: lokal Playwright.
-- `npm run build`: produksjonsbygg; `npm run start`: kjør bygget.
-- `npm run simulate`: innføres i M3, uten eksterne tjenester.
-- `npm run eval:agent`: innføres i M4; eksplisitt ekte-modellevaluering utenfor CI.
+- `app/`: App Router, `leo/`, `forelder/`, innlogging og API-ruter.
+- `components/leo/`, `components/parent/`, `components/ui/`: elevflate, foreldreflate og UI.
+- `lib/engine/`: ren motor uten I/O; ferdigheter, mestring, kandidater, hint, økt, medaljong og svar-/scenekontroll.
+- `lib/agent/`: lærerens agentløkke, verktøy, kontekst, guards og versjonerte prompter.
+- `lib/learning/`: øktintegrasjon, lærerhjelp, kapitler og lagring. `lib/ai/`, `lib/db/`, `lib/auth/`, `lib/voice/`: serverintegrasjoner.
+- `supabase/migrations/`: append-only migrasjoner. `tests/`: Vitest og `tests/e2e/`: Playwright.
+- `docs/agent-team/`: Codex-roller og arbeidsflyt. `docs/`: spesifikasjon, beslutninger, fremdrift, personvern, deploy og testplaner.
+- `npm run dev`: utvikling. `npm run build` / `npm run start`: bygg / kjør bygg.
+- `npm run lint`, `typecheck`, `format:check`, `test`, `test:e2e`: statiske kontroller og tester.
+- `npm run simulate`: motorens simulering uten eksterne tjenester. `npm run check`: full lokal kvalitetspakke, også tilgjengelighet.
+- `npm run eval:agent`: separat ekte modellevaluering utenfor CI. Se SPEC for skriptets begrensede dekning.
 
-## Konvensjoner
+## Konvensjoner og lærerens kontrakter
 
-TypeScript strict. Zod på API-grenser, verktøykall og KI-svar når disse innføres.
-`lib/engine` har ingen I/O; harde regler hører hjemme i motoren.
-Ingen hemmeligheter i klientkode eller git. Bruk nøyaktige variabler fra `.env.example`.
-Test Supabase og OpenAI med mocks, aldri ekte nøkler eller eksterne tjenester i kvalitetstestene.
-Full Auth-e2e kan bruke en lokal Supabase-stack med testnøkler. Brukerens eksplisitte migrasjonsworkflow er separat og bruker repository secrets mot dev/prod.
-Les `docs/SPEC.md` nøye og bygg én milepæl av gangen. Dokumenter rimelige valg i DECISIONS.
+TypeScript strict og Zod på API-grenser, verktøykall og KI-svar.
+Motoren har ingen I/O. Harde regler håndheves i kode, ikke bare i prompter.
+Ingen hemmeligheter i klientkode, git, rapporter eller underagentkontekst. Bruk variablene fra `.env.example`.
 
-## Tilgang, oppsett og Preview
+Vanlige kvalitetstester bruker OpenAI-/Supabase-mocks; full Auth-e2e kan bruke lokal Supabase med testnøkler. Migrasjonsworkflow mot dev/prod er separat.
+Ekte modellprøving er en egen del av et relevant oppdrag, med syntetiske data og godkjent Preview-oppsett; den erstattes ikke av mocks.
 
-Hvis det trengs nye miljøvariabler, Redirect URLs eller hemmeligheter, legg dem inn selv via connectorer eller CLI og bekreft at de virker. Test Preview selv før du sier at du er ferdig. Endre aldri noe i produksjon (leo-prod eller Production-variabler i Vercel) uten å spørre først. Spør meg bare om det du ikke har tilgang til.
+Lærerprompten må skille tur med verktøy fra hjelp uten verktøy. Ikke krev nye oppgaver i en hjelpetur.
+Tall-/hintinstruksjoner må passe aktuell guard: vanlig dialog før nivå 4 er tallfri; særskilt hjelp kan bare bruke tillatte oppgavetall uten å røpe fasit.
+Ikke svekk fasitvern for å få en prompt til å passere. Bevar eldre promptversjoner ved ny lærerprompt, oppdater aktive referanser og versjonsmerking sammen.
 
-## Ferdigkriterier
+`lib/auth/` og `lib/db/` er server-only. Bruk `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er valgfri.
+Innlogging og callback deler `authOrigin`: ekstern vert før innebygd `VERCEL_URL`; ikke prioriter Nexts interne localhost-adresse.
+PostgreSQL/RLS testes med PGlite, full Auth-e2e mot lokal Supabase i CI.
 
-Relevante tester, lint, typecheck, formatering og build er grønne.
-Oppdater `docs/PROGRESS.md` med utført arbeid og verifisering, og commit med beskrivende melding.
-Ikke hev at GitHub CI eller ekte tjenester er verifisert uten å ha sett resultatet.
+## Codex-agentteam og arbeidsflyt
 
-## M1–M3
+Bruk [arbeidsflyten](docs/agent-team/workflow.md). Hovedagenten eier oppgaven, velger relevante spesialister og samler funn. Les og gi aktuell rollefil til faktisk underagent: [designer](docs/agent-team/designer.md), [tutor-evaluator](docs/agent-team/tutor-evaluator.md) og [reviewer](docs/agent-team/reviewer.md).
+Spesialistene undersøker og rapporterer; hovedagenten endrer filer som standard. Høyst tre samtidige underagenter innenfor miljøets grenser. Samordne tester som deler app, konto, port eller database.
+Kontroller start-/meldings-/vente-verktøy i chatten. Rollefiler registrerer ikke native agenttyper. Manglende verktøy eller mislykket oppstart skal rapporteres; ikke etterlign et team.
+Små endringer trenger ikke hele teamet. Rene undersøkelser endrer ikke filer, PROGRESS, branch eller PR uten endringsmandat.
 
-`lib/auth/` og `lib/db/` er server-only. Bruk miljønavnene fra M0: `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er en valgfri overstyring. Innlogging og callback deler `authOrigin`: forespørselens eksterne vert først, deretter Vercels innebygde `VERCEL_URL`. Ikke bruk Nexts interne localhost-adresse foran den faktiske Host-headeren. Migrasjoner er append-only. PostgreSQL/RLS testes med PGlite; full Auth-e2e kjøres mot lokal Supabase i CI. `npm run check` kjører alle kvalitetssjekker og simulering.
+## Ferdigkriterier og evidens
+
+- Avtalbare krav konkretiseres til observerbare kriterier før implementering: hva Leo gjør, hvilken respons han får og hva som huskes videre. Gjør rimelige valg selv innenfor bestillingen.
+- Velg relevante kontroller etter endringen. Dokumentasjonsendringer trenger konsistens-, lenke-, kommando- og formateringskontroll; runtime-/promptendringer trenger relevante tester og statiske sjekker. Full kvalitetspakke brukes ved vesentlige appendringer.
+- Ved spillendringer prøves en hel kjede: forstå oppdraget → feil → hjelp → riktig → synlig konsekvens → lagret fortsettelse. Skjermbilder alene dokumenterer ikke bevegelse; vurder opptak eller observer animasjonen.
+- Rapporter teknisk funksjon, ekte modellkvalitet og spillopplevelse separat, med undersøkt versjon, metode og responskilde. Skill rå modellforsøk fra respons etter guards, direkte kodebestemte svar, mocks og fallback.
+- Grønn CI, antall tester, lagret historikk eller et grønt bygg beviser ikke fortellerkvalitet, engasjement eller observerte barnereaksjoner.
+- Test relevant Preview-flyt før runtime-endringer omtales som fullt verifisert. Ved manglende tilgang: fullfør tilgjengelige kontroller og oppgi konkrete gjenstående steg; ikke bruk en eldre Preview som bevis.
+- Ved endringsoppgaver: oppdater PROGRESS med observert arbeid/verifisering og «Hva Thor må gjøre», dokumenter beslutninger, commit og opprett/viderefør PR. Ikke hev at CI eller tjenester er testet uten observerte resultater.
+- Nye idéer utenfor bestillingen samles i BACKLOG.
+
+## Tilgang og produksjonsgrenser
+
+- PR tester mot leo-dev / Vercel Preview. Merge til main påvirker produksjon. Ikke merge eller endre leo-prod / Production-variabler uten Thors tillatelse.
+- Utfør nødvendig og autorisert Preview-/dev-oppsett selv gjennom tilgjengelige connectorer/CLI og bekreft resultatet. Spør bare om manglende tilgang eller handlinger som trenger særskilt godkjenning.
+- Thor har 14. oktober 2026 godkjent fortsatt bruk av eksisterende `OPENAI_API_KEY` i Vercel Preview. Ikke spør igjen om eksisterende nøkkel kontra ny nøkkel. Godkjenningen omfatter ikke nye nøkler, endring av hemmeligheter eller produksjonsendringer.
+
+## Driftsoppsett og kjente fallgruver
+
+- Produksjon: https://ki-techer.vercel.app (team `team-thor1`, prosjekt `ki-techer`).
+- Supabase: leo-dev (Preview) og leo-prod (Production, ref `cijdabagprozgjaxusip`). URL og publishable key skal komme fra samme prosjekt.
+- Supabase-URL slutter på `.supabase.co`. Site URL har `https://`; prod-callback er `https://ki-techer.vercel.app/auth/callback`. Preview dekkes av `https://*-team-thor1.vercel.app/**`.
+- `NEXT_PUBLIC_*` er Config. `SUPABASE_SECRET_KEY` og `OPENAI_API_KEY` er Secret; nye sensitive variabler må også behandles som hemmeligheter.
+- Migrasjoner: GitHub Actions `supabase-migrations.yml`, PR → leo-dev, merge → leo-prod.
+- E-postlenke har lav sendegrense og må åpnes i samme nettleser som bestillingen.
+- Endrede Vercel-variabler krever redeploy. Kontroller nettverkstilgang i det aktuelle skymiljøet fremfor å anta at alle tjenester kan nås.
+
+## Om Thor og samarbeid
+
+Thor er nybegynner innen utvikling. Forklar enkelt på norsk med hva som er endret, hvorfor, hva som faktisk er kontrollert og eventuelle begrensninger.
+Når Thor ber om undersøkelse uten endringer: svar, ikke endre filer.
+Avslutt alltid med «Neste steg for deg:» og en kort, konkret sjekkliste.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
@@ -69,43 +114,3 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
-
-## Om eieren og samarbeid
-
-- Thor er nybegynner innen utvikling. Forklar enkelt på norsk, uten unødvendig sjargong.
-- Avslutt alltid med «Neste steg for deg:» og en kort sjekkliste.
-- Når Thor spør om noe uten å be om endringer: svar, ikke endre kode.
-- Oppdater docs/PROGRESS.md og PR-beskrivelsen med «Hva Thor må gjøre» etter hver oppgave.
-
-## Arbeidsflyt
-
-- Bruk [agentteamets arbeidsflyt](docs/agent-team/workflow.md): Hovedagenten eier oppgaven fra undersøkelse til verifisert testversjon og starter selv relevante underagenter. Les og gi dem rollefilen ved behov: designer for vesentlig UX, tutor-evaluator for lærer/historie og reviewer for vesentlig kode. Spesialistene undersøker og rapporterer; bare hovedagenten endrer appkode som standard. Bruk høyst tre samtidige underagenter innenfor miljøets grenser, og samordne tester som deler app, konto eller database. Små tekstendringer trenger ikke hele teamet. Rollefilene registrerer ikke native agenttyper.
-- Pull request = test mot leo-dev (Vercel Preview). Merge til main = produksjon (leo-prod).
-- Endre aldri noe i produksjon (leo-prod eller Production-variabler i Vercel) uten å spørre først.
-- Nye miljøvariabler, Redirect URLs eller hemmeligheter: legg dem inn selv via connector/CLI
-  hvis mulig og bekreft at de virker; ellers gi Thor nøyaktige steg.
-- Test Preview selv før du sier at du er ferdig. Kan du ikke, si tydelig hva Thor må teste.
-- Pirk og idéer samles i docs/BACKLOG.md.
-
-## Godkjent OpenAI-oppsett
-
-Thor har 14. oktober 2026 godkjent at eksisterende OPENAI_API_KEY i Vercel Preview brukes videre for dette prosjektet. Ikke spør igjen om eksisterende nøkkel kontra ny nøkkel. Dette godkjenner ikke nye nøkler, endring av hemmeligheter eller produksjonsendringer.
-
-## Driftsoppsett (ingen hemmeligheter her)
-
-- Produksjon: https://ki-techer.vercel.app (Vercel-team: team-thor1, prosjekt: ki-techer)
-- Supabase: leo-dev (Preview) og leo-prod (Production, ref cijdabagprozgjaxusip)
-- Regel: Production-variabler i Vercel kommer fra leo-prod, Preview fra leo-dev.
-- NEXT_PUBLIC_*-variabler skal være type Config. Bare SUPABASE_SECRET_KEY og OPENAI_API_KEY er Secret.
-- Migrasjoner kjøres av GitHub Actions (supabase-migrations.yml): PR → leo-dev, merge → leo-prod.
-- Innlogging er e-postlenke via Supabase: lav e-postgrense per time, og lenken må åpnes
-  i samme nettleser som den ble bestilt fra.
-
-## Kjente fallgruver (har skjedd før)
-
-- Supabase-URL skal slutte på .supabase.co (ikke .com).
-- Site URL i Supabase må ha https://. Redirect URL for prod: https://ki-techer.vercel.app/auth/callback.
-  Preview dekkes av https://*-team-thor1.vercel.app/**.
-- URL og publishable key må komme fra samme Supabase-prosjekt.
-- Endringer i Vercel-variabler krever Redeploy.
-- Codex sitt skymiljø har begrenset nett og når ikke alltid vercel.com/vercel.app.

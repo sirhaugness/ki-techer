@@ -10,7 +10,7 @@ if (!process.env.OPENAI_API_KEY)
   throw new Error(
     'OPENAI_API_KEY mangler. Ekte evaluering krever nøkkel; mocks er ikke ekte agent-eval.',
   );
-const instructions = await readFile('lib/agent/prompts/tutor.v1.md', 'utf8');
+const instructions = await readFile('lib/agent/prompts/tutor.v2.md', 'utf8');
 let passed = 0,
   leaks = 0;
 for (const [name, text, flag] of scenarios) {
