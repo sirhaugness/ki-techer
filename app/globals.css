@@ -2276,3 +2276,9 @@ button.print-hide {
     transform: translate(620px, 315px) scale(1);
   }
 }
+
+.story-player .manipulative {
+  background: #20364d;
+  color: #e4edf7;
+  margin-bottom: 18px;
+}

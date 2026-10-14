@@ -219,6 +219,9 @@ export function StoryPlayer({
               property={task.visual.property}
             />
           )}
+          {task.visual.steps.length > 0 && (
+            <p>Følg programmet: {task.visual.steps.join(' → ')}</p>
+          )}
           {(task.visual.type === 'figur2d' || task.visual.steps.length > 0) && (
             <Manipulatives
               visual={task.visual}
