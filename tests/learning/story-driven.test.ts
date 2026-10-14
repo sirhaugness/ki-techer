@@ -141,6 +141,8 @@ describe('story-driven saga', () => {
     provider.respond = async (request) => {
       const input = JSON.parse(request.input);
       if (input.items) {
+        expect(request.timeoutMs).toBeGreaterThan(1000);
+        expect(request.timeoutMs).toBeLessThanOrEqual(120000);
         plans++;
         if (plans === 2) {
           expect(input.rejectedPlan.missions[0].questionTemplate).toContain(

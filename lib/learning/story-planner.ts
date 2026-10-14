@@ -297,9 +297,19 @@ export async function planStoryAdventure(
   if (!items.length)
     throw new Error('Fant ingen kontrollerte oppgaver for eventyret.');
   const number = (input.previous?.number ?? 0) + 1;
+  // Leave time for moderation, commit and delivery within the 300s route.
+  const planningDeadline = Date.now() + 210000;
   const ask = async (request: ModelRequest) => {
     try {
-      return await input.provider.respond(request);
+      const remaining = planningDeadline - Date.now() - 10000;
+      if (remaining <= 1000) throw new StoryPlanningError('timeout');
+      return await input.provider.respond({
+        ...request,
+        timeoutMs: Math.min(
+          request.purpose === 'tutor' ? 120000 : 35000,
+          remaining,
+        ),
+      });
     } catch (error) {
       console.error('[story-plan]', {
         phase: request.purpose === 'tutor' ? 'generation' : 'review',
