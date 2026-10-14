@@ -287,7 +287,7 @@ export async function learningTurn(
       events.messages.push({
         id: randomUUID(),
         ...message,
-        meta: { prompt_version: 'tutor.v1' },
+        meta: { prompt_version: 'tutor.v2' },
       });
     }
     return result;
@@ -1020,7 +1020,7 @@ export async function learningTurn(
       strategy: a.strategy,
       story_text: a.text,
       visual_spec: { representationHints: a.item.representationHints },
-      prompt_version: 'tutor.v1',
+      prompt_version: 'tutor.v2',
       validated: true,
     });
   }
@@ -1030,7 +1030,7 @@ export async function learningTurn(
     id: randomUUID(),
     ...message,
     meta: {
-      prompt_version: 'tutor.v1',
+      prompt_version: 'tutor.v2',
       action: state.response.action,
       hint_level_used: state.response.hint_level_used,
     },

@@ -1,4 +1,8 @@
-# Leo-læreren – spesifikasjon (v2)
+# Leo-læreren – spesifikasjon
+
+Dette er kanonisk produktspesifikasjon. Brukerens siste avtalte bestilling har forrang. [AGENTS.md](../AGENTS.md) styrer utviklingsarbeidet; [agentteamet](agent-team/workflow.md) gjelder Codex, mens lærerens aktive prompt ligger i `lib/agent/prompts/tutor.v2.md` med lokale tilleggsinstruksjoner i kode.
+
+Krav, implementering og verifisering er forskjellige. M0–M9 beskriver den opprinnelige leveranseplanen; dagens status og historiske resultater står i [PROGRESS](PROGRESS.md). Seksjon 14 beskriver den vedtatte eventyrretningen og kjente implementeringsgap. Eldre beslutninger overstyrer ikke nyere krav.
 
 ## 1. Rolle og mål
 
@@ -53,8 +57,8 @@ Lag et tynt abstraksjonslag (`lib/ai/provider.ts`) slik at KI-leverandør kan by
 
 ```
 app/
-  (leo)/            Leo-modus: hjem med medaljong og kart, økt, mine interesser
-  (forelder)/       Foreldredashbord, innstillinger, innsyn, diplom-utskrift
+  leo/              Leo-modus: hjem med medaljong og kart, økt, mine interesser
+  forelder/         Foreldredashbord, innstillinger, innsyn, diplom-utskrift
   api/              Route handlers (økt/agent-tur, svar, tale, refleksjon)
 lib/
   engine/           DETERMINISTISK læringsmotor (ingen I/O, 100 % enhetstestet)
@@ -76,16 +80,18 @@ lib/
     prompts/        Versjonerte systemprompter (.md)
   ai/
     provider.ts     Leverandørabstraksjon
-    contextualize.ts  Oppgave → interessebasert fortelling
+    contextualize.ts  Begrenset, kontrollert innramming av generatorspørsmål
     evaluate.ts     Vurdering av Leos forklaringer
     reflect.ts      Refleksjon etter økt → profiloppdatering
     moderation.ts   Moderering inn/ut
+  learning/         Øktintegrasjon, hjelp, kapittelplan og historietilstand
   db/               Typede spørringer
   voice/            TTS (med cache) og STT
 supabase/migrations/
 scripts/simulate.ts Simulert elev for å teste motoren
 scripts/eval-agent.ts  Scenarioevaluering av agenten
-docs/curriculum/    Kompetansemål og kjerneelementer (fra udir.no)
+docs/agent-team/    Codex-teamets arbeidsflyt og roller
+docs/curriculum/   Kompetansemål og kjerneelementer (fra udir.no)
 tests/
 docs/SPEC.md, docs/DECISIONS.md, docs/PROGRESS.md, docs/PRIVACY.md, docs/DEPLOY.md
 ```
@@ -210,9 +216,11 @@ Motoren gir agenten en rangert liste med 3–6 kandidater: `{skill_id, foreslåt
 Nivåer per oppgave:
 - **0:** Leo prøver selv. Ved feil: oppmuntring + et åpent spørsmål («Hvordan tenkte du?»).
 - **1:** Strategi-hint («Kan du tegne det som grupper?»).
-- **2:** Konkret delsteg («Hvor mange grupper på 4 får du av 12?»).
-- **3:** Gjennomgått eksempel med en *lignende* oppgave (andre tall), og deretter samme oppgave på nytt.
-- **4:** Full løsning forklart, etterfulgt av en ny, lignende oppgave som Leo løser selv.
+- **2:** Konkret delsteg eller tegning av oppgavens allerede viste mengder, innenfor hjelpeflytens tallkontroll.
+- **3:** Veiledet konkretisering av gjeldende oppgave, uten fasit. Eleven gjør neste steg selv.
+- **4:** Kontrollert full løsning kan forklares. Eleven kan deretter få en ny, lignende oppgave gjennom den ordinære neste-oppgave-flyten; hjelp skal ikke bytte oppgaven automatisk.
+
+**Dagens tallkontrakt:** Vanlig modellbasert dialog før nivå 4 avviser numeriske påstander. Særskilt hjelp kan bruke tillatte numeriske params med sifre, men ikke nye tall, tallord, ferdig regneuttrykk eller fasit. Oppgavetall som samtidig avslører fasit avvises fortsatt. Lignende gjennomgåtte eksempler med andre tall krever en egen verifisert eksempelkontrakt og guard; de er et videreutviklingskrav, ikke noe som løses ved å instruere modellen alene.
 
 Regler: nivået øker bare etter et nytt feilforsøk eller når Leo trykker «Jeg vil ha et hint». Serveren sender `allowedHintLevel` i konteksten hver tur. `guards.ts` avviser svar som inneholder fasit (som tall eller ord) før nivå 4.
 
@@ -305,32 +313,43 @@ Output-skjema per tur:
 }
 ```
 
-Systemprompten skal skrives fullt ut i `prompts/tutor.v1.md` og minst inneholde:
+Aktiv systemprompt er `lib/agent/prompts/tutor.v2.md`; v1 beholdes som historikk. Runtime-referanser og `prompt_version` skal følge aktiv versjon. Prompten skal minst inneholde:
 - Du er {tutor_name}, en vennlig og tålmodig mattelærer for {first_name} (9 år). Bokmål. Maks 3 korte setninger per tur. Ett spørsmål om gangen.
-- Du er den pedagogiske beslutningstakeren. Bruk verktøyene for å se status, velge neste aktivitet og lage oppgaver. Velg representasjon og forklaringsstil ut fra det du vet om {first_name}.
+- Du velger pedagogikk innenfor verktøy og kodegrenser. Når verktøy er tilgjengelige og en ny oppgave trengs, hent status og kandidater før valg. Ved hjelp, spørsmål og forklaring: behold oppgaven; ikke krev verktøy som mangler eller lov en ny aktivitet.
+- Bruk motorens kontrollerte svarvurdering. Skill feil tall fra manglende regnemåte eller fordeling. Riktig tall alene betyr ikke alltid at oppdraget er løst.
 - Gi aldri svaret før `allowedHintLevel` = 4. Led med spørsmål.
 - Ros innsats, strategi og utholdenhet, aldri at han er «smart» eller «flink». Feil er en naturlig del av læring.
 - Be ofte {first_name} forklare hvordan han tenkte. Hvis han beskriver en metode fra skolen, bruk den samme metoden og registrer den som observasjon (kategori `skolemetode`).
-- Bruk interessen naturlig, men la matten stå i sentrum.
-- Knytt fremgang til medaljongen når det motiverer («Bare to steiner igjen før mesterutfordringen!»), men ikke i hver tur.
+- Bruk elevens valgte interesse og aktuelle situasjon naturlig. Matematisk hjelp skal gi mening i fortellingen, uten å dikte opp nye hendelser, mengder eller konsekvenser.
+- Knytt noen ganger fremgang til medaljongen ut fra motorens status, med språk som passer tallvernet. Aldri lov en del før tildeling, og ikke bruk belønningen som press.
 - Hold samtalen til matte og læring. Led vennlig tilbake ved avsporing.
 - Spør aldri om personopplysninger. Hvis han forteller noe som tyder på at han er lei seg, redd eller blir behandlet dårlig: svar varmt og kort, oppfordre ham til å snakke med mamma, pappa eller læreren, sett `safety_flag`, og ikke prøv å være terapeut.
 - Ikke lov ting appen ikke kan gjøre. Ikke lat som du er et menneske hvis han spør.
 
 ### 8.3 Kontekstualisering (`contextualize.ts`)
-Input: generatorens params og fasit, valgt interesse, representasjon, lesenivå. Output:
+Dagens funksjon mottar en generatoroppgave og valgt interesse, og ber modellen om følgende struktur:
 ```json
-{ "story": "string", "question": "string", "expression": "string (f.eks. '24 / 4')", "visual_spec": { "type": "grupper|tallinje|rutenett|tierblokker|figur3d|ingen", "data": {} } }
+{ "story": "På verkstedet trenger droiden deler.", "question": "Fordel 24 deler likt på 4 vinger. Hvor mange får hver vinge?", "expression": "24 / 4", "visual_spec": { "type": "grupper", "data": { "count": 24, "groups": 4 } } }
 ```
-Validering (`lib/engine/validate.ts`): alle tall i teksten finnes i params; `mathjs.evaluate(expression)` = fasit; maks 3 setninger og ~15 ord per setning; moderering godkjent. To feil på rad → malbasert fallback. Godkjente oppgaver caches og kan gjenbrukes.
+Dagens begrensede innramming: `question` og `expression` skal kopieres tegnrett fra den kontrollerte oppgaven. Bare `story` kan tilføye en kort ramme uten tall, matematiske påstander eller fasit. Numerisk kontroll, lengdekontroll, moderering og semantisk bevaring må passere; etter høyst to nye forsøk brukes generatorspørsmålet. Returnert `visual_spec` er ikke bevis på at en scene eller samhandling faktisk vises.
+
+Denne innrammingen er ikke hele eventyrarkitekturen. Historiedrevne oppdrag skal utvikle situasjon og matematikk samlet, med uavhengig kontroll før visning (seksjon 14). Dagens ordrette tekstkrav kan bare utvides sammen med validering og tester som sikrer både matematisk og semantisk samsvar.
 
 Leo velger én aktiv interesse om gangen. Valget lagres og håndheves på serversiden, og styrer eventyret til Leo selv bytter. Variasjon kommer fra handling, oppgavetype og matematikk innenfor samme interesse. Interessevekt skal aldri overstyre dette valget.
 
 ### 8.4 Forklaringsvurdering (`evaluate.ts`)
 Vurderer Leos fritekstforklaringer med en rubrikk: `{ forstaelse: 0-2, strategi: "string", misoppfatning: "kode|null", tilbakemelding: "string (1 setning, oppmuntrende)" }`.
 
+- 0: teksten dokumenterer ikke en relevant fremgangsmåte; dette betyr manglende evidens, ikke at barnet mangler forståelse.
+- 1: relevant metode eller delvis begrunnelse, men sammenhengen er ufullstendig.
+- 2: korrekt, sammenhengende begrunnelse for hvordan regnemåten representerer situasjonen. Riktig tall, gjetting eller gjentakelse alene er utilstrekkelig.
+
+Den kontrollerte svarvurderingen er autoritativ. Forklaringen vurderes separat fra tallsvaret; motoren kontrollerer selvstendighet og mestring. Ingen vurdering av varig misoppfatning eller diagnose ut fra én feil eller ett hjelpeønske. Ved manglende/ugyldig modellrespons gir fallback ingen forståelsesgodkjenning.
+
 ### 8.5 Refleksjon etter økt (`reflect.ts`)
 Kjøres asynkront når en økt avsluttes. Input: øktstatistikk, meldingsutdrag, verktøykall, bandit-resultater og eksisterende observasjoner. Output: en liste med operasjoner `{op: "legg_til"|"styrk"|"svekk"|"arkiver", observation_id?, category, text, evidence_session_id, confidence_delta}`, et kort øktsammendrag for forelder og 0–3 forslag til forelder.
+
+Antall svar er forsøk, ikke nødvendigvis ulike oppgaver, og riktige svar kan være gitt med hjelp. Refleksjonen skal ikke utlede selvstendig mestring, karakter eller varige egenskaper uten relevant evidens. Skill situasjonsbestemte observasjoner fra hypoteser. Foreldreforslag er valgfrie og skal ikke innføre nye plikter.
 
 Fletteregler (i kode, ikke KI): confidence starter på 0,4, +0,15 ved ny støtte, −0,2 ved motbevis, arkiveres under 0,2, maks 25 aktive observasjoner. Observasjoner som er låst eller avvist av forelder endres aldri automatisk. Bare observasjoner med confidence ≥ 0,6 eller status låst tas med i agentens kontekst.
 
@@ -385,13 +404,15 @@ Dashbordet krever ingen innsats for å fungere. Alt over er innsyn og valgfrie j
 - **Verktøytester:** hvert verktøy med gyldige og ugyldige argumenter, inkludert forsøk på å bryte harde regler (mestring uten data, mesterprøve for tidlig, oppgave uten mestrede forkunnskaper, feil fasit i `foreslå_egen_oppgave`).
 - **Agent-løkke med mock-modell:** skriptede verktøysekvenser, maks antall kall, retry og fallback.
 - **Simulert elev (`scripts/simulate.ts`):** syntetiske elever med skjulte ferdighetsnivåer og preferanser kjører 200 økter med en regelbasert stand-in for agenten (ingen ekte KI-kall). Verifiser at θ konvergerer mot sann verdi, at faktisk treffprosent ligger i 70–85 %, at banditten finner foretrukket strategi, og at en simulert elev med jevn fremgang tjener alle fire medaljongdeler i riktig rekkefølge.
-- **Agent-evaluering (`npm run eval:agent`):** 30 skriptede scenarioer mot ekte modell. Blant annet: feil svar, masing etter svaret, avsporing, «jeg er dum», trist melding, personinfo, Leo svarer «vet ikke» på skolespørsmålet, Leo beskriver en skolemetode, og modellen fristes til å foreslå mestring for tidlig. Sjekker: ingen fasit-lekkasje, bokmål, lengde, riktig `safety_flag` og fornuftige verktøyvalg.
+- **Agent-evaluering (`npm run eval:agent`), dagens dekning:** 30 skriptede scenarioer mot ekte modell, med samme seedede gangingsoppgave og hintnivå 0. Måler sluttrespons etter guards/retries/fallback, forventet `safety_flag` og fravær av fallback unntatt ved upassende innhold. Krav: ≥95 % godkjente scenarioer og null registrerte sluttresponslekkasjer. Språk/lengde sjekkes med heuristikker; verktøyloggen forkastes. Skriptet dokumenterer derfor ikke full bokmålskvalitet, fornuftige verktøyvalg, gode råforsøk eller pedagogisk kvalitet.
+- **Krav til utvidet lærerevaluering:** realistiske flertursforløp, ulike ferdigheter og hintnivåer, hjelp, forklaringsvurdering, gjentatte feil, notasjon, historiekontekst og kapittelovergang. Registrer responskilde, råforsøk når tilgjengelige, avvisninger/fallback, verktøyvalg og elevvist respons separat. Vurder matematikk uavhengig og forklaringens nytte mot en eksplisitt rubrikk. Denne utvidelsen er ikke implementert av en dokumentasjonsendring.
+- **Spillopplevelse:** kontroller hele kjeden fra forståelig oppdrag via feil/hjelp til løsning, visuell konsekvens og lagret fortsettelse. Vurder fortellerlogikk og reell variasjon, og oppgi observasjoner, syntetiske data og begrensninger. Grønn CI eller animasjonskode alene er utilstrekkelig.
 - **E2E (Playwright):** forelder logger inn → aktiverer Leo-modus → kartlegging → økt med hint → mestring av ferdighet → (seedet) mesterprøve → bit tildeles → dashbord viser varsel og diplom.
 - CI med GitHub Actions: lint, typecheck, enhetstester, simulering.
 
 ## 12. Milepæler
 
-Arbeid milepæl for milepæl. Etter hver: kjør alle tester, oppdater `docs/PROGRESS.md` og commit med beskrivende melding. Ta rimelige valg selv der spesifikasjonen er uklar, og skriv dem ned i `docs/DECISIONS.md`.
+Den opprinnelige M0–M9-planen under er historisk leveranseplan. Ved videreutvikling: arbeid i avgrensede, komplette steg, velg relevante tester og oppdater PROGRESS/DECISIONS og commit ved endringsoppgaver. Rene undersøkelser endrer ikke filer eller git. Ta rimelige valg selv innenfor bestillingen; dokumenter valg som påvirker produktet.
 
 | # | Innhold | Akseptkriterier |
 |---|---|---|
@@ -414,6 +435,59 @@ Skal inneholde: prosjektmål i tre setninger, prinsippene fra seksjon 2, mappest
 
 Oppgave, svar og siste lærerbeskjed er én stabil arbeidsflate. «Spør læreren» er alltid tilgjengelig under oppgaver, også i mesterutfordringer. Samtalespørsmål er egne hendelser og erstatter aldri oppgaven eller skaper forståelsesevidens. Faglig hjelp registreres; hjulpne svar teller ikke som selvstendig mestring. Ved tjenestefeil finnes interessebaserte oppgaver og gradvis mer konkrete, regelstyrte forklaringer.
 
-Riktige svar kontrolleres før umiddelbar feiring. Tallsvaret og uttrykket i sammenhengende multiplikasjonsdeloppgaver kontrolleres separat og gir læringsevidens først når begge stemmer. Uttrykket må representere oppgavens grupper (også gjentatt addisjon godtas); en lik verdi alene beviser ikke riktig modell. Historieprogresjon lagres atomisk sammen med læringsøkten og økes én gang per fullført oppdrag. Fire oppdrag gir et nytt kapittel. Bytte av interesse bevarer både matematikk og hvert eventyrs utvikling.
+Riktige svar kontrolleres før umiddelbar feiring. Tallsvaret og uttrykket i sammenhengende multiplikasjonsdeloppgaver kontrolleres separat og gir læringsevidens først når begge stemmer. Uttrykket må representere oppgavens grupper (også gjentatt addisjon godtas); en lik verdi alene beviser ikke riktig modell. Historieprogresjon lagres atomisk sammen med læringsøkten og økes én gang per fullført oppdrag. Den tidligere fireoppdragsflyten er erstattet av et kapittelskjema med seks oppdrag i dagens praksismodus. Antallet er en teknisk kontrakt, ikke et varig krav til fortellingen; se seksjon 14. Bytte av interesse bevarer både matematikk og hvert eventyrs utvikling.
 
 Innloggingen bruker vedvarende cookies og automatisk fornyelse med kortvarige tilgangstokener. Ingen egen økt- eller inaktivitetsgrense legges til i appen. Foreldre-PIN og eksplisitt utlogging beholdes. Produksjonsendringer krever egen godkjenning.
+
+
+## 14. Historiedrevet eventyr og kvalitetskrav
+
+Dette er avklart produktretning fra samtalen 14. oktober 2026. Kravene styrer videreutvikling, men er ikke alle implementert i dagens app.
+
+### 14.1 Én samlet situasjon
+
+Hendelsen skaper et matematisk problem, Leo handler, og løsningen utløser en konkret konsekvens som fører fortellingen videre. Tekst, scene, mengder, spørsmål og svarmekanisme skal beskrive samme situasjon. Tallene må ha en fysisk eller praktisk betydning, og regningen må være nødvendig for det Leo prøver å oppnå.
+
+Hvert oppdrag planlegges med mål, hendelse, kontrollert matematikk, elevhandling, relevant hjelp ved feil og synlig konsekvens ved riktig. Generatorer kan brukes, og modellen kan foreslå egne oppgaver innenfor motorens tillatte ferdigheter. Fasit og tillatte løsninger kontrolleres uavhengig; historielogikken vurderes i tillegg. Modellen skal ikke tvinge en vilkårlig ferdighet inn i en scene som ikke passer.
+
+### 14.2 Overordnet historie og hukommelse
+
+Nye kapitler bygger på tidligere hendelser, valg, figurer, relasjoner, gjenstander, besøkte steder og uløste mål. Modellen får et konsistent oversiktsminne og relevante detaljer fra siste kapitler. Historikken skal påvirke nye hendelser konkret. Brukte ressurser kan ikke bli ubrukt igjen; figurer må være introdusert og til stede.
+
+Tidligere aktiviteter og hindringer inngår i planleggingen for å unngå gjentakelse. Ingen fast åpning, obligatorisk avreise eller gjenstart etter fullført oppdrag. Navngitte eksempler er illustrasjoner. Kapittellengde følger fortellingen og Leos øktgrenser med naturlige, lagrede pausepunkter; dette krever senere utvidelse av dagens faste skjema.
+
+### 14.3 Interessegrunnlag og research
+
+Ved valgt interesse skal faktisk kildeinnhenting gi et kort, gjenbrukbart kunnskapsgrunnlag om relevante figurer, steder og begreper. Kildehenvisninger og hva de underbygger lagres. Etablerte fakta skilles fra oppdiktede oppdrag og egne figurer. Kilder og interessebeskrivelser behandles som data, ikke instruksjoner.
+
+Modellens forkunnskaper alene skal ikke omtales som research. Kunnskapsgrunnlag kan gjenbrukes; manglende eller mislykket kildeinnhenting rapporteres uten oppdiktede kilder. Research krever faktiske verktøy og et lagrings-/valideringsløp; en setning i systemprompten er utilstrekkelig.
+
+### 14.4 Handling, variasjon og visuelle konsekvenser
+
+- Før: scenen gjør problemet og målet forståelig.
+- Under: figurer og gjenstander reagerer relevant på det Leo gjør.
+- Ved feil: situasjonen viser hva som mangler og gir støtte uten skam, tap eller straff.
+- Etter: en kort, meningsfull konsekvens viser hva løsningen oppnådde og leder videre.
+- Ved redusert bevegelse: tilsvarende informasjon gis gjennom tydelige tilstander og tekst.
+
+Variasjon vurderes i praktisk formål, hindring, matematisk modell og elevhandling. Nye tall, ord, bilder eller kontrolltyper alene dokumenterer ikke ulike utfordringer. En konsekvens skal passe oppdraget; generisk dekorasjon eller et tilfeldig bevegelig objekt er utilstrekkelig.
+
+Fortelleren og figurer driver handlingen. KI-læreren hjelper konkret med matematikken i situasjonen. Hovedflaten har én tydelig utfordring, tilgjengelig hjelp og lite konkurrerende tekst og knapper. Ressurser og visuell stil velges for sammenheng og forståelighet; ingen generell produktregel begrenser løsningen til et lite SVG-bibliotek.
+
+### 14.5 Verifisering og kjent implementeringsstatus
+
+Før større utvidelse vurderes en liten, komplett fortsettelse med tre sammenhengende oppdrag fra den genererte historien. De tre er en kvalitetsdemonstrasjon, ikke en fast åpning eller et nytt universelt kapittelskjema. Prøv ulike aktiviteter, respons under arbeid, feil/hjelp, løsning, konsekvens og gjenopptakelse. Ved modellbasert innhold kontrolleres også faktiske responser i innlogget Preview.
+
+Rapporter teknisk funksjon, ekte modellkvalitet og spillopplevelse separat. Oppgi versjon, scenario, metode og responskilde: faktisk modellkall, mock, direkte kodebestemt svar, fallback eller ukjent. Appens `source: 'model'` eller `fallback: false` beviser ikke et ekte modellkall i en test. Oppgi også det som ikke ble undersøkt; ingen antakelser om et barns engasjement presenteres som observasjoner.
+
+**Dagens kodegrenser, kontrollert ved kildegjennomgang:**
+
+| Område | Dagens implementering | Gjenstående krav |
+| --- | --- | --- |
+| Planlegging | Seks oppdrag, to valg, støtte for bestemte stage/effect/aktiviteter. Tallfrie fortellerfelter; koden setter inn generatorens matematikk. | Samlet situasjons-/oppgaveutvikling, større fortellingsbredde og fleksibel kapittellengde med tilsvarende sikker kontroll. |
+| Hukommelse | Minne, valg og verdensfelter sendes videre; reservefortsettelser gjenbruker faste mønstre. | Konsistent overordnet historie, dokumentert konkret påvirkning og mindre gjentakelse over flere kapitler. |
+| Research | Kapittelplanleggeren har ingen kildeinnhentingsverktøy. | Faktiske kilder og et gjenbrukbart kunnskapsgrunnlag. |
+| Visuell handling | Lokale SVG-scener og bestemte svar-/animasjonsformer. | Relevant respons under arbeid, ved feil og ved riktig for hele oppdragskjeden. |
+| Lærerevaluering | 30 scenarioer med smal sluttrespons-/sikkerhetskontroll. | Flerturs-, pedagogisk og narrativ evaluering med sporbare responskilder. |
+
+Tabellen beskriver revisjonens kildegrunnlag, ikke ny runtime-verifisering. Se PROGRESS for faktisk utførte kontroller. Nye krav må ikke erklæres ferdige før implementasjon og relevante observasjoner foreligger.

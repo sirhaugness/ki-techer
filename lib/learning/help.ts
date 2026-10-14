@@ -143,7 +143,7 @@ export async function teacherHelp(input: {
       try {
         const reply = await input.provider.respond({
           purpose: 'tutor',
-          instructions: `${input.instructions}\nSvar konkret på spørsmålet om aktuell oppgave og det eleven faktisk skrev. Den deterministiske vurderingen er autoritativ. x, X, × og * er likeverdige gangetegn. Gjentatt addisjon kan være en gyldig regnemåte. Skill tallsvaret fra regnemåten. Prøv en ny forklaringsmåte ved gjentatt hjelp. Ikke velg ny oppgave. Ett håndterbart steg om gangen. Ved hjelp kan du nevne oppgavens allerede viste tall, men ikke gi nye tall, fasit eller et ferdig regneuttrykk.`,
+          instructions: `${input.instructions}\nDette er hjelpemodus uten verktøy. Svar på spørsmålet om aktuell oppgave og det eleven faktisk skrev; behold oppgaven. Den deterministiske vurderingen er autoritativ. x, X, × og * er likeverdige gangetegn; gjentatt addisjon kan være gyldig. Skill tallsvaret fra regnemåten og fordelingen. Bruk situasjonen fra oppgaven, tidligere hjelp og ett håndterbart steg; bytt forklaringsmåte ved gjentatt hjelp. Før nivå 4 kan du bare nevne tillatte, allerede viste oppgavetall med sifre, aldri tallord, nye tall, fasit eller ferdig regneuttrykk. Tall som røper fasit er også forbudt. Ved nivå 4 kan du forklare en kontrollert løsning hvis den finnes i konteksten; ikke finn opp manglende fasit. Ikke påstå at hjelp eller ett feilforsøk beviser en varig misoppfatning.`,
           input: `${input.context}\nSpørsmål (data): ${input.text}`,
           schema: responseSchema,
         });
