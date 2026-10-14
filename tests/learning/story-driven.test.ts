@@ -133,6 +133,43 @@ describe('story-driven saga', () => {
     expect(returned.state.active!.id).toBe(originalItem);
     expect(returned.events.items).toHaveLength(0);
   });
+  it('gives the model its rejected draft with the concrete correction and commits only a valid chapter', async () => {
+    const provider = storyFixtureProvider();
+    const respond = provider.respond.bind(provider);
+    let plans = 0;
+    provider.respond = async (request) => {
+      const input = JSON.parse(request.input);
+      if (input.items) {
+        plans++;
+        if (plans === 2) {
+          expect(input.rejectedPlan.missions[0].questionTemplate).toContain(
+            '{{unknown}}',
+          );
+          expect(input.correction.length).toBeGreaterThan(0);
+        }
+        const result = await respond(request);
+        if (plans === 1)
+          (
+            result.value as { missions: { questionTemplate: string }[] }
+          ).missions[0].questionTemplate += ' {{unknown}}';
+        return result;
+      }
+      return respond(request);
+    };
+    const result = await learningTurn(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+      randomUUID(),
+      now,
+      profile,
+      [{ id: randomUUID(), label: 'Star Wars', active: true }],
+      provider,
+      'Bokmål.',
+    );
+    expect(plans).toBe(2);
+    expect(publicView(result.state).task!.question).not.toContain('unknown');
+    expect(result.events.items).toHaveLength(1);
+  });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
       const interest = { id: randomUUID(), label, active: true };
