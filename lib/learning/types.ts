@@ -58,6 +58,7 @@ export type Interest = {
   weight?: number;
 };
 export type Snapshot = {
+  universeResearch?: Record<string, import('../ai/provider').UniverseResearch>;
   version: 1;
   storyProgress?: import('../profile/story').StoryProgress;
   adventures?: Record<string, import('./adventure').Adventure>;

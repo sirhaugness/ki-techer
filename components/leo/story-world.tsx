@@ -307,6 +307,52 @@ function Starship({ solved, count }: { solved: boolean; count: number }) {
   );
 }
 
+function StoryCreature({ dinosaur }: { dinosaur: boolean }) {
+  return (
+    <g className="story-creature" transform="translate(480 240)">
+      {dinosaur ? (
+        <>
+          <path
+            d="M-120 75q-90-25-116-83 63 22 104 3-15-62 60-78L25-53q50-102 105-61 46 34 7 60L70-28Q89 48 39 72Z"
+            fill="#74a58b"
+            stroke="#b0d2a2"
+            strokeWidth="4"
+          />
+          <path
+            d="m-69 58-10 63h36l18-57m58 0 9 56h38L59 49"
+            fill="#61937e"
+            stroke="#b0d2a2"
+            strokeWidth="4"
+          />
+          <circle cx="117" cy="-83" r="6" fill="#132b33" />
+          <path d="M114-51h20" stroke="#365c50" strokeWidth="3" />
+          <path
+            d="m-84-53-15-24 30 10m10-7-5-27 25 18m12 3 5-27 20 27"
+            fill="#e9c578"
+          />
+        </>
+      ) : (
+        <>
+          <path
+            d="M-50 22a50 50 0 0 1 100 0Z"
+            fill="#c0d1e0"
+            stroke="#70a7d4"
+            strokeWidth="5"
+          />
+          <rect x="-50" y="22" width="100" height="92" rx="10" fill="#e8eef0" />
+          <path
+            d="M-31 42h62m-62 26h62m-62 24h62"
+            stroke="#5e92c8"
+            strokeWidth="12"
+          />
+          <circle cx="8" cy="3" r="10" fill="#16243a" />
+          <path d="M-68 48v83m136-83v83" stroke="#d5e5ef" strokeWidth="17" />
+        </>
+      )}
+    </g>
+  );
+}
+
 export function StoryWorld({
   scene,
   state,
@@ -489,6 +535,14 @@ export function StoryWorld({
         />
         {ship ? (
           <Starship solved={solved} count={count} />
+        ) : scene.subject === 'creature' ? (
+          <StoryCreature
+            dinosaur={scene.cast.some(
+              (actor) =>
+                actor.appearance === 'dinosaur' ||
+                actor.appearance === 'animal',
+            )}
+          />
         ) : scene.subject === 'gate' ? (
           <g transform="translate(395 125)">
             <path

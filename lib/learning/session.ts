@@ -46,6 +46,7 @@ import { teacherHelp, concreteHelp } from './help';
 import { judgeTaskAnswer, missionBudget } from '../engine/mission';
 import { routePayoff, fallbackAsset } from './storyboard';
 import { recordStorySuccess } from './story-planner';
+import { legacyScene } from './legacy-scene';
 import {
   planAdventure,
   upgradeAdventurePresentation,
@@ -123,6 +124,7 @@ export function createSession(
   }
   return {
     version: 1,
+    universeResearch: structuredClone(previous?.universeResearch ?? {}),
     storyProgress: structuredClone(previous?.storyProgress ?? {}),
     adventures,
     learningEvidence: structuredClone(previous?.learningEvidence ?? []),
@@ -179,6 +181,11 @@ export async function learningTurn(
   provider: AiProvider | null,
   instructions: string,
   observations: import('../profile/rules').Observation[] = [],
+  onProgress?: (message: string) => void,
+  onResearch?: (
+    interestId: string,
+    research: import('../ai/provider').UniverseResearch,
+  ) => Promise<void>,
 ) {
   const state = structuredClone(original),
     events = emptyEvents();
@@ -345,6 +352,15 @@ export async function learningTurn(
           uuid: randomUUID,
           seed: Number.parseInt(eventId.replaceAll('-', '').slice(0, 8), 16),
           learningEvidence: state.learningEvidence,
+          onProgress,
+          research: state.universeResearch?.[interest.id],
+          onResearch: async (research) => {
+            state.universeResearch = {
+              ...state.universeResearch,
+              [interest.id]: research,
+            };
+            await onResearch?.(interest.id, research);
+          },
         });
         state.adventures[interest.id] = adventure;
         if (adventure.source === 'fallback') state.fallbackMode = true;
@@ -372,6 +388,7 @@ export async function learningTurn(
           runtime.active.scene.branch = option.consequence;
           adventure.route.used = true;
         }
+        runtime.active.storyContext = `${runtime.active.scene.before} ${runtime.active.scene.speaker}: ${runtime.active.scene.dialogue} ${runtime.active.scene.purpose}`;
       }
       if (
         !adventure.story &&
@@ -1118,7 +1135,10 @@ function upgradeSavedPresentation(state: Snapshot) {
     }
   }
 }
-export function publicView(original: Snapshot): LearningView {
+export function publicView(
+  original: Snapshot,
+  useStoryScene = false,
+): LearningView {
   const state = Object.values(original.adventures ?? {}).some((a) =>
     a.tasks.some((t) => !t.interaction),
   )
@@ -1175,7 +1195,19 @@ export function publicView(original: Snapshot): LearningView {
       a && item
         ? {
             id: a.id,
-            scene: a.scene,
+            scene:
+              a.scene ??
+              (useStoryScene &&
+              a.interaction &&
+              a.interestId &&
+              state.adventures?.[a.interestId]
+                ? legacyScene(
+                    a,
+                    state.adventures[a.interestId].plan,
+                    state.adventures[a.interestId].index,
+                    a.interestLabel ?? '',
+                  )
+                : undefined),
             interaction: a.interaction,
             submittedAnswer: answerSchema.safeParse(state.lastAnswer).data,
             expressionRequired: a.expressionRequired ?? false,

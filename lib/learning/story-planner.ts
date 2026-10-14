@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import type { AiProvider, UniverseResearch } from '../ai/provider';
+import type {
+  AiProvider,
+  UniverseResearch,
+  ModelRequest,
+} from '../ai/provider';
 import type { Candidate } from '../engine/candidates';
 import { generate, type GeneratedItem } from '../engine/skills/generators';
 import { seededRng } from '../engine/random';
@@ -39,6 +43,9 @@ export class StoryPlanningError extends Error {
   }
 }
 type PlannerInput = {
+  onProgress?: (message: string) => void;
+  research?: UniverseResearch;
+  onResearch?: (research: UniverseResearch) => Promise<void>;
   label: string;
   interestId: string;
   previous?: Adventure;
@@ -142,14 +149,26 @@ function validateChapter(
   const payoffAt = plan.missions.findIndex((m) => m.id === d.payoffMission);
   if (choiceAt < 0 || payoffAt <= choiceAt)
     issues.push('Valget skal påvirke et senere oppdrag.');
-  const budget =
-    choiceAt >= 0
-      ? missionBudget(items[plan.missions[choiceAt].itemIndex])
-      : null;
+  const choiceItem =
+    choiceAt >= 0 ? items[plan.missions[choiceAt].itemIndex] : undefined;
+  const budget = choiceItem ? missionBudget(choiceItem) : null;
   if (budget === null || !d.options.some((o) => o.cost <= budget!))
     issues.push('Valget trenger en kontrollert mengde og minst en mulig rute.');
   plan.missions.forEach((m, i) => {
     const item = items[m.itemIndex];
+    const subjects: Record<string, string[]> = {
+      open: ['gate'],
+      launch: ['starship'],
+      signal: ['sender'],
+      travel: ['map', 'starship'],
+      build: ['bridge'],
+      trade: ['market'],
+      rescue: ['creature'],
+    };
+    if (subjects[m.effect] && !subjects[m.effect].includes(m.subject))
+      issues.push(
+        `${m.id}: Bildets hovedgjenstand må passe den synlige konsekvensen ${m.effect}.`,
+      );
     if (!item || !validateStoryProblem(m.questionTemplate, item))
       issues.push(
         `${m.id}: Bind de oppgitte mengdene med gyldige {{felt}} i spørsmålet.`,
@@ -157,6 +176,10 @@ function validateChapter(
     else {
       try {
         bindStoryProblem(m.clueTemplate, item);
+        if (/\d/.test(m.clueTemplate.replaceAll(/BB-8|R2-D2|C-3PO/g, '')))
+          issues.push(
+            `${m.id}: Ledetrådens mengder må bindes til kontrollerte felt.`,
+          );
       } catch {
         issues.push(`${m.id}: Ugyldig mengde i ledetråden.`);
       }
@@ -206,8 +229,14 @@ export async function planStoryAdventure(
   input: PlannerInput,
 ): Promise<Adventure> {
   let research: UniverseResearch;
+  input.onProgress?.(
+    input.previous?.saga
+      ? 'Vi følger sporene fra reisen din videre …'
+      : 'Vi undersøker universet og finner spennende spor …',
+  );
   try {
     research =
+      input.research ??
       input.previous?.saga?.research ??
       (await input.provider.research!(input.label));
   } catch (error) {
@@ -219,6 +248,7 @@ export async function planStoryAdventure(
   }
   if (research.interest !== input.label || research.sources.length < 2)
     throw new Error('Eventyrets research er ikke klar. Prøv igjen.');
+  await input.onResearch?.(research);
   const saga = sagaFromPrevious(input.previous, research);
   const rng = seededRng(input.seed);
   const items: GeneratedItem[] = [];
@@ -247,6 +277,17 @@ export async function planStoryAdventure(
   if (!items.length)
     throw new Error('Fant ingen kontrollerte oppgaver for eventyret.');
   const number = (input.previous?.number ?? 0) + 1;
+  const ask = async (request: ModelRequest) => {
+    try {
+      return await input.provider.respond(request);
+    } catch (error) {
+      console.error('[story-plan]', {
+        phase: request.purpose === 'tutor' ? 'generation' : 'review',
+        status: (error as { status?: number }).status,
+      });
+      throw new StoryPlanningError(request.purpose);
+    }
+  };
   const history = {
     arcTitle: saga.title,
     arcGoal: saga.goal,
@@ -271,7 +312,12 @@ export async function planStoryAdventure(
   };
   let issues: string[] = [];
   for (let attempt = 0; attempt < 2; attempt++) {
-    const reply = await input.provider.respond({
+    input.onProgress?.(
+      attempt
+        ? 'Vi gjør oppdragene klare til reisen …'
+        : 'Vi lager neste kapittel i eventyret ditt …',
+    );
+    const reply = await ask({
       purpose: 'tutor',
       maxOutputTokens: 6000,
       schema: storyChapterSchema,
@@ -283,6 +329,34 @@ export async function planStoryAdventure(
         research,
         history,
         assessment: input.assessment,
+        illustrations:
+          input.label === 'Star Wars'
+            ? [
+                {
+                  id: 'desert-hangar',
+                  description:
+                    'En hangar ved en ørkenby på Tatooine, med to soler. Bruk bare hvis stedet passer.',
+                },
+                {
+                  id: 'crystal-cavern',
+                  description:
+                    'En fjellhule med blå krystaller, klar for en port eller en droide.',
+                },
+              ]
+            : input.label === 'Dinosaurer'
+              ? [
+                  {
+                    id: 'prehistoric-river',
+                    description:
+                      'En frodig bregneskog, elv, fjell og en dinosaurflokk i det fjerne.',
+                  },
+                ]
+              : [
+                  {
+                    id: 'none',
+                    description: 'Scenen tegnes fra valgt backdrop og subject.',
+                  },
+                ],
         focus: input.focus,
         items: items.map((item, index) => ({
           index,
@@ -307,7 +381,8 @@ export async function planStoryAdventure(
     }
     issues = validateChapter(plan, items, saga, input.focus);
     if (issues.length) continue;
-    const review = await input.provider.respond({
+    input.onProgress?.('Vi sjekker at historien og oppdragene passer sammen …');
+    const review = await ask({
       purpose: 'fast',
       maxOutputTokens: 700,
       schema: reviewSchema,
@@ -355,12 +430,12 @@ export async function planStoryAdventure(
           : m.action === 'route'
             ? 'compare'
             : 'quantity';
-      const artwork =
-        input.label === 'Star Wars' && m.backdrop === 'base'
-          ? '/adventure/scenes/resistance-hangar.webp'
-          : ['forest', 'river'].includes(m.backdrop)
-            ? '/adventure/scenes/prehistoric-river.webp'
-            : undefined;
+      const artworks: Record<string, string> = {
+        'desert-hangar': '/adventure/scenes/resistance-hangar.webp',
+        'crystal-cavern': '/adventure/scenes/crystal-cavern.webp',
+        'prehistoric-river': '/adventure/scenes/prehistoric-river.webp',
+      };
+      const artwork = artworks[m.illustration];
       return {
         id: input.uuid(),
         item,

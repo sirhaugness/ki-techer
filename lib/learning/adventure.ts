@@ -603,6 +603,11 @@ function compileTask(
 }
 
 export async function planAdventure(input: {
+  onProgress?: (message: string) => void;
+  research?: import('../ai/provider').UniverseResearch;
+  onResearch?: (
+    research: import('../ai/provider').UniverseResearch,
+  ) => Promise<void>;
   label: string;
   interestId: string;
   previous?: Adventure;

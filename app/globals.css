@@ -2150,3 +2150,15 @@ button.print-hide {
 .story-world[data-state='solved'] .story-engine {
   filter: drop-shadow(0 0 12px #9ffff2);
 }
+.story-world[data-state='solved'][data-effect='rescue'] .story-creature {
+  transform: translate(380px, 240px);
+  animation: story-reunion 1800ms ease-in-out both;
+}
+@keyframes story-reunion {
+  from {
+    transform: translate(570px, 240px);
+  }
+  to {
+    transform: translate(380px, 240px);
+  }
+}

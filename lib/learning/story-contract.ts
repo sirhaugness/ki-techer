@@ -23,6 +23,12 @@ export const storyMissionSchema = z.object({
   title: short,
   itemIndex: z.number().int().min(0).max(23),
   location: short,
+  illustration: z.enum([
+    'desert-hangar',
+    'crystal-cavern',
+    'prehistoric-river',
+    'none',
+  ]),
   backdrop: z.enum([
     'space',
     'desert',

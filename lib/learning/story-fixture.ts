@@ -179,7 +179,7 @@ export function storyFixtureProvider(): AiProvider {
               'fill',
               'rescue',
               'food',
-              'storage',
+              'creature',
               'bær',
               'matkurver',
               'Spor til et nytt rede',
@@ -211,6 +211,15 @@ export function storyFixtureProvider(): AiProvider {
           : s[2] === 'river'
             ? 'Elven ved bregneskogen'
             : 'Bregneskogen',
+        illustration: space
+          ? s[2] === 'base'
+            ? 'desert-hangar'
+            : s[2] === 'cave'
+              ? 'crystal-cavern'
+              : 'none'
+          : ['forest', 'river'].includes(s[2])
+            ? 'prehistoric-river'
+            : 'none',
         backdrop: s[2] as StoryMission['backdrop'],
         before:
           chapter > 1 && i === 0

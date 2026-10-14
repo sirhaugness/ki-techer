@@ -19,6 +19,7 @@ import { parseVoiceAnswer } from '@/lib/voice/parse';
 import { Medallion, Tutor, partTitles } from './art';
 import { AdventureScene } from './adventure-scene';
 import { StoryPlayer } from './story-player';
+import { readLearningResponse } from '@/lib/learning/read-response';
 import { RouteChoice } from './route-choice';
 export function LeoExperience({
   profile,
@@ -61,6 +62,7 @@ export function LeoExperience({
   const [transcript, setTranscript] = useState('');
   const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
+  const [chapterProgress, setChapterProgress] = useState('');
   async function requestFeedback(current: LearningView) {
     if (!current.task) return;
     feedbackController.current?.abort();
@@ -108,6 +110,7 @@ export function LeoExperience({
     setBusy(true);
     setError('');
     setPending(command);
+    setChapterProgress('');
     feedbackController.current?.abort();
     setTeacherBusy(false);
     setTeacherSpeech('');
@@ -115,11 +118,20 @@ export function LeoExperience({
     try {
       const response = await fetch('/api/leo', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Leo-Progress': '1' },
         body: JSON.stringify(command),
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(
+          ['next', 'mood'].includes(
+            (command.event as LearningEvent | undefined)?.type ?? '',
+          )
+            ? 290000
+            : 60000,
+        ),
       });
-      const data = await response.json();
+      const data = (await readLearningResponse(
+        response,
+        setChapterProgress,
+      )) as LearningView & { message?: string };
       if (!response.ok) throw new Error(data.message ?? 'Prøv igjen.');
       setView(data as LearningView);
       liveTask.current = (data as LearningView).task?.id;
@@ -838,13 +850,14 @@ export function LeoExperience({
       )}
       <div className="request-status" role="status">
         {busy
-          ? ['next', 'mood'].includes(
+          ? chapterProgress ||
+            (['next', 'mood'].includes(
               (pending?.event as LearningEvent | undefined)?.type ?? '',
             )
-            ? 'Vi gjør neste oppdrag klart …'
-            : (pending?.event as LearningEvent | undefined)?.type === 'ask'
-              ? 'Læreren tenker …'
-              : 'Vi sjekker og lagrer …'
+              ? 'Vi gjør neste oppdrag klart …'
+              : (pending?.event as LearningEvent | undefined)?.type === 'ask'
+                ? 'Læreren tenker …'
+                : 'Vi sjekker og lagrer …')
           : ''}
       </div>
       {error && (

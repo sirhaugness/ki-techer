@@ -44,7 +44,7 @@ export default async function LeoPage({
         key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
         profile={profile}
         story={story}
-        initial={state ? publicView(state) : null}
+        initial={state ? publicView(state, !mock) : null}
         parts={parts}
         diagnosticComplete={state?.diagnosticComplete ?? false}
       />
