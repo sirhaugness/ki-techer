@@ -234,7 +234,15 @@ export function ActorPortrait({ actor }: { actor: StoryActor }) {
   );
 }
 
-function Starship({ solved, count }: { solved: boolean; count: number }) {
+function Starship({
+  solved,
+  count,
+  glyph,
+}: {
+  solved: boolean;
+  count: number;
+  glyph: StoryScene['glyph'];
+}) {
   return (
     <g className="story-ship" transform="translate(515 238)">
       <ellipse cy="95" rx="245" ry="20" fill="#000" opacity=".25" />
@@ -296,7 +304,7 @@ function Starship({ solved, count }: { solved: boolean; count: number }) {
       {Array.from({ length: Math.min(count, 12) }, (_, i) => (
         <g key={i} className="story-added-object">
           <ResourceGlyph
-            glyph="part"
+            glyph={glyph}
             x={-155 + (i % 6) * 48}
             y={60 - Math.floor(i / 6) * 39}
             size={28}
@@ -534,12 +542,13 @@ export function StoryWorld({
           opacity={solved ? 1 : 0.35}
         />
         {ship ? (
-          <Starship solved={solved} count={count} />
-        ) : scene.subject === 'creature' ? (
+          <Starship solved={solved} count={count} glyph={scene.glyph} />
+        ) : ['creature', 'droid'].includes(scene.subject) ? (
           <StoryCreature
             dinosaur={scene.cast.some(
               (actor) =>
-                actor.appearance === 'dinosaur' ||
+                (scene.subject === 'creature' &&
+                  actor.appearance === 'dinosaur') ||
                 actor.appearance === 'animal',
             )}
           />

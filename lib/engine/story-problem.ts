@@ -43,7 +43,8 @@ export function validateStoryProblem(
   try {
     bindStoryProblem(template, item);
     // Character names may contain digits; all mathematical quantities must be bound.
-    if (/\d/.test(template.replaceAll(/BB-8|R2-D2|C-3PO/g, ''))) return false;
+    if (/\d/.test(template.replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, '')))
+      return false;
     const names = new Set(
       [...template.matchAll(/\{\{([a-z]+)\}\}/g)].map((m) => m[1]),
     );

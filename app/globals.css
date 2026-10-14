@@ -2162,3 +2162,40 @@ button.print-hide {
     transform: translate(380px, 240px);
   }
 }
+.story-world[data-state='solved'][data-effect='travel'] .story-creature {
+  transform: translate(680px, 240px);
+  animation: story-droid-travel 1900ms ease-in-out both;
+}
+.story-world[data-state='solved'][data-effect='build'] .ship-wings,
+.story-world[data-state='solved'][data-effect='build'] .story-creature {
+  animation: story-assemble 1400ms ease-out both;
+}
+.story-world[data-state='retry'] .story-door,
+.story-world[data-state='retry'] .story-creature {
+  animation: story-check-again 800ms ease-in-out;
+}
+@keyframes story-droid-travel {
+  from {
+    transform: translate(320px, 240px);
+  }
+  to {
+    transform: translate(680px, 240px);
+  }
+}
+@keyframes story-assemble {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-check-again {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 #edbc7a);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #edbc7a);
+  }
+}
