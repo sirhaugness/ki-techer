@@ -271,7 +271,10 @@ try {
               exact: true,
             })
             .fill(String(m.each));
-      else if (task.scene.action === 'route')
+      else if (
+        task.scene.action === 'route' &&
+        task.interaction.kind === 'compare'
+      )
         await page
           .locator('.story-answer-options button')
           .filter({ hasText: String(answer) })

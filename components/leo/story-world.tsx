@@ -258,7 +258,9 @@ function Starship({
   solved,
   count,
   glyph,
+  falcon,
 }: {
+  falcon: boolean;
   solved: boolean;
   count: number;
   glyph: StoryScene['glyph'];
@@ -266,61 +268,124 @@ function Starship({
   return (
     <g className="story-ship" transform="translate(515 238)">
       <ellipse cy="95" rx="245" ry="20" fill="#000" opacity=".25" />
-      <g className={`ship-wings ${solved ? 'repaired' : 'damaged'}`}>
-        <path
-          d="m-70-5-178-73-25 24L-90 38m-2-35-144 97-21-21 179-64M65-5l178-73 25 24L85 38m2-35 144 97 21-21L74 15"
-          fill="#a9b6c4"
-          stroke="#e3ebf3"
-          strokeWidth="4"
-        />
-        <path
-          d="m-218-66 15 6m-10 122 14-10m403-118-15 6m10 122-14-10"
-          stroke="#db6b48"
-          strokeWidth="12"
-        />
-      </g>
-      {!solved && (
-        <path
-          d="m-200-57 13 12-18 6 19 14m379-36-13 12 18 6-19 14"
-          stroke="#d98a66"
-          strokeWidth="6"
-          fill="none"
-        />
-      )}
-      <path
-        d="M-100 20-76-13l76-11L180 8 195 21 29 44-83 9Z"
-        fill="#c9d2da"
-        stroke="#edf7ff"
-        strokeWidth="3"
-      />
-      <path
-        d="m-36-18 49 2 54 25-105 9Z"
-        fill="#263e58"
-        stroke="#829fb4"
-        strokeWidth="3"
-      />
-      <path d="m12 31 131-15" stroke="#cc704b" strokeWidth="7" />
-      {[-1, 1].map((side) => (
-        <g key={side} transform={`translate(-72 ${side * 50})`}>
-          <rect
-            x="-41"
-            y="-13"
-            width="88"
-            height="26"
-            rx="12"
-            fill="#6e849e"
-            stroke="#b7c8d9"
+      {!falcon && (
+        <>
+          <g className={`ship-wings ${solved ? 'repaired' : 'damaged'}`}>
+            <path
+              d="m-70-5-178-73-25 24L-90 38m-2-35-144 97-21-21 179-64M65-5l178-73 25 24L85 38m2-35 144 97 21-21L74 15"
+              fill="#a9b6c4"
+              stroke="#e3ebf3"
+              strokeWidth="4"
+            />
+            <path
+              d="m-218-66 15 6m-10 122 14-10m403-118-15 6m10 122-14-10"
+              stroke="#db6b48"
+              strokeWidth="12"
+            />
+          </g>
+          {!solved && (
+            <path
+              d="m-200-57 13 12-18 6 19 14m379-36-13 12 18 6-19 14"
+              stroke="#d98a66"
+              strokeWidth="6"
+              fill="none"
+            />
+          )}
+          <path
+            d="M-100 20-76-13l76-11L180 8 195 21 29 44-83 9Z"
+            fill="#c9d2da"
+            stroke="#edf7ff"
             strokeWidth="3"
           />
-          <circle
-            cx="-34"
-            r="9"
-            fill={solved ? '#65e1f0' : '#dfaf75'}
+          <path
+            d="m-36-18 49 2 54 25-105 9Z"
+            fill="#263e58"
+            stroke="#829fb4"
+            strokeWidth="3"
+          />
+          <path d="m12 31 131-15" stroke="#cc704b" strokeWidth="7" />
+          {[-1, 1].map((side) => (
+            <g key={side} transform={`translate(-72 ${side * 50})`}>
+              <rect
+                x="-41"
+                y="-13"
+                width="88"
+                height="26"
+                rx="12"
+                fill="#6e849e"
+                stroke="#b7c8d9"
+                strokeWidth="3"
+              />
+              <circle
+                cx="-34"
+                r="9"
+                fill={solved ? '#65e1f0' : '#dfaf75'}
+                className="story-engine"
+              />
+              <path
+                d="m-43-7-85 7 85 7"
+                fill="#81e4ff"
+                className="story-exhaust"
+              />
+            </g>
+          ))}
+        </>
+      )}
+      {falcon && (
+        <>
+          <ellipse
+            rx="210"
+            ry="88"
+            fill="#b8c6cf"
+            stroke="#ecf4f8"
+            strokeWidth="5"
+          />
+          <path
+            d="M90-76 270-40 130-2m-5 8 145 41-185 31"
+            fill="#a0b2c0"
+            stroke="#e2edf4"
+            strokeWidth="5"
+          />
+          <ellipse
+            rx="124"
+            ry="54"
+            fill="#667b90"
+            stroke="#e2edf4"
+            strokeWidth="3"
+          />
+          <path
+            d="M-180-35Q-205 0-180 35"
+            stroke={solved ? '#7ceafa' : '#49798e'}
+            strokeWidth="15"
+            fill="none"
             className="story-engine"
           />
-          <path d="m-43-7-85 7 85 7" fill="#81e4ff" className="story-exhaust" />
-        </g>
-      ))}
+          <path
+            d="M-199-20-285 0-199 20"
+            fill="#81e4ff"
+            className="story-exhaust"
+          />
+          <path
+            d="M85 64h117l14-24-97-4Z"
+            fill="#718ea5"
+            stroke="#e2edf4"
+            strokeWidth="4"
+          />
+          <circle
+            cx="-43"
+            cy="-17"
+            r="27"
+            fill="#40566c"
+            stroke="#cedee6"
+            strokeWidth="4"
+          />
+          <path
+            d="M-110-75v150m80-160v180m85-160v145"
+            stroke="#8096a6"
+            strokeWidth="3"
+          />
+        </>
+      )}
       {Array.from({ length: Math.min(count, 12) }, (_, i) => (
         <g key={i} className="story-added-object">
           <ResourceGlyph
@@ -567,7 +632,16 @@ export function StoryWorld({
           opacity={solved ? 1 : 0.35}
         />
         {ship ? (
-          <Starship solved={solved} count={count} glyph={scene.glyph} />
+          <Starship
+            solved={solved}
+            count={count}
+            glyph={scene.glyph}
+            falcon={/falcon/i.test(
+              [scene.location, scene.before, scene.success, ...scene.uses].join(
+                ' ',
+              ),
+            )}
+          />
         ) : ['creature', 'droid'].includes(scene.subject) ? (
           <StoryCreature
             dinosaur={scene.cast.some(

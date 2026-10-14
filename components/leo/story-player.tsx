@@ -2,6 +2,7 @@
 import { useState, type ReactNode, type Ref } from 'react';
 import type { LearningEvent, LearningView } from '@/lib/learning/types';
 import { StoryWorld, ResourceGlyph, ActorPortrait } from './story-world';
+import { Manipulatives } from './manipulatives';
 import { RouteChoice } from './route-choice';
 import { SolidExplorer } from './solid-explorer';
 
@@ -211,6 +212,13 @@ export function StoryPlayer({
               shape={task.visual.shape}
               count={task.visual.count}
               property={task.visual.property}
+            />
+          )}
+          {(task.visual.type === 'figur2d' || task.visual.steps.length > 0) && (
+            <Manipulatives
+              visual={task.visual}
+              disabled={disabled}
+              onAnswer={() => {}}
             />
           )}
           <p className="story-clue">{scene.clue}</p>
