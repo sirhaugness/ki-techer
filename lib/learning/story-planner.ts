@@ -136,6 +136,14 @@ function validateChapter(
     issues.push('Oppdragene trenger unike id-er.');
   if (new Set(plan.missions.map((m) => m.action)).size < 3)
     issues.push('Minst tre ulike handlinger må drive historien.');
+  const availableSkills = new Set(items.map((item) => item.skillId));
+  const selectedSkills = new Set(
+    plan.missions.map((mission) => items[mission.itemIndex]?.skillId),
+  );
+  if (selectedSkills.size < Math.min(2, availableSkills.size))
+    issues.push(
+      'Behold blandet øving: velg minst to tilgjengelige ferdigheter.',
+    );
   if (
     saga.title &&
     (plan.arcTitle !== saga.title || plan.arcGoal !== saga.goal)
