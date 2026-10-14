@@ -107,21 +107,30 @@ async function command(click, name) {
     { timeout: 240000 },
   );
   const [result] = await Promise.all([response, click()]);
-  const raw = await result.text();
-  const records = result
-    .headers()
-    ['content-type']?.includes('application/x-ndjson')
-    ? raw
-        .trim()
-        .split('\n')
-        .map((line) => JSON.parse(line))
-    : null;
-  const body = records
-    ? (records.findLast((record) => record.view || record.message)?.view ??
-      records.findLast((record) => record.message))
-    : JSON.parse(raw);
-  if (records?.some((record) => record.message))
-    throw new Error(records.findLast((record) => record.message).message);
+  let body;
+  if (result.headers()['content-type']?.includes('application/x-ndjson')) {
+    // Observe the actual browser consumer; CDP cannot reliably read stream bodies.
+    await page.waitForFunction(
+      () =>
+        document.querySelector('.request-status')?.textContent?.trim() === '',
+      null,
+      { timeout: 290000 },
+    );
+    if (await page.locator('.error-box').count())
+      throw new Error(await page.locator('.error-box p').innerText());
+    body = await page.evaluate(async () => {
+      const response = await fetch('/api/leo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command: 'start',
+          mode: 'practice',
+          part: null,
+        }),
+      });
+      return response.json();
+    });
+  } else body = await result.json();
   if (!result.ok())
     throw new Error(`${name}: HTTP ${result.status()}: ${body.message}`);
   if (body.task !== undefined) view = body;
@@ -165,13 +174,17 @@ try {
       exact: true,
     });
     const switchButton = page.getByRole('button', {
-      name: `Videre til ${interest}`,
+      name: `Fortsett eventyret om ${interest}`,
       exact: true,
     });
+    const moodButton = page.getByRole('button', { name: '🙂 Rolig' });
     await startButton
       .or(switchButton)
+      .or(moodButton)
       .waitFor({ state: 'visible', timeout: 60000 });
-    if (await startButton.isVisible()) {
+    if (await moodButton.isVisible()) {
+      await command(() => moodButton.click(), 'research-and-first-chapter');
+    } else if (await startButton.isVisible()) {
       await command(
         () =>
           page
@@ -188,7 +201,7 @@ try {
         () =>
           page
             .getByRole('button', {
-              name: `Videre til ${interest}`,
+              name: `Fortsett eventyret om ${interest}`,
               exact: true,
             })
             .click(),

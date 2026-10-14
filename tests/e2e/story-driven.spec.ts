@@ -119,16 +119,12 @@ test('two universes: live scene manipulation, error support, animations, choice 
         'solved',
       );
       if (i === 0) {
-        const animation = await page
-          .locator('.story-world')
-          .evaluate((world) =>
-            world
-              .getAnimations({ subtree: true })
-              .map((a) => ({
-                name: (a as CSSAnimation).animationName,
-                duration: a.effect?.getTiming().duration,
-              })),
-          );
+        const animation = await page.locator('.story-world').evaluate((world) =>
+          world.getAnimations({ subtree: true }).map((a) => ({
+            name: (a as CSSAnimation).animationName,
+            duration: a.effect?.getTiming().duration,
+          })),
+        );
         expect(animation.length).toBeGreaterThan(0);
         await page
           .locator('.story-player')
