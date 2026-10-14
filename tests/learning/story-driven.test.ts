@@ -259,6 +259,16 @@ describe('story-driven saga', () => {
             inputMode: 'manipulativ',
           });
           expect(view.correct).toBe(true);
+          if (view.task?.scene?.branch) {
+            const base =
+              state.adventures![interest.id].tasks[mission].scene!.success;
+            expect(view.task.scene.success).toContain(base);
+            expect(
+              state
+                .adventures![interest.id].saga!.chapters.at(-1)!
+                .events.at(-1)!.outcome,
+            ).toContain(base);
+          }
           const latest = state.adventures![interest.id];
           records.push(latest.saga!.chapters.at(-1)!.events.at(-1)!.id);
           if (latest.pendingChoice) {

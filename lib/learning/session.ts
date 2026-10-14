@@ -391,7 +391,8 @@ export async function learningTurn(
           const option =
             adventure.story.decision.options[adventure.route.option];
           runtime.active.scene.before = option.laterScene;
-          runtime.active.scene.success = option.laterSuccess;
+          // The route adds a consequence; the shared physical completion still happens.
+          runtime.active.scene.success = `${option.laterSuccess} ${runtime.active.scene.success}`;
           runtime.active.scene.branch = option.consequence;
           adventure.route.used = true;
         }
