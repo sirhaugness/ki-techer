@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { UniverseResearch } from '../ai/provider';
 
 const short = z.string().min(1).max(240);
+const narration = z.string().min(1).max(500);
 export const storyActorSchema = z.object({
   name: z.string().min(1).max(60),
   role: short,
@@ -44,7 +45,7 @@ export const storyMissionSchema = z.object({
     'village',
     'mountain',
   ]),
-  before: short,
+  before: narration,
   speaker: z.string().min(1).max(60),
   dialogue: short,
   purpose: short,
@@ -114,7 +115,7 @@ export const storyChapterSchema = z.object({
   title: short,
   arcTitle: short,
   arcGoal: short,
-  opening: short,
+  opening: narration,
   goal: short,
   hook: short,
   continuity: short,
