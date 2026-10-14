@@ -58,6 +58,7 @@ export type Interest = {
   weight?: number;
 };
 export type Snapshot = {
+  universeResearch?: Record<string, import('../ai/provider').UniverseResearch>;
   version: 1;
   storyProgress?: import('../profile/story').StoryProgress;
   adventures?: Record<string, import('./adventure').Adventure>;
@@ -125,6 +126,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  scene?: import('./story-contract').StoryScene;
   interaction?: import('../engine/mission').MissionInteraction;
   submittedAnswer?: import('../engine/skills/generators').Answer;
   illustrationSafe?: boolean;

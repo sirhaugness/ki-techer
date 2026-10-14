@@ -1378,3 +1378,824 @@ button.print-hide {
     min-height: 450px;
   }
 }
+
+/* The scene, player actions and feedback share one adventure surface. */
+.story-mode {
+  color: #e8f0f8;
+}
+.story-mode .session-title {
+  display: none;
+}
+.story-mode .leo-nav,
+.story-mode .voice-note {
+  color: #30445a;
+}
+.story-player {
+  --story-ink: #e8f0f8;
+  --story-muted: #b7c8da;
+  background: #111e32;
+  border: 1px solid #425570;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 20px 65px #10213625;
+  color: var(--story-ink);
+}
+.story-chapter-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px 30px;
+  background: linear-gradient(110deg, #192d47, #111e32);
+}
+.story-player .story-kicker {
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: #91d8de;
+  margin: 0 0 5px;
+}
+.story-player .story-chapter-heading h2 {
+  font-size: clamp(25px, 3vw, 35px);
+  margin: 0;
+  color: #fff1d8;
+}
+.story-steps {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.story-steps li {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 1px solid #556d86;
+  border-radius: 50%;
+  color: #adbed3;
+  font-size: 16px;
+}
+.story-steps li[aria-current='step'] {
+  color: #17263a;
+  background: #f2c47a;
+  border-color: #f2c47a;
+  box-shadow: 0 0 24px #f2c47a35;
+}
+.story-steps li.complete {
+  background: #254e54;
+  color: #bcf1e5;
+}
+.story-recap {
+  font-size: 16px;
+  color: #b6c8db;
+  background: #17263b;
+  padding: 12px 30px;
+  margin: 0;
+}
+.story-mission-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 30px;
+}
+.story-mission-heading h3 {
+  font-size: 24px;
+  margin: 0;
+  color: #fff0d3;
+}
+.story-mission-heading > span {
+  font-size: 15px;
+  white-space: nowrap;
+  color: var(--story-muted);
+}
+.story-world {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #12243b;
+  border-block: 1px solid #47607a;
+}
+.story-world > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.story-location {
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  padding: 8px 15px;
+  border: 1px solid #ffffff30;
+  border-radius: 30px;
+  font-size: 16px;
+  background: #132239cf;
+  color: #f8ead0;
+}
+.story-location > span {
+  color: #f3bd6b;
+}
+.story-world-counter {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  padding: 10px 18px;
+  border: 1px solid #77c6d766;
+  background: #102238e8;
+  border-radius: 12px;
+  color: #a6eff5;
+  font-size: 30px;
+  font-weight: 700;
+}
+.story-world-counter > span {
+  font-weight: 400;
+  font-size: 17px;
+  color: #d4e5f1;
+}
+.story-world-retry,
+.story-world-success {
+  position: absolute;
+  left: 5%;
+  bottom: 18px;
+  max-width: 67%;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 18px;
+  background: #152d36ef;
+  border: 1px solid #91e9da;
+  color: #e1fff9;
+}
+.story-world-retry {
+  background: #413324ef;
+  color: #fff1d8;
+  border-color: #efbe76;
+  animation: story-retry 900ms ease-out;
+}
+.story-cast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 13px 30px;
+  border-bottom: 1px solid #30435c;
+}
+.story-cast > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #b9cfe2;
+}
+.actor-portrait {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+.story-dialogue {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 30px;
+  background: linear-gradient(110deg, #1b2d42, #132238);
+}
+.story-dialogue > .actor-portrait {
+  width: 65px;
+  height: 65px;
+}
+.story-dialogue p {
+  margin: 0 0 8px;
+  line-height: 1.6;
+  font-size: 20px;
+}
+.story-dialogue p:last-child {
+  margin: 0;
+  color: #f6d69e;
+}
+.story-before {
+  color: #c4d4e5;
+}
+.story-branch {
+  padding: 12px 30px;
+  margin: 0;
+  color: #c0ebd9;
+  background: #233e41;
+}
+.story-play-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.85fr);
+  gap: 25px;
+  padding: 26px 30px 30px;
+}
+.story-console {
+  min-width: 0;
+}
+.story-console .story-clue {
+  display: inline-block;
+  padding: 8px 13px;
+  border-radius: 8px;
+  margin: 0 0 12px;
+  background: #243f52;
+  color: #b9edf0;
+  font-size: 17px;
+}
+.story-console #task-question {
+  margin: 0 0 18px;
+  color: #f4f7fb;
+  font-size: 23px;
+  line-height: 1.55;
+}
+.story-player input {
+  background: #0d1a2d;
+  border-color: #748aa3;
+  color: #f4f7fc;
+  font-size: 24px;
+  text-align: center;
+}
+.story-player button {
+  border: 1px solid #5b7894;
+  background: #253c53;
+  color: #eaf4ff;
+  border-radius: 12px;
+}
+.story-player button:hover:enabled {
+  background: #32556b;
+  border-color: #92d3df;
+}
+.story-player button.primary {
+  color: #17253a;
+  background: #f4c77c;
+  border: 1px solid #ffe0a5;
+  font-weight: 700;
+}
+.story-player button.primary:hover:enabled {
+  background: #ffdfa7;
+}
+.story-player button[aria-pressed='true'] {
+  color: #e9ffff;
+  background: #285967;
+  border-color: #90e7eb;
+}
+.story-player :is(button, input, summary):focus-visible {
+  outline: 3px solid #ffda94;
+  outline-offset: 4px;
+}
+.story-resource-control {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 390px;
+}
+.story-resource-control label {
+  flex: 1;
+  margin: 0;
+  font-size: 17px;
+}
+.story-resource-control input {
+  margin-top: 8px;
+}
+.story-resource-control button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 64px;
+  height: 56px;
+  font-size: 24px;
+}
+.story-expression {
+  font-size: 17px;
+  margin: 16px 0 0;
+}
+.story-expression input {
+  margin-top: 8px;
+  text-align: left;
+}
+.story-feedback.answer-feedback {
+  min-height: 58px;
+  border: 0;
+  background: transparent;
+  color: #cbe5eb;
+  padding: 15px 0;
+  margin: 0;
+  font-size: 18px;
+}
+.story-world[data-state='retry'] ~ .story-cast {
+  border-color: #dfb578;
+}
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.story-actions .primary {
+  flex: 1;
+  min-width: 190px;
+}
+.story-targets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 12px;
+}
+.story-distribution {
+  border: 0;
+  padding: 0;
+}
+.story-distribution > legend {
+  color: #f1d9a9;
+  font-size: 17px;
+}
+.story-distribution > p {
+  font-size: 17px;
+  color: #bfd4e5;
+  margin: 10px 0;
+}
+.story-target {
+  background: #203249;
+  border: 1px solid #4a6985;
+  border-radius: 13px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.story-target > span {
+  font-size: 16px;
+  color: #ccdeee;
+}
+.story-target-objects {
+  min-height: 62px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+.story-target-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.story-target-controls button {
+  padding: 4px;
+  min-width: 45px;
+  min-height: 48px;
+}
+.story-target-controls label {
+  margin: 0;
+  width: 48px;
+}
+.story-target-controls input {
+  padding: 4px;
+  font-size: 20px;
+}
+.story-answer-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.story-answer-options button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  justify-content: center;
+}
+.story-player .story-teacher .teacher-desk {
+  background: #192c42;
+  border: 1px solid #435b76;
+  border-radius: 15px;
+  margin: 0;
+  color: #d5e4f1;
+  padding: 16px;
+}
+.story-teacher .teacher-message {
+  gap: 8px;
+}
+.story-teacher .teacher-message > svg {
+  width: 54px;
+  height: 64px;
+}
+.story-teacher .teacher-message p {
+  font-size: 17px;
+  line-height: 1.5;
+}
+.story-teacher .teacher-help {
+  background: #192c42;
+}
+.story-teacher .help-exchange,
+.story-teacher .teacher-dialog {
+  color: #d5e4f1;
+  background: #142338;
+}
+.story-teacher .teacher-composer {
+  background: #192c42;
+}
+.story-teacher .teacher-composer input {
+  text-align: left;
+  font-size: 18px;
+}
+.story-teacher .help-shortcuts button {
+  font-size: 16px;
+}
+.story-journal {
+  border-top: 1px solid #314963;
+  padding: 18px 30px;
+  color: #c4d5e5;
+  font-size: 17px;
+}
+.story-journal summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #e5d5b8;
+}
+.story-journal > div {
+  margin-top: 16px;
+}
+.story-journal ul {
+  margin: 10px 0;
+  padding-left: 23px;
+}
+.story-player .story-choice {
+  margin-top: 22px;
+  border-color: #55708a;
+  background: #192d42;
+}
+.story-player .story-routes button {
+  background: #263e53;
+  color: #dcecf7;
+}
+.story-player .route-error {
+  background: #47382b;
+  color: #ffdfa8;
+}
+.story-mode .session-actions {
+  color: #23404a;
+}
+.story-mode > .card,
+.story-mode > .quiet-progress {
+  color: #23404a;
+}
+.story-exhaust {
+  opacity: 0;
+}
+.story-signal {
+  opacity: 0.15;
+}
+.story-shield {
+  opacity: 0.1;
+}
+.story-world[data-state='solved'][data-effect='launch'] .story-ship {
+  animation: story-takeoff 2500ms cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+.story-world[data-state='solved'][data-effect='launch'] .story-exhaust {
+  opacity: 1;
+  animation: story-thrust 350ms ease-in-out 6 alternate;
+}
+.story-world[data-state='solved'][data-effect='open'] .story-door {
+  transform: translateY(-205px);
+  animation: story-open 1700ms ease-in-out both;
+}
+.story-world[data-state='solved'][data-effect='repair'] .ship-wings {
+  animation: story-repair 1700ms ease-out both;
+}
+.story-world[data-state='solved'] .story-completion-pulse {
+  animation: story-pulse 1500ms ease-out both;
+}
+.story-world[data-state='solved'] .story-repair-spark {
+  animation: story-sparks 500ms ease-in-out 3 alternate;
+}
+.story-world[data-state='solved'][data-effect='signal'] .story-signal {
+  opacity: 1;
+  animation: story-sparks 550ms ease-in-out 3 alternate;
+}
+.story-world[data-state='solved'][data-effect='build'] .story-bridge-plank {
+  animation: story-build 600ms ease-out both;
+}
+.story-world[data-state='solved'][data-effect='travel'] .story-traveller {
+  transform: translate(370px, -136px);
+  animation: story-route 1900ms ease-in-out both;
+}
+.story-world[data-state='solved'][data-effect='shield'] .story-shield {
+  opacity: 1;
+  animation: story-shield 1800ms ease-out both;
+}
+.story-world[data-state='solved'][data-effect='trade'] .story-added-object {
+  animation: story-trade 1100ms ease-in-out both;
+}
+.story-world[data-state='working'] .story-added-object:last-child {
+  animation: story-place 300ms ease-out;
+}
+.story-world[data-state='retry'] .story-engine {
+  fill: #f0bd70;
+}
+@keyframes story-takeoff {
+  0% {
+    transform: translate(515px, 238px);
+  }
+  25% {
+    transform: translate(515px, 205px);
+  }
+  100% {
+    transform: translate(980px, 20px) scale(0.15);
+  }
+}
+@keyframes story-thrust {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-open {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-205px);
+  }
+}
+@keyframes story-repair {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #a7fff0);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes story-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(0.6);
+    transform-origin: 500px 235px;
+  }
+  to {
+    opacity: 0;
+    transform: scale(2);
+    transform-origin: 500px 235px;
+  }
+}
+@keyframes story-sparks {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-build {
+  from {
+    transform: translateY(-140px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes story-route {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(370px, -136px);
+  }
+}
+@keyframes story-shield {
+  from {
+    opacity: 0.1;
+    transform: scale(0.4);
+    transform-origin: 500px 255px;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: 500px 255px;
+  }
+}
+@keyframes story-trade {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(130px);
+    opacity: 0.2;
+  }
+}
+@keyframes story-place {
+  from {
+    transform: translateY(-20px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes story-retry {
+  0%,
+  50% {
+    box-shadow: 0 0 24px #f4c47b66;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+@media (max-width: 760px) {
+  .story-play-layout {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .story-chapter-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .story-dialogue,
+  .story-cast,
+  .story-mission-heading,
+  .story-recap {
+    padding-inline: 20px;
+  }
+  .story-mission-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .story-dialogue > .actor-portrait {
+    width: 45px;
+    height: 45px;
+  }
+  .story-location {
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+  .story-world-counter {
+    right: 10px;
+    bottom: 8px;
+    padding: 6px 10px;
+    font-size: 24px;
+  }
+  .story-world-counter > span {
+    font-size: 13px;
+  }
+  .story-world-success,
+  .story-world-retry {
+    position: relative;
+    max-width: none;
+    left: auto;
+    bottom: auto;
+    margin: 0 10px 10px;
+  }
+  .story-cast {
+    gap: 10px;
+  }
+  .story-cast .actor-portrait {
+    width: 30px;
+    height: 30px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-world[data-state='solved'][data-effect='launch'] .story-ship {
+    transform: translate(980px, 20px) scale(0.15);
+  }
+  .story-completion-pulse {
+    display: none;
+  }
+}
+@media (min-width: 1000px) {
+  .story-player {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr);
+    grid-template-areas: 'header header' 'recap recap' 'mission mission' 'world play' 'cast play' 'dialogue play' 'branch play' 'journal journal';
+  }
+  .story-chapter-heading {
+    grid-area: header;
+  }
+  .story-recap {
+    grid-area: recap;
+  }
+  .story-mission-heading {
+    grid-area: mission;
+  }
+  .story-world {
+    grid-area: world;
+    align-self: start;
+  }
+  .story-cast {
+    grid-area: cast;
+  }
+  .story-dialogue {
+    grid-area: dialogue;
+  }
+  .story-branch {
+    grid-area: branch;
+  }
+  .story-play-layout {
+    grid-area: play;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 18px;
+    border-left: 1px solid #314963;
+  }
+  .story-journal {
+    grid-area: journal;
+  }
+  .story-dialogue {
+    padding: 18px 24px;
+  }
+  .story-dialogue p {
+    font-size: 19px;
+  }
+  .story-world-counter {
+    bottom: 12px;
+    right: 12px;
+  }
+  .story-world-success,
+  .story-world-retry {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    max-width: none;
+    margin: 0 10px 10px;
+  }
+}
+@media (max-width: 999px) {
+  .story-play-layout {
+    grid-template-columns: 1fr;
+  }
+  .story-targets {
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  }
+}
+.story-target-objects {
+  min-height: 34px;
+}
+.story-player .story-distribution .story-target-controls label {
+  width: 50px;
+}
+.story-world[data-state='waiting'] .ship-wings.damaged {
+  opacity: 0.7;
+}
+.story-world[data-state='working'] .ship-wings.damaged {
+  opacity: 0.9;
+}
+.story-world[data-state='solved'] .story-engine {
+  filter: drop-shadow(0 0 12px #9ffff2);
+}
+.story-world[data-state='solved'][data-effect='rescue'] .story-creature {
+  transform: translate(380px, 240px);
+  animation: story-reunion 1800ms ease-in-out both;
+}
+@keyframes story-reunion {
+  from {
+    transform: translate(570px, 240px);
+  }
+  to {
+    transform: translate(380px, 240px);
+  }
+}
+.story-world[data-state='solved'][data-effect='travel'] .story-creature {
+  transform: translate(680px, 240px);
+  animation: story-droid-travel 1900ms ease-in-out both;
+}
+.story-world[data-state='solved'][data-effect='build'] .ship-wings,
+.story-world[data-state='solved'][data-effect='build'] .story-creature {
+  animation: story-assemble 1400ms ease-out both;
+}
+.story-world[data-state='retry'] .story-door,
+.story-world[data-state='retry'] .story-creature {
+  animation: story-check-again 800ms ease-in-out;
+}
+@keyframes story-droid-travel {
+  from {
+    transform: translate(320px, 240px);
+  }
+  to {
+    transform: translate(680px, 240px);
+  }
+}
+@keyframes story-assemble {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-check-again {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 #edbc7a);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #edbc7a);
+  }
+}

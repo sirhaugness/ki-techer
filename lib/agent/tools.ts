@@ -85,6 +85,7 @@ export const toolDefinitions: ToolDefinition[] = Object.entries(
   parameters: z.toJSONSchema(schema),
 }));
 export type ActiveTask = {
+  scene?: import('../learning/story-contract').StoryScene;
   id: string;
   item: GeneratedItem;
   text: string;

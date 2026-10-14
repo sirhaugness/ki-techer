@@ -18,6 +18,8 @@ import { homeSpeech } from '@/lib/voice/text';
 import { parseVoiceAnswer } from '@/lib/voice/parse';
 import { Medallion, Tutor, partTitles } from './art';
 import { AdventureScene } from './adventure-scene';
+import { StoryPlayer } from './story-player';
+import { readLearningResponse } from '@/lib/learning/read-response';
 import { RouteChoice } from './route-choice';
 export function LeoExperience({
   profile,
@@ -60,6 +62,7 @@ export function LeoExperience({
   const [transcript, setTranscript] = useState('');
   const [endMood, setEndMood] = useState<'glad' | 'rolig' | 'sliten'>('rolig');
   const [pending, setPending] = useState<Record<string, unknown> | null>(null);
+  const [chapterProgress, setChapterProgress] = useState('');
   async function requestFeedback(current: LearningView) {
     if (!current.task) return;
     feedbackController.current?.abort();
@@ -107,6 +110,7 @@ export function LeoExperience({
     setBusy(true);
     setError('');
     setPending(command);
+    setChapterProgress('');
     feedbackController.current?.abort();
     setTeacherBusy(false);
     setTeacherSpeech('');
@@ -114,11 +118,20 @@ export function LeoExperience({
     try {
       const response = await fetch('/api/leo', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Leo-Progress': '1' },
         body: JSON.stringify(command),
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(
+          ['next', 'mood'].includes(
+            (command.event as LearningEvent | undefined)?.type ?? '',
+          )
+            ? 290000
+            : 60000,
+        ),
       });
-      const data = await response.json();
+      const data = (await readLearningResponse(
+        response,
+        setChapterProgress,
+      )) as LearningView & { message?: string };
       if (!response.ok) throw new Error(data.message ?? 'Prøv igjen.');
       setView(data as LearningView);
       liveTask.current = (data as LearningView).task?.id;
@@ -178,7 +191,9 @@ export function LeoExperience({
     !!story.interest &&
     view.adventure?.interest !== story.interest;
   return (
-    <div className={`leo-experience ${view?.adventure ? 'has-adventure' : ''}`}>
+    <div
+      className={`leo-experience ${view?.adventure ? 'has-adventure' : ''} ${view?.task?.scene ? 'story-mode' : ''}`}
+    >
       <nav className="leo-nav">
         <Link href="/leo">🌱 Hjem</Link>
         <Link href="/leo/interesser">Mine interesser</Link>
@@ -210,9 +225,11 @@ export function LeoExperience({
                 ? 'Bli kjent'
                 : view.mode === 'master'
                   ? 'Mesterutfordring'
-                  : 'Vi øver sammen'}
+                  : view.task?.scene
+                    ? view.adventure?.title
+                    : 'Vi øver sammen'}
             </h1>
-            <Tutor thinking={busy} />
+            {!view.task?.scene && <Tutor thinking={busy} />}
           </div>
           {(!view.task || view.ended) && (
             <div className="tutor-speech" aria-live="polite">
@@ -441,154 +458,13 @@ export function LeoExperience({
             </section>
           ) : (
             <>
-              <section className="task-card" ref={taskRef} aria-busy={busy}>
-                {view.adventure && (
-                  <>
-                    <p className="adventure-label">
-                      {view.adventure.icon} {view.adventure.title} · Kapittel{' '}
-                      {view.adventure.number}
-                    </p>
-                    <AdventureScene
-                      key={view.task.id}
-                      adventure={view.adventure}
-                      task={view.task}
-                    />
-                  </>
-                )}
-                {!view.adventure && (
-                  <p className="adventure-scene">{view.task.skillTitle}</p>
-                )}
-                <p className="eyebrow">{view.task.skillTitle}</p>
-                <h2 id="task-question">{view.task.question}</h2>
-                {view.task.visual.shape && (
-                  <Manipulatives
-                    key={`shape-${view.task.id}`}
-                    visual={view.task.visual}
-                    disabled={true}
-                    onAnswer={() => {}}
-                  />
-                )}
-                {!view.task.resolved &&
-                  profile.settings.voice !== false &&
-                  !view.task.expressionRequired && (
-                    <>
-                      <RecordButton
-                        disabled={busy || profile.settings.voice === false}
-                        onText={setTranscript}
-                      />
-                      {transcript && (
-                        <div className="card">
-                          <label>
-                            Dette hørte vi. Du kan rette teksten.
-                            <input
-                              value={transcript}
-                              maxLength={600}
-                              onChange={(e) => setTranscript(e.target.value)}
-                            />
-                          </label>
-                          <button
-                            disabled={
-                              busy ||
-                              parseVoiceAnswer(
-                                transcript,
-                                view.task.answerType,
-                                view.task.choices,
-                              ) === null
-                            }
-                            onClick={() => {
-                              const answer = parseVoiceAnswer(
-                                transcript,
-                                view.task!.answerType,
-                                view.task!.choices,
-                              );
-                              if (answer !== null)
-                                turn({
-                                  type: 'answer',
-                                  itemId: view.task!.id,
-                                  answer,
-                                  inputMode: 'tale',
-                                });
-                            }}
-                          >
-                            Bruk talesvaret
-                          </button>
-                          {parseVoiceAnswer(
-                            transcript,
-                            view.task.answerType,
-                            view.task.choices,
-                          ) === null && (
-                            <p>
-                              Vi trenger ett tydelig svar. Rett teksten eller
-                              bruk tastaturet.
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  )}
-                <div
-                  key={`${view.task.id}-${view.revision}`}
-                  className={`answer-feedback ${view.correct === false ? 'answer-retry' : view.correct ? 'answer-success' : ''}`}
-                  aria-live="polite"
-                >
-                  {view.task.resolved ? (
-                    <strong>
-                      {view.correct
-                        ? view.celebration
-                          ? `✓ ${view.celebration}`
-                          : '✓ Riktig! Oppdraget er løst.'
-                        : 'Svaret er lagret. Vi øver videre sammen.'}
-                    </strong>
-                  ) : view.correct === false ? (
-                    <strong>
-                      {view.lastAnswerCorrect && view.task.expressionRequired
-                        ? '✓ Tallsvaret stemmer. Se på regnestykket.'
-                        : '↻ Prøv igjen. Læreren hjelper deg.'}
-                    </strong>
-                  ) : (
-                    <span>
-                      {view.task.interaction?.kind === 'grouping'
-                        ? 'Fordel gjenstandene, og sjekk løsningen din.'
-                        : view.task.interaction?.kind === 'compare'
-                          ? 'Velg alternativet som passer, og sjekk svaret.'
-                          : 'Prøv oppdraget, og trykk «Sjekk svaret».'}
-                    </span>
-                  )}
-                  {view.correct && view.task.resolved && (
-                    <span
-                      key={view.task.id}
-                      className="answer-sparkles"
-                      aria-hidden="true"
-                    >
-                      {view.adventure?.icon ?? '✨'} ✦ ✦
-                    </span>
-                  )}
-                </div>
-                {view.adventure?.route && !view.adventure.choice && (
-                  <p className="route-memory">
-                    Valgt vei: {view.adventure.route.label}. Dere har{' '}
-                    {view.adventure.route.remaining} forsyninger igjen.
-                  </p>
-                )}
-                {view.adventure?.choice && (
-                  <RouteChoice
-                    key={`choice-${view.task.id}`}
-                    choice={view.adventure.choice}
-                    busy={busy}
-                    onChoose={(option, remaining) =>
-                      turn({
-                        type: 'choice',
-                        itemId: view.task!.id,
-                        option,
-                        remaining,
-                      })
-                    }
-                  />
-                )}
-                <AnswerPanel
-                  key={`answer-${view.task.id}`}
-                  task={view.task}
+              {view.task.scene ? (
+                <StoryPlayer
+                  key={view.task.id}
+                  view={view}
                   busy={busy}
+                  sectionRef={taskRef}
+                  onTurn={turn}
                   teacher={
                     <TeacherDesk
                       view={
@@ -602,47 +478,213 @@ export function LeoExperience({
                       onAsk={(text) => turn({ type: 'ask', text })}
                     />
                   }
-                  onNext={
-                    view.adventure?.choice
-                      ? undefined
-                      : () => turn({ type: 'next' })
-                  }
-                  onAnswer={(answer) =>
-                    turn({
-                      type: 'answer',
-                      itemId: view.task!.id,
-                      answer: answer as Answer,
-                      inputMode: 'tastatur',
-                    })
-                  }
                 />
-                {view.adventure?.outcome && (
-                  <p className="story-outcome" role="status">
-                    {view.adventure.outcome}
-                  </p>
-                )}
-                {teacherError && (
-                  <div className="teacher-error" role="status">
-                    <p>{teacherError}</p>
-                    <button
-                      type="button"
-                      disabled={teacherBusy || busy}
-                      onClick={() => void requestFeedback(view)}
-                    >
-                      Prøv læreren igjen
-                    </button>
+              ) : (
+                <section className="task-card" ref={taskRef} aria-busy={busy}>
+                  {view.adventure && (
+                    <>
+                      <p className="adventure-label">
+                        {view.adventure.icon} {view.adventure.title} · Kapittel{' '}
+                        {view.adventure.number}
+                      </p>
+                      <AdventureScene
+                        key={view.task.id}
+                        adventure={view.adventure}
+                        task={view.task}
+                      />
+                    </>
+                  )}
+                  {!view.adventure && (
+                    <p className="adventure-scene">{view.task.skillTitle}</p>
+                  )}
+                  <p className="eyebrow">{view.task.skillTitle}</p>
+                  <h2 id="task-question">{view.task.question}</h2>
+                  {view.task.visual.shape && (
+                    <Manipulatives
+                      key={`shape-${view.task.id}`}
+                      visual={view.task.visual}
+                      disabled={true}
+                      onAnswer={() => {}}
+                    />
+                  )}
+                  {!view.task.resolved &&
+                    profile.settings.voice !== false &&
+                    !view.task.expressionRequired && (
+                      <>
+                        <RecordButton
+                          disabled={busy || profile.settings.voice === false}
+                          onText={setTranscript}
+                        />
+                        {transcript && (
+                          <div className="card">
+                            <label>
+                              Dette hørte vi. Du kan rette teksten.
+                              <input
+                                value={transcript}
+                                maxLength={600}
+                                onChange={(e) => setTranscript(e.target.value)}
+                              />
+                            </label>
+                            <button
+                              disabled={
+                                busy ||
+                                parseVoiceAnswer(
+                                  transcript,
+                                  view.task.answerType,
+                                  view.task.choices,
+                                ) === null
+                              }
+                              onClick={() => {
+                                const answer = parseVoiceAnswer(
+                                  transcript,
+                                  view.task!.answerType,
+                                  view.task!.choices,
+                                );
+                                if (answer !== null)
+                                  turn({
+                                    type: 'answer',
+                                    itemId: view.task!.id,
+                                    answer,
+                                    inputMode: 'tale',
+                                  });
+                              }}
+                            >
+                              Bruk talesvaret
+                            </button>
+                            {parseVoiceAnswer(
+                              transcript,
+                              view.task.answerType,
+                              view.task.choices,
+                            ) === null && (
+                              <p>
+                                Vi trenger ett tydelig svar. Rett teksten eller
+                                bruk tastaturet.
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  <div
+                    key={`${view.task.id}-${view.revision}`}
+                    className={`answer-feedback ${view.correct === false ? 'answer-retry' : view.correct ? 'answer-success' : ''}`}
+                    aria-live="polite"
+                  >
+                    {view.task.resolved ? (
+                      <strong>
+                        {view.correct
+                          ? view.celebration
+                            ? `✓ ${view.celebration}`
+                            : '✓ Riktig! Oppdraget er løst.'
+                          : 'Svaret er lagret. Vi øver videre sammen.'}
+                      </strong>
+                    ) : view.correct === false ? (
+                      <strong>
+                        {view.lastAnswerCorrect && view.task.expressionRequired
+                          ? '✓ Tallsvaret stemmer. Se på regnestykket.'
+                          : '↻ Prøv igjen. Læreren hjelper deg.'}
+                      </strong>
+                    ) : (
+                      <span>
+                        {view.task.interaction?.kind === 'grouping'
+                          ? 'Fordel gjenstandene, og sjekk løsningen din.'
+                          : view.task.interaction?.kind === 'compare'
+                            ? 'Velg alternativet som passer, og sjekk svaret.'
+                            : 'Prøv oppdraget, og trykk «Sjekk svaret».'}
+                      </span>
+                    )}
+                    {view.correct && view.task.resolved && (
+                      <span
+                        key={view.task.id}
+                        className="answer-sparkles"
+                        aria-hidden="true"
+                      >
+                        {view.adventure?.icon ?? '✨'} ✦ ✦
+                      </span>
+                    )}
                   </div>
-                )}
-              </section>
+                  {view.adventure?.route && !view.adventure.choice && (
+                    <p className="route-memory">
+                      Valgt vei: {view.adventure.route.label}. Dere har{' '}
+                      {view.adventure.route.remaining} forsyninger igjen.
+                    </p>
+                  )}
+                  {view.adventure?.choice && (
+                    <RouteChoice
+                      key={`choice-${view.task.id}`}
+                      choice={view.adventure.choice}
+                      busy={busy}
+                      onChoose={(option, remaining) =>
+                        turn({
+                          type: 'choice',
+                          itemId: view.task!.id,
+                          option,
+                          remaining,
+                        })
+                      }
+                    />
+                  )}
+                  <AnswerPanel
+                    key={`answer-${view.task.id}`}
+                    task={view.task}
+                    busy={busy}
+                    teacher={
+                      <TeacherDesk
+                        view={
+                          teacherSpeech
+                            ? { ...view, speech: teacherSpeech }
+                            : view
+                        }
+                        busy={busy || teacherBusy}
+                        name={profile.tutorName}
+                        voice={profile.settings.voice !== false}
+                        onAsk={(text) => turn({ type: 'ask', text })}
+                      />
+                    }
+                    onNext={
+                      view.adventure?.choice
+                        ? undefined
+                        : () => turn({ type: 'next' })
+                    }
+                    onAnswer={(answer) =>
+                      turn({
+                        type: 'answer',
+                        itemId: view.task!.id,
+                        answer: answer as Answer,
+                        inputMode: 'tastatur',
+                      })
+                    }
+                  />
+                  {view.adventure?.outcome && (
+                    <p className="story-outcome" role="status">
+                      {view.adventure.outcome}
+                    </p>
+                  )}
+                  {teacherError && (
+                    <div className="teacher-error" role="status">
+                      <p>{teacherError}</p>
+                      <button
+                        type="button"
+                        disabled={teacherBusy || busy}
+                        onClick={() => void requestFeedback(view)}
+                      >
+                        Prøv læreren igjen
+                      </button>
+                    </div>
+                  )}
+                </section>
+              )}
               {view.mode !== 'master' && (
                 <>
                   <div className="button-row session-actions">
-                    <button
-                      disabled={busy || view.task.resolved}
-                      onClick={() => turn({ type: 'hint' })}
-                    >
-                      Jeg vil ha et hint
-                    </button>
+                    {!view.task.scene && (
+                      <button
+                        disabled={busy || view.task.resolved}
+                        onClick={() => turn({ type: 'hint' })}
+                      >
+                        Jeg vil ha et hint
+                      </button>
+                    )}
                     <button
                       disabled={busy}
                       onClick={() => setShowExplain((v) => !v)}
@@ -678,7 +720,7 @@ export function LeoExperience({
                       </button>
                     </form>
                   )}
-                  {!view.task.visual.shape && (
+                  {!view.task.scene && !view.task.visual.shape && (
                     <details
                       className="manipulative-details"
                       open={
@@ -808,13 +850,14 @@ export function LeoExperience({
       )}
       <div className="request-status" role="status">
         {busy
-          ? ['next', 'mood'].includes(
+          ? chapterProgress ||
+            (['next', 'mood'].includes(
               (pending?.event as LearningEvent | undefined)?.type ?? '',
             )
-            ? 'Vi gjør neste oppdrag klart …'
-            : (pending?.event as LearningEvent | undefined)?.type === 'ask'
-              ? 'Læreren tenker …'
-              : 'Vi sjekker og lagrer …'
+              ? 'Vi gjør neste oppdrag klart …'
+              : (pending?.event as LearningEvent | undefined)?.type === 'ask'
+                ? 'Læreren tenker …'
+                : 'Vi sjekker og lagrer …')
           : ''}
       </div>
       {error && (

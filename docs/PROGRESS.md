@@ -256,6 +256,18 @@ Et beregnet rutevalg gir inventar/følgesvenn og endrer en senere scene. Feil re
 
 **Hva Thor må gjøre:** Åpne Preview, logg inn som vanlig, og prøv ett helt kapittel samt en egen interesse. Vurder modellens språk og sammenheng før eventuell merge. Godkjenningen av eksisterende Preview-nøkkel er lagret; du trenger ikke svare på nøkkelvalget igjen.
 
+## Eventyret som driver spillet — 14. oktober 2026 (pågående)
+
+Retningen er avklart med Thor i `docs/STORY-DRIVEN-ADVENTURE.md`. Ny branch `feat/story-driven-adventure` bygger på oppdatert main etter PR #10. Ingen fast åpning: modellen undersøker interessen med faktisk nettsøk, får oversikt over alle lagrede kapitler og skriver en årsakskoblet fortsettelse. Kapittelarkivet bevarer hendelser og valg uten å kutte eldre kapitler. Bruk og forbruk av gjenstander skilles.
+
+En samlet oppdragskontrakt styrer sted, rollefigurer, naturlig problem, kontrollerte mengder, spillerhandling, støtte og synlig konsekvens. En separat modellkontroll vurderer historielogikk og matematisk sammenheng før visning. Ny spillflate har scenebilder, manipulasjon av mengder og fordeling, konkret feilreaksjon og animert fremdrift. Kostnader og plassering av valg kommer fra planen; valget påvirker et senere oppdrag.
+
+Foreløpig verifisert: fire nye enhetstester, eksisterende relevante regresjonstester, to nye nettlesertester gjennom hele kapitler i Star Wars og Dinosaurer, lagring/oppfriskning, valgkonsekvens og neste kapittel. Typecheck og lint har passert. Produksjonsbygg med webpack har passert; lokal Turbopack-bygging møter sandboxfeil ved binding av intern port. Skjermbilder er gjennomgått og desktopoppsettet forbedres før sluttverifisering.
+
+Ekte modell og innlogget Preview er ennå ikke verifisert. PR opprettes som utkast mens dette kontrolleres. Ingen produksjonsendringer eller nye nøkler. Eksisterende OpenAI-nøkkel i Preview gjenbrukes.
+
+**Hva Thor må gjøre:** Ingen oppsett. Vurdere den spillbare Preview etter sluttverifisering.
+
 ## 2026-10-14: gjenbrukbart agentteam i Codex Cloud
 
 Opprettet [designer](agent-team/designer.md), [tutor-evaluator](agent-team/tutor-evaluator.md), [reviewer](agent-team/reviewer.md) og [arbeidsflyt](agent-team/workflow.md). Én ny instruksjon i AGENTS.md kobler hovedagenten til arbeidsflyten og relevante underagenter. Rollefilene leses og gis til faktiske underagenter; de registrerer ikke native agenttyper. Bare hovedagenten endrer appkode som standard, høyst tre underagenter kjører samtidig, og delte tester samordnes.
@@ -276,18 +288,8 @@ Opprettet [designer](agent-team/designer.md), [tutor-evaluator](agent-team/tutor
 
 **Hva Thor må gjøre:** Les agentoppsettets PR og kontroller at sjekkene er grønne før eventuell merge. Etter eventuell godkjenning av dokumentasjonsendringen kan arbeidsflyten brukes fra main; merge til main berører produksjonsløpet og utføres ikke av agenten i denne oppgaven. Neste appoppgave gis som vanlig til én hovedagent, som velger og starter relevante spesialister selv. Ingen ny nøkkel eller manuell registrering av agenttyper trengs.
 
-## 2026-10-14: samlet revisjon av agentinstruksjoner og lærerprompter
+## 2026-10-15: rettet formatering i PR #11
 
-Revidert fra main `cdea6f2`, med Thors samtaleutdrag som produktgrunnlag. AGENTS angir leserekkefølge, skille mellom Codex-team og runtime-lærer, tydelige eventyrkrav og verifisering etter oppdragstype. Alle fire teamfiler kontrollerer bestillingen, årsakskjeden, historikk og responskilder. `docs/SPEC.md` er eneste fullstendige spesifikasjon; rotfilen peker dit. DECISIONS merker eldre implementeringsvalg som historikk, og SPEC skiller avtalte krav fra faktisk kode og gjenstående arbeid.
+Prettier 3.9.9 rettet en manglende blanklinje i `docs/PROGRESS.md` som stoppet GitHub-sjekken `format:check`. Hele prosjektets `npm run format:check` og `git diff --check` er bestått. Bare dokumentasjonen er endret; appflyt og innlogget Preview er ikke testet på nytt i denne oppgaven.
 
-Aktiv lærerprompt er nå `tutor.v2`; v1 er bevart uendret. App-ruten, evalskriptet og versjonsmerking bruker v2. Læreren skiller verktøytur fra hjelp uten verktøy, beholder oppgaven og bruker motorens svarvurdering. Lokale hjelpeinstruksjoner tilpasses dagens tall-/hintguard. Forklaringsrubrikken krever relevant begrunnelse og skiller manglende evidens fra manglende forståelse. Refleksjon begrenser overtolkning av forsøk, hjelp og humør. Kapittelprompten viderefører etablerte figurer og mål uten obligatorisk figurgruppe eller åpning; kontekstualiseringen ber om den ordrette teksten koden faktisk godtar. Guards og schemas er uendret.
-
-**Faktisk agentarbeid:** `/root/instruksjoner_ux` leste designerrollen, produktinstruksjoner og samtalen og fant manglende bindende eventyrkrav og historiske begrensninger. `/root/instruksjoner_laerer` leste tutor-evaluator-rollen og runtime-instruksjoner og fant verktøy-/tallkonflikter, svak rubrikk og upresis evalueringsdekning. Begge rapporterte kildebasert uten endringer, tester eller tjenester. Hovedagenten sammenholdt funnene og utførte revisjonen. `/root/instruksjonsreview` gjennomgikk diff og hele v2-prompten: to P3-funn om forklaringsspørsmål og JSON-eksempel ble rettet og etterkontrollert. Ingen andre konkrete feil ble funnet ved lesing. Ingen underagent observerte barn, appflyt eller ekte modellresponser.
-
-**Observert lokal verifisering:** `npm run lint`, `npm run typecheck` og `npm run format:check` er grønne. Relevant Vitest-kjøring besto **99 tester i seks filer**: agent/provider, læringsøkt, kapitler, illustrerte kapitler og profil. En separat konsistenskontroll besto 31 lokale Markdown-lenker/ankere, aktive v2-referanser, bevart v1, uendrede guards/schemas og kanonisk SPEC-peker. Det reviderte kontekstualiseringseksemplet validerer mot faktisk `storySchema`. `git diff --check` er grønn. SPEC-filene er fortsatt unntatt fra repoets Prettier-sjekk; lenke-/innholdskontrollen omfattet dem.
-
-**Lokale byggbegrensninger:** Standard `npm run build` stoppes av Turbopacks behov for lokal port under CSS-kompilering (`Operation not permitted`), også etter utvidet kjøretilgang. Alternativ `npm run build -- --webpack` stopper i Nexts underprosess for TypeScript `--showConfig`, mens direkte TypeScript `--showConfig` gir gyldig JSON. Ingen av byggforsøkene er omtalt som bestått. Eksisterende standardbygg kontrolleres separat i PR-CI og Vercel; observerte resultater og riktig Preview-lenke føres i PR-beskrivelsen.
-
-**Begrensninger og omfang:** Ingen ekte modell-eval, innlogget hosted lærertest, ny spillgjennomgang eller fysisk iPad er kjørt. Mock-testene bekrefter eksisterende kodegrenser, ikke at nye formuleringer gir bedre pedagogiske svar. Faktisk research, utvidet overordnet minne, variabelt kapittelskjema og større scenebredde er dokumenterte videreutviklingskrav, ikke funksjoner bygget her. Ingen migrasjoner, nye avhengigheter, nøkkel-/miljøendringer eller produksjonsendringer. Eksisterende Preview-nøkkelgodkjenning er beholdt.
-
-**Hva Thor må gjøre:** Les instruksjonsrevisjonen i PR-en. Vurder ekte lærerhjelp og en lagret historiefortsettelse i riktig Preview før eventuell merge. Ingen nytt nøkkelvalg eller agentregistrering trengs. Main/produksjon er ikke endret av denne oppgaven.
+**Hva Thor må gjøre:** Vent på de nye GitHub-sjekkene i PR #11 og kontroller at de er grønne før eventuell merge. Vurder fortsatt den spillbare Preview som beskrevet i PR-en.

@@ -26,9 +26,11 @@ import { dayKey } from '@/lib/engine/time';
 import { teacherHelp } from '@/lib/learning/help';
 import { buildContext } from '@/lib/agent/context';
 import { newBandit } from '@/lib/engine/bandit';
+import { storyFixtureProvider } from '@/lib/learning/story-fixture';
+import { StoryPlanningError } from '@/lib/learning/story-planner';
 
 export const runtime = 'nodejs';
-export const maxDuration = 120;
+export const maxDuration = 300;
 const commandSchema = z.discriminatedUnion('command', [
   z.object({
     command: z.literal('feedback'),
@@ -100,7 +102,9 @@ export async function POST(request: Request) {
         { status: 429, headers: { 'Retry-After': '60' } },
       );
     const provider = mock
-      ? null
+      ? f?.storyDriven
+        ? storyFixtureProvider()
+        : null
       : await controlledProvider(profile.householdId);
     const cmd = parsed.data;
     if (cmd.command === 'voiceSettings') {
@@ -295,7 +299,7 @@ export async function POST(request: Request) {
     }
     if (cmd.command === 'start') {
       if (state && !state.endedAt)
-        return Response.json(publicView(state), {
+        return Response.json(publicView(state, !mock), {
           headers: { 'Cache-Control': 'no-store' },
         });
       let used = 0;
@@ -333,7 +337,7 @@ export async function POST(request: Request) {
       );
       if (f) f.state = state;
       else await insertSession(state, profile.id);
-      return Response.json(publicView(state), {
+      return Response.json(publicView(state, !mock), {
         headers: { 'Cache-Control': 'no-store' },
       });
     }
@@ -343,7 +347,7 @@ export async function POST(request: Request) {
         { status: 404 },
       );
     if (state.seenEvents.includes(cmd.requestId))
-      return Response.json(publicView(state));
+      return Response.json(publicView(state, !mock));
     if (state.revision !== cmd.revision)
       return Response.json(
         { message: 'Økten er oppdatert et annet sted. Last siden på nytt.' },
@@ -354,37 +358,129 @@ export async function POST(request: Request) {
     )
       .replaceAll('{first_name}', profile.firstName)
       .replaceAll('{tutor_name}', profile.tutorName);
-    const result = await learningTurn(
-      state,
-      cmd.event,
-      cmd.requestId,
-      now,
-      profile,
-      interests,
-      provider,
-      instructions,
-      mock ? [] : await observations(profile.id),
-    );
-    if (f) {
-      if (f.state?.revision !== cmd.revision)
+    const currentState = state;
+    const savedObservations = mock ? [] : await observations(profile.id);
+    const perform = async (onProgress?: (message: string) => void) => {
+      const result = await learningTurn(
+        currentState,
+        cmd.event,
+        cmd.requestId,
+        now,
+        profile,
+        interests,
+        provider,
+        instructions,
+        savedObservations,
+        onProgress,
+        async (interestId, research) => {
+          currentState.universeResearch = {
+            ...currentState.universeResearch,
+            [interestId]: research,
+          };
+          if (!mock) {
+            const { error } = await adminDb()
+              .from('sessions')
+              .update({
+                engine_state: JSON.parse(JSON.stringify(currentState)),
+              })
+              .eq('id', currentState.id)
+              .eq('learner_id', profile.id)
+              .filter('engine_state->>revision', 'eq', String(cmd.revision));
+            if (error)
+              console.error('[story-research-cache]', { code: error.code });
+          }
+        },
+      );
+      if (f) {
+        if (f.state?.revision !== cmd.revision)
+          return Response.json(
+            { message: 'Last siden på nytt.' },
+            { status: 409 },
+          );
+        f.state = result.state;
+      } else if (
+        !(await saveTurn(result.state, profile.id, cmd.revision, result.events))
+      )
         return Response.json(
-          { message: 'Last siden på nytt.' },
+          { message: 'Økten ble oppdatert. Last siden på nytt.' },
           { status: 409 },
         );
-      f.state = result.state;
-    } else if (
-      !(await saveTurn(result.state, profile.id, cmd.revision, result.events))
-    )
-      return Response.json(
-        { message: 'Økten ble oppdatert. Last siden på nytt.' },
-        { status: 409 },
+      if (!mock && result.state.endedAt)
+        after(() => reflectPending(profile.id, profile.householdId));
+      return Response.json(publicView(result.state, !mock), {
+        headers: { 'Cache-Control': 'no-store' },
+      });
+    };
+    if (
+      !mock &&
+      provider?.research &&
+      request.headers.get('x-leo-progress') === '1' &&
+      ['next', 'mood'].includes(cmd.event.type)
+    ) {
+      const encoder = new TextEncoder();
+      let disconnected = false;
+      return new Response(
+        new ReadableStream({
+          async start(controller) {
+            let message = 'Vi gjør neste kapittel klart …';
+            const emit = (event: unknown) => {
+              if (!disconnected) {
+                try {
+                  controller.enqueue(
+                    encoder.encode(JSON.stringify(event) + '\n'),
+                  );
+                } catch {
+                  disconnected = true;
+                }
+              }
+            };
+            const heartbeat = setInterval(
+              () => emit({ progress: message }),
+              8000,
+            );
+            emit({ progress: message });
+            try {
+              const result = await perform((progress) => {
+                message = progress;
+                emit({ progress });
+              });
+              const data = await result.json();
+              emit(result.ok ? { view: data } : { message: data.message });
+            } catch (error) {
+              console.error('[story-stream]', {
+                error: error instanceof Error ? error.name : 'unknown',
+              });
+              emit({
+                message:
+                  error instanceof StoryPlanningError
+                    ? error.message
+                    : 'Eventyret kunne ikke bli klart. Fremdriften din er beholdt. Prøv samme handling igjen.',
+              });
+            } finally {
+              clearInterval(heartbeat);
+              if (!disconnected) controller.close();
+            }
+          },
+          cancel() {
+            disconnected = true;
+          },
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-ndjson; charset=utf-8',
+            'Cache-Control': 'no-store',
+          },
+        },
       );
-    if (!mock && result.state.endedAt)
-      after(() => reflectPending(profile.id, profile.householdId));
-    return Response.json(publicView(result.state), {
-      headers: { 'Cache-Control': 'no-store' },
+    }
+    return await perform();
+  } catch (error) {
+    if (error instanceof StoryPlanningError)
+      return Response.json({ message: error.message }, { status: 503 });
+    console.error('[leo-api]', {
+      error: error instanceof Error ? error.name : 'unknown',
+      status: (error as { status?: number })?.status,
     });
-  } catch {
     return Response.json(
       {
         message:
