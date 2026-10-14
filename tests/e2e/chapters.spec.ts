@@ -38,7 +38,33 @@ async function solve(page: Page) {
       : q.includes('blir igjen')
         ? n[0] - n[1]
         : n[0] * n[1];
-  await page.getByLabel('Svaret ditt', { exact: true }).fill(String(result));
+  const trays = page.locator('.group-tray');
+  if (await trays.count()) {
+    const text = await page
+      .locator('.grouping-controls > p')
+      .first()
+      .innerText();
+    const quantities = text.match(/\d+/g)!.map(Number);
+    const each = text.includes('Fordel')
+      ? quantities[0] / quantities[1]
+      : quantities[1];
+    for (let group = 0; group < (await trays.count()); group++)
+      for (let j = 0; j < each; j++)
+        await page
+          .getByRole('button', {
+            name: `Legg én i gruppe ${group + 1}`,
+            exact: true,
+          })
+          .click();
+  } else if (await page.locator('.route-answer-grid').count()) {
+    await page
+      .locator('.route-answer-grid button')
+      .filter({
+        has: page.locator('strong', { hasText: new RegExp(`^${result} `) }),
+      })
+      .click();
+  } else
+    await page.getByLabel('Svaret ditt', { exact: true }).fill(String(result));
   const expression = page.getByLabel('b) Regnestykket ditt');
   if (await expression.count()) await expression.fill(`${n[0]}x${n[1]}`);
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
@@ -50,11 +76,10 @@ test('six missions → resource choice → continuing chapter → pause, switch 
   test.setTimeout(90000);
   await begin(page);
   await expect(page.locator('.chapter-image')).toBeVisible();
+  await expect(page.locator('svg.world-illustration')).toBeVisible();
   expect(
-    await page
-      .locator('img.chapter-image')
-      .evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0),
-  ).toBe(true);
+    await page.locator('svg.world-illustration path').count(),
+  ).toBeGreaterThan(10);
   const opening = await page.locator('.adventure-scene').innerText();
   for (let i = 0; i < 6; i++) {
     if (i)
@@ -71,6 +96,8 @@ test('six missions → resource choice → continuing chapter → pause, switch 
         .locator('.story-choice')
         .getByRole('button', { name: /BB-8/ })
         .click();
+      await page.getByLabel('Forsyninger igjen').fill('2');
+      await page.getByRole('button', { name: 'Velg denne veien' }).click();
       await expect(page.locator('.story-outcome')).toContainText(
         'adgangsbrikke',
       );
@@ -126,13 +153,13 @@ test('six missions → resource choice → continuing chapter → pause, switch 
     fullPage: true,
   });
 });
-test('teacher composer stays visible while dialog scrolls; image failures leave a playable scene', async ({
+test('teacher composer stays visible and illustrated scenes need no external images', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 768, height: 1024 });
   await page.route('**/adventure/*.jpg', (route) => route.abort());
   await begin(page);
-  await expect(page.locator('.scene-fallback')).toBeVisible();
+  await expect(page.locator('svg.world-illustration')).toBeVisible();
   await page.getByRole('button', { name: 'Spør læreren' }).click();
   for (let i = 0; i < 4; i++) {
     await page

@@ -77,6 +77,7 @@ it('keeps one coherent adventure over repeated tasks and carries actual progress
           type: 'choice',
           itemId: state.active!.id,
           option: 1,
+          remaining: Math.min(2, Number(state.active!.item.answer)),
         })
       ).state;
   }

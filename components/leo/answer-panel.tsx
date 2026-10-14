@@ -1,6 +1,8 @@
 'use client';
 import { useState, type ReactNode } from 'react';
 import type { PublicTask } from '@/lib/learning/types';
+import { MissionControls } from './mission-controls';
+import { ExpressionChoice, SceneChoice } from './expression-choice';
 export function AnswerPanel({
   task,
   busy,
@@ -44,6 +46,17 @@ export function AnswerPanel({
         ? previous.expression
         : '',
     );
+  const interactive =
+    task.interaction &&
+    ['quantity', 'grouping', 'compare'].includes(task.interaction.kind);
+  const [allocations, setAllocations] = useState<number[]>(() =>
+    previous &&
+    typeof previous === 'object' &&
+    !Array.isArray(previous) &&
+    'allocations' in previous
+      ? previous.allocations
+      : Array.from({ length: task.interaction?.math.groups ?? 0 }, () => 0),
+  );
   const two =
     task.answerType === 'remainder' || task.answerType === 'coordinate';
   const valid = values
@@ -73,9 +86,11 @@ export function AnswerPanel({
         ? { quotient: n[0], remainder: n[1] }
         : task.answerType === 'coordinate'
           ? { x: n[0], y: n[1] }
-          : task.expressionRequired
-            ? { value: n[0], expression }
-            : n[0],
+          : task.interaction?.kind === 'grouping'
+            ? { value: n[0], allocations }
+            : task.expressionRequired
+              ? { value: n[0], expression }
+              : n[0],
     );
   };
   return (
@@ -86,7 +101,41 @@ export function AnswerPanel({
         submit();
       }}
     >
-      {task.answerType === 'choice' ? (
+      {task.interaction?.kind === 'build-expression' ? (
+        <ExpressionChoice
+          task={task}
+          value={choice}
+          disabled={busy || task.resolved}
+          onChange={setChoice}
+        />
+      ) : task.interaction?.kind === 'match-scene' ? (
+        <SceneChoice
+          task={task}
+          value={choice}
+          disabled={busy || task.resolved}
+          onChange={setChoice}
+        />
+      ) : interactive && task.interaction ? (
+        <MissionControls
+          interaction={task.interaction}
+          value={values[0]}
+          allocations={allocations}
+          disabled={busy || task.resolved}
+          onValue={(v) => update(v, 0)}
+          onAllocate={(next) => {
+            setAllocations(next);
+            const math = task.interaction!.math;
+            update(
+              String(
+                math.kind === 'share'
+                  ? (next[0] ?? 0)
+                  : next.reduce((a, b) => a + b, 0),
+              ),
+              0,
+            );
+          }}
+        />
+      ) : task.answerType === 'choice' ? (
         <div className="choice-list">
           {task.choices.map((option) => (
             <button
@@ -144,6 +193,39 @@ export function AnswerPanel({
               />
             </label>
           )}
+          {task.expressionRequired && task.interaction && (
+            <div className="expression-builder" aria-label="Bygg regnestykket">
+              <p>Du kan bygge regnestykket med knappene:</p>
+              {[
+                String(task.interaction.math.groups),
+                '×',
+                String(task.interaction.math.each),
+                '+',
+                '=',
+                '⌫',
+              ].map((token, i) => (
+                <button
+                  type="button"
+                  key={i}
+                  disabled={busy || task.resolved}
+                  aria-label={
+                    token === '⌫'
+                      ? 'Slett siste regnetegn'
+                      : `Sett inn ${token}`
+                  }
+                  onClick={() =>
+                    setExpression((old) =>
+                      token === '⌫'
+                        ? old.slice(0, -1)
+                        : (old + token).slice(0, 120),
+                    )
+                  }
+                >
+                  {token}
+                </button>
+              ))}
+            </div>
+          )}
           {teacher}
           <div className="number-pad" aria-label="Talltastatur">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '0', '⌫'].map(
@@ -176,7 +258,7 @@ export function AnswerPanel({
           </div>
         </>
       )}
-      {task.answerType === 'choice' && teacher}
+      {(task.answerType === 'choice' || interactive) && teacher}
       <div className="answer-action">
         {task.resolved ? (
           <button

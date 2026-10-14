@@ -19,11 +19,7 @@ import {
   canStartMasterTest,
 } from '../engine/medallion';
 import { skills, skillById } from '../engine/skills/graph';
-import {
-  generate,
-  checkAnswer,
-  answerSchema,
-} from '../engine/skills/generators';
+import { generate, answerSchema } from '../engine/skills/generators';
 import { seededRng } from '../engine/random';
 import { newHints, advanceHint } from '../engine/hints';
 import { newBandit, forget, updateArm } from '../engine/bandit';
@@ -47,9 +43,11 @@ import {
 
 import { activeInterest, adventureTask, chapter } from '../profile/story';
 import { teacherHelp, concreteHelp } from './help';
-import { checkMultiplicationExpression } from '../engine/expression-answer';
+import { judgeTaskAnswer, missionBudget } from '../engine/mission';
+import { routePayoff, fallbackAsset } from './storyboard';
 import {
   planAdventure,
+  upgradeAdventurePresentation,
   adventureView,
   type AdventureEvidence,
 } from './adventure';
@@ -185,6 +183,7 @@ export async function learningTurn(
     events = emptyEvents();
   if (state.seenEvents.includes(eventId))
     return { state, events, replayed: true };
+  upgradeSavedPresentation(state);
   state.fallbackMode = !provider;
   state.celebration = null;
   if (state.endedAt) throw new Error('Økten er allerede avsluttet.');
@@ -258,7 +257,7 @@ export async function learningTurn(
       engine: runtime.context,
       active: runtime.active?.item ?? null,
       allowedHintLevel: state.hints.level,
-      taskText: runtime.active?.text,
+      taskText: `${runtime.active?.storyContext ?? ''} ${runtime.active?.text ?? ''}`,
       lastAnswer: state.lastAnswer,
       helpHistory: state.helpHistory?.filter(
         (h) => h.itemId === runtime.active?.id,
@@ -356,13 +355,18 @@ export async function learningTurn(
       state.helpKind = undefined;
       state.taskStartedAt = now;
       runtime.active = structuredClone(adventure.tasks[adventure.index]);
+      if (adventure.route && (adventure.index >= 4 || adventure.number > 1)) {
+        runtime.active.text = `${adventure.route.consequence} ${runtime.active.text}`;
+        adventure.route.used = true;
+      }
       state.focusSkillId ??= runtime.active.item.skillId;
       state.response = {
         ...fallbackResponse('ny_oppgave'),
         speech:
           adventure.index === 0
             ? adventure.plan.opening
-            : 'Historien fortsetter. Spør meg hvis du vil ha hjelp.',
+            : (adventure.plan.missions[adventure.index].dialogue ??
+              'Spør meg hvis du vil ha hjelp.'),
       };
       return;
     }
@@ -485,13 +489,54 @@ export async function learningTurn(
     )
       throw new Error('Dette valget er ikke aktivt.');
     const choice = adventure.plan.choices[event.option];
-    adventure.pendingChoice = false;
-    adventure.choices = [...adventure.choices, choice.label].slice(-12);
-    const budget = Number(active.item.answer),
-      cost = Math.max(0, budget - event.option);
-    const consequence = `${choice.consequence} Dere bruker ${cost} ${adventure.plan.cargo} og har ${budget - cost} igjen.`;
-    adventure.memory = [...adventure.memory, consequence].slice(-24);
-    state.response = { ...fallbackResponse('ros'), speech: consequence };
+    const budget = missionBudget(active.item)!,
+      cost = Math.max(0, budget - event.option - 1);
+    if (active.interaction && event.remaining !== budget - cost) {
+      adventure.choiceError =
+        'Se på forsyningene dere har, og ta bort det ruten bruker. Prøv igjen. Du beholder alt.';
+      state.response = {
+        ...fallbackResponse('hint'),
+        speech: adventure.choiceError,
+      };
+    } else {
+      adventure.pendingChoice = false;
+      delete adventure.choiceError;
+      adventure.choices = [...adventure.choices, choice.label].slice(-12);
+      const consequence = `${choice.consequence} Dere bruker ${cost} ${active.interaction?.object ?? adventure.plan.cargo} og har ${budget - cost} igjen.`;
+      adventure.route = {
+        option: event.option,
+        label: choice.label,
+        asset:
+          choice.asset ??
+          fallbackAsset(active.interestLabel ?? '', event.option),
+        consequence: choice.consequence,
+        budget,
+        cost,
+        remaining: budget - cost,
+        used: false,
+      };
+      adventure.memory = [...adventure.memory, consequence].slice(-24);
+      adventure.outcomes ??= [];
+      adventure.outcomes[adventure.index] = consequence;
+      if (adventure.world) {
+        adventure.world.lastEvent = consequence;
+        if (
+          !adventure.world.inventory.some(
+            (i) => i.asset === adventure.route!.asset,
+          )
+        )
+          adventure.world.inventory.push({
+            asset: adventure.route.asset,
+            chapter: adventure.number,
+            description: choice.consequence,
+          });
+        if (['pilot', 'companion'].includes(adventure.route.asset))
+          adventure.world.companions = [
+            ...new Set([...adventure.world.companions, choice.consequence]),
+          ].slice(-12);
+      }
+      state.response = { ...fallbackResponse('ros'), speech: consequence };
+    }
   } else if (event.type === 'school') {
     if (state.mode === 'master')
       throw new Error('Skoletema kan noteres etter utfordringen.');
@@ -530,7 +575,7 @@ export async function learningTurn(
       },
       engine: runtime.context,
       active: active.item,
-      taskText: active.text,
+      taskText: `${active.storyContext ?? ''} ${active.text}`,
       lastAnswer: state.lastAnswer,
       helpHistory: state.helpHistory?.filter(
         (h) => h.itemId === runtime.active?.id,
@@ -577,25 +622,14 @@ export async function learningTurn(
     const active = runtime.active;
     if (!active || active.resolved || active.id !== event.itemId)
       throw new Error('Denne oppgaven er ikke aktiv lenger.');
+    const judgement = judgeTaskAnswer(active, event.answer);
+    const { numericCorrect, correct } = judgement;
     const compound =
       typeof event.answer === 'object' &&
       !Array.isArray(event.answer) &&
       'value' in event.answer
         ? event.answer
         : null;
-    const numericCorrect = checkAnswer(
-      active.item,
-      compound ? compound.value : event.answer,
-    );
-    const correct =
-      numericCorrect &&
-      (!active.expressionRequired ||
-        (!!compound &&
-          checkMultiplicationExpression(
-            compound.expression,
-            Number(active.item.params.a),
-            Number(active.item.params.b),
-          )));
     const hint = state.hints.level;
     state.lastAnswer = event.answer;
     state.lastAnswerCorrect = numericCorrect;
@@ -606,18 +640,20 @@ export async function learningTurn(
         skillId: active.item.skillId,
         difficulty: active.item.difficulty,
         answer: event.answer,
-        expression: compound?.expression ?? null,
+        expression: judgement.expression,
         correct,
         numericCorrect,
         hintLevel: hint,
         helpKind: state.helpKind,
-        issue: numericCorrect
-          ? correct
-            ? 'none'
-            : 'notation'
-          : state.helpKind === 'text'
-            ? 'text'
-            : 'calculation',
+        issue: !judgement.groupingCorrect
+          ? 'calculation'
+          : numericCorrect
+            ? correct
+              ? 'none'
+              : 'notation'
+            : state.helpKind === 'text'
+              ? 'text'
+              : 'calculation',
         support: hint > 0 ? 'supported' : 'independent',
       };
       state.learningEvidence = [
@@ -631,12 +667,23 @@ export async function learningTurn(
         adventure.evidence = [...adventure.evidence, evidence].slice(-180);
         if (correct) {
           adventure.tasks[adventure.index].resolved = true;
-          adventure.memory = [
-            ...adventure.memory,
-            adventure.plan.missions[adventure.index].outcome,
-          ].slice(-24);
+          const outcome =
+            adventure.index === 4 && adventure.route
+              ? routePayoff(
+                  adventure.route.asset,
+                  adventure.tasks[adventure.index]?.interestLabel,
+                ).outcome
+              : adventure.plan.missions[adventure.index].outcome;
+          adventure.outcomes ??= [];
+          adventure.outcomes[adventure.index] = outcome;
+          adventure.memory = [...adventure.memory, outcome].slice(-24);
+          if (adventure.world) {
+            adventure.world.lastEvent = outcome;
+            if (adventure.index === 5)
+              adventure.world.unresolvedGoal = adventure.plan.hook;
+          }
           adventure.pendingChoice =
-            adventure.index === 2 && typeof active.item.answer === 'number';
+            adventure.index === 2 && missionBudget(active.item) !== null;
         }
       }
     }
@@ -731,7 +778,7 @@ export async function learningTurn(
     } else {
       const previous = runtime.states[active.item.skillId] ?? initialState();
       let next =
-        numericCorrect && !correct
+        numericCorrect && judgement.groupingCorrect && !correct
           ? previous
           : recordAttempt(previous, {
               id: eventId,
@@ -753,7 +800,7 @@ export async function learningTurn(
         next.nextReviewAt = card.due.toISOString();
       }
       runtime.context.history =
-        numericCorrect && !correct
+        numericCorrect && judgement.groupingCorrect && !correct
           ? state.history
           : [
               ...state.history,
@@ -779,7 +826,7 @@ export async function learningTurn(
             credit(correct, hint) * 0.5,
           );
       state.hints =
-        numericCorrect && !correct
+        numericCorrect && judgement.groupingCorrect && !correct
           ? state.hints
           : advanceHint(state.hints, {
               id: eventId,
@@ -999,7 +1046,45 @@ export async function learningTurn(
     });
   return { state, events, replayed: false };
 }
-export function publicView(state: Snapshot): LearningView {
+function upgradeSavedPresentation(state: Snapshot) {
+  for (const [id, old] of Object.entries(state.adventures ?? {})) {
+    const label = old.tasks[0]?.interestLabel ?? '';
+    const adventure = upgradeAdventurePresentation(old, label);
+    state.adventures![id] = adventure;
+    if (
+      state.active?.interestId === id &&
+      state.active.id === adventure.tasks[adventure.index]?.id &&
+      !state.active.interaction
+    ) {
+      const task = adventure.tasks[adventure.index];
+      state.active = {
+        ...state.active,
+        text: task.text,
+        storyContext: task.storyContext,
+        interaction: task.interaction,
+      };
+    }
+    if (adventure.paused && !adventure.paused.active.interaction) {
+      const task = adventure.tasks.find(
+        (t) => t.id === adventure.paused!.active.id,
+      );
+      if (task)
+        adventure.paused.active = {
+          ...adventure.paused.active,
+          text: task.text,
+          storyContext: task.storyContext,
+          interaction: task.interaction,
+        };
+    }
+  }
+}
+export function publicView(original: Snapshot): LearningView {
+  const state = Object.values(original.adventures ?? {}).some((a) =>
+    a.tasks.some((t) => !t.interaction),
+  )
+    ? structuredClone(original)
+    : original;
+  if (state !== original) upgradeSavedPresentation(state);
   const a = state.active,
     item = a?.item,
     params = item?.params ?? {};
@@ -1050,6 +1135,7 @@ export function publicView(state: Snapshot): LearningView {
       a && item
         ? {
             id: a.id,
+            interaction: a.interaction,
             submittedAnswer: answerSchema.safeParse(state.lastAnswer).data,
             expressionRequired: a.expressionRequired ?? false,
             illustrationSafe: [

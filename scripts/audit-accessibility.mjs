@@ -107,6 +107,21 @@ try {
     event: { type: 'mood', mood: 'rolig' },
   });
   await audit('leo-task', '/leo');
+  await fetch(origin + '/leo?fixture=quiet');
+  await post({ command: 'interest', label: 'Star Wars' });
+  const adventureSession = await post({
+    command: 'start',
+    mode: 'practice',
+    part: null,
+  });
+  await post({
+    command: 'turn',
+    sessionId: adventureSession.id,
+    revision: adventureSession.revision,
+    requestId: randomUUID(),
+    event: { type: 'mood', mood: 'rolig' },
+  });
+  await audit('leo-adventure', '/leo');
   await audit(
     'parent',
     '/forelder/00000000-0000-4000-8000-000000000099?fixture=reset',

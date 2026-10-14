@@ -272,7 +272,7 @@ export async function POST(request: Request) {
           },
           engine,
           active: state.active.item,
-          taskText: state.active.text,
+          taskText: `${state.active.storyContext ?? ''} ${state.active.text}`,
           lastAnswer: state.lastAnswer,
           answerResult: state.correct,
           numericCorrect: state.lastAnswerCorrect,

@@ -16,6 +16,7 @@ export const eventSchema = z.discriminatedUnion('type', [
     type: z.literal('choice'),
     itemId: z.uuid(),
     option: z.number().int().min(0).max(1),
+    remaining: z.number().int().nonnegative().optional(),
   }),
   z.object({ type: z.literal('hint') }),
   z.object({ type: z.literal('ask'), text: z.string().trim().min(1).max(600) }),
@@ -124,6 +125,7 @@ export const emptyEvents = (): LearningEvents => ({
   schoolTopics: [],
 });
 export type PublicTask = {
+  interaction?: import('../engine/mission').MissionInteraction;
   submittedAnswer?: import('../engine/skills/generators').Answer;
   illustrationSafe?: boolean;
   expressionRequired?: boolean;

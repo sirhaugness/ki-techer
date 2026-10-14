@@ -78,6 +78,7 @@ async function solveChapter(state: Snapshot, wrongSkill?: string) {
           type: 'choice',
           itemId: state.active!.id,
           option: 1,
+          remaining: Math.min(2, Number(state.active!.item.answer)),
         })
       ).state;
   }
