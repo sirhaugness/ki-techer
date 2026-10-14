@@ -61,14 +61,15 @@ export function validateStoryProblem(
   try {
     bindStoryProblem(template, item);
     // Character names may contain digits; all mathematical quantities must be bound.
-    if (
-      /\d/.test(
-        template
-          .replaceAll(/[‐‑–—]/g, '-')
-          .replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, ''),
-      )
-    )
-      return false;
+    let unbound = template
+      .replaceAll(/[‐‑–—]/g, '-')
+      .replaceAll(/BB-?8|R2(?:-?D2)?|C-?3PO|T-65/gi, '');
+    // The dimension in a geometry label is a verified property, not a task quantity.
+    if (item.skillId === 'figur-3d-kanter-hjorner-flater')
+      unbound = unbound.replaceAll(/\b3D/gi, '');
+    if (item.skillId === 'figur-2d-egenskaper')
+      unbound = unbound.replaceAll(/\b2D/gi, '');
+    if (/\d/.test(unbound)) return false;
     const names = new Set(
       [...template.matchAll(/\{\{([a-z]+)\}\}/g)].map((m) => m[1]),
     );

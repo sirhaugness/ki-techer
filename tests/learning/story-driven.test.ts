@@ -66,6 +66,16 @@ describe('story-driven saga', () => {
         trade,
       ),
     ).toBe(true);
+    const solid = generate('figur-3d-kanter-hjorner-flater', 2, seededRng(4));
+    expect(validateStoryProblem('Undersøk {{count}} 3D-figurer.', solid)).toBe(
+      true,
+    );
+    expect(
+      validateStoryProblem(
+        'Undersøk {{count}} 3D-figurer med 999 flater.',
+        solid,
+      ),
+    ).toBe(false);
     const unknown = generate('hverdag-ukjent', 2, seededRng(4));
     expect(storyQuantities(unknown)).not.toHaveProperty('a');
     expect(
