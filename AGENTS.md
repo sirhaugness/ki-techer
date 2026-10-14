@@ -86,6 +86,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Test Preview selv før du sier at du er ferdig. Kan du ikke, si tydelig hva Thor må teste.
 - Pirk og idéer samles i docs/BACKLOG.md.
 
+## Godkjent OpenAI-oppsett
+
+Thor har 14. oktober 2026 godkjent at eksisterende OPENAI_API_KEY i Vercel Preview brukes videre for dette prosjektet. Ikke spør igjen om eksisterende nøkkel kontra ny nøkkel. Dette godkjenner ikke nye nøkler, endring av hemmeligheter eller produksjonsendringer.
+
 ## Driftsoppsett (ingen hemmeligheter her)
 
 - Produksjon: https://ki-techer.vercel.app (Vercel-team: team-thor1, prosjekt: ki-techer)

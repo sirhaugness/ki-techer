@@ -29,7 +29,7 @@ export function openaiProvider(
       const started = Date.now();
       const outputLimit = Math.max(
         600,
-        Math.min(3200, request.maxOutputTokens ?? 1200),
+        Math.min(6000, request.maxOutputTokens ?? 1200),
       );
       const ceiling = estimateCost(
         Buffer.byteLength(
@@ -51,37 +51,40 @@ export function openaiProvider(
         output = 0,
         ok = false;
       try {
-        const result = await client.responses.create({
-          model,
-          store: false,
-          instructions: request.instructions,
-          input: [
-            { role: 'user', content: request.input },
-            ...(request.conversation ?? []),
-            ...(request.results ?? []).map((r) => ({
-              type: 'function_call_output',
-              call_id: r.call_id,
-              output: r.output,
-            })),
-          ] as OpenAI.Responses.ResponseInputItem[],
-          include: ['reasoning.encrypted_content'],
-          tools: request.tools?.map((t) => ({
-            type: 'function' as const,
-            ...t,
-            name: wireName(t.name),
-            strict: true,
-          })),
-          parallel_tool_calls: false,
-          max_output_tokens: outputLimit,
-          text: {
-            format: {
-              type: 'json_schema',
-              name: 'result',
+        const result = await client.responses.create(
+          {
+            model,
+            store: false,
+            instructions: request.instructions,
+            input: [
+              { role: 'user', content: request.input },
+              ...(request.conversation ?? []),
+              ...(request.results ?? []).map((r) => ({
+                type: 'function_call_output',
+                call_id: r.call_id,
+                output: r.output,
+              })),
+            ] as OpenAI.Responses.ResponseInputItem[],
+            include: ['reasoning.encrypted_content'],
+            tools: request.tools?.map((t) => ({
+              type: 'function' as const,
+              ...t,
+              name: wireName(t.name),
               strict: true,
-              schema: z.toJSONSchema(request.schema),
+            })),
+            parallel_tool_calls: false,
+            max_output_tokens: outputLimit,
+            text: {
+              format: {
+                type: 'json_schema',
+                name: 'result',
+                strict: true,
+                schema: z.toJSONSchema(request.schema),
+              },
             },
           },
-        });
+          { timeout: outputLimit > 3200 ? 45000 : 20000 },
+        );
         input = result.usage?.input_tokens ?? 0;
         output = result.usage?.output_tokens ?? 0;
         ok = true;

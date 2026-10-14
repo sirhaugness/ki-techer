@@ -29,7 +29,7 @@ for (const viewport of [
     await expect(page.locator('#task-question')).toContainText('BB-8');
     await expect(page.getByRole('button', { name: /Hold for/ })).toHaveCount(0);
     const question = await page.locator('#task-question').innerText();
-    const quantities = /tar med (\d+).*Hver har (\d+)/.exec(question)!;
+    const quantities = /fyller (\d+).*Hver skal ha (\d+)/.exec(question)!;
     expect(quantities).toBeTruthy();
     const a = Number(quantities[1]),
       b = Number(quantities[2]);
@@ -140,7 +140,7 @@ test('reduced motion suppresses the celebration animation', async ({
     .fill(String(numbers[0] * numbers[1]));
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(page.locator('.answer-sparkles')).toHaveCSS(
-    'animation-duration',
-    '1e-05s',
+    'animation-name',
+    'none',
   );
 });

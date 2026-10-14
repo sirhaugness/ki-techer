@@ -775,6 +775,16 @@ button.print-hide {
 .request-status {
   min-height: 32px;
   font-size: 16px;
+  position: sticky;
+  bottom: 12px;
+  z-index: 10;
+  background: #315f50;
+  color: #fffdf7;
+  padding: 10px 16px;
+  border-radius: 12px;
+}
+.request-status:empty {
+  display: none;
 }
 .answer-action {
   min-height: 58px;
@@ -902,6 +912,456 @@ button.print-hide {
   min-height: 58px;
   font-size: 17px;
   color: #3d5d50;
+}
+
+/* The illustrated world is the main workspace; controls support its story. */
+.illustrated-chapter {
+  margin: 12px -12px 24px;
+  border: 1px solid #b7c7b7;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #f9f5e7;
+}
+.has-adventure .leo-nav {
+  margin-bottom: 10px;
+}
+.has-adventure .session-title svg {
+  width: 48px;
+  height: 54px;
+}
+.has-adventure .session-title h1 {
+  font-size: 25px;
+}
+.has-adventure .adventure-label {
+  margin-bottom: 4px;
+}
+.has-adventure .voice-note {
+  margin-block: 4px;
+}
+.story-inventory {
+  font-size: 15px;
+  margin-top: 10px;
+}
+.story-inventory li {
+  margin-block: 5px;
+}
+.scene-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 15px;
+  color: #365b5d;
+  font-weight: 700;
+  background: #f4eddc;
+}
+.world-frame {
+  position: relative;
+  overflow: hidden;
+}
+.chapter-image.world-illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  border-radius: 0;
+  aspect-ratio: 960 / 520;
+  object-fit: contain;
+}
+.scene-status {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  background: #fff9e9;
+  border: 1px solid #aebbae;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 14px;
+  color: #365b5d;
+}
+.scene-narrative {
+  padding: 14px 22px 18px;
+}
+.scene-narrative .adventure-scene {
+  min-height: 0;
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+.leo-experience .character-dialogue {
+  margin-block: 10px;
+  color: #294c54;
+  font-size: 20px;
+  font-weight: 600;
+}
+.leo-experience .scene-purpose {
+  margin-block: 8px;
+  font-size: 16px;
+}
+.scene-narrative .chapter-goal {
+  font-size: 14px;
+  color: #50675d;
+  margin: 0;
+}
+.branch-consequence,
+.route-memory {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #e9dec0;
+  font-size: 16px;
+  color: #4b573e;
+}
+.answer-feedback {
+  min-height: 58px;
+  font-size: 18px;
+}
+.story-outcome {
+  min-height: 0;
+}
+.mission-controls {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #aabbad;
+  border-radius: 16px;
+  background: #f6f2e2;
+  margin: 10px 0;
+}
+.mission-controls legend,
+.story-choice legend {
+  font-size: 18px;
+  font-weight: 700;
+  color: #305854;
+}
+.mission-controls p {
+  font-size: 16px;
+}
+.route-answer-grid,
+.group-trays,
+.story-routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+  gap: 10px;
+}
+.route-answer-grid button,
+.story-routes button {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  background: #fffbed;
+  border: 2px solid #aabbaa;
+  padding: 12px;
+  margin: 0;
+  width: 100%;
+}
+.route-answer-grid button[aria-pressed='true'],
+.story-routes button[aria-pressed='true'] {
+  background: #e0efdf;
+  border-color: #3c7161;
+  box-shadow: inset 0 0 0 1px #3c7161;
+}
+.route-answer-grid svg {
+  width: 100%;
+  max-height: 60px;
+}
+.route-answer-grid span,
+.story-routes span {
+  font-size: 15px;
+}
+.group-tray {
+  text-align: center;
+  font-size: 15px;
+}
+.group-tray svg {
+  display: block;
+  width: 100%;
+  margin-block: 5px;
+}
+.tray-actions,
+.quantity-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.tray-actions button,
+.quantity-stepper button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px;
+}
+.tray-actions output {
+  min-width: 25px;
+}
+.quantity-preview svg {
+  width: 100%;
+  max-height: 130px;
+}
+.quantity-stepper label {
+  max-width: 120px;
+  font-size: 14px;
+  text-align: center;
+}
+.quantity-stepper input {
+  text-align: center;
+  font-size: 25px;
+}
+.expression-builder {
+  grid-column: 1;
+}
+.expression-builder p {
+  font-size: 15px;
+}
+.built-expression {
+  display: block;
+  padding: 14px;
+  font-size: 30px;
+  text-align: center;
+  background: #fff9e9;
+  border-radius: 12px;
+}
+.expression-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.expression-slots fieldset {
+  padding: 8px;
+  border: 1px solid #aebbaa;
+  border-radius: 8px;
+}
+.expression-slots button {
+  margin: 3px;
+  min-width: 44px;
+  min-height: 44px;
+}
+.scene-options {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+.scene-options button {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: #fff9e9;
+}
+.scene-options svg {
+  width: 100%;
+}
+.expression-slots button[aria-pressed='true'],
+.scene-options button[aria-pressed='true'] {
+  border-color: #3c7161;
+  background: #e0efdf;
+}
+.expression-builder button {
+  min-height: 44px;
+  min-width: 44px;
+  margin: 3px;
+  padding: 6px;
+}
+.story-choice {
+  padding: 16px;
+  border: 2px solid #9aab8f;
+  border-radius: 16px;
+  margin: 16px 0;
+  background: #f5efd8;
+}
+.route-error {
+  color: #6b4d26;
+  background: #fff2d2;
+  padding: 10px;
+}
+.world-frame[data-state='solved'] .world-cell {
+  animation: world-fill 650ms ease-out both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.world-frame[data-state='solved'][data-effect='open'] .world-gate {
+  transform: translateY(-117px);
+  animation: world-gate-open 1400ms ease-in-out both;
+}
+.world-frame[data-state='solved'][data-effect='launch'] .world-ship {
+  transform: translate(140px, -165px) scale(0.65);
+  animation: world-launch 2200ms ease-in-out both;
+}
+.world-frame[data-state='solved'][data-effect='charge'] .ship-light {
+  animation: world-light 1800ms ease-out both;
+}
+.world-frame[data-state='solved'][data-effect='build'] .world-plank {
+  animation: world-build 850ms ease-out both;
+}
+.world-frame[data-state='solved'][data-effect='rescue'] .world-creature,
+.world-frame[data-state='solved'][data-effect='arrive'] .world-creature {
+  transform: translateX(-150px);
+  animation: world-rescue 1700ms ease-in-out both;
+}
+.world-frame[data-state='solved'][data-effect='load'] .world-cargo {
+  transform: translateX(65px);
+  animation: world-load 1300ms ease-in-out both;
+}
+.world-frame[data-state='waiting'] .world-map {
+  opacity: 0.35;
+}
+.world-frame[data-state='solved'][data-effect='reveal'] .world-map {
+  animation: world-reveal 1300ms ease-out both;
+}
+.world-frame[data-state='solved'][data-effect='signal'] .world-signal {
+  animation: world-transmit 1400ms ease-out both;
+}
+.world-frame[data-state='solved'][data-effect='travel'] .world-asset {
+  animation: world-reveal 1000ms ease-out both;
+}
+.world-frame[data-state='solved'][data-effect='travel'] .world-traveller {
+  transform: translateX(120px);
+  animation: world-travel 1300ms ease-in-out both;
+}
+.world-frame[data-state='solved'][data-effect='launch'] .world-cargo {
+  transform: translateX(180px);
+  animation: world-travel 1800ms ease-in-out both;
+}
+@keyframes world-travel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(120px);
+  }
+}
+@keyframes world-fill {
+  from {
+    opacity: 0.25;
+    transform: scale(0.45);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes world-gate-open {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-117px);
+  }
+}
+@keyframes world-launch {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(140px, -165px) scale(0.65);
+  }
+}
+@keyframes world-light {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes world-build {
+  from {
+    transform: translateY(-90px);
+    opacity: 0.15;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes world-rescue {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-150px);
+  }
+}
+@keyframes world-load {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(65px);
+  }
+}
+@keyframes world-reveal {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes world-transmit {
+  from {
+    opacity: 0.1;
+    stroke-dasharray: 1 100;
+  }
+  to {
+    opacity: 1;
+    stroke-dasharray: 100 0;
+  }
+}
+@media (min-width: 850px) {
+  .answer-panel .mission-controls {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+  .answer-panel .expression-builder {
+    grid-row: 3;
+  }
+  .answer-panel:has(.expression-builder) .number-pad {
+    grid-row: 4;
+  }
+  .answer-panel:has(.expression-builder) .answer-action {
+    grid-row: 5;
+  }
+}
+@media (max-width: 600px) {
+  .illustrated-chapter {
+    margin-inline: -8px;
+  }
+  .scene-heading {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+  .scene-narrative {
+    padding: 12px 14px;
+  }
+  .scene-status {
+    top: 6px;
+    left: 8px;
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+  .leo-experience .character-dialogue {
+    font-size: 18px;
+  }
+  .route-answer-grid {
+    grid-template-columns: 1fr;
+  }
+  .route-answer-grid button {
+    flex-direction: row;
+    align-items: center;
+  }
+  .route-answer-grid svg {
+    width: 50px;
+  }
+  .group-trays {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-frame *,
+  .answer-sparkles,
+  .answer-retry {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 .task-drawing {
   margin-block: 12px;

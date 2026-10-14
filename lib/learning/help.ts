@@ -7,6 +7,7 @@ import { approved, privateText } from '../ai/moderation';
 
 import { helpShortcuts } from './help-options';
 import { checkMultiplicationExpression } from '../engine/expression-answer';
+import { judgeTaskAnswer } from '../engine/mission';
 
 export function concreteHelp(task: ActiveTask, level: number, text: string) {
   const p = task.item.params;
@@ -98,6 +99,21 @@ export async function teacherHelp(input: {
       response: {
         ...fallback,
         speech: `Tallsvaret ditt stemmer. ${compound?.expression ? 'Regnestykket viser ikke mengdene i oppgaven ennå.' : 'Skriv også regnestykket ditt.'} ${input.level >= 2 ? concreteHelp(input.task, input.level, input.text) : 'Du kan bruke x, X, ×, * eller gjentatt addisjon. Oppdraget venter på regnemåten.'}`,
+      },
+      text: input.text,
+      fallback: false,
+    };
+  }
+  if (
+    input.numericCorrect &&
+    input.task.interaction?.kind === 'grouping' &&
+    !judgeTaskAnswer(input.task, input.lastAnswer).correct
+  ) {
+    return {
+      response: {
+        ...fallback,
+        speech:
+          'Tallsvaret stemmer. Se nå på fordelingen: hver gruppe skal ha like mye. Bruk knappene til å gjøre gruppene like, og prøv igjen.',
       },
       text: input.text,
       fallback: false,

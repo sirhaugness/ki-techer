@@ -92,9 +92,11 @@ export type ActiveTask = {
   strategy: Record<string, string>;
   resolved: boolean;
   expressionRequired?: boolean;
+  interaction?: import('../engine/mission').MissionInteraction;
   interestId?: string;
   interestLabel?: string;
   storyCompleted?: number;
+  storyContext?: string;
 };
 export type AgentRuntime = {
   taskCreationAllowed?: boolean;

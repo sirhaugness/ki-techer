@@ -6,6 +6,12 @@ export const answerSchema = z.union([
   z
     .object({
       value: z.number().finite(),
+      allocations: z.array(z.number().int().nonnegative()).max(100),
+    })
+    .strict(),
+  z
+    .object({
+      value: z.number().finite(),
       expression: z.string().trim().min(1).max(120),
     })
     .strict(),

@@ -18,6 +18,7 @@ import { homeSpeech } from '@/lib/voice/text';
 import { parseVoiceAnswer } from '@/lib/voice/parse';
 import { Medallion, Tutor, partTitles } from './art';
 import { AdventureScene } from './adventure-scene';
+import { RouteChoice } from './route-choice';
 export function LeoExperience({
   profile,
   initial,
@@ -122,6 +123,21 @@ export function LeoExperience({
       setView(data as LearningView);
       liveTask.current = (data as LearningView).task?.id;
       const event = command.event as LearningEvent | undefined;
+      if (
+        data.adventure &&
+        ((event?.type === 'answer' && data.correct) ||
+          (event?.type === 'choice' && !data.adventure.choice))
+      ) {
+        requestAnimationFrame(() =>
+          taskRef.current?.querySelector('.world-frame')?.scrollIntoView({
+            block: 'center',
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+              .matches
+              ? 'instant'
+              : 'smooth',
+          }),
+        );
+      }
       if (event?.type === 'answer' && data.mode === 'practice')
         void requestFeedback(data as LearningView);
       if (event?.type === 'next' || event?.type === 'mood')
@@ -162,7 +178,7 @@ export function LeoExperience({
     !!story.interest &&
     view.adventure?.interest !== story.interest;
   return (
-    <div className="leo-experience">
+    <div className={`leo-experience ${view?.adventure ? 'has-adventure' : ''}`}>
       <nav className="leo-nav">
         <Link href="/leo">🌱 Hjem</Link>
         <Link href="/leo/interesser">Mine interesser</Link>
@@ -433,14 +449,15 @@ export function LeoExperience({
                       {view.adventure.number}
                     </p>
                     <AdventureScene
-                      key={view.adventure.interest}
+                      key={view.task.id}
                       adventure={view.adventure}
+                      task={view.task}
                     />
                   </>
                 )}
-                <p className="adventure-scene">
-                  {view.adventure?.scene ?? view.task.skillTitle}
-                </p>
+                {!view.adventure && (
+                  <p className="adventure-scene">{view.task.skillTitle}</p>
+                )}
                 <p className="eyebrow">{view.task.skillTitle}</p>
                 <h2 id="task-question">{view.task.question}</h2>
                 {view.task.visual.shape && (
@@ -529,7 +546,13 @@ export function LeoExperience({
                         : '↻ Prøv igjen. Læreren hjelper deg.'}
                     </strong>
                   ) : (
-                    <span>Skriv svaret, og trykk «Sjekk svaret».</span>
+                    <span>
+                      {view.task.interaction?.kind === 'grouping'
+                        ? 'Fordel gjenstandene, og sjekk løsningen din.'
+                        : view.task.interaction?.kind === 'compare'
+                          ? 'Velg alternativet som passer, og sjekk svaret.'
+                          : 'Prøv oppdraget, og trykk «Sjekk svaret».'}
+                    </span>
                   )}
                   {view.correct && view.task.resolved && (
                     <span
@@ -541,43 +564,29 @@ export function LeoExperience({
                     </span>
                   )}
                 </div>
-                {view.adventure && (
-                  <p className="story-outcome" role="status">
-                    {view.adventure.outcome ??
-                      'Løs oppdraget for å hjelpe vennene videre.'}
+                {view.adventure?.route && !view.adventure.choice && (
+                  <p className="route-memory">
+                    Valgt vei: {view.adventure.route.label}. Dere har{' '}
+                    {view.adventure.route.remaining} forsyninger igjen.
                   </p>
                 )}
                 {view.adventure?.choice && (
-                  <fieldset className="story-choice">
-                    <legend>Bruk resultatet ditt til å velge veien</legend>
-                    <p>
-                      Du har {view.adventure.choice.budget}{' '}
-                      {view.adventure.choice.unit}. Velg en vei du har nok
-                      forsyninger til.
-                    </p>
-                    {view.adventure.choice.options.map((option) => (
-                      <button
-                        type="button"
-                        key={option.id}
-                        disabled={
-                          busy || option.cost > view.adventure!.choice!.budget
-                        }
-                        onClick={() =>
-                          turn({
-                            type: 'choice',
-                            itemId: view.task!.id,
-                            option: option.id,
-                          })
-                        }
-                      >
-                        {option.label} · {option.cost}{' '}
-                        {view.adventure?.choice?.unit}
-                      </button>
-                    ))}
-                  </fieldset>
+                  <RouteChoice
+                    key={`choice-${view.task.id}`}
+                    choice={view.adventure.choice}
+                    busy={busy}
+                    onChoose={(option, remaining) =>
+                      turn({
+                        type: 'choice',
+                        itemId: view.task!.id,
+                        option,
+                        remaining,
+                      })
+                    }
+                  />
                 )}
                 <AnswerPanel
-                  key={view.task.id}
+                  key={`answer-${view.task.id}`}
                   task={view.task}
                   busy={busy}
                   teacher={
@@ -607,6 +616,11 @@ export function LeoExperience({
                     })
                   }
                 />
+                {view.adventure?.outcome && (
+                  <p className="story-outcome" role="status">
+                    {view.adventure.outcome}
+                  </p>
+                )}
                 {teacherError && (
                   <div className="teacher-error" role="status">
                     <p>{teacherError}</p>
@@ -793,7 +807,15 @@ export function LeoExperience({
         </>
       )}
       <div className="request-status" role="status">
-        {busy ? 'Læreren tenker …' : ''}
+        {busy
+          ? ['next', 'mood'].includes(
+              (pending?.event as LearningEvent | undefined)?.type ?? '',
+            )
+            ? 'Vi gjør neste oppdrag klart …'
+            : (pending?.event as LearningEvent | undefined)?.type === 'ask'
+              ? 'Læreren tenker …'
+              : 'Vi sjekker og lagrer …'
+          : ''}
       </div>
       {error && (
         <div role="alert" className="error-box">
