@@ -598,12 +598,96 @@ button.print-hide {
   overflow-wrap: anywhere;
 }
 .answer-feedback {
-  min-height: 64px;
+  min-height: 100px;
   position: relative;
   display: flex;
   align-items: center;
   padding-block: 8px;
   color: #214f3e;
+  border: 2px solid #476e61;
+  border-radius: 12px;
+  padding: 12px;
+  margin-block: 12px;
+  font-size: 21px;
+}
+.answer-retry {
+  border-color: #855823;
+  background: #fff3d6;
+  animation: retry-focus 350ms ease-out;
+}
+.answer-success {
+  background: #e0f4dd;
+}
+@keyframes retry-focus {
+  50% {
+    transform: scale(1.015);
+  }
+}
+.chapter-scene {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-block: 12px;
+}
+.chapter-image {
+  width: 180px;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #e5ebe1;
+}
+.chapter-goal {
+  font-size: 17px;
+}
+.chapter-scene progress {
+  display: block;
+  width: 100%;
+  accent-color: #476e61;
+}
+.scene-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.scene-fallback span {
+  font-size: 48px;
+}
+.story-outcome {
+  min-height: 82px;
+  padding: 12px;
+  border-left: 4px solid #476e61;
+  background: #e6f1e9;
+}
+.story-choice button {
+  display: block;
+  margin: 8px 0;
+  width: 100%;
+}
+.teacher-dialog {
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+}
+.teacher-composer {
+  background: #e6f1e9;
+}
+.teacher-composer button {
+  width: 100%;
+}
+.teacher-error {
+  font-size: 16px;
+}
+@media (max-width: 600px) {
+  .chapter-scene {
+    gap: 12px;
+  }
+  .chapter-image {
+    width: 100px;
+    height: 110px;
+  }
 }
 .answer-sparkles {
   position: absolute;
@@ -657,8 +741,8 @@ button.print-hide {
   width: 100%;
 }
 .teacher-help {
-  max-height: 290px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   margin-top: 12px;
@@ -742,7 +826,7 @@ button.print-hide {
     min-height: 52px;
   }
   .teacher-help {
-    max-height: 230px;
+    max-height: none;
   }
   .teacher-desk > button {
     min-height: 48px;
@@ -780,28 +864,24 @@ button.print-hide {
     position: relative;
   }
   .answer-panel .teacher-help {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: -2px;
-    right: -2px;
-    height: 222px;
-    max-height: 222px;
-    margin: 0;
-    z-index: 2;
+    position: static;
+    height: auto;
+    max-height: none;
+    margin-top: 12px;
     border: 2px solid #476e61;
     border-radius: 12px;
     padding: 12px;
     background: #e6f1e9;
   }
   .answer-panel:has(.teacher-open) .number-pad {
-    visibility: hidden;
+    display: none;
   }
   .answer-panel .number-pad {
     min-height: 234px;
   }
   .answer-panel:has(.choice-list) .teacher-help {
     position: static;
-    height: 222px;
+    height: auto;
   }
 }
 .teacher-message > div {

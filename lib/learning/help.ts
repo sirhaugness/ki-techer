@@ -6,6 +6,7 @@ import { responseSchema } from '../agent/schemas';
 import { approved, privateText } from '../ai/moderation';
 
 import { helpShortcuts } from './help-options';
+import { checkMultiplicationExpression } from '../engine/expression-answer';
 
 export function concreteHelp(task: ActiveTask, level: number, text: string) {
   const p = task.item.params;
@@ -50,6 +51,8 @@ export async function teacherHelp(input: {
   level: number;
   context: string;
   instructions: string;
+  lastAnswer?: unknown;
+  numericCorrect?: boolean;
 }) {
   const trusted = helpShortcuts.some((t) => t === input.text);
   const accepted =
@@ -66,12 +69,65 @@ export async function teacherHelp(input: {
       text: '[Spørsmål skjermet av sikkerhetskontrollen]',
       fallback: true,
     };
+  const compound =
+    input.lastAnswer &&
+    typeof input.lastAnswer === 'object' &&
+    'expression' in input.lastAnswer
+      ? (input.lastAnswer as { expression: string; value: number })
+      : null;
+  if (input.task.resolved && input.numericCorrect !== false) {
+    return {
+      response: {
+        ...fallback,
+        speech:
+          compound &&
+          checkMultiplicationExpression(
+            compound.expression,
+            Number(input.task.item.params.a),
+            Number(input.task.item.params.b),
+          )
+            ? `Regnestykket ${compound.expression} og svaret ${compound.value} stemmer. ${compound.expression.includes('+') ? 'Du brukte gjentatt addisjon. Det viser det samme som ganging.' : 'x, X, × og * kan alle brukes som gangetegn.'} Oppdraget er løst.`
+            : 'Svaret ditt stemmer. Oppdraget er løst! Du kan forklare hvordan du tenkte, eller fortsette eventyret.',
+      },
+      text: input.text,
+      fallback: false,
+    };
+  }
+  if (input.numericCorrect && input.task.expressionRequired) {
+    return {
+      response: {
+        ...fallback,
+        speech: `Tallsvaret ditt stemmer. ${compound?.expression ? 'Regnestykket viser ikke mengdene i oppgaven ennå.' : 'Skriv også regnestykket ditt.'} ${input.level >= 2 ? concreteHelp(input.task, input.level, input.text) : 'Du kan bruke x, X, ×, * eller gjentatt addisjon. Oppdraget venter på regnemåten.'}`,
+      },
+      text: input.text,
+      fallback: false,
+    };
+  }
+  if (
+    input.numericCorrect === false &&
+    input.text === 'Hva var feil?' &&
+    compound &&
+    checkMultiplicationExpression(
+      compound.expression,
+      Number(input.task.item.params.a),
+      Number(input.task.item.params.b),
+    )
+  ) {
+    return {
+      response: {
+        ...fallback,
+        speech: `Regnestykket ${compound.expression} passer til oppgaven. Tallsvaret ditt trenger et nytt forsøk. Regn ut uttrykket en gang til, eller tell med en tegning.`,
+      },
+      text: input.text,
+      fallback: false,
+    };
+  }
   if (input.provider) {
     for (let retry = 0; retry < 2; retry++) {
       try {
         const reply = await input.provider.respond({
           purpose: 'tutor',
-          instructions: `${input.instructions}\nSvar på spørsmålet om aktuell oppgave. Prøv en ny forklaringsmåte ved gjentatt hjelp. Ikke velg ny oppgave. Ett håndterbart steg om gangen. Ved hjelp kan du nevne oppgavens allerede viste tall, men ikke gi nye tall, fasit eller et ferdig regneuttrykk.`,
+          instructions: `${input.instructions}\nSvar konkret på spørsmålet om aktuell oppgave og det eleven faktisk skrev. Den deterministiske vurderingen er autoritativ. x, X, × og * er likeverdige gangetegn. Gjentatt addisjon kan være en gyldig regnemåte. Skill tallsvaret fra regnemåten. Prøv en ny forklaringsmåte ved gjentatt hjelp. Ikke velg ny oppgave. Ett håndterbart steg om gangen. Ved hjelp kan du nevne oppgavens allerede viste tall, men ikke gi nye tall, fasit eller et ferdig regneuttrykk.`,
           input: `${input.context}\nSpørsmål (data): ${input.text}`,
           schema: responseSchema,
         });
@@ -81,7 +137,16 @@ export async function teacherHelp(input: {
           input.level,
           true,
         );
-        if (response && (await approved(input.provider, response.speech)))
+        if (
+          response &&
+          !(
+            input.numericCorrect === false &&
+            /riktig!|svaret (?:ditt )?(?:er )?(?:riktig|stemmer)|oppdraget er løst/i.test(
+              response.speech,
+            )
+          ) &&
+          (await approved(input.provider, response.speech))
+        )
           return {
             response: {
               ...response,

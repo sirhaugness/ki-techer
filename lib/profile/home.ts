@@ -4,11 +4,20 @@ import { fixture, fixtureEnabled } from '../learning/fixture';
 import { chapter, activeInterest } from './story';
 import { latestSession } from '../learning/repository';
 import type { LearnerProfile } from '../learning/types';
+import { adventureView } from '../learning/adventure';
 export async function homeChapter(profile: LearnerProfile) {
   if (fixtureEnabled()) {
     const f = fixture();
     const active = activeInterest(f.interests);
     const progress = active ? f.state?.storyProgress?.[active.id] : null;
+    const adventure = active ? f.state?.adventures?.[active.id] : undefined;
+    if (active && adventure)
+      return adventureView(
+        adventure,
+        active.label,
+        progress?.completed ?? 0,
+        progress?.part ?? null,
+      );
     return chapter(
       f.interests,
       progress?.completed ?? 0,
@@ -23,6 +32,14 @@ export async function homeChapter(profile: LearnerProfile) {
   if (interestRows.error) throw new Error('Kunne ikke hente eventyret.');
   const active = activeInterest(interestRows.data ?? []);
   const progress = active ? state?.storyProgress?.[active.id] : null;
+  const adventure = active ? state?.adventures?.[active.id] : undefined;
+  if (active && adventure)
+    return adventureView(
+      adventure,
+      active.label,
+      progress?.completed ?? 0,
+      progress?.part ?? null,
+    );
   return chapter(
     interestRows.data ?? [],
     progress?.completed ?? 0,

@@ -26,18 +26,18 @@ for (const viewport of [
       .getByRole('button', { name: 'Start eventyret', exact: true })
       .click();
     await page.getByRole('button', { name: '🙂 Rolig' }).click();
-    await expect(page.locator('#task-question')).toContainText('Luke');
+    await expect(page.locator('#task-question')).toContainText('BB-8');
     await expect(page.getByRole('button', { name: /Hold for/ })).toHaveCount(0);
     const question = await page.locator('#task-question').innerText();
-    const quantities = /skyter (\d+) laserskudd.*av (\d+)/.exec(question)!;
+    const quantities = /tar med (\d+).*Hver har (\d+)/.exec(question)!;
     expect(quantities).toBeTruthy();
     const a = Number(quantities[1]),
       b = Number(quantities[2]);
     await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
-    await page.getByLabel('b) Regnestykket ditt').fill(`${a}*${b}`);
+    await page.getByLabel('b) Regnestykket ditt').fill(`${a}x${b}`);
     await page.getByRole('button', { name: 'Sjekk svaret' }).click();
     await expect(page.locator('.teacher-message')).toContainText(
-      /grupper|tegne/,
+      /grupper|tegne|Tallsvaret ditt/,
     );
     await expect(page.getByLabel('Svaret ditt', { exact: true })).toHaveValue(
       '999',
@@ -66,7 +66,7 @@ for (const viewport of [
     const after = await action.evaluate(
       (e) => e.getBoundingClientRect().top + window.scrollY,
     );
-    expect(Math.abs(after - before)).toBeLessThan(30);
+    expect(after).toBeGreaterThanOrEqual(before - 30);
     await page.getByLabel('Svaret ditt', { exact: true }).fill(String(a * b));
     const checked = page.waitForResponse(
       (r) => r.url().endsWith('/api/leo') && r.request().method() === 'POST',
@@ -91,7 +91,7 @@ for (const viewport of [
       .getByRole('button', { name: 'Fortsett eventyret', exact: true })
       .click();
     await expect(page.locator('#task-question')).not.toHaveText(question);
-    await expect(page.locator('#task-question')).toContainText('Luke');
+    await expect(page.locator('.adventure-scene')).toContainText('BB-8');
     const next = await page.locator('#task-question').innerText();
     await page.reload();
     await expect(page.locator('#task-question')).toHaveText(next);

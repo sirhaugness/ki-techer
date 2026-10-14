@@ -14,10 +14,36 @@ export function AnswerPanel({
   teacher?: ReactNode;
   onNext?: () => void;
 }) {
-  const [values, setValues] = useState(['', '']),
+  const previous = task.submittedAnswer;
+  const initialValues = () => {
+    if (previous && typeof previous === 'object' && !Array.isArray(previous)) {
+      if ('value' in previous) return [String(previous.value), ''];
+      if ('quotient' in previous)
+        return [String(previous.quotient), String(previous.remainder)];
+      if ('x' in previous) return [String(previous.x), String(previous.y)];
+    }
+    return [
+      previous === undefined
+        ? ''
+        : Array.isArray(previous)
+          ? previous.join(', ')
+          : String(previous),
+      '',
+    ];
+  };
+  const [values, setValues] = useState(initialValues),
     [field, setField] = useState(0),
-    [choice, setChoice] = useState(''),
-    [expression, setExpression] = useState('');
+    [choice, setChoice] = useState(
+      typeof previous === 'string' ? previous : '',
+    ),
+    [expression, setExpression] = useState(
+      previous &&
+        typeof previous === 'object' &&
+        !Array.isArray(previous) &&
+        'expression' in previous
+        ? previous.expression
+        : '',
+    );
   const two =
     task.answerType === 'remainder' || task.answerType === 'coordinate';
   const valid = values
@@ -156,7 +182,7 @@ export function AnswerPanel({
           <button
             className="primary"
             type="button"
-            disabled={busy}
+            disabled={busy || !onNext}
             onClick={onNext}
           >
             Fortsett eventyret

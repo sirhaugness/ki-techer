@@ -51,8 +51,8 @@ export function Interests({
         har lært i matte.
       </p>
       <p className="home-note">
-        Hvis du er midt i en oppgave, fullfører du den først. Neste oppdrag
-        følger det nye eventyret.
+        Eventyret du forlater settes på pause. Velg det igjen senere for å
+        fortsette der du slapp. Matten du har lært følger deg.
       </p>
       <div className="interest-presets">
         {[

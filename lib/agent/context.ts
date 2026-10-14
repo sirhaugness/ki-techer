@@ -12,6 +12,7 @@ export type ContextInput = {
   active: GeneratedItem | null;
   allowedHintLevel: number;
   answerResult: boolean | null;
+  numericCorrect?: boolean;
   observations: { text: string; confidence: number; status: string }[];
   messages: { role: string; text: string }[];
 };
@@ -32,6 +33,18 @@ export function buildContext(ctx: ContextInput): string {
         }
       : null,
     answerResult: ctx.answerResult,
+    answerEvaluation: {
+      complete: ctx.answerResult,
+      numericCorrect: ctx.numericCorrect,
+      remaining:
+        ctx.numericCorrect && ctx.answerResult === false
+          ? 'Regnemåten må vise mengdene i oppgaven. Tallsvaret stemmer.'
+          : ctx.answerResult === false
+            ? 'Tallsvaret trenger et nytt forsøk.'
+            : ctx.answerResult === true
+              ? 'Oppgaven er løst.'
+              : '',
+    },
     lastAnswer: privateText(JSON.stringify(ctx.lastAnswer) ?? '')
       ? '[Skjermet]'
       : ctx.lastAnswer,

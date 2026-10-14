@@ -40,7 +40,7 @@ function answer(state: Snapshot): LearningEvent {
   };
 }
 describe('verified expression answers', () => {
-  it.each(['3*3', '3×3', '(3+3)+3', '3 · 3 = 9', '9=3*3'])(
+  it.each(['3*3', '3x3', '3X3', '3 × 3', '(3+3)+3', '3 · 3 = 9', '9=3*3'])(
     'accepts an equivalent expression for the story: %s',
     (text) => expect(checkMultiplicationExpression(text, 3, 3)).toBe(true),
   );
@@ -61,15 +61,26 @@ describe('verified expression answers', () => {
 });
 it('keeps one coherent adventure over repeated tasks and carries actual progress across sessions', async () => {
   let state = createSession(profile, null, now, 0, 'practice', null);
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     state = (await turn(state, { type: 'next' })).state;
-    expect(state.active!.text).toMatch(/Luke/);
+    expect(publicView(state).adventure?.scene).toMatch(
+      /Poe|BB-8|kart|Droid|droide/,
+    );
     expect(state.active!.interestId).toBe(interests[0].id);
     const solved = await turn(state, answer(state));
     expect(solved.state.correct).toBe(true);
     expect(solved.state.storyProgress![interests[0].id].completed).toBe(i + 1);
     state = solved.state;
+    if (publicView(state).adventure?.choice)
+      state = (
+        await turn(state, {
+          type: 'choice',
+          itemId: state.active!.id,
+          option: 1,
+        })
+      ).state;
   }
+  state = (await turn(state, { type: 'next' })).state;
   expect(publicView(state).adventure?.number).toBe(2);
   state = (await turn(state, { type: 'end', mood: 'rolig', reflection: '' }))
     .state;
@@ -143,7 +154,7 @@ it('supplies task, previous answer and prior help to the model without exposing 
     'Bokmål',
   );
   expect(spy.mock.calls[0][0].input).toContain('999');
-  expect(spy.mock.calls[0][0].input).toContain('Luke');
+  expect(spy.mock.calls[0][0].input).toContain('BB-8');
   expect(spy.mock.calls[0][0].input).toContain('Jeg forstår ikke');
   expect(spy.mock.calls[0][0].tools).toBeUndefined();
   expect(result.state.active!.id).toBe(state.active!.id);

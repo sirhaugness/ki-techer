@@ -209,6 +209,11 @@ describe('PostgreSQL RLS', () => {
     };
     const now = '2026-10-11T10:00:00.000Z',
       state = createSession(profile, null, now, 0, 'practice', null);
+    const adventureInterest = {
+      id: randomUUID(),
+      label: 'Dinosaurer',
+      active: true,
+    };
     state.id = '00000000-0000-4000-8000-000000000021';
     const next = await learningTurn(
       state,
@@ -216,7 +221,7 @@ describe('PostgreSQL RLS', () => {
       randomUUID(),
       now,
       profile,
-      [],
+      [adventureInterest],
       null,
       'Bokmål',
     );
@@ -242,13 +247,18 @@ describe('PostgreSQL RLS', () => {
       {
         type: 'answer',
         itemId: next.state.active!.id,
-        answer: next.state.active!.item.answer,
+        answer: next.state.active!.expressionRequired
+          ? {
+              value: Number(next.state.active!.item.answer),
+              expression: next.state.active!.item.expression!,
+            }
+          : next.state.active!.item.answer,
         inputMode: 'tastatur',
       },
       randomUUID(),
       now,
       profile,
-      [],
+      [adventureInterest],
       null,
       'Bokmål',
     );
@@ -263,6 +273,15 @@ describe('PostgreSQL RLS', () => {
         ])
       ).rows[0].ok,
     ).toBe(true);
+    const saved = (
+      await db.query<{
+        engine_state: { adventures: unknown; learningEvidence: unknown };
+      }>('select engine_state from public.sessions where id=$1', [state.id])
+    ).rows[0].engine_state;
+    expect(saved.adventures).toEqual(
+      JSON.parse(JSON.stringify(attempt.state.adventures)),
+    );
+    expect(saved.learningEvidence).toEqual(attempt.state.learningEvidence);
     expect(
       (
         await db.query<{ n: number }>(

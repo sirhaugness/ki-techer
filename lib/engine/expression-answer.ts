@@ -1,4 +1,5 @@
 import { parse, type MathNode } from 'mathjs';
+import { arithmeticValue } from './verified-item';
 
 /** Arithmetic only. Never evaluate user functions, symbols or assignments. */
 export function checkMultiplicationExpression(
@@ -8,7 +9,7 @@ export function checkMultiplicationExpression(
 ): boolean {
   if (text.length > 120) return false;
   const normalized = text
-    .replaceAll(/[×·x]/g, '*')
+    .replaceAll(/[×·xX]/g, '*')
     .replaceAll(':', '/')
     .replaceAll(',', '.');
   const sides = normalized.split('=');
@@ -42,7 +43,7 @@ export function checkMultiplicationExpression(
       ((operands.length === a && operands.every((n) => n === b)) ||
         (operands.length === b && operands.every((n) => n === a)));
     if (!multiplied && !added) return false;
-    const result = root.compile().evaluate();
+    const result = arithmeticValue(root);
     return (
       result === a * b &&
       sides.every((s) => !/^\s*\d+\s*$/.test(s) || Number(s) === result)
