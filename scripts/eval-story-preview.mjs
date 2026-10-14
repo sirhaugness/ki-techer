@@ -170,10 +170,16 @@ try {
       'select-interest',
     );
     await page.getByRole('link', { name: 'Tilbake til kartet' }).click();
-    const startButton = page.getByRole('button', {
-      name: 'Start eventyret',
+    const endMapButton = page.getByRole('button', {
+      name: 'Tilbake til kartet',
       exact: true,
     });
+    if (await endMapButton.isVisible()) await endMapButton.click();
+    const startButton = page
+      .getByRole('button', { name: 'Start eventyret', exact: true })
+      .or(
+        page.getByRole('button', { name: 'Fortsett eventyret', exact: true }),
+      );
     const switchButton = page.getByRole('button', {
       name: `Fortsett eventyret om ${interest}`,
       exact: true,
@@ -184,7 +190,16 @@ try {
       .or(switchButton)
       .or(moodButton)
       .or(taskQuestion)
+      .or(endMapButton)
       .waitFor({ state: 'visible', timeout: 60000 });
+    if (await endMapButton.isVisible()) {
+      await endMapButton.click();
+      await startButton
+        .or(switchButton)
+        .or(moodButton)
+        .or(taskQuestion)
+        .waitFor({ state: 'visible', timeout: 60000 });
+    }
     if (await moodButton.isVisible()) {
       await command(() => moodButton.click(), 'research-and-first-chapter');
     } else if (await startButton.isVisible()) {
@@ -325,8 +340,8 @@ try {
       );
     }
     if (
-      view.adventure.number !== 2 ||
-      view.adventure.journey.chapters[0].events.length !== 6
+      view.adventure.number !== initial.adventure.number + 1 ||
+      view.adventure.journey.chapters.at(-2).events.length !== 6
     )
       throw new Error('History did not survive chapter transition.');
     await page

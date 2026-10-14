@@ -75,6 +75,54 @@ describe('story-driven saga', () => {
       ),
     ).toBe(true);
   });
+  it('resumes an existing item after a new session and interest switch without inserting its ID twice', async () => {
+    const provider = storyFixtureProvider();
+    const interest = { id: randomUUID(), label: 'Star Wars', active: true };
+    const dinosaur = { id: randomUUID(), label: 'Dinosaurer', active: true };
+    const step = (
+      state: Snapshot,
+      event: LearningEvent,
+      interests = [interest],
+    ) =>
+      learningTurn(
+        state,
+        event,
+        randomUUID(),
+        now,
+        profile,
+        interests,
+        provider,
+        'Bokmål.',
+      );
+    const created = await step(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+    );
+    expect(created.events.items).toHaveLength(1);
+    const originalItem = created.state.active!.id;
+    const ended = await step(created.state, {
+      type: 'end',
+      mood: 'rolig',
+      reflection: '',
+    });
+    const resumed = await step(
+      createSession(profile, ended.state, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+    );
+    expect(resumed.state.active!.id).toBe(originalItem);
+    expect(resumed.events.items).toHaveLength(0);
+    const switched = await step(resumed.state, { type: 'next' }, [
+      { ...interest, active: false },
+      dinosaur,
+    ]);
+    expect(switched.events.items).toHaveLength(1);
+    const returned = await step(switched.state, { type: 'next' }, [
+      interest,
+      { ...dinosaur, active: false },
+    ]);
+    expect(returned.state.active!.id).toBe(originalItem);
+    expect(returned.events.items).toHaveLength(0);
+  });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
       const interest = { id: randomUUID(), label, active: true };

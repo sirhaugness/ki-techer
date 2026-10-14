@@ -190,6 +190,7 @@ export async function learningTurn(
 ) {
   const state = structuredClone(original),
     events = emptyEvents();
+  let resumedItem = false;
   if (state.seenEvents.includes(eventId))
     return { state, events, replayed: true };
   upgradeSavedPresentation(state);
@@ -324,6 +325,7 @@ export async function learningTurn(
       if (adventure?.paused) {
         const paused = adventure.paused;
         runtime.active = paused.active;
+        resumedItem = true;
         state.hints = paused.hints;
         state.lastAnswer = paused.lastAnswer;
         state.correct = paused.correct;
@@ -1068,7 +1070,7 @@ export async function learningTurn(
   if (runtime.ended) state.endedAt = now;
   state.seenEvents = [...state.seenEvents, eventId].slice(-128);
   state.revision++;
-  if (state.active && state.active.id !== original.active?.id) {
+  if (state.active && state.active.id !== original.active?.id && !resumedItem) {
     const a = state.active;
     events.items.push({
       id: a.id,
