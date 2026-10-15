@@ -366,6 +366,13 @@ export async function planStoryAdventure(
         phase,
         status: (error as { status?: number }).status,
         code: (error as { code?: string }).code,
+        failure:
+          error instanceof StoryPlanningError
+            ? error.phase
+            : error instanceof Error
+              ? error.name
+              : 'unknown',
+        diagnostics,
       });
       throw new StoryPlanningError(phase);
     }
