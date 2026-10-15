@@ -32,6 +32,16 @@ import {
   type StoryEvent,
 } from './story-contract';
 
+const effectSubjects: Record<string, string[]> = {
+  open: ['gate'],
+  launch: ['starship'],
+  signal: ['sender', 'mirror'],
+  travel: ['map', 'marker-trail', 'starship', 'droid', 'creature'],
+  build: ['bridge', 'starship', 'droid', 'storage', 'slab', 'marker-trail'],
+  trade: ['market'],
+  rescue: ['creature', 'person', 'droid', 'gate'],
+};
+
 export class StoryPlanningError extends Error {
   constructor(public readonly phase: string) {
     super(
@@ -222,18 +232,12 @@ function validateChapter(
         }
       }
     }
-    const subjects: Record<string, string[]> = {
-      open: ['gate'],
-      launch: ['starship'],
-      signal: ['sender', 'mirror'],
-      travel: ['map', 'marker-trail', 'starship', 'droid', 'creature'],
-      build: ['bridge', 'starship', 'droid', 'storage', 'slab', 'marker-trail'],
-      trade: ['market'],
-      rescue: ['creature', 'person', 'droid', 'gate'],
-    };
-    if (subjects[m.effect] && !subjects[m.effect].includes(m.subject))
+    if (
+      effectSubjects[m.effect] &&
+      !effectSubjects[m.effect].includes(m.subject)
+    )
       issues.push(
-        `${m.id}: Bildets hovedgjenstand må passe den synlige konsekvensen ${m.effect}.`,
+        `${m.id}: effect ${m.effect} krever subject ${effectSubjects[m.effect].join(' eller ')}, ikke ${m.subject}.`,
       );
     if (
       !item ||
@@ -256,7 +260,7 @@ function validateChapter(
       );
     if (i === 0 && lastActualEvent && !m.follows.includes(lastActualEvent.id))
       issues.push(
-        'Åpningen må følge konkret fra den siste faktisk gjennomførte hendelsen, ikke starte en tidligere løst hendelse på nytt.',
+        `Første oppdrags follows må inneholde nøyaktig «${lastActualEvent.id}», den siste faktisk gjennomførte hendelsen. Ikke forkort ID-en eller start en tidligere løst hendelse på nytt.`,
       );
     // Uses also describes equipment already present at the location. The story
     // reviewer checks its provenance; only tracked consumption changes inventory.
@@ -411,6 +415,14 @@ export async function planStoryAdventure(
       input: JSON.stringify({
         interest: input.label,
         chapter: number,
+        contract: {
+          firstMissionFollows: history.lastActualEvent
+            ? [history.lastActualEvent.id]
+            : [],
+          effectSubjects,
+          quantityRule:
+            'Spørsmål og ledetråd bruker {{navn}} fra quantities. Ved geometri må {{count}} være med selv når bare én figur vises. Ingen bokstavelige oppgavetall eller nye mengdefelt.',
+        },
         research,
         history,
         assessment: input.assessment,
