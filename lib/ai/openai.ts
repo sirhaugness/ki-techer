@@ -124,7 +124,7 @@ export function openaiProvider(
       const started = Date.now();
       const outputLimit = Math.max(
         600,
-        Math.min(8000, request.maxOutputTokens ?? 1200),
+        Math.min(12000, request.maxOutputTokens ?? 1200),
       );
       const ceiling = estimateCost(
         Buffer.byteLength(
