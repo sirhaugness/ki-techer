@@ -49,7 +49,7 @@ Ingen påstand om god fortellerkvalitet bygger bare på grønt bygg, modellkriti
 
 Sceneutvalget har en begrenset illustrasjons- og animasjonsbibliotek. Det er ikke nye, profesjonelt illustrerte animasjoner generert for hver hendelse. Tidligere kapitler kan bare videreføres med informasjon den gamle versjonen faktisk lagret. Lang kapittelgenerering viser fremdrift, men modellen kan fortsatt bruke over ett minutt. Kvalitetskontrollen er strengere, ikke en garanti mot alle dårlige historier.
 
-Den verifiserte koden er tilgjengelig i [Preview](https://ki-techer-p3k51oqfo-team-thor1.vercel.app). Thor skal vurdere den spillbare testversjonen og de faktiske scenene før eventuell merge av PR #14. Ingen nøkkel eller oppsett trengs.
+Nyeste Preview-lenke finnes i [PR #14](https://github.com/sirhaugness/ki-techer/pull/14). Thor skal vurdere den spillbare testversjonen og de faktiske scenene før eventuell merge av PR #14. Ingen nøkkel eller oppsett trengs.
 
 ## Første kvalitetsstopp
 
@@ -66,3 +66,15 @@ Barnesynlige interne ord som «map» og «storage» fjernes fra scenens svartell
 Tutor-evaluator fant dobbelbruk av åtte kiler: success hadde allerede satt dem på plass, mens valget brukte dem igjen. Forfatter og kritiker krever nå at afterMission klargjør en ubrukt ressursmengde, og at senere oppdrag faktisk utfører den valgte bruken. Dette skjerper kontrollen; det avdekkede gamle kilevalget blir ikke omskrevet, og forbedringen er ikke dokumentert med et nytt modellgenerert kapittel etter denne siste instruksjonsendringen.
 
 Gjenstående kvalitetsmangler: generiske kart, kasser og verktøy illustrerer fortsatt enkelte stein-, kile- og posehandlinger upresist; den samme svarflaten brukes ofte; figurfortegnelsen kan vise en figur som ennå ikke er befridd. Et korrekt regnestykke og en akseptert modellplan er ikke i seg selv bevis på at handlingen er morsom eller visuelt presis. Neste gjennomgang må vurdere disse konkrete forholdene før merge.
+
+## Konkret oppfølging 15. oktober, etter kvalitetsstoppen
+
+De påviste bildeavvikene har egne visninger: steinmerker legges i de gitte gruppene, leirekiler settes rundt en sporhelle, støysendere og harpiks pakkes i en pose, og et speil kan sende lysblink. Oppgraderingen bruker bare visningsfelter; oppgavetekst, fasit og lagrede fortellerhendelser endres ikke. Konkrete port-/skipmål bevares, og deling følger barnets foreslåtte mengde eller faktiske fordeling. Tilstandsmarkeringen for korrekt svar flytter ikke svartelleren ned bak tilbakemeldingen. Steinene flyttes fri av stedsteksten. Figurrekken kalles «Figurer i historien».
+
+Et lokalt browser-forløp gjenspiller de seks faktiske modellscenene fra kvalitetsstoppen. Det kontrollerer tjue steinmerker, åtte kiler, en pose med støysendere og at svarteller/tilbakemelding ligger riktig. Alle seks er fotografert etter animasjonstiden. Dette er en lokal visuell gjenspilling, ikke nye hosted modellkall. Artefakter og gjenspillingsskript ligger i `/workspace/story-verification/concrete-replay`. Begge ordinære historiedrevne browser-tester er også bestått etter endringen.
+
+Nye planer har `resourceEffect`: gather, use eller none. Valget krever gather og en konsekvens som klargjør/avdekker/fyller tilgjengelige ressurser; koden avviser bygging, avreise eller annet forbruk før valget. Forfatter og kritiker må samtidig kontrollere at success faktisk lar mengden være ubrukt. Dette kontrollerer både kontrakt og tekst, men matematisk ressurslogikk i fri fortelling er fortsatt ikke fullstendig maskinbevist.
+
+En ny ekte Star Wars-plan i denne versjonen ble avvist fordi talernavn ikke matchet figurlisten. Entydige kortnavn og Unicode-bindestreker knyttes nå til introduserte figurer; ukjente og tvetydige navn avvises fortsatt. Regresjonstester er bestått. Etter dette er testhusholdningens KI-budsjett brukt opp, så en ny ekte generering etter navnerettelsen er ikke fullført. Økt testramme fra 100 til 130 kroner er forespurt og ikke antatt godkjent. Ingen ny nøkkel eller produksjonsendring er nødvendig.
+
+For `0f5bbce` er [kvalitetsjobben 38692234849](https://github.com/sirhaugness/ki-techer/actions/runs/38692234849) og full lokal Supabase/Auth grønne: 445 Vitest-tester, 22 browser-tester, produksjonsbygg og 100/100 tilgjengelighet på åtte visninger. [Dev-migrasjonsjobben 38692234848](https://github.com/sirhaugness/ki-techer/actions/runs/38692234848) er grønn. Siste endring etter dette gjelder bare scenens layout og tilhørende browser-kontroll. Nyeste Preview-lenke og sjekkstatus føres i PR #14. Fysisk iPad/Safari er fortsatt ikke prøvd.

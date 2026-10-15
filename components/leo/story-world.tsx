@@ -555,636 +555,654 @@ export function StoryWorld({
       data-backdrop={scene.backdrop}
       data-action={scene.action}
     >
-      <svg
-        viewBox="0 0 1000 440"
-        role="img"
-        aria-label={`${scene.location}. ${solved ? scene.success : scene.before}`}
-      >
-        <defs>
-          <linearGradient id={`${id}-sky`} x2="0.6" y2="1">
-            <stop
-              stopColor={forest ? '#163d44' : cave ? '#141e38' : '#101d36'}
-            />
-            <stop
-              offset="1"
-              stopColor={forest ? '#72aa83' : space ? '#354868' : '#e6a366'}
-            />
-          </linearGradient>
-          <radialGradient id={`${id}-glow`}>
-            <stop stopColor="#75eaff" stopOpacity=".45" />
-            <stop offset="1" stopColor="#75eaff" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id={`${id}-ground`} x2="0" y2="1">
-            <stop stopColor={forest ? '#294e47' : '#433d4b'} />
-            <stop offset="1" stopColor="#101b2e" />
-          </linearGradient>
-        </defs>
-        <rect width="1000" height="440" fill={`url(#${id}-sky)`} />
-        {space &&
-          Array.from({ length: 45 }, (_, i) => (
-            <circle
-              key={i}
-              cx={(i * 137 + 73) % 1000}
-              cy={(i * 43 + 17) % 210}
-              r={i % 4 === 0 ? 2 : 1}
-              fill="#dbeaff"
-              opacity={0.3 + (i % 3) * 0.2}
-            />
-          ))}
-        {!forest && !cave && (
-          <>
-            <circle
-              cx="780"
-              cy="102"
-              r={space ? 65 : 39}
-              fill={space ? '#d2d3db' : '#ffd89b'}
-              opacity=".8"
-            />
-            {scene.backdrop === 'desert' && (
-              <circle cx="690" cy="124" r="24" fill="#ffe6bc" />
-            )}
-          </>
-        )}
-        {forest ? (
-          <>
-            <path
-              d="M0 260Q150 170 320 235T650 190T1000 210V440H0Z"
-              fill="#386956"
-            />
-            {[25, 145, 810, 940].map((x, i) => (
-              <g key={x}>
-                <path d={`M${x} 350V55`} stroke="#243e3c" strokeWidth="28" />
-                <ellipse
-                  cx={x}
-                  cy={70 + i * 14}
-                  rx="100"
-                  ry="65"
-                  fill={i % 2 ? '#397262' : '#264f4c'}
-                />
-                <path
-                  d={`M${x} 210q-70-75-95-10m95-75q75-70 106-5`}
-                  fill="none"
-                  stroke="#315a4d"
-                  strokeWidth="12"
-                />
-              </g>
-            ))}
-          </>
-        ) : cave ? (
-          <>
-            <path
-              d="M0 0h1000v105L848 62 749 142 620 70 532 146 381 45 226 121 119 62 0 172Z"
-              fill="#27364b"
-            />
-            <path
-              d="M0 0v440h115l-43-165 69-152L226 0m774 0v440H882l63-168-100-161-94-111"
-              fill="#1a263b"
-            />
-            {[135, 810, 890].map((x, i) => (
-              <path
-                key={x}
-                d={`m${x} 335 14-${70 + i * 12} 20 9 9 70Z`}
-                fill="#75b9ff"
-                opacity=".8"
-                className="story-crystal"
+      <div className="story-world-stage">
+        <svg
+          viewBox="0 0 1000 440"
+          role="img"
+          aria-label={`${scene.location}. ${solved ? scene.success : scene.before}`}
+        >
+          <defs>
+            <linearGradient id={`${id}-sky`} x2="0.6" y2="1">
+              <stop
+                stopColor={forest ? '#163d44' : cave ? '#141e38' : '#101d36'}
+              />
+              <stop
+                offset="1"
+                stopColor={forest ? '#72aa83' : space ? '#354868' : '#e6a366'}
+              />
+            </linearGradient>
+            <radialGradient id={`${id}-glow`}>
+              <stop stopColor="#75eaff" stopOpacity=".45" />
+              <stop offset="1" stopColor="#75eaff" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id={`${id}-ground`} x2="0" y2="1">
+              <stop stopColor={forest ? '#294e47' : '#433d4b'} />
+              <stop offset="1" stopColor="#101b2e" />
+            </linearGradient>
+          </defs>
+          <rect width="1000" height="440" fill={`url(#${id}-sky)`} />
+          {space &&
+            Array.from({ length: 45 }, (_, i) => (
+              <circle
+                key={i}
+                cx={(i * 137 + 73) % 1000}
+                cy={(i * 43 + 17) % 210}
+                r={i % 4 === 0 ? 2 : 1}
+                fill="#dbeaff"
+                opacity={0.3 + (i % 3) * 0.2}
               />
             ))}
-          </>
-        ) : (
-          <>
-            <path
-              d="M0 277 170 205 344 270 504 194 744 251 862 178 1000 229V440H0Z"
-              fill={space ? '#24364c' : '#aa7558'}
-            />
-            <path
-              d="M0 308q150-90 347-25t330-23 323 29v151H0Z"
-              fill={space ? '#182940' : '#c08863'}
-            />
-          </>
-        )}
-        {artwork && (
-          <image
-            href={artwork}
-            width="1000"
-            height="440"
-            preserveAspectRatio="xMidYMid slice"
-            onError={(event) => {
-              event.currentTarget.style.display = 'none';
-            }}
-          />
-        )}
-        <path
-          d="M0 355Q500 300 1000 355v85H0Z"
-          fill={`url(#${id}-ground)`}
-          opacity={artwork ? 0.35 : 1}
-        />
-        {scene.backdrop === 'river' && (
-          <path
-            d="M360 244q240 30 132 95t110 101H260q-57-79 76-104t24-92"
-            fill="#62b8c6"
-            opacity=".65"
-          />
-        )}
-        {scene.backdrop === 'base' && (
-          <>
-            <path
-              d="M0 0h150l-70 320H0m1000-320H850l70 320h80"
-              fill="#192739"
-              stroke="#58687d"
-              strokeWidth="8"
-            />
-            <path
-              d="M137 30h726"
-              stroke="#a5dfe9"
-              strokeWidth="4"
-              opacity=".45"
-            />
-          </>
-        )}
-        <ellipse
-          cx="500"
-          cy="265"
-          rx="250"
-          ry="185"
-          fill={`url(#${id}-glow)`}
-          opacity={solved ? 1 : 0.35}
-        />
-        {ship ? (
-          <Starship
-            solved={solved}
-            count={count}
-            glyph={scene.glyph}
-            falcon={/falcon/i.test(
-              [scene.location, scene.before, scene.success, ...scene.uses].join(
-                ' ',
-              ),
-            )}
-          />
-        ) : ['creature', 'droid'].includes(scene.subject) ? (
-          <StoryCreature
-            dinosaur={scene.cast.some(
-              (actor) =>
-                (scene.subject === 'creature' &&
-                  actor.appearance === 'dinosaur') ||
-                actor.appearance === 'animal',
-            )}
-          />
-        ) : scene.subject === 'gate' ? (
-          <g transform="translate(395 125)">
-            <path
-              d="M-16 225V0h242v225"
-              fill="#617187"
-              stroke="#a2b6c6"
-              strokeWidth="6"
-            />
-            <rect width="208" height="215" fill="#0b172b" />
-            <g className="story-door">
-              <rect x="4" y="4" width="200" height="208" fill="#33455e" />
+          {!forest && !cave && (
+            <>
+              <circle
+                cx="780"
+                cy="102"
+                r={space ? 65 : 39}
+                fill={space ? '#d2d3db' : '#ffd89b'}
+                opacity=".8"
+              />
+              {scene.backdrop === 'desert' && (
+                <circle cx="690" cy="124" r="24" fill="#ffe6bc" />
+              )}
+            </>
+          )}
+          {forest ? (
+            <>
               <path
-                d="M104 8v193m-92-156h184m-184 112h184"
-                stroke="#627a94"
+                d="M0 260Q150 170 320 235T650 190T1000 210V440H0Z"
+                fill="#386956"
+              />
+              {[25, 145, 810, 940].map((x, i) => (
+                <g key={x}>
+                  <path d={`M${x} 350V55`} stroke="#243e3c" strokeWidth="28" />
+                  <ellipse
+                    cx={x}
+                    cy={70 + i * 14}
+                    rx="100"
+                    ry="65"
+                    fill={i % 2 ? '#397262' : '#264f4c'}
+                  />
+                  <path
+                    d={`M${x} 210q-70-75-95-10m95-75q75-70 106-5`}
+                    fill="none"
+                    stroke="#315a4d"
+                    strokeWidth="12"
+                  />
+                </g>
+              ))}
+            </>
+          ) : cave ? (
+            <>
+              <path
+                d="M0 0h1000v105L848 62 749 142 620 70 532 146 381 45 226 121 119 62 0 172Z"
+                fill="#27364b"
+              />
+              <path
+                d="M0 0v440h115l-43-165 69-152L226 0m774 0v440H882l63-168-100-161-94-111"
+                fill="#1a263b"
+              />
+              {[135, 810, 890].map((x, i) => (
+                <path
+                  key={x}
+                  d={`m${x} 335 14-${70 + i * 12} 20 9 9 70Z`}
+                  fill="#75b9ff"
+                  opacity=".8"
+                  className="story-crystal"
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              <path
+                d="M0 277 170 205 344 270 504 194 744 251 862 178 1000 229V440H0Z"
+                fill={space ? '#24364c' : '#aa7558'}
+              />
+              <path
+                d="M0 308q150-90 347-25t330-23 323 29v151H0Z"
+                fill={space ? '#182940' : '#c08863'}
+              />
+            </>
+          )}
+          {artwork && (
+            <image
+              href={artwork}
+              width="1000"
+              height="440"
+              preserveAspectRatio="xMidYMid slice"
+              onError={(event) => {
+                event.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
+          <path
+            d="M0 355Q500 300 1000 355v85H0Z"
+            fill={`url(#${id}-ground)`}
+            opacity={artwork ? 0.35 : 1}
+          />
+          {scene.backdrop === 'river' && (
+            <path
+              d="M360 244q240 30 132 95t110 101H260q-57-79 76-104t24-92"
+              fill="#62b8c6"
+              opacity=".65"
+            />
+          )}
+          {scene.backdrop === 'base' && (
+            <>
+              <path
+                d="M0 0h150l-70 320H0m1000-320H850l70 320h80"
+                fill="#192739"
+                stroke="#58687d"
+                strokeWidth="8"
+              />
+              <path
+                d="M137 30h726"
+                stroke="#a5dfe9"
                 strokeWidth="4"
+                opacity=".45"
+              />
+            </>
+          )}
+          <ellipse
+            cx="500"
+            cy="265"
+            rx="250"
+            ry="185"
+            fill={`url(#${id}-glow)`}
+            opacity={solved ? 1 : 0.35}
+          />
+          {ship ? (
+            <Starship
+              solved={solved}
+              count={count}
+              glyph={scene.glyph}
+              falcon={/falcon/i.test(
+                [
+                  scene.location,
+                  scene.before,
+                  scene.success,
+                  ...scene.uses,
+                ].join(' '),
+              )}
+            />
+          ) : ['creature', 'droid'].includes(scene.subject) ? (
+            <StoryCreature
+              dinosaur={scene.cast.some(
+                (actor) =>
+                  (scene.subject === 'creature' &&
+                    actor.appearance === 'dinosaur') ||
+                  actor.appearance === 'animal',
+              )}
+            />
+          ) : scene.subject === 'gate' ? (
+            <g transform="translate(395 125)">
+              <path
+                d="M-16 225V0h242v225"
+                fill="#617187"
+                stroke="#a2b6c6"
+                strokeWidth="6"
+              />
+              <rect width="208" height="215" fill="#0b172b" />
+              <g className="story-door">
+                <rect x="4" y="4" width="200" height="208" fill="#33455e" />
+                <path
+                  d="M104 8v193m-92-156h184m-184 112h184"
+                  stroke="#627a94"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="104"
+                  cy="105"
+                  r="27"
+                  fill="#16253b"
+                  stroke={solved ? '#81e4dd' : '#eac284'}
+                  strokeWidth="4"
+                />
+                <ResourceGlyph glyph={scene.glyph} x={87} y={88} size={34} />
+              </g>
+            </g>
+          ) : scene.subject === 'marker-trail' ? (
+            <g className="story-marker-trail">
+              <path
+                d="M70 350Q200 70 390 190T930 100"
+                stroke="#cebd94"
+                strokeWidth="30"
+                fill="none"
+                opacity=".45"
+              />
+              {Array.from(
+                {
+                  length: Math.min(groups ?? groupValues?.length ?? 1, 12),
+                },
+                (_, g) => (
+                  <g
+                    key={g}
+                    transform={`translate(${155 + (g % 4) * 225} ${135 + Math.floor(g / 4) * 120})`}
+                  >
+                    <rect
+                      x="-63"
+                      y="-34"
+                      width="134"
+                      height="100"
+                      rx="30"
+                      fill="#213d3d"
+                      fillOpacity=".8"
+                      stroke="#b9c4a3"
+                      strokeDasharray="5 5"
+                    />
+                    {Array.from(
+                      {
+                        length: Math.min(
+                          12,
+                          groupValues
+                            ? Math.max(0, groupValues[g] ?? 0)
+                            : Math.min(
+                                groupSize ?? count,
+                                Math.max(0, count - g * (groupSize ?? count)),
+                              ),
+                        ),
+                      },
+                      (_, i) => (
+                        <g key={i} className="story-added-object">
+                          <ResourceGlyph
+                            glyph="stone"
+                            x={-51 + (i % 4) * 29}
+                            y={-23 + Math.floor(i / 4) * 28}
+                            size={27}
+                          />
+                        </g>
+                      ),
+                    )}
+                  </g>
+                ),
+              )}
+            </g>
+          ) : scene.subject === 'slab' ? (
+            <g>
+              <path
+                d="m245 129 59-31 443 23 37 156-60 43-470-20Z"
+                fill="#857c68"
+                stroke="#c7bd9e"
+                strokeWidth="7"
+              />
+              <path
+                d="m378 166 22 16m68 8 22 16m78 12 22 16"
+                stroke="#4c5143"
+                strokeWidth="20"
+                strokeLinecap="round"
+              />
+              {Array.from({ length: Math.min(count, 24) }, (_, i) => {
+                const t = (i * 4) / Math.min(count, 24),
+                  f = t % 1,
+                  edge = Math.floor(t);
+                const px =
+                  edge === 0
+                    ? 270 + 440 * f
+                    : edge === 1
+                      ? 730
+                      : edge === 2
+                        ? 730 - 440 * f
+                        : 270;
+                const py =
+                  edge === 0
+                    ? 125
+                    : edge === 1
+                      ? 125 + 175 * f
+                      : edge === 2
+                        ? 300
+                        : 300 - 175 * f;
+                return (
+                  <g
+                    key={i}
+                    transform={`translate(${solved ? px : 130 + (i % 12) * 64} ${solved ? py : 355 + Math.floor(i / 12) * 35}) rotate(${solved ? edge * 90 : 0})`}
+                  >
+                    <g className="story-placed-wedge">
+                      <ResourceGlyph glyph="wedge" x={-18} y={-18} size={36} />
+                    </g>
+                  </g>
+                );
+              })}
+            </g>
+          ) : scene.subject === 'bag' ? (
+            <g className="story-supply-bag" transform="translate(325 92)">
+              <path
+                d="M48 42 20 3h320l-28 39q80 73 60 204-14 40-190 42Q-5 286-12 246-35 120 48 42Z"
+                fill="#876b56"
+                stroke="#d9c4a2"
+                strokeWidth="6"
+              />
+              <path
+                d="M48 42q134 26 264 0"
+                stroke="#e8d3aa"
+                strokeWidth="8"
+                fill="none"
+              />
+              {Array.from({ length: Math.min(count, 40) }, (_, i) => (
+                <g key={i} className="story-added-object">
+                  <ResourceGlyph
+                    glyph={scene.glyph}
+                    x={20 + (i % 8) * 40}
+                    y={225 - Math.floor(i / 8) * 38}
+                    size={34}
+                  />
+                </g>
+              ))}
+              {solved && (
+                <path
+                  className="story-bag-tie"
+                  d="m40 45 277-1m-143 1-37-31 5 34 39-3 44-32-8 35-35-3v35"
+                  stroke="#f0d7a3"
+                  strokeWidth="7"
+                  fill="none"
+                />
+              )}
+            </g>
+          ) : scene.subject === 'mirror' ? (
+            <g transform="translate(510 195)">
+              <path d="M0 1v160m-70 0H70" stroke="#aa8b62" strokeWidth="14" />
+              <ellipse
+                rx="85"
+                ry="65"
+                fill="#a4c7d4"
+                stroke="#e2f2ee"
+                strokeWidth="7"
+                transform="rotate(-20)"
+              />
+              <path
+                className="story-mirror-beam"
+                d="m-280-155 280 155 350-90"
+                stroke="#fff1b3"
+                strokeWidth={solved ? 25 : 5}
+                opacity={solved ? 0.9 : 0.25}
+                fill="none"
+              />
+            </g>
+          ) : scene.subject === 'map' ? (
+            <g transform="translate(205 82)" className="story-holomap">
+              <path
+                d="m0 35 150-35 190 43 222-29v232l-222 25-190-45L0 265Z"
+                fill="#193c53"
+                stroke="#77c7d1"
+                strokeWidth="3"
+              />
+              <path
+                d="m50 198 110-90 107 56L420 62m-160 102 97 57 154-68"
+                stroke="#f7bf6c"
+                strokeWidth="5"
+                fill="none"
+                strokeDasharray="10 8"
               />
               <circle
-                cx="104"
-                cy="105"
-                r="27"
-                fill="#16253b"
-                stroke={solved ? '#81e4dd' : '#eac284'}
+                cx="50"
+                cy="198"
+                r="13"
+                fill="#cce9ff"
+                className="story-traveller"
+              />
+              <circle cx="420" cy="62" r="16" fill="#87ddd9" />
+              <ResourceGlyph glyph="map" x={430} y={190} size={55} />
+            </g>
+          ) : scene.subject === 'market' ? (
+            <g transform="translate(320 132)">
+              <path
+                d="M-70 20 80-42 390 20v25H-70Z"
+                fill="#b15f43"
+                stroke="#ecac7a"
                 strokeWidth="4"
               />
-              <ResourceGlyph glyph={scene.glyph} x={87} y={88} size={34} />
+              <path
+                d="M-43 35v167m401-167v167"
+                stroke="#b38e6d"
+                strokeWidth="9"
+              />
+              <path
+                d="M-55 153h421v64H-55Z"
+                fill="#614741"
+                stroke="#ad8363"
+                strokeWidth="4"
+              />
+              <path
+                d="M230 150h87v-91h-87Z"
+                fill="#273647"
+                stroke="#79949e"
+                strokeWidth="3"
+              />
+              <ResourceGlyph glyph="map" x={247} y={82} size={50} />
             </g>
-          </g>
-        ) : scene.subject === 'marker-trail' ? (
-          <g className="story-marker-trail">
-            <path
-              d="M70 350Q200 70 390 190T930 100"
-              stroke="#cebd94"
-              strokeWidth="30"
-              fill="none"
-              opacity=".45"
-            />
-            {Array.from(
-              {
-                length: Math.min(groups ?? groupValues?.length ?? 1, 12),
-              },
-              (_, g) => (
-                <g
-                  key={g}
-                  transform={`translate(${155 + (g % 4) * 225} ${95 + Math.floor(g / 4) * 120})`}
-                >
-                  <rect
-                    x="-63"
-                    y="-34"
-                    width="134"
-                    height="100"
-                    rx="30"
-                    fill="#213d3d"
-                    fillOpacity=".8"
-                    stroke="#b9c4a3"
-                    strokeDasharray="5 5"
-                  />
-                  {Array.from(
-                    {
-                      length: Math.min(
-                        12,
-                        groupValues
-                          ? Math.max(0, groupValues[g] ?? 0)
-                          : Math.min(
-                              groupSize ?? count,
-                              Math.max(0, count - g * (groupSize ?? count)),
-                            ),
-                      ),
-                    },
-                    (_, i) => (
-                      <g key={i} className="story-added-object">
-                        <ResourceGlyph
-                          glyph="stone"
-                          x={-51 + (i % 4) * 29}
-                          y={-23 + Math.floor(i / 4) * 28}
-                          size={27}
-                        />
-                      </g>
-                    ),
-                  )}
-                </g>
-              ),
-            )}
-          </g>
-        ) : scene.subject === 'slab' ? (
-          <g>
-            <path
-              d="m245 129 59-31 443 23 37 156-60 43-470-20Z"
-              fill="#857c68"
-              stroke="#c7bd9e"
-              strokeWidth="7"
-            />
-            <path
-              d="m378 166 22 16m68 8 22 16m78 12 22 16"
-              stroke="#4c5143"
-              strokeWidth="20"
-              strokeLinecap="round"
-            />
-            {Array.from({ length: Math.min(count, 24) }, (_, i) => {
-              const t = (i * 4) / Math.min(count, 24),
-                f = t % 1,
-                edge = Math.floor(t);
-              const px =
-                edge === 0
-                  ? 270 + 440 * f
-                  : edge === 1
-                    ? 730
-                    : edge === 2
-                      ? 730 - 440 * f
-                      : 270;
-              const py =
-                edge === 0
-                  ? 125
-                  : edge === 1
-                    ? 125 + 175 * f
-                    : edge === 2
-                      ? 300
-                      : 300 - 175 * f;
-              return (
-                <g
+          ) : scene.subject === 'sender' ? (
+            <g transform="translate(510 145)">
+              <path
+                d="M0 166V55m-82 110H81"
+                stroke="#adc2d4"
+                strokeWidth="12"
+              />
+              <path
+                d="M-65 3q65 104 130 0Z"
+                fill="#b6c6d3"
+                stroke="#e5f4ff"
+                strokeWidth="4"
+              />
+              <circle r="10" fill="#77e5ef" />
+              {[1, 2, 3].map((i) => (
+                <path
                   key={i}
-                  transform={`translate(${solved ? px : 130 + (i % 12) * 64} ${solved ? py : 355 + Math.floor(i / 12) * 35}) rotate(${solved ? edge * 90 : 0})`}
-                >
-                  <g className="story-placed-wedge">
-                    <ResourceGlyph glyph="wedge" x={-18} y={-18} size={36} />
-                  </g>
+                  className="story-signal"
+                  d={`M${-i * 25} ${-i * 24}q${i * 25}-${i * 15} ${i * 50} 0`}
+                  stroke="#7ce7ed"
+                  strokeWidth="5"
+                  fill="none"
+                />
+              ))}
+            </g>
+          ) : scene.subject === 'bridge' ? (
+            <g transform="translate(260 260)">
+              <path d="M0 0h475M0 68h475" stroke="#96715a" strokeWidth="11" />
+              {Array.from({ length: Math.min(count, 20) }, (_, i) => (
+                <rect
+                  key={i}
+                  className="story-bridge-plank"
+                  x={(i * 475) / bridgeSlots}
+                  y="-3"
+                  width={450 / bridgeSlots}
+                  height="76"
+                  rx="3"
+                  fill="#dfa76b"
+                  stroke="#f1c790"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                />
+              ))}
+            </g>
+          ) : scene.subject === 'person' ? (
+            <g transform="translate(460 240)">
+              <path
+                d="M-60-110h200v200H-60Z"
+                fill="#172c45"
+                stroke="#9db4cd"
+                strokeWidth="8"
+              />
+              {!solved && (
+                <path
+                  d="M-30-105v190m45-190v190m45-190v190m45-190v190"
+                  stroke="#7d8ca2"
+                  strokeWidth="8"
+                />
+              )}
+            </g>
+          ) : (
+            <g transform="translate(300 164)">
+              <path
+                d="M-27 152h465v50H-27Z"
+                fill="#283c51"
+                stroke="#8099ab"
+                strokeWidth="4"
+              />
+              <path
+                d="M0 143V0h412v143"
+                fill="#182c44"
+                stroke="#587992"
+                strokeWidth="6"
+              />
+              {scene.effect === 'build' && solved && (
+                <g className="story-built-object">
+                  <path
+                    d="M0 10 85-34 412-34 327 10Z"
+                    fill="#d0e0eb"
+                    stroke="#edf8ff"
+                    strokeWidth="5"
+                  />
+                  <path
+                    d="M327 10 412-34v134l-85 43Z"
+                    fill="#8199b0"
+                    stroke="#edf8ff"
+                    strokeWidth="5"
+                  />
+                  <rect
+                    x="0"
+                    y="10"
+                    width="327"
+                    height="133"
+                    fill="#a9bdcc"
+                    stroke="#edf8ff"
+                    strokeWidth="5"
+                  />
+                  <path
+                    d="M109 10v133m109-133v133M0 75h327"
+                    stroke="#526b82"
+                    strokeWidth="5"
+                  />
+                  <path
+                    d="m141 76 22 22 41-50"
+                    fill="none"
+                    stroke="#134d42"
+                    strokeWidth="10"
+                  />
                 </g>
-              );
-            })}
-          </g>
-        ) : scene.subject === 'bag' ? (
-          <g className="story-supply-bag" transform="translate(325 92)">
-            <path
-              d="M48 42 20 3h320l-28 39q80 73 60 204-14 40-190 42Q-5 286-12 246-35 120 48 42Z"
-              fill="#876b56"
-              stroke="#d9c4a2"
-              strokeWidth="6"
-            />
-            <path
-              d="M48 42q134 26 264 0"
-              stroke="#e8d3aa"
-              strokeWidth="8"
-              fill="none"
-            />
-            {Array.from({ length: Math.min(count, 40) }, (_, i) => (
+              )}
+              {scene.action === 'fill' && (
+                <>
+                  <path
+                    d="M40 133V16h332v117"
+                    fill="#284d67"
+                    stroke="#a4d4e3"
+                    strokeWidth="4"
+                  />
+                  <rect
+                    x="43"
+                    y={132 - Math.min(count, 20) * 5}
+                    width="326"
+                    height={Math.min(count, 20) * 5}
+                    fill="#69c4e1"
+                    opacity=".75"
+                  />
+                </>
+              )}
+            </g>
+          )}
+          {scene.effect === 'rescue' &&
+            ['person', 'gate'].includes(scene.subject) &&
+            rescuedActor &&
+            (solved || scene.subject === 'person') && (
+              <g
+                className="story-rescued-friend"
+                transform="translate(500 315)"
+              >
+                <path
+                  d="M-22-56h44l18 67h-80Z"
+                  fill="#a399d3"
+                  stroke="#e7e5ff"
+                  strokeWidth="3"
+                />
+                <path
+                  d="M-18 8v30m36-30v30"
+                  stroke="#cedeea"
+                  strokeWidth="12"
+                />
+                <g transform="translate(-40 -134)">
+                  <ActorPortrait actor={rescuedActor} />
+                </g>
+              </g>
+            )}
+          {!ship &&
+            !['bag', 'slab', 'marker-trail', 'mirror'].includes(
+              scene.subject,
+            ) &&
+            scene.action !== 'route' &&
+            scene.effect !== 'signal' &&
+            scene.effect !== 'open' &&
+            scene.effect !== 'build' &&
+            scene.action !== 'decode' &&
+            Array.from({ length: Math.min(count, 40) }, (_, i) => (
               <g key={i} className="story-added-object">
                 <ResourceGlyph
                   glyph={scene.glyph}
-                  x={20 + (i % 8) * 40}
-                  y={225 - Math.floor(i / 8) * 38}
-                  size={34}
+                  x={337 + (i % 10) * 34}
+                  y={265 - Math.floor(i / 10) * 35}
+                  size={30}
                 />
               </g>
             ))}
-            {solved && (
-              <path
-                className="story-bag-tie"
-                d="m40 45 277-1m-143 1-37-31 5 34 39-3 44-32-8 35-35-3v35"
-                stroke="#f0d7a3"
-                strokeWidth="7"
-                fill="none"
-              />
-            )}
-          </g>
-        ) : scene.subject === 'mirror' ? (
-          <g transform="translate(510 195)">
-            <path d="M0 1v160m-70 0H70" stroke="#aa8b62" strokeWidth="14" />
-            <ellipse
-              rx="85"
-              ry="65"
-              fill="#a4c7d4"
-              stroke="#e2f2ee"
-              strokeWidth="7"
-              transform="rotate(-20)"
-            />
-            <path
-              className="story-mirror-beam"
-              d="m-280-155 280 155 350-90"
-              stroke="#fff1b3"
-              strokeWidth={solved ? 25 : 5}
-              opacity={solved ? 0.9 : 0.25}
-              fill="none"
-            />
-          </g>
-        ) : scene.subject === 'map' ? (
-          <g transform="translate(205 82)" className="story-holomap">
-            <path
-              d="m0 35 150-35 190 43 222-29v232l-222 25-190-45L0 265Z"
-              fill="#193c53"
-              stroke="#77c7d1"
-              strokeWidth="3"
-            />
-            <path
-              d="m50 198 110-90 107 56L420 62m-160 102 97 57 154-68"
-              stroke="#f7bf6c"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="10 8"
-            />
-            <circle
-              cx="50"
-              cy="198"
-              r="13"
-              fill="#cce9ff"
-              className="story-traveller"
-            />
-            <circle cx="420" cy="62" r="16" fill="#87ddd9" />
-            <ResourceGlyph glyph="map" x={430} y={190} size={55} />
-          </g>
-        ) : scene.subject === 'market' ? (
-          <g transform="translate(320 132)">
-            <path
-              d="M-70 20 80-42 390 20v25H-70Z"
-              fill="#b15f43"
-              stroke="#ecac7a"
-              strokeWidth="4"
-            />
-            <path
-              d="M-43 35v167m401-167v167"
-              stroke="#b38e6d"
-              strokeWidth="9"
-            />
-            <path
-              d="M-55 153h421v64H-55Z"
-              fill="#614741"
-              stroke="#ad8363"
-              strokeWidth="4"
-            />
-            <path
-              d="M230 150h87v-91h-87Z"
-              fill="#273647"
-              stroke="#79949e"
-              strokeWidth="3"
-            />
-            <ResourceGlyph glyph="map" x={247} y={82} size={50} />
-          </g>
-        ) : scene.subject === 'sender' ? (
-          <g transform="translate(510 145)">
-            <path d="M0 166V55m-82 110H81" stroke="#adc2d4" strokeWidth="12" />
-            <path
-              d="M-65 3q65 104 130 0Z"
-              fill="#b6c6d3"
-              stroke="#e5f4ff"
-              strokeWidth="4"
-            />
-            <circle r="10" fill="#77e5ef" />
-            {[1, 2, 3].map((i) => (
-              <path
-                key={i}
-                className="story-signal"
-                d={`M${-i * 25} ${-i * 24}q${i * 25}-${i * 15} ${i * 50} 0`}
-                stroke="#7ce7ed"
-                strokeWidth="5"
-                fill="none"
-              />
-            ))}
-          </g>
-        ) : scene.subject === 'bridge' ? (
-          <g transform="translate(260 260)">
-            <path d="M0 0h475M0 68h475" stroke="#96715a" strokeWidth="11" />
-            {Array.from({ length: Math.min(count, 20) }, (_, i) => (
-              <rect
-                key={i}
-                className="story-bridge-plank"
-                x={(i * 475) / bridgeSlots}
-                y="-3"
-                width={450 / bridgeSlots}
-                height="76"
-                rx="3"
-                fill="#dfa76b"
-                stroke="#f1c790"
-                style={{ animationDelay: `${i * 80}ms` }}
-              />
-            ))}
-          </g>
-        ) : scene.subject === 'person' ? (
-          <g transform="translate(460 240)">
-            <path
-              d="M-60-110h200v200H-60Z"
-              fill="#172c45"
-              stroke="#9db4cd"
-              strokeWidth="8"
-            />
-            {!solved && (
-              <path
-                d="M-30-105v190m45-190v190m45-190v190m45-190v190"
-                stroke="#7d8ca2"
-                strokeWidth="8"
-              />
-            )}
-          </g>
-        ) : (
-          <g transform="translate(300 164)">
-            <path
-              d="M-27 152h465v50H-27Z"
-              fill="#283c51"
-              stroke="#8099ab"
-              strokeWidth="4"
-            />
-            <path
-              d="M0 143V0h412v143"
-              fill="#182c44"
-              stroke="#587992"
-              strokeWidth="6"
-            />
-            {scene.effect === 'build' && solved && (
-              <g className="story-built-object">
-                <path
-                  d="M0 10 85-34 412-34 327 10Z"
-                  fill="#d0e0eb"
-                  stroke="#edf8ff"
-                  strokeWidth="5"
-                />
-                <path
-                  d="M327 10 412-34v134l-85 43Z"
-                  fill="#8199b0"
-                  stroke="#edf8ff"
-                  strokeWidth="5"
-                />
-                <rect
-                  x="0"
-                  y="10"
-                  width="327"
-                  height="133"
-                  fill="#a9bdcc"
-                  stroke="#edf8ff"
-                  strokeWidth="5"
-                />
-                <path
-                  d="M109 10v133m109-133v133M0 75h327"
-                  stroke="#526b82"
-                  strokeWidth="5"
-                />
-                <path
-                  d="m141 76 22 22 41-50"
-                  fill="none"
-                  stroke="#134d42"
-                  strokeWidth="10"
-                />
-              </g>
-            )}
-            {scene.action === 'fill' && (
-              <>
-                <path
-                  d="M40 133V16h332v117"
-                  fill="#284d67"
-                  stroke="#a4d4e3"
-                  strokeWidth="4"
-                />
-                <rect
-                  x="43"
-                  y={132 - Math.min(count, 20) * 5}
-                  width="326"
-                  height={Math.min(count, 20) * 5}
-                  fill="#69c4e1"
-                  opacity=".75"
-                />
-              </>
-            )}
-          </g>
-        )}
-        {scene.effect === 'rescue' &&
-          ['person', 'gate'].includes(scene.subject) &&
-          rescuedActor &&
-          (solved || scene.subject === 'person') && (
-            <g className="story-rescued-friend" transform="translate(500 315)">
-              <path
-                d="M-22-56h44l18 67h-80Z"
-                fill="#a399d3"
-                stroke="#e7e5ff"
-                strokeWidth="3"
-              />
-              <path d="M-18 8v30m36-30v30" stroke="#cedeea" strokeWidth="12" />
-              <g transform="translate(-40 -134)">
-                <ActorPortrait actor={rescuedActor} />
-              </g>
+          {allocations.length > 0 && (
+            <g>
+              {allocations.map((n, i) => (
+                <g
+                  key={i}
+                  transform={`translate(${180 + (i * 640) / Math.max(allocations.length - 1, 1)} 360)`}
+                >
+                  <circle
+                    r="24"
+                    fill="#152c45"
+                    stroke="#79c5d1"
+                    strokeWidth="2"
+                  />
+                  <text textAnchor="middle" y="7" fill="#e7f5ff" fontSize="22">
+                    {n}
+                  </text>
+                </g>
+              ))}
             </g>
           )}
-        {!ship &&
-          !['bag', 'slab', 'marker-trail', 'mirror'].includes(scene.subject) &&
-          scene.action !== 'route' &&
-          scene.effect !== 'signal' &&
-          scene.effect !== 'open' &&
-          scene.effect !== 'build' &&
-          scene.action !== 'decode' &&
-          Array.from({ length: Math.min(count, 40) }, (_, i) => (
-            <g key={i} className="story-added-object">
-              <ResourceGlyph
-                glyph={scene.glyph}
-                x={337 + (i % 10) * 34}
-                y={265 - Math.floor(i / 10) * 35}
-                size={30}
+          {solved && (
+            <g className="story-completion-pulse">
+              <circle
+                cx="500"
+                cy="235"
+                r="110"
+                fill="none"
+                stroke="#83e8dc"
+                strokeWidth="4"
+                opacity=".7"
               />
             </g>
-          ))}
-        {allocations.length > 0 && (
-          <g>
-            {allocations.map((n, i) => (
-              <g
-                key={i}
-                transform={`translate(${180 + (i * 640) / Math.max(allocations.length - 1, 1)} 360)`}
-              >
-                <circle
-                  r="24"
-                  fill="#152c45"
-                  stroke="#79c5d1"
-                  strokeWidth="2"
-                />
-                <text textAnchor="middle" y="7" fill="#e7f5ff" fontSize="22">
-                  {n}
-                </text>
-              </g>
-            ))}
-          </g>
-        )}
-        {solved && (
-          <g className="story-completion-pulse">
-            <circle
+          )}
+          {scene.effect === 'shield' && (
+            <ellipse
+              className="story-shield"
               cx="500"
-              cy="235"
-              r="110"
-              fill="none"
-              stroke="#83e8dc"
+              cy="255"
+              rx="290"
+              ry="140"
+              fill="#73d4ef"
+              fillOpacity=".1"
+              stroke="#8ce7ff"
               strokeWidth="4"
-              opacity=".7"
             />
-          </g>
-        )}
-        {scene.effect === 'shield' && (
-          <ellipse
-            className="story-shield"
-            cx="500"
-            cy="255"
-            rx="290"
-            ry="140"
-            fill="#73d4ef"
-            fillOpacity=".1"
-            stroke="#8ce7ff"
-            strokeWidth="4"
-          />
-        )}
-        {scene.effect === 'repair' && solved && (
-          <path
-            className="story-repair-spark"
-            d="m267 200 24 12-11 20 28-7m348-25-24 12 11 20-28-7"
-            stroke="#9bf2e6"
-            strokeWidth="5"
-            fill="none"
-          />
-        )}
-      </svg>
-      <div className="story-location">
-        <span aria-hidden="true">◈</span> {scene.location}
-      </div>
-      <div className="story-world-counter" aria-live="polite">
-        <span>Svaret ditt:</span>{' '}
-        {state === 'waiting' && value === 0 ? '?' : value}
+          )}
+          {scene.effect === 'repair' && solved && (
+            <path
+              className="story-repair-spark"
+              d="m267 200 24 12-11 20 28-7m348-25-24 12 11 20-28-7"
+              stroke="#9bf2e6"
+              strokeWidth="5"
+              fill="none"
+            />
+          )}
+        </svg>
+        <div className="story-location">
+          <span aria-hidden="true">◈</span> {scene.location}
+        </div>
+        <div className="story-world-counter" aria-live="polite">
+          <span>Svaret ditt:</span>{' '}
+          {state === 'waiting' && value === 0 ? '?' : value}
+        </div>
       </div>
       {state === 'retry' && (
         <div className="story-world-retry" role="status">

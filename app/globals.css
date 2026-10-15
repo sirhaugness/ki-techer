@@ -1477,7 +1477,10 @@ button.print-hide {
   background: #12243b;
   border-block: 1px solid #47607a;
 }
-.story-world > svg {
+.story-world-stage {
+  position: relative;
+}
+.story-world-stage > svg {
   display: block;
   width: 100%;
   height: auto;
@@ -1515,10 +1518,11 @@ button.print-hide {
 }
 .story-world-retry,
 .story-world-success {
-  position: absolute;
-  left: 5%;
-  bottom: 18px;
-  max-width: 67%;
+  position: relative;
+  left: auto;
+  bottom: auto;
+  max-width: none;
+  margin: 10px;
   padding: 12px 18px;
   border-radius: 12px;
   font-size: 18px;
