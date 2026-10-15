@@ -56,7 +56,10 @@ describe('OpenAI response accounting', () => {
         schema: z.object({}),
       });
     expect(create).toHaveBeenLastCalledWith(
-      expect.objectContaining({ model: 'gpt-5-mini' }),
+      expect.objectContaining({
+        model: 'gpt-5-mini',
+        reasoning: { effort: 'medium' },
+      }),
       expect.any(Object),
     );
     expect(log).toHaveBeenCalledWith(

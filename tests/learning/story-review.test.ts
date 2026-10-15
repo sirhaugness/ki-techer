@@ -147,6 +147,27 @@ describe('story review enforcement with human-authored verdicts', () => {
     review.priorChoiceImpact.source = 'Oppdiktet valg';
     expect(reviewIssues(review, plan, first)).not.toEqual([]);
   });
+  it('treats an empty legacy archive as no actual history, but preserves inventory-only history', () => {
+    const empty = structuredClone(saga);
+    empty.inventory = [];
+    empty.chapters[0].events = [];
+    empty.chapters[0].choices = [];
+    const review = approvedReview();
+    review.priorChoiceImpact = {
+      ...pass('Tomt arkiv har ingen gjennomført handling.'),
+      source: '',
+      missionId: '',
+    };
+    expect(reviewIssues(review, plan, empty)).toEqual([]);
+    empty.inventory = ['langt klatretau'];
+    expect(reviewIssues(review, plan, empty)).not.toEqual([]);
+    review.priorChoiceImpact = {
+      ...pass('Medbrakt tau brukes i m2.'),
+      source: 'langt klatretau',
+      missionId: 'm2',
+    };
+    expect(reviewIssues(review, plan, empty)).toEqual([]);
+  });
 
   it.each([
     [

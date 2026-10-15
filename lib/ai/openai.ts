@@ -124,7 +124,7 @@ export function openaiProvider(
       const started = Date.now();
       const outputLimit = Math.max(
         600,
-        Math.min(6000, request.maxOutputTokens ?? 1200),
+        Math.min(8000, request.maxOutputTokens ?? 1200),
       );
       const ceiling = estimateCost(
         Buffer.byteLength(
@@ -153,7 +153,13 @@ export function openaiProvider(
             store: false,
             instructions: request.instructions,
             ...(/^(gpt-[56]|o[134])/.test(model)
-              ? { reasoning: { effort: 'low' as const } }
+              ? {
+                  reasoning: {
+                    effort: request.purpose.startsWith('story-')
+                      ? ('medium' as const)
+                      : ('low' as const),
+                  },
+                }
               : {}),
             input: [
               { role: 'user', content: request.input },

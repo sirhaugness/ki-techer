@@ -28,6 +28,12 @@ export const reviewSchema = z.object({
 });
 
 /** Fail closed on incomplete checks, false approval or invented history references. */
+export function hasStoryHistory(saga: StorySaga): boolean {
+  return (
+    saga.inventory.length > 0 ||
+    saga.chapters.some((c) => c.events.length > 0 || c.choices.length > 0)
+  );
+}
 export function reviewIssues(
   value: unknown,
   plan: StoryChapter,
@@ -78,7 +84,7 @@ export function reviewIssues(
   }
 
   const impact = review.priorChoiceImpact;
-  if (saga.chapters.length) {
+  if (hasStoryHistory(saga)) {
     const sources = new Set([
       ...saga.inventory,
       ...saga.chapters.flatMap((chapter) => chapter.choices),
