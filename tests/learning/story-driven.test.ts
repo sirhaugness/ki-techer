@@ -206,6 +206,7 @@ describe('story-driven saga', () => {
     const provider = storyFixtureProvider();
     const respond = provider.respond.bind(provider);
     let plans = 0;
+    let selectedFigure: unknown;
     provider.respond = async (request) => {
       const input = JSON.parse(request.input);
       if (input.items) {
@@ -224,6 +225,12 @@ describe('story-driven saga', () => {
           (item: { skill: string }) =>
             item.skill === 'figur-3d-kanter-hjorner-flater',
         );
+        selectedFigure = geometry.figure;
+        expect(selectedFigure).toMatchObject({
+          shape: expect.any(String),
+          property: expect.any(String),
+          count: expect.any(Number),
+        });
         plan.missions[1].itemIndex = geometry.index;
         plan.missions[1].questionTemplate = geometry.question.replace(
           /^Du ser \d+/,
@@ -239,10 +246,8 @@ describe('story-driven saga', () => {
       }
       if (input.plan) {
         expect(input.history).toBeUndefined();
-        expect(input.immutableHistory.chapters).toBeDefined();
-        expect(
-          input.immutableHistory.chapters.some((c: object) => 'choices' in c),
-        ).toBe(false);
+        expect(input.immutableHistory.chapters).toEqual([]);
+        expect(input.problems[1].figure).toEqual(selectedFigure);
       }
       return respond(request);
     };
@@ -323,6 +328,22 @@ describe('story-driven saga', () => {
       const provider = storyFixtureProvider();
       const research = vi.spyOn(provider, 'research');
       let state = createSession(profile, null, now, 0, 'practice', null);
+      const respond = provider.respond.bind(provider);
+      let historicalChoicesChecked = 0;
+      provider.respond = async (request) => {
+        const input = JSON.parse(request.input);
+        if (input.plan && input.immutableHistory.chapters.length) {
+          expect(
+            input.immutableHistory.chapters.map(
+              (c: { choices: string[] }) => c.choices,
+            ),
+          ).toEqual(
+            state.adventures![interest.id].saga!.chapters.map((c) => c.choices),
+          );
+          historicalChoicesChecked++;
+        }
+        return respond(request);
+      };
       const turn = async (event: LearningEvent) => {
         state = (
           await learningTurn(
@@ -442,6 +463,7 @@ describe('story-driven saga', () => {
           : 'Et fossil fra elven',
       );
       expect(research).toHaveBeenCalledTimes(1);
+      expect(historicalChoicesChecked).toBe(2);
       expect(research).toHaveBeenCalledWith(label);
     });
   it('rejects story/quantity errors and retains the original state if generation fails', async () => {
