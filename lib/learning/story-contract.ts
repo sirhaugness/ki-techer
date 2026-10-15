@@ -117,7 +117,12 @@ export const storyMissionSchema = z.object({
   success: short,
   retry: short,
   follows: z.array(z.string().min(1).max(80)).max(8),
-  gains: z.array(z.string().min(1).max(100)).max(4),
+  gains: z
+    .array(z.string().min(1).max(100))
+    .max(4)
+    .describe(
+      'Bare gjenstander dere faktisk tar med videre. Fastmontert utstyr blir igjen, og skal ikke registreres her.',
+    ),
   uses: z.array(z.string().min(1).max(100)).max(4),
   consumes: z.array(z.string().min(1).max(100)).max(4),
 });
@@ -126,9 +131,15 @@ export const storyChapterSchema = z.object({
   arcTitle: short,
   arcGoal: short,
   opening: narration,
-  goal: short,
-  hook: short,
-  continuity: short,
+  goal: short.describe(
+    'Et konkret delmål som faktisk oppnås i dette kapittelets seks oppdrag.',
+  ),
+  hook: short.describe(
+    'Et nytt uløst spørsmål eller problem som oppstår ETTER siste oppdrag. Ikke gjenta kapittelets åpning eller en allerede løst kode.',
+  ),
+  continuity: short.describe(
+    'Forklar konkret hva forrige kapittel oppnådde og hvorfor neste handling følger av det. Ikke start et løst oppdrag på nytt.',
+  ),
   cast: z.array(storyActorSchema).min(1).max(8),
   missions: z.array(storyMissionSchema).length(6),
   decision: z.object({
