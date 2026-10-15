@@ -9,6 +9,8 @@ import { storyFixtureProvider } from '../../lib/learning/story-fixture';
 import {
   storyQuantities,
   validateStoryProblem,
+  storyProblemExample,
+  bindStoryProblem,
 } from '../../lib/engine/story-problem';
 import { generate } from '../../lib/engine/skills/generators';
 import { seededRng } from '../../lib/engine/random';
@@ -27,6 +29,24 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
+  it('offers a verified template example without binding a hidden answer or geometry dimension', () => {
+    const geometry = generate(
+      'figur-3d-kanter-hjorner-flater',
+      1,
+      seededRng(27),
+    );
+    const example = storyProblemExample(geometry)!;
+    expect(example).toContain('{{count}}');
+    expect(bindStoryProblem(example, geometry)).toBe(geometry.question);
+    const item = generate('mult-telling-grupper', 5, seededRng(12));
+    expect(Object.values(storyQuantities(item))).not.toContain(item.answer);
+    expect(
+      storyProblemExample({
+        ...item,
+        question: `${item.question} Svaret er ${item.answer}.`,
+      }),
+    ).toBeUndefined();
+  });
   it.each(['uses', 'consumes', 'alternatives'] as const)(
     'rejects spending the choice raw material again through payoff %s',
     async (field) => {

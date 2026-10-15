@@ -20,5 +20,5 @@ export function textModel() {
   return process.env.OPENAI_MODEL_DEFAULT || 'gpt-5-mini';
 }
 export const SEARCH_CALL_NOK = 0.01 * USD_TO_NOK;
-// Mini search bills an 8k-token content block; allow it even if absent from usage.
+// Reservation allowance for retrieved context, NOT a fixed billing block for GPT-5 mini.
 export const SEARCH_CONTENT_TOKENS = 8000;

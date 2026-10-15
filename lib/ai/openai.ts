@@ -109,12 +109,7 @@ export function openaiProvider(
           input_tokens: input,
           output_tokens: output,
           cost_estimate:
-            estimateCost(
-              input + searches * SEARCH_CONTENT_TOKENS,
-              output,
-              model,
-            ) +
-            searches * SEARCH_CALL_NOK,
+            estimateCost(input, output, model) + searches * SEARCH_CALL_NOK,
           latency_ms: Date.now() - started,
           ok,
           usage_known: usageKnown,

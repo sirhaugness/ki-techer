@@ -16,6 +16,7 @@ import {
   storyQuantities,
   bindStoryProblem,
   validateStoryProblem,
+  storyProblemExample,
 } from '../engine/story-problem';
 import { approved } from '../ai/moderation';
 import { canonicalActor, storySpeaker } from './story-contract';
@@ -420,6 +421,23 @@ export async function planStoryAdventure(
             ? [history.lastActualEvent.id]
             : [],
           effectSubjects,
+          templateExamples: {
+            groups: {
+              question:
+                'Dere skal fylle {{groups}} rom med {{each}} deler i hvert. Hvor mange deler trengs?',
+              clue: '{{groups}} rom, {{each}} deler i hvert.',
+            },
+            missing: {
+              question:
+                'Dere trenger {{total}} deler og har {{known}} klare. Hvor mange mangler?',
+              clue: 'Målet er {{total}}, og {{known}} er klare.',
+            },
+            geometry: {
+              question:
+                'Du ser {{count}} figurer. Hvor mange sider har de til sammen?',
+              clue: 'Undersøk {{count}} figurer i tegningen.',
+            },
+          },
           quantityRule:
             'Spørsmål og ledetråd bruker {{navn}} fra quantities. Ved geometri må {{count}} være med selv når bare én figur vises. Ingen bokstavelige oppgavetall eller nye mengdefelt.',
         },
@@ -465,6 +483,7 @@ export async function planStoryAdventure(
           index,
           skill: item.skillId,
           question: item.question,
+          templateExample: storyProblemExample(item),
           difficulty: item.difficulty,
           kind: missionMath(item).kind,
           mode: missionMath(item).mode,
