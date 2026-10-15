@@ -27,6 +27,35 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
+  it('rejects a choice funded by resources the preceding mission has already spent', async () => {
+    const provider = storyFixtureProvider();
+    const respond = provider.respond.bind(provider);
+    provider.respond = async (request) => {
+      const reply = await respond(request);
+      if (JSON.parse(request.input).items) {
+        const plan = reply.value as StoryChapter;
+        plan.missions.find(
+          (m) => m.id === plan.decision.afterMission,
+        )!.resourceEffect = 'use';
+      }
+      return reply;
+    };
+    const original = createSession(profile, null, now, 0, 'practice', null);
+    const unchanged = structuredClone(original);
+    await expect(
+      learningTurn(
+        original,
+        { type: 'mood', mood: 'rolig' },
+        randomUUID(),
+        now,
+        profile,
+        [{ id: randomUUID(), label: 'Dinosaurer', active: true }],
+        provider,
+        'Bokmål.',
+      ),
+    ).rejects.toThrow('Fremdriften din er beholdt');
+    expect(original).toEqual(unchanged);
+  });
   it('binds quantities without giving away the answer or accepting new mathematical facts', () => {
     const item = generate('div-deling-konkret', 1, seededRng(4));
     expect(storyQuantities(item)).not.toHaveProperty('each');

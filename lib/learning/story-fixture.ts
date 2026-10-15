@@ -254,8 +254,9 @@ export function storyFixtureProvider(): AiProvider {
         glyph: s[5] as StoryMission['glyph'],
         subject: s[6] as StoryMission['subject'],
         action: s[3] as StoryMission['action'],
-        effect: s[4] as StoryMission['effect'],
+        effect: i === 2 ? 'reveal' : (s[4] as StoryMission['effect']),
         expressionRequired: i === 0 && space,
+        resourceEffect: i === 2 ? 'gather' : 'none',
         success: space
           ? [
               'Vingene er reparert. BB-8 leser meldingen fra Leia.',

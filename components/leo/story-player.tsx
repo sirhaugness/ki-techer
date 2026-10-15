@@ -5,6 +5,7 @@ import { StoryWorld, ResourceGlyph, ActorPortrait } from './story-world';
 import { Manipulatives } from './manipulatives';
 import { RouteChoice } from './route-choice';
 import { SolidExplorer } from './solid-explorer';
+import { presentScene } from '@/lib/learning/scene-presentation';
 
 export function StoryPlayer({
   view,
@@ -20,7 +21,7 @@ export function StoryPlayer({
   sectionRef?: Ref<HTMLElement>;
 }) {
   const task = view.task!;
-  const scene = task.scene!;
+  const scene = presentScene(task.scene!, task.question);
   const previous = task.submittedAnswer;
   const initial =
     previous && typeof previous === 'object' && !Array.isArray(previous)
@@ -184,6 +185,24 @@ export function StoryPlayer({
         state={state}
         value={n}
         allocations={allocations}
+        groups={
+          task.interaction?.math.kind === 'groups' ||
+          task.interaction?.math.kind === 'share'
+            ? task.interaction.math.groups
+            : undefined
+        }
+        groupValues={
+          allocations.length
+            ? allocations
+            : task.interaction?.math.kind === 'share'
+              ? Array.from({ length: task.interaction.math.groups }, () => n)
+              : undefined
+        }
+        groupSize={
+          task.interaction?.math.kind === 'groups'
+            ? task.interaction.math.each
+            : undefined
+        }
         targetCount={
           task.interaction?.math.kind === 'groups'
             ? task.interaction.math.total
@@ -192,7 +211,7 @@ export function StoryPlayer({
               : undefined
         }
       />
-      <div className="story-cast" aria-label="Med på oppdraget">
+      <div className="story-cast" aria-label="Figurer i historien">
         {actors.map((actor) => (
           <span key={actor.name}>
             <ActorPortrait actor={actor} />

@@ -23,7 +23,60 @@ export function ResourceGlyph({
       viewBox="0 0 40 40"
       aria-hidden="true"
     >
-      {glyph === 'energy' ? (
+      {glyph === 'stone' ? (
+        <path
+          d="m4 28 5-17 15-5 12 13-6 15H12Z"
+          fill="#b5b3a4"
+          stroke="#e9e4cf"
+          strokeWidth="2"
+        />
+      ) : glyph === 'wedge' ? (
+        <>
+          <path
+            d="M4 32 32 7l4 25Z"
+            fill="#bb7951"
+            stroke="#f1c398"
+            strokeWidth="2"
+          />
+          <path d="m12 29 18-16" stroke="#855235" strokeWidth="3" />
+        </>
+      ) : glyph === 'resin' ? (
+        <>
+          <path
+            d="M7 28Q1 16 14 8t20 9q7 17-9 19Z"
+            fill="#d8a33e"
+            stroke="#ffe08a"
+            strokeWidth="2"
+          />
+          <path d="m12 17 8-5" stroke="#fff0b4" strokeWidth="3" />
+        </>
+      ) : glyph === 'rope' ? (
+        <>
+          <path
+            d="M8 30c-8-13 7-25 19-19s9 24-3 24S8 20 18 18s8 9 2 9"
+            fill="none"
+            stroke="#e8c58d"
+            strokeWidth="5"
+          />
+          <path d="m8 30-5 5" stroke="#bc8b50" strokeWidth="4" />
+        </>
+      ) : glyph === 'beacon' ? (
+        <>
+          <rect
+            x="11"
+            y="12"
+            width="18"
+            height="24"
+            rx="5"
+            fill="#9caec4"
+            stroke="#e8f5ff"
+            strokeWidth="2"
+          />
+          <path d="M20 12V3" stroke="#d5e8f7" strokeWidth="3" />
+          <circle cx="20" cy="23" r="5" fill="#80e6e6" />
+          <path d="m7 7-4-3m30 3 4-3" stroke="#7bdbdf" strokeWidth="2" />
+        </>
+      ) : glyph === 'energy' ? (
         <>
           <rect
             x="9"
@@ -452,12 +505,18 @@ export function StoryWorld({
   value,
   allocations,
   targetCount,
+  groups,
+  groupSize,
+  groupValues,
 }: {
   scene: StoryScene;
   state: 'waiting' | 'working' | 'retry' | 'solved';
   value: number;
   allocations: number[];
   targetCount?: number;
+  groups?: number;
+  groupSize?: number;
+  groupValues?: number[];
 }) {
   const id = useId().replaceAll(':', '');
   const space = ['space', 'base'].includes(scene.backdrop);
@@ -697,6 +756,162 @@ export function StoryWorld({
               <ResourceGlyph glyph={scene.glyph} x={87} y={88} size={34} />
             </g>
           </g>
+        ) : scene.subject === 'marker-trail' ? (
+          <g className="story-marker-trail">
+            <path
+              d="M70 350Q200 70 390 190T930 100"
+              stroke="#cebd94"
+              strokeWidth="30"
+              fill="none"
+              opacity=".45"
+            />
+            {Array.from(
+              {
+                length: Math.min(groups ?? groupValues?.length ?? 1, 12),
+              },
+              (_, g) => (
+                <g
+                  key={g}
+                  transform={`translate(${155 + (g % 4) * 225} ${95 + Math.floor(g / 4) * 120})`}
+                >
+                  <rect
+                    x="-63"
+                    y="-34"
+                    width="134"
+                    height="100"
+                    rx="30"
+                    fill="#213d3d"
+                    fillOpacity=".8"
+                    stroke="#b9c4a3"
+                    strokeDasharray="5 5"
+                  />
+                  {Array.from(
+                    {
+                      length: Math.min(
+                        12,
+                        groupValues
+                          ? Math.max(0, groupValues[g] ?? 0)
+                          : Math.min(
+                              groupSize ?? count,
+                              Math.max(0, count - g * (groupSize ?? count)),
+                            ),
+                      ),
+                    },
+                    (_, i) => (
+                      <g key={i} className="story-added-object">
+                        <ResourceGlyph
+                          glyph="stone"
+                          x={-51 + (i % 4) * 29}
+                          y={-23 + Math.floor(i / 4) * 28}
+                          size={27}
+                        />
+                      </g>
+                    ),
+                  )}
+                </g>
+              ),
+            )}
+          </g>
+        ) : scene.subject === 'slab' ? (
+          <g>
+            <path
+              d="m245 129 59-31 443 23 37 156-60 43-470-20Z"
+              fill="#857c68"
+              stroke="#c7bd9e"
+              strokeWidth="7"
+            />
+            <path
+              d="m378 166 22 16m68 8 22 16m78 12 22 16"
+              stroke="#4c5143"
+              strokeWidth="20"
+              strokeLinecap="round"
+            />
+            {Array.from({ length: Math.min(count, 24) }, (_, i) => {
+              const t = (i * 4) / Math.min(count, 24),
+                f = t % 1,
+                edge = Math.floor(t);
+              const px =
+                edge === 0
+                  ? 270 + 440 * f
+                  : edge === 1
+                    ? 730
+                    : edge === 2
+                      ? 730 - 440 * f
+                      : 270;
+              const py =
+                edge === 0
+                  ? 125
+                  : edge === 1
+                    ? 125 + 175 * f
+                    : edge === 2
+                      ? 300
+                      : 300 - 175 * f;
+              return (
+                <g
+                  key={i}
+                  transform={`translate(${solved ? px : 130 + (i % 12) * 64} ${solved ? py : 355 + Math.floor(i / 12) * 35}) rotate(${solved ? edge * 90 : 0})`}
+                >
+                  <g className="story-placed-wedge">
+                    <ResourceGlyph glyph="wedge" x={-18} y={-18} size={36} />
+                  </g>
+                </g>
+              );
+            })}
+          </g>
+        ) : scene.subject === 'bag' ? (
+          <g className="story-supply-bag" transform="translate(325 92)">
+            <path
+              d="M48 42 20 3h320l-28 39q80 73 60 204-14 40-190 42Q-5 286-12 246-35 120 48 42Z"
+              fill="#876b56"
+              stroke="#d9c4a2"
+              strokeWidth="6"
+            />
+            <path
+              d="M48 42q134 26 264 0"
+              stroke="#e8d3aa"
+              strokeWidth="8"
+              fill="none"
+            />
+            {Array.from({ length: Math.min(count, 40) }, (_, i) => (
+              <g key={i} className="story-added-object">
+                <ResourceGlyph
+                  glyph={scene.glyph}
+                  x={20 + (i % 8) * 40}
+                  y={225 - Math.floor(i / 8) * 38}
+                  size={34}
+                />
+              </g>
+            ))}
+            {solved && (
+              <path
+                className="story-bag-tie"
+                d="m40 45 277-1m-143 1-37-31 5 34 39-3 44-32-8 35-35-3v35"
+                stroke="#f0d7a3"
+                strokeWidth="7"
+                fill="none"
+              />
+            )}
+          </g>
+        ) : scene.subject === 'mirror' ? (
+          <g transform="translate(510 195)">
+            <path d="M0 1v160m-70 0H70" stroke="#aa8b62" strokeWidth="14" />
+            <ellipse
+              rx="85"
+              ry="65"
+              fill="#a4c7d4"
+              stroke="#e2f2ee"
+              strokeWidth="7"
+              transform="rotate(-20)"
+            />
+            <path
+              className="story-mirror-beam"
+              d="m-280-155 280 155 350-90"
+              stroke="#fff1b3"
+              strokeWidth={solved ? 25 : 5}
+              opacity={solved ? 0.9 : 0.25}
+              fill="none"
+            />
+          </g>
         ) : scene.subject === 'map' ? (
           <g transform="translate(205 82)" className="story-holomap">
             <path
@@ -892,6 +1107,7 @@ export function StoryWorld({
             </g>
           )}
         {!ship &&
+          !['bag', 'slab', 'marker-trail', 'mirror'].includes(scene.subject) &&
           scene.action !== 'route' &&
           scene.effect !== 'signal' &&
           scene.effect !== 'open' &&
