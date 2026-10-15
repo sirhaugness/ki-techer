@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import type { StoryChapter, StorySaga } from './story-contract';
+import type { GeneratedItem } from '../engine/skills/generators';
+import { bindStoryProblem } from '../engine/story-problem';
 
 const criterionSchema = z.object({
   pass: z.boolean(),
@@ -11,8 +13,44 @@ const quotedCriterionSchema = criterionSchema.extend({
 });
 export type VisibleStoryText = Record<
   string,
-  { before: string; success: string }
+  {
+    before: string;
+    success: string;
+    variants?: { before: string; success: string }[];
+  }
 >;
+/** Match StoryPlayer and the route substitution in learning/session.ts. */
+export function visibleStoryText(
+  plan: StoryChapter,
+  items: GeneratedItem[],
+): VisibleStoryText {
+  return Object.fromEntries(
+    plan.missions.map((m) => {
+      const bind = (text: string) => bindStoryProblem(text, items[m.itemIndex]);
+      const common = [m.dialogue, m.questionTemplate, m.clueTemplate]
+        .map(bind)
+        .join(' ');
+      const base = {
+        before: `${bind(m.before)} ${common}`,
+        success: bind(m.success),
+      };
+      return [
+        m.id,
+        {
+          ...base,
+          ...(m.id === plan.decision.payoffMission
+            ? {
+                variants: plan.decision.options.map((option) => ({
+                  before: `${option.laterScene} ${common}`,
+                  success: `${option.laterSuccess} ${base.success}`,
+                })),
+              }
+            : {}),
+        },
+      ];
+    }),
+  );
+}
 const normalized = (text: string) =>
   text
     .normalize('NFKC')
@@ -102,9 +140,10 @@ export function reviewIssues(
     check(`${mission.missionId}, konsekvens`, mission.consequenceMatches);
     if (
       mission.physicalRuleExplicit.pass &&
-      !quotes(
-        visible[mission.missionId]?.before ?? '',
-        mission.physicalRuleExplicit.evidence,
+      !(
+        visible[mission.missionId]?.variants ?? [visible[mission.missionId]]
+      ).every((text) =>
+        quotes(text?.before ?? '', mission.physicalRuleExplicit.evidence),
       )
     )
       issues.push(
@@ -136,9 +175,11 @@ export function reviewIssues(
     if (impact.pass) {
       const text = visible[impact.missionId];
       if (
-        !quotes(
-          text ? `${text.before} ${text.success}` : '',
-          impact.evidence,
+        !(text?.variants ?? [text]).every((variant) =>
+          quotes(
+            variant ? `${variant.before} ${variant.success}` : '',
+            impact.evidence,
+          ),
         ) ||
         (saga.inventory.includes(impact.source) &&
           !normalized(impact.evidence).includes(normalized(impact.source)))

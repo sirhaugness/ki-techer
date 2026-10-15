@@ -64,7 +64,9 @@ export function storyFixtureProvider(): AiProvider {
               mathNecessary: pass,
               physicalRuleExplicit: {
                 ...pass,
-                evidence: input.visibleTextByMission[m.id].before.slice(0, 240),
+                evidence: input.problems
+                  .find((problem: { id: string }) => problem.id === m.id)
+                  .question.slice(0, 240),
               },
               consequenceMatches: pass,
             })),

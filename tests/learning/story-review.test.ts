@@ -1,9 +1,16 @@
 import { describe, expect, it } from 'vitest';
+import { generate } from '../../lib/engine/skills/generators';
+import { seededRng } from '../../lib/engine/random';
 import type {
   StoryChapter,
   StorySaga,
 } from '../../lib/learning/story-contract';
-import { reviewIssues, reviewSchema } from '../../lib/learning/story-review';
+import {
+  reviewIssues,
+  reviewSchema,
+  visibleStoryText,
+  type VisibleStoryText,
+} from '../../lib/learning/story-review';
 
 // Human-authored editorial verdicts exercise enforcement, not LLM comprehension.
 const pass = (evidence: string) => ({ pass: true, evidence, issue: '' });
@@ -222,6 +229,56 @@ describe('story review enforcement with human-authored verdicts', () => {
     expect(reviewIssues(noName, plan, saga, visible).join(' ')).toContain(
       'navngi gjenstanden',
     );
+  });
+
+  it('does not accept a rule that disappears in either selected route', () => {
+    const routes: VisibleStoryText = structuredClone(visible);
+    routes.m1.variants = [
+      routes.m1,
+      { before: 'Denne ruten mangler regelen.', success: 'Ferdig.' },
+    ];
+    expect(
+      reviewIssues(approvedReview(), plan, saga, routes).join(' '),
+    ).toContain('fysisk regel');
+  });
+
+  it('matches rendered quantity binding and route replacement, excluding hidden purpose', () => {
+    const item = generate('div-deling-konkret', 1, seededRng(4));
+    const scene = {
+      id: 'm1',
+      itemIndex: 0,
+      before: 'Felles førtekst som erstattes.',
+      dialogue: 'Vi har {{total}} deler.',
+      purpose: 'Hemmelig regel i intern måltekst.',
+      questionTemplate: 'Fordel {{total}} deler i {{groups}} esker.',
+      clueTemplate: 'Bruk {{groups}} esker.',
+      success: '{{total}} deler er fordelt.',
+    };
+    const chapter = {
+      missions: [scene],
+      decision: {
+        payoffMission: 'm1',
+        options: [
+          {
+            laterScene: 'Den korte ruten er valgt.',
+            laterSuccess: 'Kort rute ferdig.',
+          },
+          {
+            laterScene: 'Den lange ruten er valgt.',
+            laterSuccess: 'Lang rute ferdig.',
+          },
+        ],
+      },
+    } as StoryChapter;
+    const text = visibleStoryText(chapter, [item]).m1;
+    expect(text.before).not.toContain('Hemmelig');
+    expect(text.before).not.toContain('{{');
+    expect(text.success).toContain(String(item.params.total));
+    expect(
+      text.variants?.every((v) => !v.before.includes('Felles førtekst')),
+    ).toBe(true);
+    expect(text.variants?.[0].before).toContain('Den korte ruten');
+    expect(text.variants?.[1].before).toContain('Den lange ruten');
   });
 
   it('bounds the editorial evidence sent by the model', () => {
