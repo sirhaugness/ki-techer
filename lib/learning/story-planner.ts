@@ -19,7 +19,7 @@ import {
   validateStoryProblem,
 } from '../engine/story-problem';
 import { approved } from '../ai/moderation';
-import { canonicalActor } from './story-contract';
+import { canonicalActor, storySpeaker } from './story-contract';
 import type {
   Adventure,
   AdventureEvidence,
@@ -225,7 +225,9 @@ function validateChapter(
         `${m.id}: Uttrykksforklaring støttes her bare for konkrete gangemengder.`,
       );
     if (!cast.has(m.speaker))
-      issues.push(`${m.id}: Figuren som snakker må være introdusert.`);
+      issues.push(
+        `${m.id}: Taleren «${m.speaker}» må finnes med nøyaktig navn i cast: ${[...cast].join(', ')}.`,
+      );
     if (i > 0 && !m.follows.includes(plan.missions[i - 1].id))
       issues.push(
         `${m.id}: Oppgi hvilken forrige hendelse oppdraget følger av.`,
@@ -432,6 +434,10 @@ export async function planStoryAdventure(
     try {
       plan = storyChapterSchema.parse(reply.value);
       plan.cast = plan.cast.map(canonicalActor);
+      plan.missions = plan.missions.map((m) => ({
+        ...m,
+        speaker: storySpeaker(m.speaker, plan.cast),
+      }));
       rejectedPlan = plan;
     } catch {
       issues = ['Planen må følge hele scenekontrakten.'];

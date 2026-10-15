@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { presentScene } from '../../lib/learning/scene-presentation';
 import { StoryWorld } from '../../components/leo/story-world';
 import type { StoryScene } from '../../lib/learning/story-contract';
+import { storySpeaker } from '../../lib/learning/story-contract';
 
 const scene: StoryScene = {
   itemIndex: 0,
@@ -37,6 +38,19 @@ const scene: StoryScene = {
 };
 
 describe('concrete scene presentation', () => {
+  it('resolves only introduced and unambiguous speakers', () => {
+    const cast = [
+      { name: 'R2-D2', role: 'Droide', appearance: 'robot' as const },
+      { name: 'Luke Skywalker', role: 'Jedi', appearance: 'jedi' as const },
+    ];
+    expect(storySpeaker('R2‑D2', cast)).toBe('R2-D2');
+    expect(storySpeaker('R2', cast)).toBe('R2-D2');
+    expect(storySpeaker('Luke', cast)).toBe('Luke Skywalker');
+    expect(storySpeaker('Leia', cast)).toBe('Leia');
+    expect(
+      storySpeaker('Luke', [...cast, { ...cast[1], name: 'Luke fra leiren' }]),
+    ).toBe('Luke');
+  });
   it('preserves a gate or ship as the target when the material vocabulary changes', () => {
     expect(
       presentScene(

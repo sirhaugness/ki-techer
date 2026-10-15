@@ -153,6 +153,20 @@ export const storyChapterSchema = z.object({
 export type StoryMission = z.infer<typeof storyMissionSchema>;
 export type StoryChapter = z.infer<typeof storyChapterSchema>;
 export type StoryActor = z.infer<typeof storyActorSchema>;
+const actorKey = (name: string) => {
+  const key = name.toLocaleLowerCase('nb-NO').replaceAll(/[\s\-‐‑–—]/g, '');
+  return (
+    ({ r2: 'r2d2', chewie: 'chewbacca' } as Record<string, string>)[key] ?? key
+  );
+};
+/** Resolve spelling variants and an unambiguous short name within the introduced cast. */
+export function storySpeaker(speaker: string, cast: StoryActor[]): string {
+  const key = actorKey(speaker);
+  const exact = cast.filter((a) => actorKey(a.name) === key);
+  if (exact.length === 1) return exact[0].name;
+  const short = cast.filter((a) => actorKey(a.name.split(/\s+/)[0]) === key);
+  return short.length === 1 ? short[0].name : speaker;
+}
 /** Keep known character art stable even when the planner chooses another sprite. */
 export function canonicalActor(actor: StoryActor): StoryActor {
   const name = actor.name
