@@ -60,7 +60,7 @@ export const storyMissionSchema = z.object({
     .min(1)
     .max(500)
     .describe(
-      'Mengder skrives {{feltnavn}} fra valgt items.quantities, aldri som siffer eller oppdiktede felter. Eksempel: «Du ser {{count}} figurer. Hvor mange sider har de til sammen?»',
+      'Mengder skrives {{feltnavn}} fra valgt items.quantities, aldri som siffer eller oppdiktede felter. Eksempel kun for 2D-sider: «Du ser {{count}} figurer. Hvor mange sider har de til sammen?» Bruk figure.property for riktig egenskap i den valgte oppgaven.',
     ),
   clueTemplate: short.describe(
     'Samme mengdefelter som spørsmålet. Eksempel: «{{groups}} grupper med {{each}} i hver.» Ingen bokstavelige oppgavetall.',

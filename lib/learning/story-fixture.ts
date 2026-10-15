@@ -247,7 +247,7 @@ export function storyFixtureProvider(): AiProvider {
           ];
       const previous = input.history.lastActualEvent;
       const missions: StoryMission[] = scenes.map((s, i) => ({
-        id: `c${chapter}-m${i + 1}`,
+        id: `chapter-${chapter}-m${i + 1}`,
         title: `${s[0]}${chapter > 1 ? ` · spor ${chapter}` : ''}`,
         itemIndex: selected[i].index,
         location: space
@@ -308,7 +308,11 @@ export function storyFixtureProvider(): AiProvider {
               'Familien samles. Ungen viser nye spor mot fjellet.',
             ][i],
         retry: 'Se på mengdene vi har. Vi prøver sammen igjen.',
-        follows: i ? [`c${chapter}-m${i}`] : previous ? [previous.id] : [],
+        follows: i
+          ? [`chapter-${chapter}-m${i}`]
+          : previous
+            ? [previous.id]
+            : [],
         gains: s[9] ? [s[9]] : [],
         uses: [],
         consumes: [],
