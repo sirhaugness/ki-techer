@@ -250,6 +250,8 @@ describe('story-driven saga', () => {
         return result;
       }
       if (input.plan) {
+        expect(request.purpose).toBe('tutor');
+        expect(request.timeoutMs).toBeLessThanOrEqual(60000);
         expect(input.history).toBeUndefined();
         expect(input.immutableHistory.chapters).toEqual([]);
         expect(input.problems[1].figure).toEqual(selectedFigure);
@@ -338,6 +340,9 @@ describe('story-driven saga', () => {
       provider.respond = async (request) => {
         const input = JSON.parse(request.input);
         if (input.plan && input.immutableHistory.chapters.length) {
+          expect(input.immutableHistory.lastActualEvent).toEqual(
+            state.adventures![interest.id].saga!.chapters.at(-1)!.events.at(-1),
+          );
           expect(
             input.immutableHistory.chapters.map(
               (c: { choices: string[] }) => c.choices,

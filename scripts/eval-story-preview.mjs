@@ -196,6 +196,7 @@ try {
     'Dinosaurer',
   ];
   const missionLimit = Number(process.env.EVAL_MISSION_LIMIT ?? 6);
+  const advanceChapter = process.env.EVAL_NEXT_CHAPTER !== '0';
   if (
     !interests.every((i) => ['Star Wars', 'Dinosaurer'].includes(i)) ||
     !Number.isInteger(missionLimit) ||
@@ -282,6 +283,7 @@ try {
         path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-before.png`,
       });
       if (view.task.resolved && !view.adventure.choice) {
+        if (i === 5 && !advanceChapter) break;
         await command(
           () =>
             page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
@@ -305,12 +307,10 @@ try {
       else if (m.kind === 'measure') answer = m.total / m.each;
       else if (
         task.skillTitle === 'Mål volum med klosser og liter' &&
-        /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/.test(
-          task.question,
-        )
+        /(\d+) lag[\s\S]*?(\d+) ganger (\d+)/.test(task.question)
       ) {
         const dimensions = task.question.match(
-          /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/,
+          /(\d+) lag[\s\S]*?(\d+) ganger (\d+)/,
         );
         answer = dimensions
           .slice(1)
@@ -424,6 +424,7 @@ try {
           .locator('.story-player')
           .screenshot({ path: `${output}/${prefix}-payoff.png` });
       await page.reload({ waitUntil: 'networkidle' });
+      if (i === 5 && !advanceChapter) break;
       await command(
         () =>
           page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
@@ -432,10 +433,20 @@ try {
     }
     if (
       missionLimit === 6 &&
+      advanceChapter &&
       (view.adventure.number !== initial.adventure.number + 1 ||
         view.adventure.journey.chapters.at(-2).events.length !== 6)
     )
       throw new Error('History did not survive chapter transition.');
+    if (
+      missionLimit === 6 &&
+      !advanceChapter &&
+      (!view.task.resolved ||
+        view.adventure.journey.chapters.at(-1).events.length !== 6)
+    )
+      throw new Error(
+        'Current chapter did not finish with six recorded events.',
+      );
     await page
       .locator('.story-player')
       .screenshot({ path: `${output}/${prefix}-continuation.png` });
