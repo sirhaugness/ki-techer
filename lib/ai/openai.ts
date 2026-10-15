@@ -165,6 +165,13 @@ export function openaiProvider(
         );
         input = result.usage?.input_tokens ?? 0;
         output = result.usage?.output_tokens ?? 0;
+        if (result.status === 'incomplete')
+          throw Object.assign(new Error('Modellsvar ble avbrutt.'), {
+            code: 'model_response_incomplete',
+          });
+        const value = result.output_text
+          ? (JSON.parse(result.output_text) as unknown)
+          : undefined;
         ok = true;
         return {
           conversation: [
@@ -185,9 +192,7 @@ export function openaiProvider(
                 o.name,
               arguments: JSON.parse(o.arguments) as unknown,
             })),
-          value: result.output_text
-            ? (JSON.parse(result.output_text) as unknown)
-            : undefined,
+          value,
         };
       } finally {
         const call = {

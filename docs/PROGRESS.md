@@ -329,3 +329,11 @@ Reviewer fant og etterkontrollerte to visningsfeil under arbeidet: konkrete port
 **GitHub:** Kode `0f5bbce` har grønne [kvalitets-/Supabase-sjekker 38692234849](https://github.com/sirhaugness/ki-techer/actions/runs/38692234849), 445 enhetstester, 22 browser-tester, produksjonsbygg og 100/100 tilgjengelighet på åtte visninger. Dev-migrasjonsjobben er grønn. Siste layoutrettelse verifiseres i samme løp før overlevering.
 
 **Gjenværende blokkering:** Den ferske modellplanen ble avvist på talernavn; entydige kortnavn og bindestrekvarianter er nå rettet uten å godta ukjente figurer. Testhusholdningen har nå brukt opp KI-rammen på 100 kroner. Godkjenning til å øke testrammen til 130 kroner er forespurt; den nyeste reelle genereringen er derfor ikke ferdig verifisert. Ingen nøkkel er endret. Bare dette avhengige modellarbeidet venter; visning, tester og dokumentasjon er fullført. Midlertidig testprofil beholdes til den ventende testen eller oppryddingen avsluttes; aktive testdelinger tilbakekalles før overlevering.
+
+## 2026-10-15: godkjent ekstra modelltesting
+
+Thor godkjente inntil 30 kroner ekstra. Testen bruker samme syntetiske dev-husholdning og uendret forbruksregnskap, med en midlertidig branch-avgrenset Preview-ramme på 130 kroner (utgangspunkt 100,5127). Vanlig Preview og produksjon er ikke endret.
+
+Første nye generering besto scenekontrakten og kom til den uavhengige kritikeren, men gpt-5-mini brukte hele grensen på 1800 outputtokens og returnerte avkuttet JSON. Kritikeren får nå 4000 tokens og opptil 60 sekunder innenfor samme samlede planleggingsfrist. Provider avviser eksplisitt ufullstendige svar og registrerer parsefeil som mislykket, med tokenforbruk bevart. Elleve relevante tester, typecheck og lint er bestått. Ny faktisk gjennomspilling og opprydding følger før sluttstatus.
+
+**Hva Thor må gjøre:** Ingen oppsett eller ny godkjenning. Avvente den ferdige teststatusen.
