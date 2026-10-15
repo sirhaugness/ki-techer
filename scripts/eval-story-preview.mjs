@@ -328,6 +328,19 @@ try {
           .slice(1)
           .map(Number)
           .reduce((a, b) => a * b, 1);
+      } else if (
+        task.skillTitle === 'Mål volum med klosser og liter' &&
+        /rommer (\d+) · (\d+) klosser i hvert lag\. Den har (\d+) lag/.test(
+          task.question,
+        )
+      ) {
+        const dimensions = task.question.match(
+          /rommer (\d+) · (\d+) klosser i hvert lag\. Den har (\d+) lag/,
+        );
+        answer = dimensions
+          .slice(1)
+          .map(Number)
+          .reduce((a, b) => a * b, 1);
       } else if (task.visual.type === 'figur3d' && task.visual.shape) {
         const solid = solidFor(task.visual.shape);
         const quantity = /hjørner/.test(task.question)

@@ -6,12 +6,30 @@ const criterionSchema = z.object({
   evidence: z.string().max(160),
   issue: z.string().max(240),
 });
+const quotedCriterionSchema = criterionSchema.extend({
+  evidence: z.string().max(240),
+});
+export type VisibleStoryText = Record<
+  string,
+  { before: string; success: string }
+>;
+const normalized = (text: string) =>
+  text
+    .normalize('NFKC')
+    .toLocaleLowerCase('nb-NO')
+    .replace(/[«»“”"]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+const quotes = (text: string, evidence: string) => {
+  const quote = normalized(evidence);
+  return quote.length >= 20 && normalized(text).includes(quote);
+};
 
 /** Separate editorial evidence; mathematical answers remain engine controlled. */
 export const reviewSchema = z.object({
   chapterContinuity: criterionSchema,
   practicalNovelty: criterionSchema,
-  priorChoiceImpact: criterionSchema.extend({
+  priorChoiceImpact: quotedCriterionSchema.extend({
     source: z.string().max(1000),
     missionId: z.string().max(40),
   }),
@@ -20,7 +38,7 @@ export const reviewSchema = z.object({
       z.object({
         missionId: z.string().min(1).max(40),
         mathNecessary: criterionSchema,
-        physicalRuleExplicit: criterionSchema,
+        physicalRuleExplicit: quotedCriterionSchema,
         consequenceMatches: criterionSchema,
       }),
     )
@@ -38,6 +56,7 @@ export function reviewIssues(
   value: unknown,
   plan: StoryChapter,
   saga: StorySaga,
+  visible: VisibleStoryText,
 ): string[] {
   const parsed = reviewSchema.safeParse(value);
   if (!parsed.success)
@@ -81,6 +100,16 @@ export function reviewIssues(
     check(`${mission.missionId}, nødvendig matematikk`, mission.mathNecessary);
     check(`${mission.missionId}, fysisk regel`, mission.physicalRuleExplicit);
     check(`${mission.missionId}, konsekvens`, mission.consequenceMatches);
+    if (
+      mission.physicalRuleExplicit.pass &&
+      !quotes(
+        visible[mission.missionId]?.before ?? '',
+        mission.physicalRuleExplicit.evidence,
+      )
+    )
+      issues.push(
+        `${mission.missionId}, fysisk regel: Siter den faktiske regelen fra barnets tekst før svaret; ikke finn på en regel i kontrollen.`,
+      );
   }
 
   const impact = review.priorChoiceImpact;
@@ -104,6 +133,20 @@ export function reviewIssues(
       issues.push(
         'Tidligere valgs betydning: Oppgi oppdraget der historikken endrer handlingen.',
       );
+    if (impact.pass) {
+      const text = visible[impact.missionId];
+      if (
+        !quotes(
+          text ? `${text.before} ${text.success}` : '',
+          impact.evidence,
+        ) ||
+        (saga.inventory.includes(impact.source) &&
+          !normalized(impact.evidence).includes(normalized(impact.source)))
+      )
+        issues.push(
+          'Tidligere valgs betydning: Siter den barnesynlige handlingen. Ved inventarkilde må sitatet navngi gjenstanden; uses alene er ikke konkret nytte.',
+        );
+    }
   } else if (impact.source || impact.missionId) {
     issues.push(
       'Første kapittel har ingen tidligere valg; kilde og oppdragsreferanse skal være tomme.',

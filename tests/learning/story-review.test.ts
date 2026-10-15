@@ -11,6 +11,14 @@ const reject = (issue: string) => ({ pass: false, evidence: '', issue });
 const plan = {
   missions: Array.from({ length: 6 }, (_, i) => ({ id: `m${i + 1}` })),
 } as StoryChapter;
+const rule = 'Én del skal festes ved hvert tilgjengelige hjørne.';
+const action = 'Du bruker langt klatretau til å senke laget ned til senderen.';
+const visible = Object.fromEntries(
+  plan.missions.map((m) => [
+    m.id,
+    { before: `${rule} ${action}`, success: 'Senderen er berget.' },
+  ]),
+);
 const saga: StorySaga = {
   version: 2,
   title: 'Meldingen i sanden',
@@ -51,9 +59,7 @@ function approvedReview() {
       'Laget berger en sender i stedet for å tyde samme kart.',
     ),
     priorChoiceImpact: {
-      ...pass(
-        'Klatretauet fra forrige valg senker laget ned til senderen i m2.',
-      ),
+      ...pass(action),
       source: 'langt klatretau',
       missionId: 'm2',
     },
@@ -72,27 +78,27 @@ function approvedReview() {
 
 describe('story review enforcement with human-authored verdicts', () => {
   it('accepts complete checks with a saved asset and an actual mission witness', () => {
-    expect(reviewIssues(approvedReview(), plan, saga)).toEqual([]);
+    expect(reviewIssues(approvedReview(), plan, saga, visible)).toEqual([]);
     const review = approvedReview();
     review.priorChoiceImpact.source = saga.chapters[0].choices[0];
-    expect(reviewIssues(review, plan, saga)).toEqual([]);
+    expect(reviewIssues(review, plan, saga, visible)).toEqual([]);
   });
 
   it('rejects a missing criterion or a missing mission', () => {
     const missing: Partial<ReturnType<typeof approvedReview>> =
       approvedReview();
     delete missing.practicalNovelty;
-    expect(reviewIssues(missing, plan, saga)).not.toEqual([]);
+    expect(reviewIssues(missing, plan, saga, visible)).not.toEqual([]);
     const review = approvedReview();
     review.missions.pop();
-    expect(reviewIssues(review, plan, saga)).not.toEqual([]);
+    expect(reviewIssues(review, plan, saga, visible)).not.toEqual([]);
   });
 
   it('rejects duplicate or substituted mission IDs even with six verdicts', () => {
     for (const id of ['m1', 'invented']) {
       const review = approvedReview();
       review.missions[5].missionId = id;
-      expect(reviewIssues(review, plan, saga)).toContain(
+      expect(reviewIssues(review, plan, saga, visible)).toContain(
         'Fortellingskontrollen må vurdere hvert faktisk oppdrag nøyaktig én gang.',
       );
     }
@@ -105,18 +111,18 @@ describe('story review enforcement with human-authored verdicts', () => {
   ])('rejects contradictory or unsupported approval %j', (criterion) => {
     const review = approvedReview();
     review.missions[1].physicalRuleExplicit = criterion;
-    expect(reviewIssues(review, plan, saga)).not.toEqual([]);
+    expect(reviewIssues(review, plan, saga, visible)).not.toEqual([]);
   });
 
   it('rejects invented history and missing impact mission references', () => {
     const review = approvedReview();
     review.priorChoiceImpact.source = 'Et tau som aldri ble funnet';
-    expect(reviewIssues(review, plan, saga).join(' ')).toContain(
+    expect(reviewIssues(review, plan, saga, visible).join(' ')).toContain(
       'Kilden må finnes',
     );
     review.priorChoiceImpact.source = 'langt klatretau';
     review.priorChoiceImpact.missionId = 'missing';
-    expect(reviewIssues(review, plan, saga).join(' ')).toContain(
+    expect(reviewIssues(review, plan, saga, visible).join(' ')).toContain(
       'Oppgi oppdraget',
     );
   });
@@ -127,10 +133,9 @@ describe('story review enforcement with human-authored verdicts', () => {
     legacy.chapters[0].choices = [];
     const review = approvedReview();
     review.priorChoiceImpact.source = 'chapter-1-m6';
-    review.priorChoiceImpact.evidence =
-      'Det sendte signalet får et svar som fører til senderen i m2.';
-    expect(reviewIssues(review, plan, legacy)).toEqual([]);
-    expect(reviewIssues(review, plan, saga)).not.toEqual([]);
+    review.priorChoiceImpact.evidence = action;
+    expect(reviewIssues(review, plan, legacy, visible)).toEqual([]);
+    expect(reviewIssues(review, plan, saga, visible)).not.toEqual([]);
   });
 
   it('allows the first chapter without inventing a previous choice', () => {
@@ -143,9 +148,9 @@ describe('story review enforcement with human-authored verdicts', () => {
       source: '',
       missionId: '',
     };
-    expect(reviewIssues(review, plan, first)).toEqual([]);
+    expect(reviewIssues(review, plan, first, visible)).toEqual([]);
     review.priorChoiceImpact.source = 'Oppdiktet valg';
-    expect(reviewIssues(review, plan, first)).not.toEqual([]);
+    expect(reviewIssues(review, plan, first, visible)).not.toEqual([]);
   });
   it('treats an empty legacy archive as no actual history, but preserves inventory-only history', () => {
     const empty = structuredClone(saga);
@@ -158,15 +163,15 @@ describe('story review enforcement with human-authored verdicts', () => {
       source: '',
       missionId: '',
     };
-    expect(reviewIssues(review, plan, empty)).toEqual([]);
+    expect(reviewIssues(review, plan, empty, visible)).toEqual([]);
     empty.inventory = ['langt klatretau'];
-    expect(reviewIssues(review, plan, empty)).not.toEqual([]);
+    expect(reviewIssues(review, plan, empty, visible)).not.toEqual([]);
     review.priorChoiceImpact = {
-      ...pass('Medbrakt tau brukes i m2.'),
+      ...pass(action),
       source: 'langt klatretau',
       missionId: 'm2',
     };
-    expect(reviewIssues(review, plan, empty)).toEqual([]);
+    expect(reviewIssues(review, plan, empty, visible)).toEqual([]);
   });
 
   it.each([
@@ -185,7 +190,9 @@ describe('story review enforcement with human-authored verdicts', () => {
   ] as const)('blocks the reported semantic defect in %s', (field, issue) => {
     const review = approvedReview();
     Object.assign(review[field], reject(issue));
-    expect(reviewIssues(review, plan, saga).join(' ')).toContain(issue);
+    expect(reviewIssues(review, plan, saga, visible).join(' ')).toContain(
+      issue,
+    );
   });
 
   it('blocks the reported identical-route geometry defect rather than trusting an overall approval', () => {
@@ -193,8 +200,27 @@ describe('story review enforcement with human-authored verdicts', () => {
     review.missions[1].physicalRuleExplicit = reject(
       'Begge gangene har like fliser; seks sider velger ingen bestemt vei.',
     );
-    expect(reviewIssues(review, plan, saga).join(' ')).toContain(
+    expect(reviewIssues(review, plan, saga, visible).join(' ')).toContain(
       'velger ingen bestemt vei',
+    );
+  });
+
+  it('rejects an invented physical rule and metadata-only asset use even with pass=true', () => {
+    const review = approvedReview();
+    review.missions[0].physicalRuleExplicit.evidence =
+      'En oppdiktet klamp på hver kant.';
+    expect(reviewIssues(review, plan, saga, visible).join(' ')).toContain(
+      'Siter den faktiske regelen',
+    );
+    const metadataOnly = structuredClone(visible);
+    metadataOnly.m2.before = rule;
+    expect(
+      reviewIssues(approvedReview(), plan, saga, metadataOnly).join(' '),
+    ).toContain('barnesynlige handlingen');
+    const noName = approvedReview();
+    noName.priorChoiceImpact.evidence = rule;
+    expect(reviewIssues(noName, plan, saga, visible).join(' ')).toContain(
+      'navngi gjenstanden',
     );
   });
 

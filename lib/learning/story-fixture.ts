@@ -51,13 +51,21 @@ export function storyFixtureProvider(): AiProvider {
             practicalNovelty: pass,
             priorChoiceImpact: {
               ...pass,
+              evidence: source
+                ? input.visibleTextByMission[
+                    input.plan.missions[0].id
+                  ].before.slice(0, 240)
+                : pass.evidence,
               source,
               missionId: source ? input.plan.missions[0].id : '',
             },
             missions: input.plan.missions.map((m: { id: string }) => ({
               missionId: m.id,
               mathNecessary: pass,
-              physicalRuleExplicit: pass,
+              physicalRuleExplicit: {
+                ...pass,
+                evidence: input.visibleTextByMission[m.id].before.slice(0, 240),
+              },
               consequenceMatches: pass,
             })),
           },
@@ -271,7 +279,7 @@ export function storyFixtureProvider(): AiProvider {
         backdrop: s[2] as StoryMission['backdrop'],
         before:
           chapter > 1 && i === 0
-            ? `${previous?.outcome ?? ''} ${companion} følger det nye sporet videre. Her trenger vennene deres hjelp.`
+            ? `${input.history.inventory[0] ? `Du bruker ${input.history.inventory[0]} for å følge sporet videre. ` : ''}${previous?.outcome ?? ''} ${companion} følger det nye sporet videre.`
             : s[1],
         speaker: companion,
         dialogue: space
