@@ -100,7 +100,7 @@ it('reflection rejects foreign evidence, moderates output, and filters personal 
     'kontrollert',
   );
 });
-it('reflection falls back after three malformed replies without inventing profile facts', async () => {
+it('reflection falls back after one malformed reply without inventing profile facts', async () => {
   const state = createSession(
     profile,
     null,
@@ -112,7 +112,7 @@ it('reflection falls back after three malformed replies without inventing profil
   const p = mockProvider([{ calls: [], value: { wrong: true } }]);
   const spy = vi.spyOn(p, 'respond');
   expect((await reflectSession(p, state, [], [])).operations).toEqual([]);
-  expect(spy).toHaveBeenCalledTimes(3);
+  expect(spy).toHaveBeenCalledTimes(1);
 });
 
 it('school input is saved by the actual learning turn without replacing the active task', async () => {

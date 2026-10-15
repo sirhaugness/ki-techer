@@ -243,14 +243,14 @@ describe('story-driven saga', () => {
         );
         plan.missions[1].clueTemplate =
           'C‑3PO undersøker {{count}} 3D-figurer.';
-        if (plans < 3)
+        if (plans < 2)
           (
             result.value as { missions: { questionTemplate: string }[] }
           ).missions[0].questionTemplate += ' {{unknown}}';
         return result;
       }
       if (input.plan) {
-        expect(request.purpose).toBe('tutor');
+        expect(request.purpose).toBe('story-review');
         expect(request.timeoutMs).toBeLessThanOrEqual(60000);
         expect(input.history).toBeUndefined();
         expect(input.immutableHistory.chapters).toEqual([]);
@@ -268,7 +268,7 @@ describe('story-driven saga', () => {
       provider,
       'Bokmål.',
     );
-    expect(plans).toBe(3);
+    expect(plans).toBe(2);
     expect(publicView(result.state).task!.question).not.toContain('unknown');
     expect(result.events.items).toHaveLength(1);
     const secondTask = Object.values(result.state.adventures!)[0].tasks[1];

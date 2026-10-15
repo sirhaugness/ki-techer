@@ -38,7 +38,7 @@ export async function reflectSession(
       confidence: o.confidence,
       status: o.status,
     }));
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 1; attempt++) {
     try {
       const result = await provider.respond({
         purpose: 'reflect',
@@ -77,7 +77,7 @@ export async function reflectSession(
           operations.push(op);
       return { ...parsed, operations };
     } catch {
-      /* retry twice, then deterministic summary */
+      /* No automatic rewrite: deterministic summary remains available. */
     }
   }
   return fallback;

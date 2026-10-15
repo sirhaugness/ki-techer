@@ -29,7 +29,40 @@ export function storyFixtureProvider(): AiProvider {
     moderate: async () => true,
     respond: async (request) => {
       const input = JSON.parse(request.input);
-      if (input.plan) return { calls: [], value: { valid: true, issues: [] } };
+      if (input.plan) {
+        // Explicit mock verdicts for local rendering/flow tests, never model evidence.
+        const pass = {
+          pass: true,
+          evidence: 'Mock: kontrollert testscene.',
+          issue: '',
+        };
+        const history = input.immutableHistory;
+        const source =
+          history.inventory[0] ??
+          history.chapters.flatMap(
+            (c: { choices: string[] }) => c.choices,
+          )[0] ??
+          history.lastActualEvent?.id ??
+          '';
+        return {
+          calls: [],
+          value: {
+            chapterContinuity: pass,
+            practicalNovelty: pass,
+            priorChoiceImpact: {
+              ...pass,
+              source,
+              missionId: source ? input.plan.missions[0].id : '',
+            },
+            missions: input.plan.missions.map((m: { id: string }) => ({
+              missionId: m.id,
+              mathNecessary: pass,
+              physicalRuleExplicit: pass,
+              consequenceMatches: pass,
+            })),
+          },
+        };
+      }
       if (!input.items)
         throw new Error('Use deterministic teacher support in this fixture.');
       const space = input.interest === 'Star Wars';
@@ -212,7 +245,7 @@ export function storyFixtureProvider(): AiProvider {
               '',
             ],
           ];
-      const previous = input.history.recentChapters.at(-1)?.events.at(-1);
+      const previous = input.history.lastActualEvent;
       const missions: StoryMission[] = scenes.map((s, i) => ({
         id: `c${chapter}-m${i + 1}`,
         title: `${s[0]}${chapter > 1 ? ` · spor ${chapter}` : ''}`,

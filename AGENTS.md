@@ -55,7 +55,7 @@ Motoren har ingen I/O. Harde regler håndheves i kode, ikke bare i prompter.
 Ingen hemmeligheter i klientkode, git, rapporter eller underagentkontekst. Bruk variablene fra `.env.example`.
 
 Vanlige kvalitetstester bruker OpenAI-/Supabase-mocks; full Auth-e2e kan bruke lokal Supabase med testnøkler. Migrasjonsworkflow mot dev/prod er separat.
-Ekte modellprøving er en egen del av et relevant oppdrag, med syntetiske data og godkjent Preview-oppsett; den erstattes ikke av mocks.
+Vanlige tester og evalueringsskript bruker mocks som standard. Ekte KI-testing bruker billigste egnede modell (gpt-5-nano for generell agent-eval; gpt-5-mini når det er modellen som fortellingskontrollen skal verifisere), syntetiske data og en varig, samlet ramme på maksimalt 10 kroner for testarbeidet. Spør Thor FØR rammen overskrides; tidligere godkjenninger av30/50 kroner gjelder bare avsluttede runder. Ikke nullstill regnskap, bytt konto eller øk konfigurasjon for å omgå rammen. Ekte modellkvalitet kan ikke påstås bevist med mocks. PR forblir utkast til fortellingskontrollen og aktuelle åpne kvalitetsfunn er fullført og verifisert.
 
 Lærerprompten må skille tur med verktøy fra hjelp uten verktøy. Ikke krev nye oppgaver i en hjelpetur.
 Tall-/hintinstruksjoner må passe aktuell guard: vanlig dialog før nivå 4 er tallfri; særskilt hjelp kan bare bruke tillatte oppgavetall uten å røpe fasit.

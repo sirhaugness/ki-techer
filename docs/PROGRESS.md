@@ -389,3 +389,15 @@ Reviewer fant og etterkontrollerte en rettelse som lar første kapittel etablere
 Produksjon kjører den eksternt mergede PR14, main d47d658, READY og riktig alias; innloggingen svarer200 og ny story-CSS finnes. Nye rettelser ligger i utkast PR15, separat fra prod. Gammel lagret fortelling blir ikke skrevet om av en utrulling.
 
 **Hva Thor må gjøre:** Last https://ki-techer.vercel.app på nytt for PR14. PR15 er ikke i prod og bør vente med merge til åpne kvalitetsfunn er rettet. Ingen nøkkel, oppsett eller mer testbudsjett etterspørres.
+
+## 2026-10-15: kostnadskutt og kontrollmandat før videre historiemotor
+
+Thor ber om kostnader i vanlig bruk, mål under1kr/økt, mini til generering/kontroll og mocks/billigste modell til tester. Ny samlet testgrense10kr gjelder dette arbeidet; tidligere30/50-godkjenninger gjenbrukes ikke. PR15 forblir utkast til fortellings- og kvalitetskontroll er ferdig.
+
+Read-only produksjonsaggregater fra ai_calls:158 tutor/gpt-5.2-kall (516557input/9759output,55,5593kr gammelt anslag),8 refleksjoner/gpt-5.2 (9627/4296,2,6811kr),147 modereringer(0). Ingen produksjonskall var merket historiekapittel/research, og historikken mangler økt-/kapittel-ID; derfor påstås ingen eksakt normaløkt- eller kapittelpris fra gamle logger. Alle modeller ble tidligere priset100/400kr per millioninput/output. Modellpriset nyanslag med dokumenterte standardpriser og antatt11NOK/USD gir vesentlig lavere beløp; detaljer/scenarier dokumenteres i AI-COSTS.md. Historiske beløp/regnskap omskrives ikke.
+
+Implementert: felles standardgpt-5-mini for alle tekstkall, egne kalltyper for generering/kontroll/hjelp/feedback/forklaring, prisversjon og økt-/kapittelkobling i nye logger, maksimaltett nytt utkast etter første plan, og ett forsøk på korte hjelpe-/oppsummeringskall. Hele kapitler og research lagres allerede; ny plan sendes ikke under vanlig gjenopptakelse. Alle faktiske hendelser/valg beholdes i modellkonteksten én gang, uten dupliserte sistekapitler.
+
+Separat fortellingskontroll får obligatorisk evidens på tre kapittelkriterier og tre kriterier for hvert av seks oppdrag; kode avviser ufullstendige kontrollsvar og oppdiktede historikkreferanser. Matematiske generatorer, moderering, hint-/mestringsvern og lagring er beholdt. Reviewer fant et gammelt eval-agent uten budsjettvakt; nå kreves budsjettvakt også i rå tekst-/taleprovider. eval:agent bruker mocks som standard; eksplisitt live bruker nano og varig, låst regnskapsfil med hard10kr-grense. Preview-testen krever autentisert serverramme≤10 og billig modell før handlinger. Vercel-delingsfilen omgikk bare Vercels Preview-beskyttelse, ikke appens innlogging/RLS/budsjett/barnesikkerhet.
+
+**Hva Thor må gjøre:** Ingen oppsett. Avvente faktisk mini-kontroll og sluttstatus; PR-en er fortsatt utkast.
