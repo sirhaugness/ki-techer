@@ -27,6 +27,45 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
+  it.each(['uses', 'consumes'] as const)(
+    'rejects spending the choice raw material again through payoff %s',
+    async (field) => {
+      const provider = storyFixtureProvider();
+      const respond = provider.respond.bind(provider);
+      let reviews = 0;
+      provider.respond = async (request) => {
+        const input = JSON.parse(request.input);
+        if (input.plan) reviews++;
+        const reply = await respond(request);
+        if (input.items) {
+          const plan = reply.value as StoryChapter;
+          plan.missions
+            .find((m) => m.id === plan.decision.afterMission)!
+            .gains.push(plan.decision.resource);
+          plan.missions
+            .find((m) => m.id === plan.decision.payoffMission)!
+            [field].push(plan.decision.resource);
+        }
+        return reply;
+      };
+      const original = createSession(profile, null, now, 0, 'practice', null);
+      const unchanged = structuredClone(original);
+      await expect(
+        learningTurn(
+          original,
+          { type: 'mood', mood: 'rolig' },
+          randomUUID(),
+          now,
+          profile,
+          [{ id: randomUUID(), label: 'Star Wars', active: true }],
+          provider,
+          'Bokmål.',
+        ),
+      ).rejects.toThrow('Fremdriften din er beholdt');
+      expect(original).toEqual(unchanged);
+      expect(reviews).toBe(0);
+    },
+  );
   it('rejects a choice funded by resources the preceding mission has already spent', async () => {
     const provider = storyFixtureProvider();
     const respond = provider.respond.bind(provider);

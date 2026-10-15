@@ -355,3 +355,13 @@ GitHub [38698459947](https://github.com/sirhaugness/ki-techer/actions/runs/38698
 Testkontoens innlogginger er tilbakekalt, syntetisk husholdning/to elever/auth-bruker er slettet og fravær etterkontrollert. Private lokale filer er fjernet. Midlertidig testbranch er slettet, og dens budsjettkonfigurasjon er tilbake på 100. Delinger er tilbakekalt eller utløpt. Ingen merge, nye nøkler eller produksjonsendringer. Detaljer og kostnadsbevis finnes i [STORY-PREVIEW-VERIFICATION.md](STORY-PREVIEW-VERIFICATION.md).
 
 **Hva Thor må gjøre:** Åpne [Preview da8b14a](https://ki-techer-6937f18t5-team-thor1.vercel.app), logg inn som vanlig og vurder de tre første nye oppdragene. Vent med merge av [PR #14](https://github.com/sirhaugness/ki-techer/pull/14): en ny godkjent generering etter siste rettelse og endelig vurdering av fortellerkvalitet gjenstår. Ingen nøkkel eller miljøoppsett kreves.
+
+## 2026-10-15: ny godkjent testramme på inntil 50 kroner
+
+Thor har godkjent ytterligere inntil 50 kroner for sluttprøving. Forrige syntetiske konto var slettet. En ny separat dev-konto har fått tilbake de to faktiske historiekapitlene (seks hendelser og ett valg i hvert) fra testbeviset. Full tidligere mestringstilstand var ikke arkivert og er ikke påstått gjenopprettet. Kostnadsgrunnlaget er kopiert videre som 126,4205 kroner, med branch-avgrenset testtak 176,42. Ingen nullstilling av forbruk eller endring i vanlig Preview/produksjon.
+
+Første nye generering ble avvist på tvetydig dobbelbruk av harpiks. Kostnaden for et valg blir allerede trukket når gjenstanden lages, mens forfatterinstruksen tidligere kunne forstås som at råmaterialene først skulle brukes i payoff. Kontrakten er nå presis: valget lager assetName av cost råressurser; payoff bruker den ferdige gjenstanden. Kode avviser samme råressursnavn i payoff.uses/consumes. To regresjonstester avviser begge former med bevart elevtilstand; elleve storytester, lint og typecheck er bestått. Ny faktisk modellkontroll følger.
+
+Reviewer fant en konkret kappløpsfeil i Auth-nettlesertesten: hintklikk ble etterfulgt av reload før API-lagringen var bekreftet. Testen venter nå på 200, økt hintnivå og aktiv knapp før reload, og kontrollerer 200/ended etter avslutningen. Timeouten er beholdt. Den faktiske 409-responsen i tidligere CI er ikke bevist, men den usynkroniserte kontrollflyten er kildebekreftet. Forrige dokumentasjonscommit `85b618c` har nå også observert grønn ny CI-kjøring; de nye rettelsene får eget løp.
+
+**Hva Thor må gjøre:** Ingen oppsett eller ny godkjenning. Den ekstra testingen pågår innenfor den avtalte rammen.
