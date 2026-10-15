@@ -21,6 +21,7 @@ import {
 import { skills, skillById } from '../engine/skills/graph';
 import { generate, answerSchema } from '../engine/skills/generators';
 import { seededRng } from '../engine/random';
+import { bindStoryProblem } from '../engine/story-problem';
 import { newHints, advanceHint } from '../engine/hints';
 import { newBandit, forget, updateArm } from '../engine/bandit';
 import { scheduleReview, serializeCard } from '../engine/scheduler';
@@ -189,6 +190,7 @@ export async function learningTurn(
 ) {
   const state = structuredClone(original),
     events = emptyEvents();
+  let resumedItem = false;
   if (state.seenEvents.includes(eventId))
     return { state, events, replayed: true };
   upgradeSavedPresentation(state);
@@ -323,6 +325,7 @@ export async function learningTurn(
       if (adventure?.paused) {
         const paused = adventure.paused;
         runtime.active = paused.active;
+        resumedItem = true;
         state.hints = paused.hints;
         state.lastAnswer = paused.lastAnswer;
         state.correct = paused.correct;
@@ -342,7 +345,11 @@ export async function learningTurn(
         runtime.active?.id === adventure.tasks[adventure.index]?.id
       )
         adventure.index++;
-      if (!adventure || adventure.index >= adventure.tasks.length) {
+      if (
+        !adventure ||
+        adventure.index >= adventure.tasks.length ||
+        (!adventure.story && !!provider?.research)
+      ) {
         adventure = await planAdventure({
           label: interest.label,
           interestId: interest.id,
@@ -374,8 +381,12 @@ export async function learningTurn(
       runtime.active = structuredClone(adventure.tasks[adventure.index]);
       if (runtime.active.scene) {
         runtime.active.scene.previousEvent =
-          adventure.outcomes?.[adventure.index - 1] ??
-          adventure.story?.continuity;
+          adventure.index > 0
+            ? adventure.outcomes?.[adventure.index - 1]
+            : adventure.saga?.chapters
+                .filter((c) => c.number < adventure.number)
+                .at(-1)
+                ?.events.at(-1)?.outcome;
         if (
           adventure.story &&
           adventure.route &&
@@ -384,7 +395,8 @@ export async function learningTurn(
           const option =
             adventure.story.decision.options[adventure.route.option];
           runtime.active.scene.before = option.laterScene;
-          runtime.active.scene.success = option.laterSuccess;
+          // The route adds a consequence; the shared physical completion still happens.
+          runtime.active.scene.success = `${option.laterSuccess} ${runtime.active.scene.success}`;
           runtime.active.scene.branch = option.consequence;
           adventure.route.used = true;
         }
@@ -546,7 +558,11 @@ export async function learningTurn(
       adventure.pendingChoice = false;
       delete adventure.choiceError;
       adventure.choices = [...adventure.choices, choice.label].slice(-12);
-      const consequence = `${choice.consequence} Dere bruker ${cost} ${active.interaction?.object ?? adventure.plan.cargo} og har ${budget - cost} igjen.`;
+      const resource =
+        adventure.story?.decision.resource ??
+        active.interaction?.object ??
+        adventure.plan.cargo;
+      const consequence = `${choice.consequence} Dere bruker ${cost} ${resource} og har ${budget - cost} igjen.`;
       adventure.route = {
         option: event.option,
         label: choice.label,
@@ -1063,7 +1079,7 @@ export async function learningTurn(
   if (runtime.ended) state.endedAt = now;
   state.seenEvents = [...state.seenEvents, eventId].slice(-128);
   state.revision++;
-  if (state.active && state.active.id !== original.active?.id) {
+  if (state.active && state.active.id !== original.active?.id && !resumedItem) {
     const a = state.active;
     events.items.push({
       id: a.id,
@@ -1196,7 +1212,9 @@ export function publicView(
         ? {
             id: a.id,
             scene:
-              a.scene ??
+              (a.scene
+                ? { ...a.scene, retry: bindStoryProblem(a.scene.retry, item) }
+                : undefined) ??
               (useStoryScene &&
               a.interaction &&
               a.interestId &&
@@ -1228,6 +1246,10 @@ export function publicView(
             skillTitle: skillById(item.skillId).title,
             showVisual: a.representation !== 'tall',
             visual: {
+              property:
+                typeof params.property === 'string'
+                  ? params.property
+                  : undefined,
               type: item?.skillId === 'div-maaling-konkret' ? 'maaling' : type,
               count:
                 typeof params.total === 'number'

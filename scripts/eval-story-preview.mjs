@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { chromium } from '@playwright/test';
 import { fetch as trustedFetch, EnvHttpProxyAgent } from 'undici';
 import { X509Certificate, createHash } from 'node:crypto';
+import { solidFor, solidEdges } from '../lib/engine/solids.ts';
 const [
   publicFile,
   sessionFile,
@@ -158,7 +159,51 @@ try {
       title: await page.title(),
     }),
   );
-  for (const interest of ['Star Wars', 'Dinosaurer']) {
+  if (process.env.EVAL_RESTART_SESSION === '1') {
+    await page.evaluate(async () => {
+      const start = await fetch('/api/leo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command: 'start',
+          mode: 'practice',
+          part: null,
+        }),
+      });
+      const current = await start.json();
+      if (!current.ended) {
+        const response = await fetch('/api/leo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command: 'turn',
+            sessionId: current.id,
+            revision: current.revision,
+            requestId: crypto.randomUUID(),
+            event: { type: 'end', mood: 'rolig', reflection: '' },
+          }),
+        });
+        if (!response.ok)
+          throw new Error(
+            'Could not close the temporary evaluation session normally.',
+          );
+      }
+    });
+    await page.reload({ waitUntil: 'networkidle' });
+  }
+  const interests = process.env.EVAL_INTERESTS?.split('|') ?? [
+    'Star Wars',
+    'Dinosaurer',
+  ];
+  const missionLimit = Number(process.env.EVAL_MISSION_LIMIT ?? 6);
+  if (
+    !interests.every((i) => ['Star Wars', 'Dinosaurer'].includes(i)) ||
+    !Number.isInteger(missionLimit) ||
+    missionLimit < 1 ||
+    missionLimit > 6
+  )
+    throw new Error('Invalid evaluation scope.');
+  for (const interest of interests) {
     await page.getByRole('link', { name: 'Mine interesser' }).click();
     await command(
       () =>
@@ -169,44 +214,56 @@ try {
       'select-interest',
     );
     await page.getByRole('link', { name: 'Tilbake til kartet' }).click();
-    const startButton = page.getByRole('button', {
-      name: 'Start eventyret',
+    const endMapButton = page.getByRole('button', {
+      name: 'Tilbake til kartet',
       exact: true,
     });
+    if (await endMapButton.isVisible()) await endMapButton.click();
+    const startButton = page
+      .getByRole('button', { name: 'Start eventyret', exact: true })
+      .or(
+        page.getByRole('button', { name: 'Fortsett eventyret', exact: true }),
+      );
     const switchButton = page.getByRole('button', {
       name: `Fortsett eventyret om ${interest}`,
       exact: true,
     });
     const moodButton = page.getByRole('button', { name: '🙂 Rolig' });
+    const taskQuestion = page.locator('#task-question');
     await startButton
       .or(switchButton)
       .or(moodButton)
+      .or(taskQuestion)
+      .or(endMapButton)
       .waitFor({ state: 'visible', timeout: 60000 });
+    if (await endMapButton.isVisible()) {
+      await endMapButton.click();
+      await startButton
+        .or(switchButton)
+        .or(moodButton)
+        .or(taskQuestion)
+        .waitFor({ state: 'visible', timeout: 60000 });
+    }
     if (await moodButton.isVisible()) {
       await command(() => moodButton.click(), 'research-and-first-chapter');
     } else if (await startButton.isVisible()) {
-      await command(
-        () =>
-          page
-            .getByRole('button', { name: 'Start eventyret', exact: true })
-            .click(),
-        'start',
-      );
-      await command(
-        () => page.getByRole('button', { name: '🙂 Rolig' }).click(),
-        'research-and-first-chapter',
-      );
+      await command(() => startButton.click(), 'start');
+      await command(() => moodButton.click(), 'research-and-first-chapter');
+    } else if (await switchButton.isVisible()) {
+      await command(() => switchButton.click(), 'switch-interest');
     } else {
-      await command(
-        () =>
-          page
-            .getByRole('button', {
-              name: `Fortsett eventyret om ${interest}`,
-              exact: true,
-            })
-            .click(),
-        'switch-interest',
-      );
+      view = await page.evaluate(async () => {
+        const r = await fetch('/api/leo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            command: 'start',
+            mode: 'practice',
+            part: null,
+          }),
+        });
+        return r.json();
+      });
     }
     if (!view.task?.scene || view.adventure?.source !== 'model')
       throw new Error('The real researched story path was not used.');
@@ -215,24 +272,83 @@ try {
       .locator('.story-player')
       .screenshot({ path: `${output}/${prefix}-opening.png` });
     const initial = structuredClone(view);
-    for (let i = 0; i < 6; i++) {
+    const firstMission = view.adventure.mission - 1;
+    for (
+      let i = firstMission;
+      i < Math.min(6, firstMission + missionLimit);
+      i++
+    ) {
+      await page.locator('.story-player').screenshot({
+        path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-before.png`,
+      });
+      if (view.task.resolved && !view.adventure.choice) {
+        await command(
+          () =>
+            page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
+          'resume-chapter-transition',
+        );
+        continue;
+      }
       const task = view.task,
         m = task.interaction.math;
       let answer;
-      if (m.kind === 'groups') answer = m.total;
+      if (task.answerType === 'coordinate')
+        answer = {
+          x: task.visual.steps.filter((s) => s === 'høyre').length,
+          y: task.visual.steps.filter((s) => s === 'opp').length,
+        };
+      else if (m.kind === 'groups') answer = m.total;
       else if (m.kind === 'missing') answer = m.total - m.known;
       else if (m.kind === 'double')
         answer = m.mode === 'doble' ? m.total : m.each;
       else if (m.kind === 'share') answer = m.each;
       else if (m.kind === 'measure') answer = m.total / m.each;
-      else throw new Error(`Manual evaluation needed for ${task.skillTitle}.`);
+      else if (
+        task.skillTitle === 'Mål volum med klosser og liter' &&
+        /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/.test(
+          task.question,
+        )
+      ) {
+        const dimensions = task.question.match(
+          /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/,
+        );
+        answer = dimensions
+          .slice(1)
+          .map(Number)
+          .reduce((a, b) => a * b, 1);
+      } else if (task.visual.type === 'figur3d' && task.visual.shape) {
+        const solid = solidFor(task.visual.shape);
+        const quantity = /hjørner/.test(task.question)
+          ? solid.vertices.length
+          : /kanter/.test(task.question)
+            ? solidEdges(solid).length
+            : solid.faces.length;
+        answer = quantity * task.visual.count;
+      } else if (task.visual.type === 'figur2d' && task.visual.shape) {
+        const sides = task.visual.shape.includes('trekant')
+          ? 3
+          : task.visual.shape.includes('sekskant')
+            ? 6
+            : task.visual.shape.includes('åttekant')
+              ? 8
+              : 4;
+        answer = /rette vinkler/.test(task.question)
+          ? ['kvadrat', 'rektangel'].includes(task.visual.shape)
+            ? 4 * task.visual.count
+            : 0
+          : sides * task.visual.count;
+      } else
+        throw new Error(`Manual evaluation needed for ${task.skillTitle}.`);
       if (
         i === 0 &&
         !task.expressionRequired &&
         task.interaction.kind !== 'grouping' &&
-        task.scene.action !== 'route'
+        task.scene.action !== 'route' &&
+        task.answerType !== 'choice'
       ) {
         await page.getByLabel('Svaret ditt', { exact: true }).fill('999');
+        if (task.answerType === 'coordinate')
+          await page.getByLabel('y (oppover)', { exact: true }).fill('0');
         await command(
           () =>
             page
@@ -244,14 +360,24 @@ try {
           .locator('.story-player')
           .screenshot({ path: `${output}/${prefix}-retry.png` });
       }
-      if (task.interaction.kind === 'grouping')
+      if (task.answerType === 'coordinate') {
+        await page
+          .getByLabel('Svaret ditt', { exact: true })
+          .fill(String(answer.x));
+        await page
+          .getByLabel('y (oppover)', { exact: true })
+          .fill(String(answer.y));
+      } else if (task.interaction.kind === 'grouping')
         for (let j = 0; j < m.groups; j++)
           await page
             .getByLabel(`Antall i ${task.scene.container} ${j + 1}`, {
               exact: true,
             })
             .fill(String(m.each));
-      else if (task.scene.action === 'route')
+      else if (
+        task.scene.action === 'route' &&
+        task.interaction.kind === 'compare'
+      )
         await page
           .locator('.story-answer-options button')
           .filter({ hasText: String(answer) })
@@ -274,6 +400,9 @@ try {
       );
       if (!view.correct)
         throw new Error('The independently derived answer was not accepted.');
+      await page.locator('.story-player').screenshot({
+        path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-solved.png`,
+      });
       if (i === 0)
         await page
           .locator('.story-player')
@@ -302,8 +431,9 @@ try {
       );
     }
     if (
-      view.adventure.number !== 2 ||
-      view.adventure.journey.chapters[0].events.length !== 6
+      missionLimit === 6 &&
+      (view.adventure.number !== initial.adventure.number + 1 ||
+        view.adventure.journey.chapters.at(-2).events.length !== 6)
     )
       throw new Error('History did not survive chapter transition.');
     await page
@@ -314,6 +444,10 @@ try {
       first: initial,
       continuation: structuredClone(view),
     });
+    await writeFile(
+      `${output}/results.json`,
+      JSON.stringify({ results, errors }, null, 2),
+    );
   }
   await writeFile(
     `${output}/results.json`,

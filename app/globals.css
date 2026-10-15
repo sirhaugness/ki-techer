@@ -1477,7 +1477,10 @@ button.print-hide {
   background: #12243b;
   border-block: 1px solid #47607a;
 }
-.story-world > svg {
+.story-world-stage {
+  position: relative;
+}
+.story-world-stage > svg {
   display: block;
   width: 100%;
   height: auto;
@@ -1515,10 +1518,11 @@ button.print-hide {
 }
 .story-world-retry,
 .story-world-success {
-  position: absolute;
-  left: 5%;
-  bottom: 18px;
-  max-width: 67%;
+  position: relative;
+  left: auto;
+  bottom: auto;
+  max-width: none;
+  margin: 10px;
   padding: 12px 18px;
   border-radius: 12px;
   font-size: 18px;
@@ -1822,6 +1826,9 @@ button.print-hide {
   border-color: #55708a;
   background: #192d42;
 }
+.story-player .story-choice legend {
+  color: #dcecf7;
+}
 .story-player .story-routes button {
   background: #263e53;
   color: #dcecf7;
@@ -1853,6 +1860,7 @@ button.print-hide {
   opacity: 1;
   animation: story-thrust 350ms ease-in-out 6 alternate;
 }
+.story-world[data-state='solved'][data-effect='rescue'] .story-door,
 .story-world[data-state='solved'][data-effect='open'] .story-door {
   transform: translateY(-205px);
   animation: story-open 1700ms ease-in-out both;
@@ -1870,6 +1878,7 @@ button.print-hide {
   opacity: 1;
   animation: story-sparks 550ms ease-in-out 3 alternate;
 }
+.story-world[data-state='solved'][data-effect='build'] .story-built-object,
 .story-world[data-state='solved'][data-effect='build'] .story-bridge-plank {
   animation: story-build 600ms ease-out both;
 }
@@ -2166,6 +2175,7 @@ button.print-hide {
   transform: translate(680px, 240px);
   animation: story-droid-travel 1900ms ease-in-out both;
 }
+.story-world[data-state='solved'][data-effect='build'] .story-built-object,
 .story-world[data-state='solved'][data-effect='build'] .ship-wings,
 .story-world[data-state='solved'][data-effect='build'] .story-creature {
   animation: story-assemble 1400ms ease-out both;
@@ -2197,5 +2207,131 @@ button.print-hide {
   }
   50% {
     filter: drop-shadow(0 0 12px #edbc7a);
+  }
+}
+.story-solid-explorer {
+  background: #1b3046;
+  border: 1px solid #54758b;
+  border-radius: 15px;
+  padding: 12px;
+  margin-bottom: 18px;
+}
+.story-solid-explorer svg {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+}
+.story-solid-explorer p {
+  font-size: 17px;
+  margin: 6px 0;
+  color: #c8e4ef;
+}
+.story-solid-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.story-solid-tools button {
+  font-size: 16px;
+  padding: 8px 12px;
+}
+.story-solid-explorer svg [role='button'] {
+  cursor: pointer;
+}
+.story-solid-explorer svg [role='button']:focus {
+  outline: none;
+  filter: drop-shadow(0 0 7px #ffe4a3);
+}
+.story-world[data-effect='reveal']:not([data-state='solved']) .story-holomap {
+  opacity: 0.28;
+}
+.story-world[data-state='solved'][data-effect='reveal'] .story-holomap {
+  opacity: 1;
+  animation: story-map-clear 1700ms ease-out both;
+}
+.story-player[data-action='decode'] .story-resource-control > button {
+  display: none;
+}
+.story-player[data-action='decode'] .story-resource-control {
+  max-width: 200px;
+}
+@keyframes story-map-clear {
+  from {
+    opacity: 0.28;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.story-rescued-friend .actor-portrait {
+  width: 80px;
+  height: 80px;
+}
+.story-world[data-state='solved'] .story-rescued-friend {
+  animation: story-friend-arrives 1700ms ease-out both;
+}
+@keyframes story-friend-arrives {
+  from {
+    opacity: 0;
+    transform: translate(500px, 250px) scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: translate(620px, 315px) scale(1);
+  }
+}
+
+.story-player .manipulative {
+  background: #20364d;
+  color: #e4edf7;
+  margin-bottom: 18px;
+}
+
+.story-world[data-state='solved'] .story-placed-wedge {
+  animation: story-place-wedge 650ms ease-out both;
+}
+.story-world[data-state='solved'] .story-bag-tie {
+  animation: story-bag-tie 650ms ease-out both;
+}
+.story-world[data-state='solved'] .story-mirror-beam {
+  animation: story-mirror-flash 900ms ease-out both;
+}
+@keyframes story-place-wedge {
+  from {
+    opacity: 0.2;
+    transform: translateY(55px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes story-bag-tie {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes story-mirror-flash {
+  0%,
+  40% {
+    opacity: 0.15;
+  }
+  20%,
+  60%,
+  100% {
+    opacity: 0.9;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-world .story-placed-wedge,
+  .story-world .story-bag-tie,
+  .story-world .story-mirror-beam {
+    animation: none !important;
   }
 }

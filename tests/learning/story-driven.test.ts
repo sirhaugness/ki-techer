@@ -12,6 +12,7 @@ import {
 } from '../../lib/engine/story-problem';
 import { generate } from '../../lib/engine/skills/generators';
 import { seededRng } from '../../lib/engine/random';
+import type { StoryChapter } from '../../lib/learning/story-contract';
 import type { LearningEvent, Snapshot } from '../../lib/learning/types';
 
 const now = '2026-10-14T20:00:00Z';
@@ -26,6 +27,74 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
+  it.each(['uses', 'consumes'] as const)(
+    'rejects spending the choice raw material again through payoff %s',
+    async (field) => {
+      const provider = storyFixtureProvider();
+      const respond = provider.respond.bind(provider);
+      let reviews = 0;
+      provider.respond = async (request) => {
+        const input = JSON.parse(request.input);
+        if (input.plan) reviews++;
+        const reply = await respond(request);
+        if (input.items) {
+          const plan = reply.value as StoryChapter;
+          plan.missions
+            .find((m) => m.id === plan.decision.afterMission)!
+            .gains.push(plan.decision.resource);
+          plan.missions
+            .find((m) => m.id === plan.decision.payoffMission)!
+            [field].push(plan.decision.resource);
+        }
+        return reply;
+      };
+      const original = createSession(profile, null, now, 0, 'practice', null);
+      const unchanged = structuredClone(original);
+      await expect(
+        learningTurn(
+          original,
+          { type: 'mood', mood: 'rolig' },
+          randomUUID(),
+          now,
+          profile,
+          [{ id: randomUUID(), label: 'Star Wars', active: true }],
+          provider,
+          'Bokmål.',
+        ),
+      ).rejects.toThrow('Fremdriften din er beholdt');
+      expect(original).toEqual(unchanged);
+      expect(reviews).toBe(0);
+    },
+  );
+  it('rejects a choice funded by resources the preceding mission has already spent', async () => {
+    const provider = storyFixtureProvider();
+    const respond = provider.respond.bind(provider);
+    provider.respond = async (request) => {
+      const reply = await respond(request);
+      if (JSON.parse(request.input).items) {
+        const plan = reply.value as StoryChapter;
+        plan.missions.find(
+          (m) => m.id === plan.decision.afterMission,
+        )!.resourceEffect = 'use';
+      }
+      return reply;
+    };
+    const original = createSession(profile, null, now, 0, 'practice', null);
+    const unchanged = structuredClone(original);
+    await expect(
+      learningTurn(
+        original,
+        { type: 'mood', mood: 'rolig' },
+        randomUUID(),
+        now,
+        profile,
+        [{ id: randomUUID(), label: 'Dinosaurer', active: true }],
+        provider,
+        'Bokmål.',
+      ),
+    ).rejects.toThrow('Fremdriften din er beholdt');
+    expect(original).toEqual(unchanged);
+  });
   it('binds quantities without giving away the answer or accepting new mathematical facts', () => {
     const item = generate('div-deling-konkret', 1, seededRng(4));
     expect(storyQuantities(item)).not.toHaveProperty('each');
@@ -42,6 +111,211 @@ describe('story-driven saga', () => {
     expect(validateStoryProblem('Hver vinge får {{each}} deler.', item)).toBe(
       false,
     );
+  });
+  it('keeps native remainder and shopping answers out of story quantities', () => {
+    const rest = generate('div-med-rest', 2, seededRng(4));
+    expect(storyQuantities(rest)).toEqual({
+      total: rest.params.total,
+      b: rest.params.b,
+    });
+    expect(
+      validateStoryProblem(
+        'Fordel {{total}} krystaller med {{b}} i hver pose. Hvor mange fulle poser og hvor mye til overs?',
+        rest,
+      ),
+    ).toBe(true);
+    expect(
+      validateStoryProblem('{{total}} {{b}} {{a}} {{remainder}}', rest),
+    ).toBe(false);
+    const trade = generate('hverdag-handel', 2, seededRng(4));
+    expect(storyQuantities(trade)).not.toHaveProperty('c');
+    expect(
+      validateStoryProblem(
+        'Du har {{budget}} kreditter og kjøper {{a}} deler til {{b}} hver. Hvor mye har du igjen?',
+        trade,
+      ),
+    ).toBe(true);
+    const solid = generate('figur-3d-kanter-hjorner-flater', 2, seededRng(4));
+    expect(validateStoryProblem('Undersøk {{count}} 3D-figurer.', solid)).toBe(
+      true,
+    );
+    expect(
+      validateStoryProblem(
+        'Undersøk {{count}} 3D-figurer med 999 flater.',
+        solid,
+      ),
+    ).toBe(false);
+    const unknown = generate('hverdag-ukjent', 2, seededRng(4));
+    expect(storyQuantities(unknown)).not.toHaveProperty('a');
+    expect(
+      validateStoryProblem(
+        'Du sparer {{b}} hver dag og har {{total}}. Hvor mange dager?',
+        unknown,
+      ),
+    ).toBe(true);
+  });
+  it('resumes an existing item after a new session and interest switch without inserting its ID twice', async () => {
+    const provider = storyFixtureProvider();
+    const interest = { id: randomUUID(), label: 'Star Wars', active: true };
+    const dinosaur = { id: randomUUID(), label: 'Dinosaurer', active: true };
+    const step = (
+      state: Snapshot,
+      event: LearningEvent,
+      interests = [interest],
+    ) =>
+      learningTurn(
+        state,
+        event,
+        randomUUID(),
+        now,
+        profile,
+        interests,
+        provider,
+        'Bokmål.',
+      );
+    const created = await step(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+    );
+    expect(created.events.items).toHaveLength(1);
+    const originalItem = created.state.active!.id;
+    const ended = await step(created.state, {
+      type: 'end',
+      mood: 'rolig',
+      reflection: '',
+    });
+    const resumed = await step(
+      createSession(profile, ended.state, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+    );
+    expect(resumed.state.active!.id).toBe(originalItem);
+    expect(resumed.events.items).toHaveLength(0);
+    const switched = await step(resumed.state, { type: 'next' }, [
+      { ...interest, active: false },
+      dinosaur,
+    ]);
+    expect(switched.events.items).toHaveLength(1);
+    const returned = await step(switched.state, { type: 'next' }, [
+      interest,
+      { ...dinosaur, active: false },
+    ]);
+    expect(returned.state.active!.id).toBe(originalItem);
+    expect(returned.events.items).toHaveLength(0);
+  });
+  it('gives the model its rejected draft with the concrete correction and commits only a valid chapter', async () => {
+    const provider = storyFixtureProvider();
+    const respond = provider.respond.bind(provider);
+    let plans = 0;
+    provider.respond = async (request) => {
+      const input = JSON.parse(request.input);
+      if (input.items) {
+        expect(request.timeoutMs).toBeGreaterThan(1000);
+        expect(request.timeoutMs).toBeLessThanOrEqual(120000);
+        plans++;
+        if (plans === 2) {
+          expect(input.rejectedPlan.missions[0].questionTemplate).toContain(
+            '{{unknown}}',
+          );
+          expect(input.correction.length).toBeGreaterThan(0);
+        }
+        const result = await respond(request);
+        const plan = result.value as StoryChapter;
+        const geometry = input.items.find(
+          (item: { skill: string }) =>
+            item.skill === 'figur-3d-kanter-hjorner-flater',
+        );
+        plan.missions[1].itemIndex = geometry.index;
+        plan.missions[1].questionTemplate = geometry.question.replace(
+          /^Du ser \d+/,
+          'Du ser {{count}}',
+        );
+        plan.missions[1].clueTemplate =
+          'C‑3PO undersøker {{count}} 3D-figurer.';
+        if (plans === 1)
+          (
+            result.value as { missions: { questionTemplate: string }[] }
+          ).missions[0].questionTemplate += ' {{unknown}}';
+        return result;
+      }
+      if (input.plan) {
+        expect(input.history).toBeUndefined();
+        expect(input.immutableHistory.chapters).toBeDefined();
+        expect(
+          input.immutableHistory.chapters.some((c: object) => 'choices' in c),
+        ).toBe(false);
+      }
+      return respond(request);
+    };
+    const result = await learningTurn(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'mood', mood: 'rolig' },
+      randomUUID(),
+      now,
+      profile,
+      [{ id: randomUUID(), label: 'Star Wars', active: true }],
+      provider,
+      'Bokmål.',
+    );
+    expect(plans).toBe(2);
+    expect(publicView(result.state).task!.question).not.toContain('unknown');
+    expect(result.events.items).toHaveLength(1);
+    const secondTask = Object.values(result.state.adventures!)[0].tasks[1];
+    expect(secondTask.scene!.clue).toContain('3D-figurer');
+    expect(secondTask.scene!.clue).not.toContain('{{');
+  });
+  it('continues a saved legacy story after its current answer without replaying unstarted old tasks', async () => {
+    const interest = { id: randomUUID(), label: 'Star Wars', active: true };
+    const old = await learningTurn(
+      createSession(profile, null, now, 0, 'practice', null),
+      { type: 'next' },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      null,
+      'Bokmål.',
+    );
+    const active = old.state.active!;
+    const solved = await learningTurn(
+      old.state,
+      {
+        type: 'answer',
+        itemId: active.id,
+        answer: active.expressionRequired
+          ? {
+              value: Number(active.item.answer),
+              expression: active.item.expression!,
+            }
+          : active.item.answer,
+        inputMode: 'tastatur',
+      },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      null,
+      'Bokmål.',
+    );
+    expect(solved.state.correct).toBe(true);
+    const continued = await learningTurn(
+      solved.state,
+      { type: 'next' },
+      randomUUID(),
+      now,
+      profile,
+      [interest],
+      storyFixtureProvider(),
+      'Bokmål.',
+    );
+    const adventure = continued.state.adventures![interest.id];
+    expect(adventure.number).toBe(2);
+    expect(adventure.source).toBe('model');
+    expect(adventure.saga!.chapters[0].events).toHaveLength(1);
+    expect(adventure.saga!.chapters[0].events[0].outcome).toContain(
+      solved.state.adventures![interest.id].memory[0],
+    );
+    expect(continued.state.history).toEqual(solved.state.history);
+    expect(continued.events.items).toHaveLength(1);
   });
   for (const label of ['Star Wars', 'Dinosaurer'])
     it(`${label}: preserves all chapters, actual choices, quantities, pause point and continuity`, async () => {
@@ -80,6 +354,9 @@ describe('story-driven saga', () => {
         for (let mission = 0; mission < 6; mission++) {
           const active = state.active!;
           if (chapter === 1 && mission === 0) {
+            active.scene!.retry =
+              'Bruk {{groups}} grupper med {{each}} i hver.';
+            expect(publicView(state).task!.scene!.retry).not.toMatch(/[{}]/);
             const wrong = await turn({
               type: 'answer',
               itemId: active.id,
@@ -113,10 +390,25 @@ describe('story-driven saga', () => {
             inputMode: 'manipulativ',
           });
           expect(view.correct).toBe(true);
+          if (view.task?.scene?.branch) {
+            const base =
+              state.adventures![interest.id].tasks[mission].scene!.success;
+            expect(view.task.scene.success).toContain(base);
+            expect(
+              state
+                .adventures![interest.id].saga!.chapters.at(-1)!
+                .events.at(-1)!.outcome,
+            ).toContain(base);
+          }
           const latest = state.adventures![interest.id];
           records.push(latest.saga!.chapters.at(-1)!.events.at(-1)!.id);
           if (latest.pendingChoice) {
             const choice = view.adventure!.choice!;
+            // The quantity being spent can differ from the scene's subject.
+            latest.story!.decision.resource = 'tau-lengder';
+            expect(publicView(state).adventure!.choice!.unit).toBe(
+              'tau-lengder',
+            );
             await turn({
               type: 'choice',
               itemId: active.id,
@@ -130,6 +422,11 @@ describe('story-driven saga', () => {
               option: 0,
               remaining: choice.budget - choice.options[0].cost,
             });
+            expect(
+              state
+                .adventures![interest.id].saga!.chapters.at(-1)!
+                .choices.at(-1),
+            ).toContain('tau-lengder');
           }
           if (mission < 5 || chapter < 3) await turn({ type: 'next' });
         }

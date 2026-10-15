@@ -2,7 +2,10 @@
 import { useState, type ReactNode, type Ref } from 'react';
 import type { LearningEvent, LearningView } from '@/lib/learning/types';
 import { StoryWorld, ResourceGlyph, ActorPortrait } from './story-world';
+import { Manipulatives } from './manipulatives';
 import { RouteChoice } from './route-choice';
+import { SolidExplorer } from './solid-explorer';
+import { presentScene } from '@/lib/learning/scene-presentation';
 
 export function StoryPlayer({
   view,
@@ -18,7 +21,7 @@ export function StoryPlayer({
   sectionRef?: Ref<HTMLElement>;
 }) {
   const task = view.task!;
-  const scene = task.scene!;
+  const scene = presentScene(task.scene!, task.question);
   const previous = task.submittedAnswer;
   const initial =
     previous && typeof previous === 'object' && !Array.isArray(previous)
@@ -52,7 +55,12 @@ export function StoryPlayer({
       !Array.isArray(previous) &&
       'remainder' in previous
       ? String(previous.remainder)
-      : '',
+      : previous &&
+          typeof previous === 'object' &&
+          !Array.isArray(previous) &&
+          'y' in previous
+        ? String(previous.y)
+        : '',
   );
   const [allocations, setAllocations] = useState<number[]>(
     previous &&
@@ -139,6 +147,7 @@ export function StoryPlayer({
   return (
     <section
       className="story-player"
+      data-action={scene.action}
       ref={sectionRef}
       aria-busy={busy}
       aria-label="Det levende eventyret"
@@ -176,8 +185,33 @@ export function StoryPlayer({
         state={state}
         value={n}
         allocations={allocations}
+        groups={
+          task.interaction?.math.kind === 'groups' ||
+          task.interaction?.math.kind === 'share'
+            ? task.interaction.math.groups
+            : undefined
+        }
+        groupValues={
+          allocations.length
+            ? allocations
+            : task.interaction?.math.kind === 'share'
+              ? Array.from({ length: task.interaction.math.groups }, () => n)
+              : undefined
+        }
+        groupSize={
+          task.interaction?.math.kind === 'groups'
+            ? task.interaction.math.each
+            : undefined
+        }
+        targetCount={
+          task.interaction?.math.kind === 'groups'
+            ? task.interaction.math.total
+            : task.interaction?.math.kind === 'share'
+              ? task.interaction.math.total
+              : undefined
+        }
       />
-      <div className="story-cast" aria-label="Med på oppdraget">
+      <div className="story-cast" aria-label="Figurer i historien">
         {actors.map((actor) => (
           <span key={actor.name}>
             <ActorPortrait actor={actor} />
@@ -197,6 +231,33 @@ export function StoryPlayer({
       {scene.branch && <p className="story-branch">◈ {scene.branch}</p>}
       <div className="story-play-layout">
         <div className="story-console">
+          {task.visual.type === 'figur3d' && task.visual.shape && (
+            <SolidExplorer
+              shape={task.visual.shape}
+              count={task.visual.count}
+              property={task.visual.property}
+            />
+          )}
+          {task.visual.steps.length > 0 && (
+            <p>Følg programmet: {task.visual.steps.join(' → ')}</p>
+          )}
+          {(task.visual.type === 'figur2d' || task.visual.steps.length > 0) && (
+            <Manipulatives
+              visual={task.visual}
+              disabled={disabled}
+              onAnswer={(answer) => {
+                if (
+                  answer &&
+                  typeof answer === 'object' &&
+                  'x' in answer &&
+                  'y' in answer
+                ) {
+                  update(String(answer.x));
+                  setSecond(String(answer.y));
+                }
+              }}
+            />
+          )}
           <p className="story-clue">{scene.clue}</p>
           <h3 id="task-question">{task.question}</h3>
           <form
@@ -378,7 +439,7 @@ export function StoryPlayer({
                     : `Prøv igjen. ${scene.retry}`}
                 </strong>
               ) : (
-                <span>{scene.purpose}</span>
+                <span>Løs utfordringen, så fortsetter reisen.</span>
               )}
             </div>
             <div className="story-actions">

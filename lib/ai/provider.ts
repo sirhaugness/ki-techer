@@ -18,6 +18,7 @@ export type ModelRequest = {
   input: string;
   schema: z.ZodType;
   maxOutputTokens?: number;
+  timeoutMs?: number;
   tools?: ToolDefinition[];
   conversation?: unknown[];
   results?: { call_id: string; output: string }[];

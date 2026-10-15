@@ -118,6 +118,13 @@ test('two universes: live scene manipulation, error support, animations, choice 
         'data-state',
         'solved',
       );
+      const stage = await page.locator('.story-world-stage').boundingBox();
+      const counter = await page.locator('.story-world-counter').boundingBox();
+      expect(counter!.y + counter!.height).toBeLessThanOrEqual(
+        stage!.y + stage!.height,
+      );
+      const feedback = await page.locator('.story-world-success').boundingBox();
+      expect(feedback!.y).toBeGreaterThanOrEqual(stage!.y + stage!.height);
       if (i === 0) {
         const animation = await page.locator('.story-world').evaluate((world) =>
           world.getAnimations({ subtree: true }).map((a) => ({

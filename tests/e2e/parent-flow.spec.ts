@@ -71,12 +71,33 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await page.getByRole('button', { name: 'Tilbake til kartet' }).click();
   await page.getByRole('button', { name: 'Start en matteøkt' }).click();
   await page.getByRole('button', { name: '🙂 Rolig' }).click();
+  const hintSaved = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/leo') &&
+      response.request().method() === 'POST' &&
+      response.request().postDataJSON()?.event?.type === 'hint',
+  );
   await page.getByRole('button', { name: 'Jeg vil ha et hint' }).click();
+  const hintResponse = await hintSaved;
+  expect(hintResponse.status()).toBe(200);
+  expect((await hintResponse.json()).hintLevel).toBeGreaterThan(0);
+  await expect(
+    page.getByRole('button', { name: 'Jeg vil ha et hint' }),
+  ).toBeEnabled();
   const question = await page.locator('#task-question').innerText();
   await page.reload();
   await expect(page.locator('#task-question')).toHaveText(question);
   await page.getByRole('button', { name: 'Avslutt for i dag' }).click();
+  const sessionEnded = page.waitForResponse(
+    (response) =>
+      response.url().endsWith('/api/leo') &&
+      response.request().method() === 'POST' &&
+      response.request().postDataJSON()?.event?.type === 'end',
+  );
   await page.getByRole('button', { name: 'Lagre og avslutt' }).click();
+  const endedResponse = await sessionEnded;
+  expect(endedResponse.status()).toBe(200);
+  expect((await endedResponse.json()).ended).toBe(true);
   await page.getByRole('button', { name: 'Tilbake til kartet' }).click();
   await page.goto('/forelder');
   await expect(page).toHaveURL(/\/leo$/);

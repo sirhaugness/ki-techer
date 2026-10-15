@@ -85,6 +85,7 @@ export function legacyScene(
     gains: [],
     uses: [],
     consumes: [],
+    resourceEffect: 'none',
     cast: [
       {
         name: plan.companion,

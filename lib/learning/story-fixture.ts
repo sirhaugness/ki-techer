@@ -38,7 +38,22 @@ export function storyFixtureProvider(): AiProvider {
       const mult = menu.find((m) => m.kind === 'groups') ?? menu[0];
       const missing = menu.find((m) => m.kind === 'missing') ?? mult;
       const twice = menu.find((m) => m.kind === 'double') ?? mult;
-      const selected = [mult, missing, twice, mult, missing, twice];
+      const used = new Set<number>();
+      const take = (kind: string) => {
+        const next =
+          menu.find((m) => m.kind === kind && !used.has(m.index)) ??
+          menu.find((m) => !used.has(m.index))!;
+        used.add(next.index);
+        return next;
+      };
+      const selected = [
+        take(mult.kind),
+        take(missing.kind),
+        take(twice.kind),
+        take(mult.kind),
+        take(missing.kind),
+        take(twice.kind),
+      ];
       const companion = space ? 'BB-8' : 'Dina';
       const templates = (m: MenuItem) =>
         m.kind === 'groups'
@@ -239,8 +254,9 @@ export function storyFixtureProvider(): AiProvider {
         glyph: s[5] as StoryMission['glyph'],
         subject: s[6] as StoryMission['subject'],
         action: s[3] as StoryMission['action'],
-        effect: s[4] as StoryMission['effect'],
+        effect: i === 2 ? 'reveal' : (s[4] as StoryMission['effect']),
         expressionRequired: i === 0 && space,
+        resourceEffect: i === 2 ? 'gather' : 'none',
         success: space
           ? [
               'Vingene er reparert. BB-8 leser meldingen fra Leia.',
@@ -312,6 +328,7 @@ export function storyFixtureProvider(): AiProvider {
           afterMission: missions[2].id,
           payoffMission: missions[4].id,
           prompt: 'Hvilken vei vil du følge med forsyningene vi har?',
+          resource: missions[2].object,
           options: [
             {
               label: space
