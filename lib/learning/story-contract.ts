@@ -137,8 +137,8 @@ export const storyChapterSchema = z.object({
   hook: short.describe(
     'Et nytt uløst spørsmål eller problem som oppstår ETTER siste oppdrag. Ikke gjenta kapittelets åpning eller en allerede løst kode.',
   ),
-  continuity: short.describe(
-    'Forklar konkret hva forrige kapittel oppnådde og hvorfor neste handling følger av det. Ikke start et løst oppdrag på nytt.',
+  continuity: narration.describe(
+    'Én hel setning: Hva oppnådde forrige kapittel, og hvorfor følger neste handling av det? Ikke start et løst oppdrag på nytt.',
   ),
   cast: z.array(storyActorSchema).min(1).max(8),
   missions: z.array(storyMissionSchema).length(6),

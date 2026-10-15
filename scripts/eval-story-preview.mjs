@@ -303,7 +303,20 @@ try {
         answer = m.mode === 'doble' ? m.total : m.each;
       else if (m.kind === 'share') answer = m.each;
       else if (m.kind === 'measure') answer = m.total / m.each;
-      else if (task.visual.type === 'figur3d' && task.visual.shape) {
+      else if (
+        task.skillTitle === 'Mål volum med klosser og liter' &&
+        /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/.test(
+          task.question,
+        )
+      ) {
+        const dimensions = task.question.match(
+          /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/,
+        );
+        answer = dimensions
+          .slice(1)
+          .map(Number)
+          .reduce((a, b) => a * b, 1);
+      } else if (task.visual.type === 'figur3d' && task.visual.shape) {
         const solid = solidFor(task.visual.shape);
         const quantity = /hjørner/.test(task.question)
           ? solid.vertices.length

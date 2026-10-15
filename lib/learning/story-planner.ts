@@ -34,7 +34,7 @@ import {
 
 const reviewSchema = z.object({
   valid: z.boolean(),
-  issues: z.array(z.string().max(240)).max(8),
+  issues: z.array(z.string().min(1).max(400)).max(8),
 });
 export class StoryPlanningError extends Error {
   constructor(public readonly phase: string) {
@@ -472,6 +472,26 @@ export async function planStoryAdventure(
           })),
         },
         plan,
+        decisionMath: {
+          budget: missionBudget(
+            items[
+              plan.missions.find((m) => m.id === plan.decision.afterMission)!
+                .itemIndex
+            ],
+          ),
+          options: plan.decision.options.map((option) => ({
+            cost: option.cost,
+            remaining:
+              missionBudget(
+                items[
+                  plan.missions.find(
+                    (m) => m.id === plan.decision.afterMission,
+                  )!.itemIndex
+                ],
+              )! - option.cost,
+          })),
+          rule: 'Motoren viser, kontrollerer og lagrer budget minus cost og rest ved valget. Ikke krev at modellen gjentar disse tallene i fri fortellertekst. Vurder om senere faktisk forbruk passer med den gjenværende mengden.',
+        },
         problems: plan.missions.map((m) => ({
           id: m.id,
           question: bindStoryProblem(m.questionTemplate, items[m.itemIndex]),
