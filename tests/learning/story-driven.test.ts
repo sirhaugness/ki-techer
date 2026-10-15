@@ -27,7 +27,7 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
-  it.each(['uses', 'consumes'] as const)(
+  it.each(['uses', 'consumes', 'alternatives'] as const)(
     'rejects spending the choice raw material again through payoff %s',
     async (field) => {
       const provider = storyFixtureProvider();
@@ -42,9 +42,14 @@ describe('story-driven saga', () => {
           plan.missions
             .find((m) => m.id === plan.decision.afterMission)!
             .gains.push(plan.decision.resource);
-          plan.missions
-            .find((m) => m.id === plan.decision.payoffMission)!
-            [field].push(plan.decision.resource);
+          const payoff = plan.missions.find(
+            (m) => m.id === plan.decision.payoffMission,
+          )!;
+          if (field === 'alternatives')
+            payoff.uses.push(
+              ...plan.decision.options.map((option) => option.assetName),
+            );
+          else payoff[field].push(plan.decision.resource);
         }
         return reply;
       };
@@ -213,7 +218,7 @@ describe('story-driven saga', () => {
         expect(request.timeoutMs).toBeGreaterThan(1000);
         expect(request.timeoutMs).toBeLessThanOrEqual(120000);
         plans++;
-        if (plans === 2) {
+        if (plans > 1) {
           expect(input.rejectedPlan.missions[0].questionTemplate).toContain(
             '{{unknown}}',
           );
@@ -238,7 +243,7 @@ describe('story-driven saga', () => {
         );
         plan.missions[1].clueTemplate =
           'C‑3PO undersøker {{count}} 3D-figurer.';
-        if (plans === 1)
+        if (plans < 3)
           (
             result.value as { missions: { questionTemplate: string }[] }
           ).missions[0].questionTemplate += ' {{unknown}}';
@@ -261,7 +266,7 @@ describe('story-driven saga', () => {
       provider,
       'Bokmål.',
     );
-    expect(plans).toBe(2);
+    expect(plans).toBe(3);
     expect(publicView(result.state).task!.question).not.toContain('unknown');
     expect(result.events.items).toHaveLength(1);
     const secondTask = Object.values(result.state.adventures!)[0].tasks[1];
