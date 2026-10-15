@@ -365,3 +365,11 @@ Første nye generering ble avvist på tvetydig dobbelbruk av harpiks. Kostnaden 
 Reviewer fant en konkret kappløpsfeil i Auth-nettlesertesten: hintklikk ble etterfulgt av reload før API-lagringen var bekreftet. Testen venter nå på 200, økt hintnivå og aktiv knapp før reload, og kontrollerer 200/ended etter avslutningen. Timeouten er beholdt. Den faktiske 409-responsen i tidligere CI er ikke bevist, men den usynkroniserte kontrollflyten er kildebekreftet. Forrige dokumentasjonscommit `85b618c` har nå også observert grønn ny CI-kjøring; de nye rettelsene får eget løp.
 
 **Hva Thor må gjøre:** Ingen oppsett eller ny godkjenning. Den ekstra testingen pågår innenfor den avtalte rammen.
+
+## 2026-10-15: produksjonskontroll og videre test etter merge av PR #14
+
+Thor ba om å kontrollere at siste versjon var ute. PR #14 ble merget eksternt 12:14 UTC (14:14 norsk tid), mens testarbeidet pågikk. Read-only kontroll bekrefter at `ki-techer.vercel.app` peker til READY-deployment `dpl_G9YE65eV1nwsWCFvyy5xLyrZtzQn` med main `d47d658`. Innloggingssiden svarte HTTP200. Agenten merget eller publiserte ikke. Lagrede oppgaver/fortellinger omskrives ikke ved utrulling; kontrollen beviser riktig deploy, ikke en ny elevhistorie i produksjon.
+
+Den allerede godkjente ekstra testingen videreføres på ny branch `fix/story-verification-followup` fra oppdatert main. To reelle genereringsforsøk i denne50-kronersrunden er avvist før visning; beregnet ekstraforbruk er hittil14,6372 kroner. Siste avvisning var en falsk konflikt rundt en sekskant: generatorens standardtekst hadde en generell merknad om trekanter samt flertall selv ved én figur. Standardteksten er presisert, og både forfatter/kritiker får nå autoritative figurdata (form, egenskap, antall). Kritikeren får også de lagrede historiske valgene som forfatteren allerede hadde. 190 generator-/storytester, lint og typecheck er bestått før siste tekstformatering.
+
+**Hva Thor må gjøre:** Last produksjonssiden på nytt. Dersom en gammel oppgave er aktiv, løs den og gå videre for å få ny historiegenerering. Ingen oppsett eller produksjonsendring kreves for kontrollen; videre testrettelser får egen Preview/PR.

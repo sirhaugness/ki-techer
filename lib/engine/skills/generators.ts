@@ -357,8 +357,12 @@ function generateOne(
       }[property];
       const count = difficulty >= 4 ? integer(rng, 2, difficulty) : 1;
       params = { shape: shape.name, property, count };
+      const triangleNote =
+        shape.name === 'trekant'
+          ? ` ${count === 1 ? 'Trekanten' : 'Trekantene'} har ingen rette vinkler.`
+          : '';
       numeric(
-        `Du ser ${count} ${shape.name}${count === 1 ? '' : 'er'}. Trekanter her har ingen rette vinkler. Hvor mange ${label} har figurene til sammen?`,
+        `Du ser ${count} ${count === 1 ? 'figur' : 'figurer'} av typen ${shape.name}.${triangleNote} Hvor mange ${label} har ${count === 1 ? 'figuren' : 'figurene'} til sammen?`,
         `${shape[property]}*${count}`,
         shape[property] * count,
       );
