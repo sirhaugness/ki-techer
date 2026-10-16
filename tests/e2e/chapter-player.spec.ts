@@ -54,7 +54,7 @@ test('R2: error, contextual help, three consequences, pause and browser resume',
   );
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'solved');
-  await expect(scene.getByRole('img')).toHaveAttribute(
+  await expect(scene.locator('svg[role="img"]')).toHaveAttribute(
     'aria-label',
     'Lyktene lyser. Postbåten ligger nå ved brygga.',
   );
@@ -84,7 +84,7 @@ test('R2: error, contextual help, three consequences, pause and browser resume',
     '6',
   );
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
-  await expect(scene.getByRole('img')).toHaveAttribute(
+  await expect(scene.locator('svg[role="img"]')).toHaveAttribute(
     'aria-label',
     'Landgangen er hel. Mira står på land med postsekken.',
   );

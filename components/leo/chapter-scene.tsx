@@ -195,17 +195,21 @@ export function ChapterScene({
           <Mira x={509} y={165} />
         )}
       </svg>
-      <div className={styles.workbench} aria-label="Arbeidsstedet">
+      <div className={styles.workbench} role="group" aria-label="Arbeidsstedet">
         {view.index === 0 && (
           <div className={styles.lanterns}>
             {Array.from({ length: quantity('lanterns') }, (_, i) => (
               <div key={i} className={styles.lantern}>
                 <span>Lykt {i + 1}</span>
-                <div className={styles.stones}>
+                <div
+                  className={styles.stones}
+                  role="img"
+                  aria-label={`Lykt ${i + 1}: ${solved ? quantity('stones') : Math.min(quantity('stones'), Math.max(0, entered - i * quantity('stones')))} av ${quantity('stones')} plasser fylt`}
+                >
                   {Array.from({ length: quantity('stones') }, (_, j) => (
                     <span
                       key={j}
-                      aria-label="Plass til lysstein"
+                      aria-hidden="true"
                       className={
                         solved || entered > i * quantity('stones') + j
                           ? styles.filledStone
@@ -225,11 +229,13 @@ export function ChapterScene({
           <div>
             <div
               className={styles.planks}
+              role="group"
               aria-label={`${quantity('slots')} plankeplasser, ${quantity('placed')} planker fra før`}
             >
               {Array.from({ length: quantity('slots') }, (_, i) => (
                 <span
                   key={i}
+                  role="img"
                   className={
                     i < quantity('placed')
                       ? styles.oldPlank
@@ -268,6 +274,7 @@ export function ChapterScene({
                   <span>Postkasse {i + 1}</span>
                   <div
                     className={styles.envelopes}
+                    role="group"
                     aria-label={`${n} invitasjoner i postkasse ${i + 1}`}
                   >
                     {Array.from({ length: n }, (_, j) => (
