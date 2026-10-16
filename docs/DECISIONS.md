@@ -225,3 +225,6 @@ R1 er ikke redaksjonell godkjenning, en ny spiller eller en varig worker. Ingen 
 PROGRESS.md får en oppdatert «Start her»-del med faktisk status, neste leveranse, avtalte rammer og gjenopptaksinstruksjon. SPEC er produktkrav, GAME-REVISION er kravkart/byggeplan, og PROGRESS er utførelsesstatus og evidens. Hele chatloggen skal ikke være nødvendig for videreføring når disse filene og riktig repository er tilgjengelige.
 
 R2 opprettes fra R1 med R1-branchen som PR-base. PR #16 trenger ikke merges før R2; merge til main er fortsatt produksjonsgrense og krever tillatelse. Senere PR-er opprettes etter kontroll av faktisk avhengighet og status, ikke automatisk som en syvleddet stabel. Denne oppdateringen er dokumentasjon, ikke påbegynt R2-kode.
+## 2026-10-16: direkte svar og konkrete fremgangsmåter
+
+Thor ønsker korte, tydelige svar i prosjektet. Mulighetsspørsmål besvares først med ja/nei og nødvendige forbehold. Fremgangsmåter gis som korte nummererte steg uten unødvendig bakgrunn eller gjentatt sjekkliste. Usikre menyer og innstillinger skal ikke fremstilles som bekreftede. Dette gjelder Codex-svar, ikke lærerens elevdialog.
