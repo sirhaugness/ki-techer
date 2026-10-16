@@ -97,4 +97,6 @@ Før persistens i R3 må generatorversjon 1 fryses eller få en kompatibilitetsi
 
 R2s avgrensede kravbevis, responskilder, lagringsbegrensninger og faktiske kvalitetsfunn registreres i [R2-VERIFICATION.md](R2-VERIFICATION.md). De dekker det første snittet av §9.2, §14.1, §14.4, §14.5 og §15, ikke de øvrige radene eller endelig godkjenning av hele spesifikasjonen.
 
+Status 16. oktober: R2 er implementert i [utkast-PR #17](https://github.com/sirhaugness/ki-techer/pull/17), med bestått lokal kvalitetsport. Innlogget Preview-gjennomspilling står åpen etter avvist opprettelse av midlertidige syntetiske data i delt leo-dev. Følg «Start her» i PROGRESS for å lukke denne porten og deretter opprette R3 fra riktig avhengig kode. En ny samtale skal ikke opprette en ny R2 eller erklære R3 påbegynt bare fordi neste nye PR er planlagt.
+
 En strukturelt gyldig pakke, en grønn CI eller en positiv modellkritiker er ikke en kvalitetsgodkjenning. Menneskelig vurdering av faktisk generert og gjennomspilt innhold trengs. Ønsket om å slippe gjentatte bekreftelser gjelder fortsatt. Ekte KI-testing bruker samlet varig ramme på høyst 10 kr, billigste egnede modell og aldri nullstilt regnskap. R1 bruker ingen betalte kall. Kostnadsmålet under én krone må måles på den nye produksjonsflyten; gamle tekstanslag inkluderer ikke nye illustrasjoner eller større støttepakker.

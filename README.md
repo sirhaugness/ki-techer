@@ -2,6 +2,8 @@
 
 En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M9: innlogging og Leo-lås, 35 ferdigheter, kontrollerte matteøkter, KI-lærer med profilminne, medaljong, tale og foreldredashbord med budsjett, eksport og sletting. Ekte KI-kvalitet og fysisk iPad-test må godkjennes før fast bruk; se fremdriften for hva som er faktisk verifisert.
 
+**Fortsette spillrevisjonen i en ny samtale?** Begynn med [Start her i PROGRESS](docs/PROGRESS.md#start-her-aktiv-spillrevisjon-oppdatert-16-oktober-2026), deretter [kravkart/PR-rekkefølge](docs/GAME-REVISION.md) og SPEC §15. R2 ligger i [utkast-PR #17](https://github.com/sirhaugness/ki-techer/pull/17), branch `feat/chapter-player`; ikke start fra en eldre main-kopi uten å hente riktig branch. [R2-verifiseringen](docs/R2-VERIFICATION.md) beskriver det ferdige lokale snittet og den åpne innloggede Preview-porten. Neste nye leveranse er R3 etter at denne porten er lukket.
+
 - [Spesifikasjon](docs/SPEC.md)
 - [Fremdrift og faktiske testresultater](docs/PROGRESS.md)
 - [Oppsett, GitHub-hemmeligheter og Preview-test for nybegynnere](docs/DEPLOY.md)
