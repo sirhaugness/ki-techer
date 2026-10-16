@@ -89,6 +89,7 @@ Små endringer trenger ikke hele teamet. Rene undersøkelser endrer ikke filer, 
 
 - PR tester mot leo-dev / Vercel Preview. Merge til main påvirker produksjon. Ikke merge eller endre leo-prod / Production-variabler uten Thors tillatelse.
 - Utfør nødvendig og autorisert Preview-/dev-oppsett selv gjennom tilgjengelige connectorer/CLI og bekreft resultatet. Spør bare om manglende tilgang eller handlinger som trenger særskilt godkjenning.
+- Thor har 16. oktober 2026 uttrykkelig godkjent midlertidig syntetisk testkonto med husholdning, elev og enhet i leo-dev, inkludert sletting og etterkontroll. Bruk denne godkjenningen til avtalt Preview-/dev-verifisering; ikke spør igjen om samme testtilgang. Thor ønsker færrest mulig godkjenningsspørsmål. Produksjonsgrensen og samlet KI-testramme gjelder fortsatt.
 - Thor har 14. oktober 2026 godkjent fortsatt bruk av eksisterende `OPENAI_API_KEY` i Vercel Preview. Ikke spør igjen om eksisterende nøkkel kontra ny nøkkel. Godkjenningen omfatter ikke nye nøkler, endring av hemmeligheter eller produksjonsendringer.
 
 ## Driftsoppsett og kjente fallgruver

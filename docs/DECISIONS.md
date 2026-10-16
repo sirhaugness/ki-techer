@@ -245,3 +245,7 @@ PR #16 ble merget eksternt til main (5ad9807). Deretter ble PR #17 med bare før
 ## 2026-10-16: vent på bekreftet prøvesvar før reload i Auth-test
 
 CI på `fa1aa98` viste `working` etter umiddelbar reload etter svarinnsending. Playwright-klikk venter ikke på server-action og nettleserlagring. Auth-testen venter derfor på synlig `solved` før reload og verifiserer samme tilstand etterpå, som prøvekapittelets eksisterende nettlesertest. Dette retter testens kappløp; det gjør ikke nettleserlagring autoritativ eller holdbar før serverens svar. Ingen app-/sikkerhetsgrense endres.
+
+## 2026-10-16: godkjent syntetisk testtilgang og innlogget R2-port
+
+Thor har uttrykkelig godkjent midlertidig syntetisk konto med husholdning/elev/enhet i leo-dev og sletting/etterkontroll, og ønsker færrest mulig nye godkjenningsspørsmål. Dette mandatet beholdes i AGENTS. Det omfatter avtalt Preview-/dev-verifisering, ikke produksjonsendringer eller forhøyet KI-budsjett. Innlogget R2 på 55cdbdd er bestått uten KI-kall. Tekniske slettingsfeil fra connectoren registreres som gjenstående opprydding, ikke som avslag eller utført sletting.
