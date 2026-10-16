@@ -1,5 +1,11 @@
 # Fremdrift
 
+## 2026-10-16: kortere og tydeligere svar til Thor
+
+Thors svarpreferanse er lagret i AGENTS.md: svar først direkte, bruk korte nummererte steg ved fremgangsmåter og utelat unødvendig bakgrunn. Skill dagens oppsett fra løsninger som krever nytt oppsett, og ikke gjenta neste steg. Endringen gjelder Codex-kommunikasjon, ikke appens lærerprompt. Dokumentasjonsdiff og lokale lenker er kontrollert; ingen app-, database- eller tillatelsesendringer er gjort.
+
+**Hva Thor må gjøre:** Ingen handling for denne instruksjonsendringen.
+
 ## Start her: aktiv spillrevisjon (oppdatert 16. oktober 2026)
 
 Denne delen er overleveringen til neste arbeidsøkt. Den erstatter ikke produktkravene i [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026), eller kravkartet og byggeplanen i [GAME-REVISION.md](GAME-REVISION.md). Eldre milepæler nedenfor er historikk; «implementert» der betyr ikke at dagens spill oppfyller den nye visjonen. Oppdater denne delen etter hver leveranse, sammen med daterte bevis og åpne funn.
