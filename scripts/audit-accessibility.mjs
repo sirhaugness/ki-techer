@@ -89,6 +89,7 @@ try {
   await audit('login', '/login');
   await fetch(origin + '/leo?fixture=master');
   await audit('leo-home', '/leo');
+  await audit('leo-r2-player', '/leo/provekapittel');
   const post = async (body) => {
     const r = await fetch(origin + '/api/leo', {
       method: 'POST',
