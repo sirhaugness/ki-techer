@@ -122,7 +122,7 @@ Alle fire nye databasemigrasjoner (profilrefleksjon, foreldredashbord, KI-grense
 
 Hvis KI-en feiler, fortsetter øving med korte, regelstyrte spørsmål og hint. Egendefinerte interesser/lærernavn krever fungerende moderering. Hvis taletjenesten feiler, kan enhetens norske stemme lese teksten; tastaturet fungerer fortsatt. Lyd i mock-testene er ikke en vurdering av ekte norsk uttale.
 
-Bruk [hele testplanen for iPad](IPAD-TESTPLAN.md). Ekte modell-evaluering (30 scenarioer, minst 95 % og ingen fasit-lekkasjer) og fysisk testing i Safari/Chrome må fortsatt gjennomføres med tilgjengelige tjenester. Automatiske tester her bruker mocks, og lager ingen KI-kostnader.
+Bruk [hele testplanen for iPad](IPAD-TESTPLAN.md). Eksplisitt ekte nano-evaluering med varig 10 kr-regnskap (30 scenarioer, minst 95 % og ingen registrerte sluttresponslekkasjer) og fysisk testing i Safari/Chrome må fortsatt gjennomføres med tilgjengelige tjenester. Automatiske tester her bruker mocks, og lager ingen KI-kostnader.
 
 ## Budsjett og opprydding
 

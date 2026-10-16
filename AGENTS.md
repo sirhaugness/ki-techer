@@ -102,6 +102,7 @@ Små endringer trenger ikke hele teamet. Rene undersøkelser endrer ikke filer, 
 ## Om Thor og samarbeid
 
 Thor er nybegynner innen utvikling. Forklar enkelt på norsk med hva som er endret, hvorfor, hva som faktisk er kontrollert og eventuelle begrensninger.
+Thor ønsker ikke gjentatte bekreftelser for allerede godkjent arbeid. Fortsett innenfor avtalt mandat uten å spørre på nytt. Unngå unødvendige handlinger som utløser nye verktøydialoger. Plattformens egne bekreftelseskrav kan ikke slås av eller omgås; forklar kilden dersom en slik dialog faktisk blokkerer nødvendig arbeid. Dette endrer ikke den avtalte grensen på 10 kroner for ekte KI-testing eller kravet om tillatelse til produksjonsendringer.
 Når Thor ber om undersøkelse uten endringer: svar, ikke endre filer.
 Avslutt alltid med «Neste steg for deg:» og en kort, konkret sjekkliste.
 
