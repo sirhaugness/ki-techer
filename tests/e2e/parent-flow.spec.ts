@@ -76,6 +76,11 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await expect(page.getByRole('complementary')).toContainText('én lykt først');
   await page.getByRole('textbox', { name: 'Lyssteiner i alt' }).fill('12');
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
+  // The click does not await the server action or its localStorage write.
+  await expect(page.getByTestId('chapter-scene')).toHaveAttribute(
+    'data-phase',
+    'solved',
+  );
   await page.reload();
   await expect(page.getByTestId('chapter-scene')).toHaveAttribute(
     'data-phase',

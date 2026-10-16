@@ -241,3 +241,7 @@ Overleveringen peker på R2/PR #18 mot main og den åpne porten. R3 er neste nye
 ## 2026-10-16: PR-base rettet etter eksterne merger
 
 PR #16 ble merget eksternt til main (5ad9807). Deretter ble PR #17 med bare første R2-commit 4ae1549 merget til den gamle R1-branchen (d3f4f34), slik at R2 fortsatt ikke var på main. Sluttrettelsene 5710f6b og overleveringen a8c3407 kom etter den mergen. Agenten integrerte main i featurebranchen uten kodekonflikter (eff9a3d) og opprettet utkast-PR #18 fra samme feat/chapter-player direkte mot main. Dette viderefører hele R2 med korrekt diff og gjør siste dokumentasjon tilgjengelig i en åpen PR. Ingen produksjonsmerge ble utført av agenten. Ny samtale bruker PR #18, lukker den åpne R2-porten og fortsetter deretter med R3.
+
+## 2026-10-16: vent på bekreftet prøvesvar før reload i Auth-test
+
+CI på `fa1aa98` viste `working` etter umiddelbar reload etter svarinnsending. Playwright-klikk venter ikke på server-action og nettleserlagring. Auth-testen venter derfor på synlig `solved` før reload og verifiserer samme tilstand etterpå, som prøvekapittelets eksisterende nettlesertest. Dette retter testens kappløp; det gjør ikke nettleserlagring autoritativ eller holdbar før serverens svar. Ingen app-/sikkerhetsgrense endres.
