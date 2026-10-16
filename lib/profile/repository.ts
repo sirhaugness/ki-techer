@@ -41,7 +41,9 @@ export async function reflectPending(learnerId: string, householdId: string) {
       .eq('learner_id', learnerId)
       .limit(100);
     if (toolError) throw new Error('Kunne ikke hente verktøyhistorikk.');
-    const provider = await controlledProvider(householdId);
+    const provider = await controlledProvider(householdId, {
+      sessionId: row.id,
+    });
     const result = await reflectSession(provider, state, existing, tools ?? []);
     const { error: saveError } = await db.rpc('commit_reflection', {
       target_session: row.id,

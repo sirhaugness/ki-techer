@@ -4,6 +4,7 @@ import { chromium } from '@playwright/test';
 import { fetch as trustedFetch, EnvHttpProxyAgent } from 'undici';
 import { X509Certificate, createHash } from 'node:crypto';
 import { solidFor, solidEdges } from '../lib/engine/solids.ts';
+import { assertPreviewTestBudget } from './lib/live-eval-budget.mjs';
 const [
   publicFile,
   sessionFile,
@@ -20,8 +21,9 @@ const [config, session, profile, bypass] = await Promise.all(
 );
 const origin = new URL(config.previewUrl).origin;
 if (
-  !origin.endsWith('-team-thor1.vercel.app') ||
-  !config.supabaseUrl.includes('tabddnhkrugkejjxbctv')
+  new URL(origin).protocol !== 'https:' ||
+  !new URL(origin).hostname.endsWith('-team-thor1.vercel.app') ||
+  new URL(config.supabaseUrl).hostname !== 'tabddnhkrugkejjxbctv.supabase.co'
 )
   throw new Error('Only the confirmed dev Preview may be evaluated.');
 await mkdir(output, { recursive: true });
@@ -99,6 +101,18 @@ const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 let view;
 const results = [];
+async function preflight() {
+  const status = await page.evaluate(async () => {
+    const response = await fetch('/api/leo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: 'costStatus' }),
+    });
+    if (!response.ok) throw new Error('Could not verify the live test budget.');
+    return response.json();
+  });
+  assertPreviewTestBudget(status);
+}
 async function command(click, name) {
   const response = page.waitForResponse(
     (r) =>
@@ -159,6 +173,7 @@ try {
       title: await page.title(),
     }),
   );
+  await preflight();
   if (process.env.EVAL_RESTART_SESSION === '1') {
     await page.evaluate(async () => {
       const start = await fetch('/api/leo', {
@@ -191,11 +206,9 @@ try {
     });
     await page.reload({ waitUntil: 'networkidle' });
   }
-  const interests = process.env.EVAL_INTERESTS?.split('|') ?? [
-    'Star Wars',
-    'Dinosaurer',
-  ];
+  const interests = process.env.EVAL_INTERESTS?.split('|') ?? ['Star Wars'];
   const missionLimit = Number(process.env.EVAL_MISSION_LIMIT ?? 6);
+  const advanceChapter = process.env.EVAL_NEXT_CHAPTER === '1';
   if (
     !interests.every((i) => ['Star Wars', 'Dinosaurer'].includes(i)) ||
     !Number.isInteger(missionLimit) ||
@@ -282,6 +295,7 @@ try {
         path: `${output}/${prefix}-chapter-${view.adventure.number}-mission-${i + 1}-before.png`,
       });
       if (view.task.resolved && !view.adventure.choice) {
+        if (i === 5 && !advanceChapter) break;
         await command(
           () =>
             page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
@@ -305,12 +319,23 @@ try {
       else if (m.kind === 'measure') answer = m.total / m.each;
       else if (
         task.skillTitle === 'Mål volum med klosser og liter' &&
-        /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/.test(
+        /(\d+) lag[\s\S]*?(\d+) ganger (\d+)/.test(task.question)
+      ) {
+        const dimensions = task.question.match(
+          /(\d+) lag[\s\S]*?(\d+) ganger (\d+)/,
+        );
+        answer = dimensions
+          .slice(1)
+          .map(Number)
+          .reduce((a, b) => a * b, 1);
+      } else if (
+        task.skillTitle === 'Mål volum med klosser og liter' &&
+        /rommer (\d+) · (\d+) klosser i hvert lag\. Den har (\d+) lag/.test(
           task.question,
         )
       ) {
         const dimensions = task.question.match(
-          /Kassa har (\d+) lag\. I hvert lag ligger det (\d+) ganger (\d+)/,
+          /rommer (\d+) · (\d+) klosser i hvert lag\. Den har (\d+) lag/,
         );
         answer = dimensions
           .slice(1)
@@ -424,6 +449,7 @@ try {
           .locator('.story-player')
           .screenshot({ path: `${output}/${prefix}-payoff.png` });
       await page.reload({ waitUntil: 'networkidle' });
+      if (i === 5 && !advanceChapter) break;
       await command(
         () =>
           page.getByRole('button', { name: 'Fortsett eventyret →' }).click(),
@@ -432,10 +458,20 @@ try {
     }
     if (
       missionLimit === 6 &&
+      advanceChapter &&
       (view.adventure.number !== initial.adventure.number + 1 ||
         view.adventure.journey.chapters.at(-2).events.length !== 6)
     )
       throw new Error('History did not survive chapter transition.');
+    if (
+      missionLimit === 6 &&
+      !advanceChapter &&
+      (!view.task.resolved ||
+        view.adventure.journey.chapters.at(-1).events.length !== 6)
+    )
+      throw new Error(
+        'Current chapter did not finish with six recorded events.',
+      );
     await page
       .locator('.story-player')
       .screenshot({ path: `${output}/${prefix}-continuation.png` });

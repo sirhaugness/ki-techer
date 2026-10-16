@@ -37,7 +37,7 @@ export function budgetGuard(householdId: string): BudgetGuard {
     async settle(id, ceiling, call) {
       const { error } = await adminDb().rpc('settle_ai_budget', {
         reservation_id: id,
-        actual: call.ok ? call.cost_estimate : ceiling,
+        actual: call.ok || call.usage_known ? call.cost_estimate : ceiling,
       });
       if (error) throw new Error('Kunne ikke lagre budsjettoppgjøret.');
     },

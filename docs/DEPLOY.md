@@ -105,26 +105,24 @@ Når du har testet Preview og sjekkene er grønne, kan du merge PR-en til `main`
 
 ## M7–M9: dette må være klart på Preview
 
-Det er **ingen nye miljøvariabelnavn** i denne PR-en. Du har valgt å bruke OpenAI-nøkkelen du allerede har i Vercel. Ikke kopier den til chat eller kode. Kontroller at nøkkelen og modellvalgene også gjelder **Preview**, ikke bare Production:
+Tekstmodeller bruker nå den valgfrie `OPENAI_MODEL_DEFAULT`. Uten denne velger koden `gpt-5-mini`; gamle TUTOR/FAST/REFLECT-variabler overstyrer ikke dette. Du har valgt å bruke OpenAI-nøkkelen du allerede har i Vercel. Ikke kopier den til chat eller kode. Kontroller at nøkkelen og modellvalgene også gjelder **Preview**, ikke bare Production:
 
-| Variabel                | Verdi / handling                                |
-| ----------------------- | ----------------------------------------------- |
-| `OPENAI_API_KEY`        | Behold eksisterende nøkkel; aktiver for Preview |
-| `OPENAI_MODEL_TUTOR`    | `gpt-5.2`                                       |
-| `OPENAI_MODEL_FAST`     | `gpt-5-mini`                                    |
-| `OPENAI_MODEL_REFLECT`  | `gpt-5.2` — oppsummering etter økt              |
-| `AI_MONTHLY_BUDGET_NOK` | `100` — øvre månedsgrense per husholdning       |
-| `OPENAI_MODEL_TTS`      | `gpt-4o-mini-tts`                               |
-| `OPENAI_TTS_VOICE`      | `marin`                                         |
-| `OPENAI_MODEL_STT`      | `gpt-4o-mini-transcribe`                        |
+| Variabel                | Verdi / handling                                                   |
+| ----------------------- | ------------------------------------------------------------------ |
+| `OPENAI_API_KEY`        | Behold eksisterende nøkkel; aktiver for Preview                    |
+| `OPENAI_MODEL_DEFAULT`  | `gpt-5-mini` — alle tekstkall, også historie/kontroll/oppsummering |
+| `AI_MONTHLY_BUDGET_NOK` | `100` — øvre månedsgrense per husholdning                          |
+| `OPENAI_MODEL_TTS`      | `gpt-4o-mini-tts`                                                  |
+| `OPENAI_TTS_VOICE`      | `marin`                                                            |
+| `OPENAI_MODEL_STT`      | `gpt-4o-mini-transcribe`                                           |
 
-Verdiene er foreslått i miljømalen, men modellen må også være tilgjengelig for OpenAI-prosjektet ditt. Refleksjonsmodell og budsjettvariabel er nå i bruk. Hvis noen av modell-, stemme- eller budsjettvariablene mangler, legg dem inn i **Settings → Environment Variables**, velg Preview, lagre og trykk **Redeploy** på nyeste Preview. Ingen endring i Supabase-variablene eller APP_URL er nødvendig.
+Verdiene er foreslått i miljømalen, men modellen må også være tilgjengelig for OpenAI-prosjektet ditt. Felles tekstmodell og budsjettvariabel er i bruk. Hvis noen av modell-, stemme- eller budsjettvariablene mangler, legg dem inn i **Settings → Environment Variables**, velg Preview, lagre og trykk **Redeploy** på nyeste Preview. Ingen endring i Supabase-variablene eller APP_URL er nødvendig.
 
 Alle fire nye databasemigrasjoner (profilrefleksjon, foreldredashbord, KI-grenser og anonym tilgang) må være kjørt på **leo-dev** før du starter kartlegging. Kontroller at PR-sjekken **Supabase-migrasjoner** er grønn; se GitHub-hemmelighetene ovenfor hvis den feiler. Ikke kjør en database-reset. På første opplesing oppretter serveren automatisk et **privat** Supabase Storage-lager, `leo-tts`. Du trenger ikke opprette en offentlig bøtte. Funksjonene kjører i Vercels Stockholm-region (`arn1`).
 
 Hvis KI-en feiler, fortsetter øving med korte, regelstyrte spørsmål og hint. Egendefinerte interesser/lærernavn krever fungerende moderering. Hvis taletjenesten feiler, kan enhetens norske stemme lese teksten; tastaturet fungerer fortsatt. Lyd i mock-testene er ikke en vurdering av ekte norsk uttale.
 
-Bruk [hele testplanen for iPad](IPAD-TESTPLAN.md). Ekte modell-evaluering (30 scenarioer, minst 95 % og ingen fasit-lekkasjer) og fysisk testing i Safari/Chrome må fortsatt gjennomføres med tilgjengelige tjenester. Automatiske tester her bruker mocks, og lager ingen KI-kostnader.
+Bruk [hele testplanen for iPad](IPAD-TESTPLAN.md). Eksplisitt ekte nano-evaluering med varig 10 kr-regnskap (30 scenarioer, minst 95 % og ingen registrerte sluttresponslekkasjer) og fysisk testing i Safari/Chrome må fortsatt gjennomføres med tilgjengelige tjenester. Automatiske tester her bruker mocks, og lager ingen KI-kostnader.
 
 ## Budsjett og opprydding
 

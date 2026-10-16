@@ -19,7 +19,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 it('uses stateless Responses, ASCII tool names, strict schema, environment model and cost log', async () => {
-  vi.stubEnv('OPENAI_MODEL_TUTOR', 'configured-model');
+  vi.stubEnv('OPENAI_MODEL_DEFAULT', 'configured-model');
   create.mockResolvedValue({
     id: 'r',
     usage: { input_tokens: 100, output_tokens: 20 },
@@ -36,7 +36,10 @@ it('uses stateless Responses, ASCII tool names, strict schema, environment model
   const log = vi.fn(async (_call: AiCall) => {
       void _call;
     }),
-    provider = openaiProvider(log);
+    provider = openaiProvider(log, {
+      reserve: async () => 'test',
+      settle: async () => {},
+    });
   const reply = await provider.respond({
     purpose: 'tutor',
     instructions: 'Bokmål',
@@ -74,12 +77,15 @@ it('uses stateless Responses, ASCII tool names, strict schema, environment model
   });
 });
 it('logs failures and fails closed on flagged moderation', async () => {
-  vi.stubEnv('OPENAI_MODEL_FAST', 'configured-fast');
+  vi.stubEnv('OPENAI_MODEL_DEFAULT', 'configured-fast');
   create.mockRejectedValue(new Error('unavailable'));
   const log = vi.fn(async (_call: AiCall) => {
       void _call;
     }),
-    provider = openaiProvider(log);
+    provider = openaiProvider(log, {
+      reserve: async () => 'test',
+      settle: async () => {},
+    });
   await expect(
     provider.respond({
       purpose: 'fast',
@@ -93,7 +99,7 @@ it('logs failures and fails closed on flagged moderation', async () => {
   expect(await provider.moderate('tekst')).toBe(false);
 });
 it('reserves before paid calls, refuses exhausted budget and keeps failed-call ceiling', async () => {
-  vi.stubEnv('OPENAI_MODEL_FAST', 'mock-fast');
+  vi.stubEnv('OPENAI_MODEL_DEFAULT', 'mock-fast');
   const guard = {
     reserve: vi.fn().mockResolvedValue(null),
     settle: vi.fn().mockResolvedValue(undefined),

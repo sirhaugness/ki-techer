@@ -29,7 +29,50 @@ export function storyFixtureProvider(): AiProvider {
     moderate: async () => true,
     respond: async (request) => {
       const input = JSON.parse(request.input);
-      if (input.plan) return { calls: [], value: { valid: true, issues: [] } };
+      if (input.plan) {
+        // Explicit mock verdicts for local rendering/flow tests, never model evidence.
+        const pass = {
+          pass: true,
+          evidence: 'Mock: kontrollert testscene.',
+          issue: '',
+        };
+        const history = input.immutableHistory;
+        const source =
+          history.inventory[0] ??
+          history.chapters.flatMap(
+            (c: { choices: string[] }) => c.choices,
+          )[0] ??
+          history.lastActualEvent?.id ??
+          '';
+        return {
+          calls: [],
+          value: {
+            chapterContinuity: pass,
+            practicalNovelty: pass,
+            priorChoiceImpact: {
+              ...pass,
+              evidence: source
+                ? input.visibleTextByMission[
+                    input.plan.missions[0].id
+                  ].before.slice(0, 240)
+                : pass.evidence,
+              source,
+              missionId: source ? input.plan.missions[0].id : '',
+            },
+            missions: input.plan.missions.map((m: { id: string }) => ({
+              missionId: m.id,
+              mathNecessary: pass,
+              physicalRuleExplicit: {
+                ...pass,
+                evidence: input.problems
+                  .find((problem: { id: string }) => problem.id === m.id)
+                  .question.slice(0, 240),
+              },
+              consequenceMatches: pass,
+            })),
+          },
+        };
+      }
       if (!input.items)
         throw new Error('Use deterministic teacher support in this fixture.');
       const space = input.interest === 'Star Wars';
@@ -212,9 +255,9 @@ export function storyFixtureProvider(): AiProvider {
               '',
             ],
           ];
-      const previous = input.history.recentChapters.at(-1)?.events.at(-1);
+      const previous = input.history.lastActualEvent;
       const missions: StoryMission[] = scenes.map((s, i) => ({
-        id: `c${chapter}-m${i + 1}`,
+        id: `chapter-${chapter}-m${i + 1}`,
         title: `${s[0]}${chapter > 1 ? ` · spor ${chapter}` : ''}`,
         itemIndex: selected[i].index,
         location: space
@@ -238,7 +281,7 @@ export function storyFixtureProvider(): AiProvider {
         backdrop: s[2] as StoryMission['backdrop'],
         before:
           chapter > 1 && i === 0
-            ? `${previous?.outcome ?? ''} ${companion} følger det nye sporet videre. Her trenger vennene deres hjelp.`
+            ? `${input.history.inventory[0] ? `Du bruker ${input.history.inventory[0]} for å følge sporet videre. ` : ''}${previous?.outcome ?? ''} ${companion} følger det nye sporet videre.`
             : s[1],
         speaker: companion,
         dialogue: space
@@ -275,7 +318,11 @@ export function storyFixtureProvider(): AiProvider {
               'Familien samles. Ungen viser nye spor mot fjellet.',
             ][i],
         retry: 'Se på mengdene vi har. Vi prøver sammen igjen.',
-        follows: i ? [`c${chapter}-m${i}`] : previous ? [previous.id] : [],
+        follows: i
+          ? [`chapter-${chapter}-m${i}`]
+          : previous
+            ? [previous.id]
+            : [],
         gains: s[9] ? [s[9]] : [],
         uses: [],
         consumes: [],

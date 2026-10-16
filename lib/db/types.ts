@@ -70,6 +70,11 @@ type AiCallRow = {
   latency_ms: number;
   ok: boolean;
   created_at: string;
+  session_id: string | null;
+  chapter_number: number | null;
+  usage_known: boolean;
+  pricing_version: string;
+  environment: string;
 };
 export type Database = {
   public: {

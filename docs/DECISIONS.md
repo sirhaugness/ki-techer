@@ -189,3 +189,23 @@ Thor har godkjent gjenbruk av eksisterende OpenAI-oppsett i Preview. Dette er og
 - Aktiv lærerprompt blir `tutor.v2`; v1 beholdes for sporbarhet. V2 skiller verktøytur fra hjelp uten verktøy, bruker motorens vurdering og tilpasser tallinstruksjoner til dagens guard. Lokale instruksjoner for hjelp, planlegging, kontekstualisering, forklaringsvurdering og refleksjon revideres innenfor eksisterende skjema.
 - Codex-teamet bruker samme produktmål og evidenskrav. Rene undersøkelser gir ingen fil-/PR-endringer; endringsoppgaver dokumenteres og verifiseres etter faktisk omfang. Designer vurderer hele årsakskjeden; tutor-evaluator sporer også direkte kodebestemte svar; reviewer kontrollerer kontrakter på tvers av filer.
 - Teknisk funksjon, ekte modellkvalitet og spillopplevelse rapporteres separat. Dagens 30-scenario-eval måler sluttrespons, ikke full pedagogisk kvalitet eller råforsøk. Utvidet evaluering står som gjenstående krav, ikke som et utført resultat. Eksisterende Preview-nøkkelgodkjenning og produksjonsgrenser beholdes.
+
+## 2026-10-15: faktisk fortsettelse og uavhengig historiekontroll
+
+Siste faktisk gjennomførte hendelse og lagrede valg er autoritative. En planlagt krok er et forslag, ikke en ordre om å gjenåpne et løst problem. Første oppdrag i videreførte kapitler må referere siste faktiske hendelse; historiske krav gjelder ikke et første kapittel uten historikk. Forfatteren og den separate kritikeren bruker det konfigurerte sterke tutor-modellvalget, med egne kontekster og 120/60-sekunders kallgrenser innenfor samlet planleggingsfrist. Inntil tre korrigeringer gjelder samme utkast og samme budsjett; det finnes ingen ubegrenset automatisk omstart. Matematikk, figurdata, kostnad og rest bestemmes fortsatt av kode. Felles payoff kan ikke kreve råstoff på nytt eller liste begge alternative gjenstander. Dette skjerper kontrakten, men modell-/spillkvalitet må fortsatt vises i ekte forløp.
+
+## 2026-10-15: kostnadsmål og budsjettstyrt fortellingskontroll
+
+Thors nye kostnadsmandat erstatter den sterke modellstandarden over: alle tekstroller bruker gpt-5-mini via valgfri OPENAI_MODEL_DEFAULT, også ett helt kapittel og separat fortellingskontroll. Gammelt gpt-5.2-oppsett i rollevariabler overstyrer ikke den nye standarden. Høyst ett korrigert planutkast etter første forsøk; korte tilleggskall har ett forsøk. Research og kontrollerte kapitler gjenbrukes i den samme historien, ikke på tvers av elever/valg. Alle historiske faktiske hendelser beholdes uten duplikate sistekapitler.
+
+Modellpriser/valutaforutsetning versjoneres i nye ai_calls. Historiske flate anslag omskrives ikke; økt-/kapittel-ID og egne kalltyper gir fremtidig attribusjon. Ukjent forbruk beholder reservasjonen; kjent bruk prises selv ved avvist modellresultat. Tekst- og taleprovider krever eksplisitt budsjettvakt.
+
+Kritikeren må levere evidens for kontinuitet, praktisk variasjon og historiske valgs konkrete virkning, samt matematisk nødvendighet, fysisk regel og samsvarende konsekvens for hvert av seks oppdrag. Kode bestemmer godkjenning og validerer eksakte oppdrags-/historikkreferanser. Dette erstatter en enkelt valid=true, uten å gjøre mocks til bevis på modellens forståelse.
+
+Tester er mocks som standard; eksplisitte ekte tester bruker billigste egnede modell og en samlet varig grense på 10 kr for arbeidet. Generell agent-eval bruker nano med lokal låst regnskapsfil; faktisk mini-fortelling prøves med mini og eksisterende serverhåndhevet husholdningsgrense 10 kr. Ingen forhøyelse eller ny testkonto for å omgå brukt ramme. Mer enn 10 kr må godkjennes først. Vercel-deling åpner bare ytre Preview-beskyttelse, ikke appens sikkerhet eller budsjett. PR holdes utkast til fortellingskontrollen og åpne kvalitetsfunn er ferdig vurdert.
+
+## 2026-10-16: evidens må komme fra faktisk elevtekst
+
+En faktisk mini-godkjenning av kapittel 4 var ikke tilstrekkelig: uavhengig evaluering fant fortsatt P2. Fysisk regel og konkret nytte av tidligere gjenstand krever derfor eksakte sitater, kontrollert mot bundet elevtekst og begge mulige valgforløp. Intern purpose og uses-metadata teller ikke som synlig handling. Sitatets relevans og variasjon vurderes fortsatt semantisk; tekstmatching er ikke et fullstendig fortellerbevis. Åpne funn og manglende ny ekte kontroll etter siste kodeendring holder PR-en som utkast.
+
+Thor ønsker ikke gjentatte bekreftelser for allerede autorisert arbeid. Fortsett innenfor mandatet og unngå unødvendige nye dialoger. Verktøyets egne bekreftelseskrav kan ikke fjernes av en prosjektregel. Testgrensen og produksjonsgrensen gjelder fortsatt.

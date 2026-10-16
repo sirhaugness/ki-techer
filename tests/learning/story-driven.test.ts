@@ -9,6 +9,8 @@ import { storyFixtureProvider } from '../../lib/learning/story-fixture';
 import {
   storyQuantities,
   validateStoryProblem,
+  storyProblemExample,
+  bindStoryProblem,
 } from '../../lib/engine/story-problem';
 import { generate } from '../../lib/engine/skills/generators';
 import { seededRng } from '../../lib/engine/random';
@@ -27,7 +29,25 @@ const profile = {
 };
 
 describe('story-driven saga', () => {
-  it.each(['uses', 'consumes'] as const)(
+  it('offers a verified template example without binding a hidden answer or geometry dimension', () => {
+    const geometry = generate(
+      'figur-3d-kanter-hjorner-flater',
+      1,
+      seededRng(27),
+    );
+    const example = storyProblemExample(geometry)!;
+    expect(example).toContain('{{count}}');
+    expect(bindStoryProblem(example, geometry)).toBe(geometry.question);
+    const item = generate('mult-telling-grupper', 5, seededRng(12));
+    expect(Object.values(storyQuantities(item))).not.toContain(item.answer);
+    expect(
+      storyProblemExample({
+        ...item,
+        question: `${item.question} Svaret er ${item.answer}.`,
+      }),
+    ).toBeUndefined();
+  });
+  it.each(['uses', 'consumes', 'alternatives'] as const)(
     'rejects spending the choice raw material again through payoff %s',
     async (field) => {
       const provider = storyFixtureProvider();
@@ -42,9 +62,14 @@ describe('story-driven saga', () => {
           plan.missions
             .find((m) => m.id === plan.decision.afterMission)!
             .gains.push(plan.decision.resource);
-          plan.missions
-            .find((m) => m.id === plan.decision.payoffMission)!
-            [field].push(plan.decision.resource);
+          const payoff = plan.missions.find(
+            (m) => m.id === plan.decision.payoffMission,
+          )!;
+          if (field === 'alternatives')
+            payoff.uses.push(
+              ...plan.decision.options.map((option) => option.assetName),
+            );
+          else payoff[field].push(plan.decision.resource);
         }
         return reply;
       };
@@ -206,13 +231,14 @@ describe('story-driven saga', () => {
     const provider = storyFixtureProvider();
     const respond = provider.respond.bind(provider);
     let plans = 0;
+    let selectedFigure: unknown;
     provider.respond = async (request) => {
       const input = JSON.parse(request.input);
       if (input.items) {
         expect(request.timeoutMs).toBeGreaterThan(1000);
         expect(request.timeoutMs).toBeLessThanOrEqual(120000);
         plans++;
-        if (plans === 2) {
+        if (plans > 1) {
           expect(input.rejectedPlan.missions[0].questionTemplate).toContain(
             '{{unknown}}',
           );
@@ -224,6 +250,12 @@ describe('story-driven saga', () => {
           (item: { skill: string }) =>
             item.skill === 'figur-3d-kanter-hjorner-flater',
         );
+        selectedFigure = geometry.figure;
+        expect(selectedFigure).toMatchObject({
+          shape: expect.any(String),
+          property: expect.any(String),
+          count: expect.any(Number),
+        });
         plan.missions[1].itemIndex = geometry.index;
         plan.missions[1].questionTemplate = geometry.question.replace(
           /^Du ser \d+/,
@@ -231,18 +263,18 @@ describe('story-driven saga', () => {
         );
         plan.missions[1].clueTemplate =
           'C‑3PO undersøker {{count}} 3D-figurer.';
-        if (plans === 1)
+        if (plans < 2)
           (
             result.value as { missions: { questionTemplate: string }[] }
           ).missions[0].questionTemplate += ' {{unknown}}';
         return result;
       }
       if (input.plan) {
+        expect(request.purpose).toBe('story-review');
+        expect(request.timeoutMs).toBeLessThanOrEqual(60000);
         expect(input.history).toBeUndefined();
-        expect(input.immutableHistory.chapters).toBeDefined();
-        expect(
-          input.immutableHistory.chapters.some((c: object) => 'choices' in c),
-        ).toBe(false);
+        expect(input.immutableHistory.chapters).toEqual([]);
+        expect(input.problems[1].figure).toEqual(selectedFigure);
       }
       return respond(request);
     };
@@ -323,6 +355,25 @@ describe('story-driven saga', () => {
       const provider = storyFixtureProvider();
       const research = vi.spyOn(provider, 'research');
       let state = createSession(profile, null, now, 0, 'practice', null);
+      const respond = provider.respond.bind(provider);
+      let historicalChoicesChecked = 0;
+      provider.respond = async (request) => {
+        const input = JSON.parse(request.input);
+        if (input.plan && input.immutableHistory.chapters.length) {
+          expect(input.immutableHistory.lastActualEvent).toEqual(
+            state.adventures![interest.id].saga!.chapters.at(-1)!.events.at(-1),
+          );
+          expect(
+            input.immutableHistory.chapters.map(
+              (c: { choices: string[] }) => c.choices,
+            ),
+          ).toEqual(
+            state.adventures![interest.id].saga!.chapters.map((c) => c.choices),
+          );
+          historicalChoicesChecked++;
+        }
+        return respond(request);
+      };
       const turn = async (event: LearningEvent) => {
         state = (
           await learningTurn(
@@ -442,6 +493,7 @@ describe('story-driven saga', () => {
           : 'Et fossil fra elven',
       );
       expect(research).toHaveBeenCalledTimes(1);
+      expect(historicalChoicesChecked).toBe(2);
       expect(research).toHaveBeenCalledWith(label);
     });
   it('rejects story/quantity errors and retains the original state if generation fails', async () => {

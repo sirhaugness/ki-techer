@@ -17,7 +17,8 @@ import {
 } from '@/lib/learning/repository';
 import { adminDb } from '@/lib/db/server';
 import { controlledProvider } from '@/lib/ai/control';
-import { allowDevice } from '@/lib/security/limits';
+import { allowDevice, budgetStatus } from '@/lib/security/limits';
+import { textModel } from '@/lib/ai/pricing';
 import { boundedJson } from '@/lib/security/body';
 import { approved } from '@/lib/ai/moderation';
 import { eventSchema } from '@/lib/learning/types';
@@ -32,6 +33,7 @@ import { StoryPlanningError } from '@/lib/learning/story-planner';
 export const runtime = 'nodejs';
 export const maxDuration = 300;
 const commandSchema = z.discriminatedUnion('command', [
+  z.object({ command: z.literal('costStatus') }).strict(),
   z.object({
     command: z.literal('feedback'),
     sessionId: z.uuid(),
@@ -107,6 +109,16 @@ export async function POST(request: Request) {
         : null
       : await controlledProvider(profile.householdId);
     const cmd = parsed.data;
+    if (cmd.command === 'costStatus')
+      return Response.json(
+        {
+          budget: mock
+            ? { limit: 0, spent: 0, remaining: 0 }
+            : await budgetStatus(profile.householdId),
+          models: { text: textModel() },
+        },
+        { headers: { 'Cache-Control': 'no-store' } },
+      );
     if (cmd.command === 'voiceSettings') {
       if (profile.settings.voice === false)
         return Response.json(
@@ -238,6 +250,12 @@ export async function POST(request: Request) {
       return Response.json({ ok: true });
     }
     let state = f ? f.state : await latestSession(profile.id);
+    if (provider?.usage && state) {
+      provider.usage.sessionId = state.id;
+      provider.usage.chapterNumber = state.active?.interestId
+        ? state.adventures?.[state.active.interestId]?.number
+        : undefined;
+    }
     const now = new Date().toISOString();
     if (cmd.command === 'feedback') {
       if (
@@ -261,6 +279,7 @@ export async function POST(request: Request) {
       };
       const result = await teacherHelp({
         provider,
+        purpose: 'feedback',
         task: state.active,
         text: 'Hva var feil?',
         level: state.hints.level,

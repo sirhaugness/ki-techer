@@ -2,10 +2,8 @@ import 'server-only';
 import OpenAI from 'openai';
 import type { VoiceProvider, VoiceLog } from './contracts';
 import type { BudgetGuard } from '../security/limits';
-export function openaiVoice(
-  log: VoiceLog,
-  budget?: BudgetGuard,
-): VoiceProvider {
+export function openaiVoice(log: VoiceLog, budget: BudgetGuard): VoiceProvider {
+  if (!budget) throw new Error('Ekte tale-KI krever budsjettvakt.');
   const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     timeout: 20_000,
@@ -15,9 +13,8 @@ export function openaiVoice(
     async speak(text, model, voice) {
       const started = Date.now();
       const ceiling = Math.max(0.5, (text.length / 1000) * 0.3);
-      const reservation = budget ? await budget.reserve(ceiling) : null;
-      if (budget && !reservation)
-        throw new Error('KI-budsjettet er brukt opp.');
+      const reservation = await budget.reserve(ceiling);
+      if (!reservation) throw new Error('KI-budsjettet er brukt opp.');
       let ok = false;
       try {
         const response = await client.audio.speech.create({
@@ -41,17 +38,15 @@ export function openaiVoice(
           latency_ms: Date.now() - started,
           ok,
         };
-        if (budget && reservation)
-          await budget.settle(reservation, ceiling, call);
+        await budget.settle(reservation, ceiling, call);
         await log(call);
       }
     },
     async transcribe(file, model) {
       const started = Date.now();
       const ceiling = Math.max(0.5, (file.size / 1_000_000) * 2);
-      const reservation = budget ? await budget.reserve(ceiling) : null;
-      if (budget && !reservation)
-        throw new Error('KI-budsjettet er brukt opp.');
+      const reservation = await budget.reserve(ceiling);
+      if (!reservation) throw new Error('KI-budsjettet er brukt opp.');
       let ok = false;
       try {
         const response = await client.audio.transcriptions.create({
@@ -72,8 +67,7 @@ export function openaiVoice(
           latency_ms: Date.now() - started,
           ok,
         };
-        if (budget && reservation)
-          await budget.settle(reservation, ceiling, call);
+        await budget.settle(reservation, ceiling, call);
         await log(call);
       }
     },

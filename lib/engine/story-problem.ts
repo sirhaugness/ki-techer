@@ -94,3 +94,13 @@ export function validateStoryProblem(
     return false;
   }
 }
+
+/** An optional example from the verified question, never from the hidden answer. */
+export function storyProblemExample(item: GeneratedItem): string | undefined {
+  const quantities = Object.entries(storyQuantities(item));
+  const template = item.question.replace(/\b\d+\b/g, (number) => {
+    const field = quantities.find(([, value]) => value === Number(number));
+    return field ? `{{${field[0]}}}` : number;
+  });
+  return validateStoryProblem(template, item) ? template : undefined;
+}

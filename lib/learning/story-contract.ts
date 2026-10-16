@@ -46,11 +46,25 @@ export const storyMissionSchema = z.object({
     'mountain',
   ]),
   before: narration,
-  speaker: z.string().min(1).max(60),
+  speaker: z
+    .string()
+    .min(1)
+    .max(60)
+    .describe(
+      'Bare nøyaktig navn fra cast. Skriv «over samband» i dialogue/before, aldri som del av speaker-navnet.',
+    ),
   dialogue: short,
   purpose: short,
-  questionTemplate: z.string().min(1).max(500),
-  clueTemplate: short,
+  questionTemplate: z
+    .string()
+    .min(1)
+    .max(500)
+    .describe(
+      'Mengder skrives {{feltnavn}} fra valgt items.quantities, aldri som siffer eller oppdiktede felter. Eksempel kun for 2D-sider: «Du ser {{count}} figurer. Hvor mange sider har de til sammen?» Bruk figure.property for riktig egenskap i den valgte oppgaven.',
+    ),
+  clueTemplate: short.describe(
+    'Samme mengdefelter som spørsmålet. Eksempel: «{{groups}} grupper med {{each}} i hver.» Ingen bokstavelige oppgavetall.',
+  ),
   object: z.string().min(1).max(60),
   container: z.string().min(1).max(60),
   glyph: z.enum([
@@ -116,7 +130,12 @@ export const storyMissionSchema = z.object({
   resourceEffect: z.enum(['gather', 'use', 'none']),
   success: short,
   retry: short,
-  follows: z.array(z.string().min(1).max(80)).max(8),
+  follows: z
+    .array(z.string().min(1).max(80))
+    .max(8)
+    .describe(
+      'Kopier forrige mission.id nøyaktig; første oppdrag kopierer contract.firstMissionFollows, uten å forkorte historiske ID-er.',
+    ),
   gains: z
     .array(z.string().min(1).max(100))
     .max(4)
@@ -143,8 +162,20 @@ export const storyChapterSchema = z.object({
   cast: z.array(storyActorSchema).min(1).max(8),
   missions: z.array(storyMissionSchema).length(6),
   decision: z.object({
-    afterMission: z.string().min(1).max(40),
-    payoffMission: z.string().min(1).max(40),
+    afterMission: z
+      .string()
+      .min(1)
+      .max(40)
+      .describe(
+        'Nøyaktig id fra missions på oppdraget som samler ressursen. Ikke tittel, historisk event-id eller oppdragsnummer.',
+      ),
+    payoffMission: z
+      .string()
+      .min(1)
+      .max(40)
+      .describe(
+        'Nøyaktig id på et oppdrag SENERE i missions enn afterMission.',
+      ),
     prompt: short,
     resource: z.string().min(1).max(100),
     options: z

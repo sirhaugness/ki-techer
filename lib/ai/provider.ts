@@ -11,7 +11,17 @@ export type ProviderReply = {
   calls: ToolCall[];
   conversation?: unknown[];
 };
-export type ModelPurpose = 'tutor' | 'fast' | 'reflect';
+export type ModelPurpose =
+  | 'tutor'
+  | 'fast'
+  | 'reflect'
+  | 'story-generate'
+  | 'story-review'
+  | 'help'
+  | 'feedback'
+  | 'explanation'
+  | 'contextualize';
+export type AiUsageContext = { sessionId?: string; chapterNumber?: number };
 export type ModelRequest = {
   purpose: ModelPurpose;
   instructions: string;
@@ -31,6 +41,11 @@ export type AiCall = {
   cost_estimate: number;
   latency_ms: number;
   ok: boolean;
+  usage_known?: boolean;
+  session_id?: string | null;
+  chapter_number?: number | null;
+  pricing_version?: string;
+  environment?: string;
 };
 export type UniverseResearch = {
   interest: string;
@@ -39,12 +54,10 @@ export type UniverseResearch = {
   researchedAt: string;
 };
 export interface AiProvider {
+  usage?: AiUsageContext;
   respond(request: ModelRequest): Promise<ProviderReply>;
   moderate(text: string): Promise<boolean>;
   /** Public interest only; no learner data is submitted to web search. */
   research?(interest: string): Promise<UniverseResearch>;
 }
-// Deliberately conservative estimate, not an invoice. Pricing varies by model.
-export function estimateCost(input: number, output: number): number {
-  return (input * 100 + output * 400) / 1_000_000;
-}
+export { estimateCost } from './pricing';
