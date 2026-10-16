@@ -1,5 +1,62 @@
 # Fremdrift
 
+## Start her: aktiv spillrevisjon (oppdatert 16. oktober 2026)
+
+Denne delen er overleveringen til neste arbeidsøkt. Den erstatter ikke produktkravene i [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026), eller kravkartet og byggeplanen i [GAME-REVISION.md](GAME-REVISION.md). Eldre milepæler nedenfor er historikk; «implementert» der betyr ikke at dagens spill oppfyller den nye visjonen. Oppdater denne delen etter hver leveranse, sammen med daterte bevis og åpne funn.
+
+### Avtalt mål og rammer
+
+- Oppdrag = én matematikkoppgave. Kapittel = en sammenhengende lokal historie. Saga = fortsettelsen av faktisk tidligere historie og valg. Økt = læringstid.
+- Interesse velges ved starten av et nytt kapittel. Hele kapittelet med relevante oppgaver og sammenhengende visuelle ressurser skal forberedes før spillstart. Uferdig kapittel gjenopptas uten ny generering. Ingen obligatorisk åpningsscene eller fast oppdragsrekkefølge.
+- Én tiltalende spiller skal samle scene, elevhandling og lett tilgjengelig mattelærer med faktisk kontekst. Feil gir relevant støtte; riktig svar gir en synlig konsekvens som driver historien videre.
+- Hele SPEC gjelder, også læringsmotor, tilpasning, tale, tilgjengelighet, foreldrefunksjoner, personvern og kostnad. Kravkartet fordeler dette mellom leveransene; tre demooppdrag er ikke hele revisjonen.
+- Thor har godkjent gjennomføringen. Ikke be om samme oppstartsgodkjenning igjen. Eksisterende Preview-nøkkel er godkjent. Mocks er standard; spør før samlet ekte KI-testing overstiger 10 kr. Siste registrerte testforbruk er 2,99981825 kr, ikke et nytt nullstilt budsjett. Ingen merge til main eller produksjonsendring uten tillatelse.
+
+### Verifisert utgangspunkt
+
+- Aktiv branch: `feat/chapter-foundation`. [PR #16](https://github.com/sirhaugness/ki-techer/pull/16) er åpen som utkast mot `main`, kontrollert 16. oktober. R1-kodecommit: `d535e80`; dokumentasjonsoppdateringer kan følge etter denne.
+- PR #15 er allerede merget eksternt; R1 startet fra main `591e699`. Agenten utførte ingen merge.
+- R1 har kontrakter, motorreferanser, scene-/rutekontroll og sikker projeksjon i `lib/chapters/`, men er **ikke koblet til appens runtime eller UI**. Den viste gamle spillflaten er fortsatt et åpent problem.
+- [CI for d535e80](https://github.com/sirhaugness/ki-techer/actions/runs/38937536329) er grønn: 504 enhetstester, bygg, simulering, tilgjengelighet og nettleser-/Auth-jobber. [Preview](https://ki-techer-5ksra3txo-team-thor1.vercel.app) er bygget på samme commit. Dette beviser fundamentet, ikke ny UX eller ekte generert fortellerkvalitet. R1 brukte 0 kr på KI-testing.
+
+### Byggerekkefølge og PR-oppsett
+
+R1–R7 er leveransenavn, ikke GitHub-numre. Bare PR #16 er opprettet i denne serien. Fremtidige branchnavn nedenfor er planlagte. Ferdigkriterier og full kravfordeling står i GAME-REVISION.md.
+
+| Leveranse | Innhold                                                                              | Branch / PR-base                                                              | Status og port                                                                               |
+| --------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| R1        | Kapittelkontrakter og kravkart                                                       | `feat/chapter-foundation` → `main`, PR #16                                    | Implementert og teknisk kontrollert; fortsatt utkast                                         |
+| R2        | Første sammenhengende spillopplevelse                                                | Opprett `feat/chapter-player` fra siste R1; PR-base `feat/chapter-foundation` | **Neste arbeid. Ikke startet.** Tre oppdrag, feil/hjelp/riktig, konsekvens og gjenopptakelse |
+| R3        | Varig kapittelforberedelse, ekte research/generering/kontroll, ressurser og budsjett | Egen branch fra godkjent avhengig kode                                        | Planlagt; første ekte genererte kapittel i ny spiller                                        |
+| R4        | Adaptiv avvikling og læringsmotor i samme spiller                                    | Egen PR etter R3                                                              | Planlagt; autoritativ progresjon, støtte, repetisjon og mesterutfordring                     |
+| R5        | Kontekstuell lærer, tale og visuell/faglig bredde                                    | Egen PR etter R4                                                              | Planlagt; flerturshjelp, alle svarformer og tilgjengelighet                                  |
+| R6        | Overgang, foreldrefunksjoner og personvern                                           | Egen PR etter R5                                                              | Planlagt; gamle data bevares og nye data dekkes av innsyn/sletting                           |
+| R7        | Full verifisering mot kravkartet                                                     | Egen PR etter R6                                                              | Planlagt; flere interesser/kapitler, kostnad, nettbrett og menneskelig kvalitetsvurdering    |
+
+R2 bygges oppå R1 uten å merge PR #16 først. R2-PR-en skal vise bare R2-endringer ved å bruke R1-branchen som base. Hvis en avhengig PR senere merges, oppdater base og integrer gjeldende main før videre arbeid; ved squash må allerede innlemmede commits ikke bli duplisert i neste diff. Ikke bygg hele serien som en ukontrollert stabel. Revider senere PR-grenser hvis faktiske avhengigheter tilsier det, og dokumenter hvorfor. Utkast og grønn CI gir ikke tillatelse til produksjonsutrulling.
+
+### Neste konkrete arbeid: R2
+
+1. Les `AGENTS.md`, SPEC §15, GAME-REVISION.md og denne statusen. Kontroller faktisk git-/PR-status før oppstart; ikke anta at branch eller merge-status er uendret.
+2. Opprett R2-branchen fra siste R1. Undersøk eksisterende elevflate, autentisering, oppgave-/hintkontroll og nettlesertester før integrasjon. Bevar sikkerhets- og læringsgrenser.
+3. Bygg ett helt håndskrevet testkapittel med tre sammenhengende oppdrag i ny spiller. Merk innholdets testopprinnelse tydelig. Tre oppdrag er en kvalitetsprøve, ingen universell kapittelmal. Bruk R1-kontraktene; ikke lag et parallelt, uforenlig kapittelformat.
+4. Gjør mål, matematiske mengder og elevhandling forståelige i samme scene. Vis relevant støtte ved feil og konkret konsekvens ved riktig svar. Hold lærer og aktiv oppgave tilgjengelige samtidig. Oppfyll 20px elevtekst, 48px trykkmål og forståelig redusert bevegelse innen dette snittet.
+5. Prøv hele kjeden: forstå → feil → hjelp → riktig → synlig konsekvens → neste oppdrag → oppfriskning/gjenopptakelse. Kontroller scene og spørsmål mot motorens faktiske mengder og svar. Beskriv lagringsmåten og begrensningene eksplisitt; demoen er ikke R3/R4s ferdige serverlagring eller adaptive progresjon.
+6. Få faktisk UX-/pedagogisk vurdering og uavhengig kodereview etter prosjektets arbeidsflyt. Kjør relevante tester og Preview. Rapporter håndskrevet innhold, mocks, kodebestemt hjelp og ekte KI separat; R2 skal ikke kreve betalte KI-kall eller påstå å bevise genereringskvalitet.
+7. Oppdater denne statusen, åpne funn, kravkartets evidens og PR-lenke. Opprett R2 som utkast med korrekt base. Ingen produksjonsmerge.
+
+Åpne forhold videre: R1 fryser ennå ikke generatorversjonen for varig lagring; R3 må løse det før pakker persisteres. Ingen varig worker finnes i R1. Strukturell validering og en positiv KI-kritiker beviser ikke sammenheng/variasjon. Tidligere observerte forteller-/sceneproblemer er ikke lukket av kontraktene. Målet under 1 kr per ekte økt må måles på ny flyt, inkludert eventuelle medier; det er ikke en etablert garanti.
+
+### Slik fortsetter vi uten denne samtalen
+
+Thor kan skrive: **«Fortsett spillrevisjonen fra Start her i docs/PROGRESS.md. Følg docs/GAME-REVISION.md og docs/SPEC.md. Gjennomfør neste uferdige leveranse og oppdater status og PR.»**
+
+Filene skal inneholde nødvendige avtalte krav, grenser og observerte resultater. Hele samtalen er ikke nødvendig når riktig repository/branch og filene er tilgjengelige. En ny samtale må kontrollere levende git-/PR-status og tilgang; rapporterte testresultater gjelder den oppgitte versjonen. Varig dokumentasjon og testartefakter må oppdateres når nye beslutninger eller funn oppstår.
+
+**Hva Thor må gjøre:** Ingen merge eller oppsett nå. Bruk teksten over når arbeidet skal fortsette, også i en ny samtale.
+
+---
+
 Grunnlaget er `docs/SPEC.md` (kopiert fra rotfilen fordi docs-filen var tom). Dato: 10. oktober 2026.
 
 | Milepæl                            | Status                                                        |
@@ -421,3 +478,19 @@ En ekte kapittel 5-prøve i `2e21a02` ble avvist før visning da siste kontrollk
 Thor ba om å slippe gjentatte bekreftelser. Dette er nå uttrykkelig registrert i AGENTS. Dialogene ved DELETE kom fra Supabase-verktøyets bekreftelseskrav; prosjektinstruksen kan ikke slå av plattformdialoger. Ingen slik bekreftelse gjenstår for utført opprydding.
 
 **Hva Thor må gjøre:** Ingen oppsett eller godkjenning nå. Kostnadsrapporten kan leses; vent med merge av PR 15 til åpne forteller-/sceneproblemer er rettet og siste versjon har godkjent ekte fortsettelse. Denne PR-en er ikke i produksjon.
+
+## 2026-10-16: spillrevisjon R1 — testbart kapittelfundament
+
+Thor godkjente oppstart av den helhetlige revisjonen. PR 15 var deretter merget eksternt; denne leveransen er opprettet på egen branch `feat/chapter-foundation` fra oppdatert main `591e699`. Agenten utførte ingen merge eller produksjonsendring.
+
+SPEC §15 presiserer den avtalte elevreisen og begrepene. GAME-REVISION.md kartlegger alle SPEC-delene, ansvar, observerbar verifisering og leveranse R1–R7. Eldre modell-/researchbeskrivelser som var i konflikt med faktisk kode er presisert; mål og implementeringsstatus er fortsatt separate.
+
+Nytt additivt lag i `lib/chapters/` har versjonert kapittelpakke med variable oppdrags-/valg-/sluttnoder, sagafakta, oppgavevarianter, scenereferanser og lærertilstand. Det validerer nåbar/avsluttet graf, unike og gyldige referanser, motorreferert og matematisk verifisert oppgave, samt scenemengder fra samme gitte fakta. En separat serverprojeksjon utelater generatorparametre/fasit/seed/fremtidig slutt og tilbakemelding for riktig svar. Lærerkontekst krever faktisk gyldig rute og samsvarende historiske hendelser, og har eksplisitte typer for historie-/ord-/mattehjelp.
+
+Uavhengig reviewer undersøkte koden og fant to P2: vilkårlige oppgaveparametre kunne avvike fra fasiten, og fremdrift kunne hoppe til et framtidig oppdrag. Begge er rettet med motorreferanser og ordnet rutekontroll, og etterkontrollert uten nye P1/P2 innen kontraktsomfanget. Reviewer kjørte selv 24/24 foundationtester. To ekstra regresjoner dekker framtidige ekstra valg og feil hendelsesrekkefølge.
+
+Lokalt: full suite 502 tester / 36 filer bestått før de to siste rene testtilleggene; siste fokuserte sett 26/26, typecheck, lint, formatering og diffkontroll bestått. Testene er deterministiske kontrakttester uten KI-kall. CI/Preview-status føres på PR-en etter faktisk observasjon. Ingen ny elevflate eller modellgenerert historie er prøvd i dette steget; ingen kostnad på ekte KI, databaseendringer eller nye miljøvariabler.
+
+R1 er foreløpig ikke importert av appens API, læringsøkt eller komponenter. Bildet Thor viste er derfor ikke rettet i elevflaten gjennom denne leveransen. Neste R2 skal gjøre fundamentet synlig som tre sammenhengende spillbare oppdrag med feil/hjelp/riktig, konkret konsekvens og gjenopptakelse. Modellen, worker, full faglig tilpasning og gammel datamigrering kommer i senere avtalte leveranser.
+
+**Hva Thor må gjøre:** Ingen oppsett eller ny bekreftelse. Denne PR-en kan vurderes som fundament; den er ikke en ferdig spillrevisjon eller en påstand om at hele SPEC er oppfylt. Produksjon skal ikke endres før avtalt kvalitetskontroll.

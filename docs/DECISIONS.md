@@ -209,3 +209,19 @@ Tester er mocks som standard; eksplisitte ekte tester bruker billigste egnede mo
 En faktisk mini-godkjenning av kapittel 4 var ikke tilstrekkelig: uavhengig evaluering fant fortsatt P2. Fysisk regel og konkret nytte av tidligere gjenstand krever derfor eksakte sitater, kontrollert mot bundet elevtekst og begge mulige valgforløp. Intern purpose og uses-metadata teller ikke som synlig handling. Sitatets relevans og variasjon vurderes fortsatt semantisk; tekstmatching er ikke et fullstendig fortellerbevis. Åpne funn og manglende ny ekte kontroll etter siste kodeendring holder PR-en som utkast.
 
 Thor ønsker ikke gjentatte bekreftelser for allerede autorisert arbeid. Fortsett innenfor mandatet og unngå unødvendige nye dialoger. Verktøyets egne bekreftelseskrav kan ikke fjernes av en prosjektregel. Testgrensen og produksjonsgrensen gjelder fortsatt.
+
+## 2026-10-16: første leveranse i spillrevisjonen
+
+Thors avtalte revisjon gjennomføres etter SPEC §15 og GAME-REVISION.md. Oppdrag er én oppgave, kapittel er en lokal historie, saga er faktisk overordnet historie og økt er læringstid. Kapittelforberedelse skilles fra avvikling, med én felles elevflate som mål. Eksisterende læringsmotor, auth og budsjett beholdes.
+
+R1 er et additivt, versjonert kontraktlag som ikke kobles til dagens runtime ennå. Matematikk refereres med motorversjon/ferdighet/nivå/seed og materialiseres i kode. Et vilkårlig KI-generert sett med params/expression/answer er ikke betrodd inngang. Dette følger uavhengig reviewers påviste moteksempel der endrede parametre kunne beholde gammel fasit.
+
+Scener binder gitte mengder fra samme motoroppgave. Elev-/ordinær lærerprojeksjon utelater skjult fasit og framtidig avslutning. Lærerkontekst krever riktig faktisk rute og fullførte hendelser i rekkefølge; bare medlemskap i en ID-liste er utilstrekkelig. Et annet reviewfunn viste at en slik svak kontroll ellers slapp inn framtidige oppdrag.
+
+R1 er ikke redaksjonell godkjenning, en ny spiller eller en varig worker. Ingen schema-/databasemigrasjon eller konvertering av lagrede eventyr gjøres her. Generatorversjonen må få en frosset/kompatibel implementasjon før pakker lagres i R3. Hjelpebane med full løsning krever særskilt kontroll i R5; ordinær kontekst mottar ikke fasit selv ved tillatt hintnivå 4.
+
+## 2026-10-16: varig byggeplan og PR-avhengigheter
+
+PROGRESS.md får en oppdatert «Start her»-del med faktisk status, neste leveranse, avtalte rammer og gjenopptaksinstruksjon. SPEC er produktkrav, GAME-REVISION er kravkart/byggeplan, og PROGRESS er utførelsesstatus og evidens. Hele chatloggen skal ikke være nødvendig for videreføring når disse filene og riktig repository er tilgjengelige.
+
+R2 opprettes fra R1 med R1-branchen som PR-base. PR #16 trenger ikke merges før R2; merge til main er fortsatt produksjonsgrense og krever tillatelse. Senere PR-er opprettes etter kontroll av faktisk avhengighet og status, ikke automatisk som en syvleddet stabel. Denne oppdateringen er dokumentasjon, ikke påbegynt R2-kode.
