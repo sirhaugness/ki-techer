@@ -225,3 +225,11 @@ R1 er ikke redaksjonell godkjenning, en ny spiller eller en varig worker. Ingen 
 PROGRESS.md får en oppdatert «Start her»-del med faktisk status, neste leveranse, avtalte rammer og gjenopptaksinstruksjon. SPEC er produktkrav, GAME-REVISION er kravkart/byggeplan, og PROGRESS er utførelsesstatus og evidens. Hele chatloggen skal ikke være nødvendig for videreføring når disse filene og riktig repository er tilgjengelige.
 
 R2 opprettes fra R1 med R1-branchen som PR-base. PR #16 trenger ikke merges før R2; merge til main er fortsatt produksjonsgrense og krever tillatelse. Senere PR-er opprettes etter kontroll av faktisk avhengighet og status, ikke automatisk som en syvleddet stabel. Denne oppdateringen er dokumentasjon, ikke påbegynt R2-kode.
+
+## 2026-10-16: R2 prøver ny spiller før varig produksjon
+
+R2 er et håndskrevet kapittel i R1-format på en egen autentisert prøveside, med tre ulike nødvendige handlinger i én sammenhengende vik. Hele pakken og lokale ressurser finnes før spillstart. Prøven bruker serverens deterministiske fasitkontroll, R1-projeksjon og faktisk rekonstruert historikk, men lager ingen ekte økt, mestring, medaljong eller KI-kostnad. Historieforklaring og matematisk støtte er separate kodebestemte handlinger; ingen KI-kvalitet påstås.
+
+Nettleserlagring per elev og innholdsversjon gir en avgrenset gjenopptaksprøve uten å foregripe R3s database-/jobbdesign. Gjenopptak kontrollerer tidligere svar på nytt, og feilrespons knyttes til det vurderte utkastet. Dette er eksplisitt ikke manipulasjonssikker progresjon eller fullført eksport/sletting på tvers av enheter. R3/R4/R6 må løse de varige ansvarene samlet. Bare eksisterende tilgangskontroll gjenbrukes; ingen auth-, database- eller miljøendring.
+
+Faktiske designer-/pedagog-/reviewer-vurderinger førte til retting av fysisk kontinuitet, Miras plassering, foreldet feilstatus og svarfelt under skjermkanten. [R2-VERIFICATION](R2-VERIFICATION.md) skiller kodekontroll, observerte scener/bevegelse, direkte hjelp og gjenstående Preview-/modell-/nettbrettprøving. R2-branchen bygger på R1 uten produksjonsmerge.
