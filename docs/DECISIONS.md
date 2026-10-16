@@ -236,4 +236,8 @@ Faktiske designer-/pedagog-/reviewer-vurderinger førte til retting av fysisk ko
 
 Automatisk godkjenningskontroll avviste opprettelse av syntetiske Auth-/husholdnings-/elev-/enhetsdata i delt leo-dev som ikke uttrykkelig autorisert. Ingen rader ble opprettet; null testbrukere er etterkontrollert. Avslaget omgås ikke. Den eksisterende isolerte lokale Supabase/Auth-testen i CI utvides til prøvesiden som trygg separat kontroll, men dette erstatter ikke autentisert Preview. Særskilt midlertidig testdatatilgang med opprydding må godkjennes før dette delte testoppsettet brukes. Ingen testbruker eller privat testinnlogging er etterlatt.
 
-Overleveringen peker på R2/PR #17 og den åpne porten. R3 er neste nye leveranse etter porten, med R2 som avhengig base dersom den ikke er merget eksternt. README og AGENTS peker til «Start her»; eldre milepæler og beslutninger beholdes som historikk.
+Overleveringen peker på R2/PR #18 mot main og den åpne porten. R3 er neste nye leveranse etter porten, med R2 som avhengig base dersom den ikke er merget eksternt. README og AGENTS peker til «Start her»; eldre milepæler og beslutninger beholdes som historikk.
+
+## 2026-10-16: PR-base rettet etter eksterne merger
+
+PR #16 ble merget eksternt til main (5ad9807). Deretter ble PR #17 med bare første R2-commit 4ae1549 merget til den gamle R1-branchen (d3f4f34), slik at R2 fortsatt ikke var på main. Sluttrettelsene 5710f6b og overleveringen a8c3407 kom etter den mergen. Agenten integrerte main i featurebranchen uten kodekonflikter (eff9a3d) og opprettet utkast-PR #18 fra samme feat/chapter-player direkte mot main. Dette viderefører hele R2 med korrekt diff og gjør siste dokumentasjon tilgjengelig i en åpen PR. Ingen produksjonsmerge ble utført av agenten. Ny samtale bruker PR #18, lukker den åpne R2-porten og fortsetter deretter med R3.

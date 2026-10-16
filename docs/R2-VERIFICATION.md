@@ -1,6 +1,6 @@
 # R2: første spillbare kapittelsnitt
 
-16. oktober 2026. Avgrensning: [GAME-REVISION R2](GAME-REVISION.md#pr-rekkefølge-og-porter), [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Branch `feat/chapter-player` fra R1 `9089172`; [utkast-PR #17](https://github.com/sirhaugness/ki-techer/pull/17) har base `feat/chapter-foundation`. Runtime `4ae1549`, siste scenearia-/Auth-testrettelse `5710f6b`. Ingen merge eller produksjonsendring.
+16. oktober 2026. Avgrensning: [GAME-REVISION R2](GAME-REVISION.md#pr-rekkefølge-og-porter), [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Branch `feat/chapter-player` fra R1 `9089172`; [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18) har nå base `main`, med main `5ad9807` integrert i `eff9a3d`. Opprinnelig PR #17 ble merget eksternt til den gamle R1-branchen etter at PR #16 var merget til main; R2 var dermed fortsatt ikke på main. PR #18 samler R2 og de senere rettelsene/overleveringen. Runtime `4ae1549`, siste scenearia-/Auth-testrettelse `5710f6b`. Ingen produksjonsmerge utført av agenten.
 
 ## Innhold og ferdigkriterier
 
@@ -49,7 +49,7 @@ Faktiske underagenter `/root/designer`, `/root/tutor_evaluator` og `/root/review
 
 ## Preview og konkret åpen port
 
-[Preview for 4ae1549](https://ki-techer-cdte2za7y-team-thor1.vercel.app/leo/provekapittel) er observert READY, region `arn1`. [Branchadresse](https://ki-techer-git-feat-chapter-player-team-thor1.vercel.app/leo/provekapittel) følger nye commits. Faktisk uinnlogget forespørsel endte i appens innlogging, ikke elevdata. Dette er en tilgangskontroll, **ikke innlogget spilltest**. For siste bygg/SHA og CI: kontroller PR #17 før videreføring.
+[Preview for 4ae1549](https://ki-techer-cdte2za7y-team-thor1.vercel.app/leo/provekapittel) er observert READY, region `arn1`. [Branchadresse](https://ki-techer-git-feat-chapter-player-team-thor1.vercel.app/leo/provekapittel) følger nye commits. Faktisk uinnlogget forespørsel endte i appens innlogging, ikke elevdata. Dette er en tilgangskontroll, **ikke innlogget spilltest**. For siste bygg/SHA og CI: kontroller PR #18 før videreføring.
 
 Automatisk godkjenningskontroll avviste opprettelse av midlertidig syntetisk Auth-bruker med husholdning/elev/enhet i den delte `leo-dev`-databasen: vedvarende data med innloggingsopplysninger var ikke uttrykkelig autorisert og ble vurdert å stride mot oppgavens omfang uten databaseendring. Handlingen ble ikke utført. Read-only etterkontroll fant null `r2-preview-…@example.invalid`-brukere. Ingen database-/miljø-/nøkkelendring ble gjort. Ingen omgåelse av avslaget. Den nye Auth-testen bruker i stedet CI-ens isolerte lokale Supabase, innen eksisterende testoppsett; det erstatter ikke Preview-porten.
 
