@@ -197,6 +197,7 @@ export function LeoExperience({
       <nav className="leo-nav">
         <Link href="/leo">🌱 Hjem</Link>
         <Link href="/leo/interesser">Mine interesser</Link>
+        <Link href="/leo/provekapittel">Prøv den nye spillflaten</Link>
       </nav>
       {!view ? (
         <div className="leo-welcome">

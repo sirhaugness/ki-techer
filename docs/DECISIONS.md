@@ -225,3 +225,27 @@ R1 er ikke redaksjonell godkjenning, en ny spiller eller en varig worker. Ingen 
 PROGRESS.md får en oppdatert «Start her»-del med faktisk status, neste leveranse, avtalte rammer og gjenopptaksinstruksjon. SPEC er produktkrav, GAME-REVISION er kravkart/byggeplan, og PROGRESS er utførelsesstatus og evidens. Hele chatloggen skal ikke være nødvendig for videreføring når disse filene og riktig repository er tilgjengelige.
 
 R2 opprettes fra R1 med R1-branchen som PR-base. PR #16 trenger ikke merges før R2; merge til main er fortsatt produksjonsgrense og krever tillatelse. Senere PR-er opprettes etter kontroll av faktisk avhengighet og status, ikke automatisk som en syvleddet stabel. Denne oppdateringen er dokumentasjon, ikke påbegynt R2-kode.
+
+## 2026-10-16: R2 prøver ny spiller før varig produksjon
+
+R2 er et håndskrevet kapittel i R1-format på en egen autentisert prøveside, med tre ulike nødvendige handlinger i én sammenhengende vik. Hele pakken og lokale ressurser finnes før spillstart. Prøven bruker serverens deterministiske fasitkontroll, R1-projeksjon og faktisk rekonstruert historikk, men lager ingen ekte økt, mestring, medaljong eller KI-kostnad. Historieforklaring og matematisk støtte er separate kodebestemte handlinger; ingen KI-kvalitet påstås.
+
+Nettleserlagring per elev og innholdsversjon gir en avgrenset gjenopptaksprøve uten å foregripe R3s database-/jobbdesign. Gjenopptak kontrollerer tidligere svar på nytt, og feilrespons knyttes til det vurderte utkastet. Dette er eksplisitt ikke manipulasjonssikker progresjon eller fullført eksport/sletting på tvers av enheter. R3/R4/R6 må løse de varige ansvarene samlet. Bare eksisterende tilgangskontroll gjenbrukes; ingen auth-, database- eller miljøendring.
+
+Faktiske designer-/pedagog-/reviewer-vurderinger førte til retting av fysisk kontinuitet, Miras plassering, foreldet feilstatus og svarfelt under skjermkanten. [R2-VERIFICATION](R2-VERIFICATION.md) skiller kodekontroll, observerte scener/bevegelse, direkte hjelp og gjenstående Preview-/modell-/nettbrettprøving. R2-branchen bygger på R1 uten produksjonsmerge.
+
+Automatisk godkjenningskontroll avviste opprettelse av syntetiske Auth-/husholdnings-/elev-/enhetsdata i delt leo-dev som ikke uttrykkelig autorisert. Ingen rader ble opprettet; null testbrukere er etterkontrollert. Avslaget omgås ikke. Den eksisterende isolerte lokale Supabase/Auth-testen i CI utvides til prøvesiden som trygg separat kontroll, men dette erstatter ikke autentisert Preview. Særskilt midlertidig testdatatilgang med opprydding må godkjennes før dette delte testoppsettet brukes. Ingen testbruker eller privat testinnlogging er etterlatt.
+
+Overleveringen peker på R2/PR #18 mot main og den åpne porten. R3 er neste nye leveranse etter porten, med R2 som avhengig base dersom den ikke er merget eksternt. README og AGENTS peker til «Start her»; eldre milepæler og beslutninger beholdes som historikk.
+
+## 2026-10-16: PR-base rettet etter eksterne merger
+
+PR #16 ble merget eksternt til main (5ad9807). Deretter ble PR #17 med bare første R2-commit 4ae1549 merget til den gamle R1-branchen (d3f4f34), slik at R2 fortsatt ikke var på main. Sluttrettelsene 5710f6b og overleveringen a8c3407 kom etter den mergen. Agenten integrerte main i featurebranchen uten kodekonflikter (eff9a3d) og opprettet utkast-PR #18 fra samme feat/chapter-player direkte mot main. Dette viderefører hele R2 med korrekt diff og gjør siste dokumentasjon tilgjengelig i en åpen PR. Ingen produksjonsmerge ble utført av agenten. Ny samtale bruker PR #18, lukker den åpne R2-porten og fortsetter deretter med R3.
+
+## 2026-10-16: vent på bekreftet prøvesvar før reload i Auth-test
+
+CI på `fa1aa98` viste `working` etter umiddelbar reload etter svarinnsending. Playwright-klikk venter ikke på server-action og nettleserlagring. Auth-testen venter derfor på synlig `solved` før reload og verifiserer samme tilstand etterpå, som prøvekapittelets eksisterende nettlesertest. Dette retter testens kappløp; det gjør ikke nettleserlagring autoritativ eller holdbar før serverens svar. Ingen app-/sikkerhetsgrense endres.
+
+## 2026-10-16: godkjent syntetisk testtilgang og innlogget R2-port
+
+Thor har uttrykkelig godkjent midlertidig syntetisk konto med husholdning/elev/enhet i leo-dev og sletting/etterkontroll, og ønsker færrest mulig nye godkjenningsspørsmål. Dette mandatet beholdes i AGENTS. Det omfatter avtalt Preview-/dev-verifisering, ikke produksjonsendringer eller forhøyet KI-budsjett. Innlogget R2 på 55cdbdd er bestått uten KI-kall. Tekniske slettingsfeil fra connectoren registreres som gjenstående opprydding, ikke som avslag eller utført sletting.

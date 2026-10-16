@@ -33,7 +33,7 @@ Illustrerte bakgrunner og figurer skal ha sammenhengende stil; matematiske objek
 
 ## Hva R1 faktisk implementerer
 
-`lib/chapters/contracts.ts` og `compile.ts` er et additivt kontraktlag. Dagens API, database, prompter og elevflater bruker det ennå ikke. Gamle eventyr omskrives ikke.
+`lib/chapters/contracts.ts` og `compile.ts` er et additivt kontraktlag. R1 koblet det ikke til API, database, prompter eller elevflater. R2 bruker det nå i et isolert håndskrevet prøvekapittel; den ordinære læringsflyten bruker fortsatt gamle kontrakter. Gamle eventyr omskrives ikke.
 
 - Pakkeversjon, oppdrags-/valg-/sluttnoder, sagafakta, fremdrift, støttevarianter, scenereferanser og lærertilstand.
 - Strenge inngangsskjemaer, unike referanser, gyldige ressurstyper og en nåbar graf som avsluttes uten løkker. Algoritmeoppgaver kan fortsatt ha løkker inne i sin kontrollerte matematikk.
@@ -94,5 +94,9 @@ Før persistens i R3 må generatorversjon 1 fryses eller få en kompatibilitetsi
 5. **R5, lærer/tale/visuell bredde:** ekte flerturshjelp, sceneforståelse, kontrollerte løsninger, alle svarformer og manipulativer, samordnet lyd og tilgjengelighet.
 6. **R6, overgang og innsyn:** gamle aktive oppgaver/progresjon bevares med eksplisitt migrering; forelder/personvern dekker nye data; gamle renderløp fjernes først når erstatningen er verifisert.
 7. **R7, full kontroll:** kravmatrisen får faktiske bevis, flere interesser/kapitler, begge valggrener, lange sagaer, nettbrett og regresjon av alle foreldrefunksjoner. Utrulling er en separat godkjent handling.
+
+R2s avgrensede kravbevis, responskilder, lagringsbegrensninger og faktiske kvalitetsfunn registreres i [R2-VERIFICATION.md](R2-VERIFICATION.md). De dekker det første snittet av §9.2, §14.1, §14.4, §14.5 og §15, ikke de øvrige radene eller endelig godkjenning av hele spesifikasjonen.
+
+Status 16. oktober: R2 er implementert i [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18), med bestått lokal kvalitetsport. Innlogget Preview-gjennomspilling står åpen etter avvist opprettelse av midlertidige syntetiske data i delt leo-dev. Følg «Start her» i PROGRESS for å lukke denne porten og deretter opprette R3 fra riktig avhengig kode. En ny samtale skal ikke opprette en ny R2 eller erklære R3 påbegynt bare fordi neste nye PR er planlagt.
 
 En strukturelt gyldig pakke, en grønn CI eller en positiv modellkritiker er ikke en kvalitetsgodkjenning. Menneskelig vurdering av faktisk generert og gjennomspilt innhold trengs. Ønsket om å slippe gjentatte bekreftelser gjelder fortsatt. Ekte KI-testing bruker samlet varig ramme på høyst 10 kr, billigste egnede modell og aldri nullstilt regnskap. R1 bruker ingen betalte kall. Kostnadsmålet under én krone må måles på den nye produksjonsflyten; gamle tekstanslag inkluderer ikke nye illustrasjoner eller større støttepakker.
