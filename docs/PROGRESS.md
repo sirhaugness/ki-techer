@@ -421,3 +421,19 @@ En ekte kapittel 5-prøve i `2e21a02` ble avvist før visning da siste kontrollk
 Thor ba om å slippe gjentatte bekreftelser. Dette er nå uttrykkelig registrert i AGENTS. Dialogene ved DELETE kom fra Supabase-verktøyets bekreftelseskrav; prosjektinstruksen kan ikke slå av plattformdialoger. Ingen slik bekreftelse gjenstår for utført opprydding.
 
 **Hva Thor må gjøre:** Ingen oppsett eller godkjenning nå. Kostnadsrapporten kan leses; vent med merge av PR 15 til åpne forteller-/sceneproblemer er rettet og siste versjon har godkjent ekte fortsettelse. Denne PR-en er ikke i produksjon.
+
+## 2026-10-16: spillrevisjon R1 — testbart kapittelfundament
+
+Thor godkjente oppstart av den helhetlige revisjonen. PR 15 var deretter merget eksternt; denne leveransen er opprettet på egen branch `feat/chapter-foundation` fra oppdatert main `591e699`. Agenten utførte ingen merge eller produksjonsendring.
+
+SPEC §15 presiserer den avtalte elevreisen og begrepene. GAME-REVISION.md kartlegger alle SPEC-delene, ansvar, observerbar verifisering og leveranse R1–R7. Eldre modell-/researchbeskrivelser som var i konflikt med faktisk kode er presisert; mål og implementeringsstatus er fortsatt separate.
+
+Nytt additivt lag i `lib/chapters/` har versjonert kapittelpakke med variable oppdrags-/valg-/sluttnoder, sagafakta, oppgavevarianter, scenereferanser og lærertilstand. Det validerer nåbar/avsluttet graf, unike og gyldige referanser, motorreferert og matematisk verifisert oppgave, samt scenemengder fra samme gitte fakta. En separat serverprojeksjon utelater generatorparametre/fasit/seed/fremtidig slutt og tilbakemelding for riktig svar. Lærerkontekst krever faktisk gyldig rute og samsvarende historiske hendelser, og har eksplisitte typer for historie-/ord-/mattehjelp.
+
+Uavhengig reviewer undersøkte koden og fant to P2: vilkårlige oppgaveparametre kunne avvike fra fasiten, og fremdrift kunne hoppe til et framtidig oppdrag. Begge er rettet med motorreferanser og ordnet rutekontroll, og etterkontrollert uten nye P1/P2 innen kontraktsomfanget. Reviewer kjørte selv 24/24 foundationtester. To ekstra regresjoner dekker framtidige ekstra valg og feil hendelsesrekkefølge.
+
+Lokalt: full suite 502 tester / 36 filer bestått før de to siste rene testtilleggene; siste fokuserte sett 26/26, typecheck, lint, formatering og diffkontroll bestått. Testene er deterministiske kontrakttester uten KI-kall. CI/Preview-status føres på PR-en etter faktisk observasjon. Ingen ny elevflate eller modellgenerert historie er prøvd i dette steget; ingen kostnad på ekte KI, databaseendringer eller nye miljøvariabler.
+
+R1 er foreløpig ikke importert av appens API, læringsøkt eller komponenter. Bildet Thor viste er derfor ikke rettet i elevflaten gjennom denne leveransen. Neste R2 skal gjøre fundamentet synlig som tre sammenhengende spillbare oppdrag med feil/hjelp/riktig, konkret konsekvens og gjenopptakelse. Modellen, worker, full faglig tilpasning og gammel datamigrering kommer i senere avtalte leveranser.
+
+**Hva Thor må gjøre:** Ingen oppsett eller ny bekreftelse. Denne PR-en kan vurderes som fundament; den er ikke en ferdig spillrevisjon eller en påstand om at hele SPEC er oppfylt. Produksjon skal ikke endres før avtalt kvalitetskontroll.

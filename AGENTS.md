@@ -40,6 +40,7 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 - `components/leo/`, `components/parent/`, `components/ui/`: elevflate, foreldreflate og UI.
 - `lib/engine/`: ren motor uten I/O; ferdigheter, mestring, kandidater, hint, økt, medaljong og svar-/scenekontroll.
 - `lib/agent/`: lærerens agentløkke, verktøy, kontekst, guards og versjonerte prompter.
+- `lib/chapters/`: nytt additivt kapittelfundament; se SPEC §15 og docs/GAME-REVISION.md for faktisk implementeringsstatus.
 - `lib/learning/`: øktintegrasjon, lærerhjelp, kapitler og lagring. `lib/ai/`, `lib/db/`, `lib/auth/`, `lib/voice/`: serverintegrasjoner.
 - `supabase/migrations/`: append-only migrasjoner. `tests/`: Vitest og `tests/e2e/`: Playwright.
 - `docs/agent-team/`: Codex-roller og arbeidsflyt. `docs/`: spesifikasjon, beslutninger, fremdrift, personvern, deploy og testplaner.

@@ -41,9 +41,7 @@ Løsningen skal være produksjonsklar og gjennomtenkt fra start, men bygges i mi
 - **Database/auth/lagring:** Supabase (Postgres, Auth, Storage), **EU-region**, gratisplan. SQL-migrasjoner i `supabase/migrations`. Row Level Security på alle tabeller. To prosjekter: dev og prod.
 - **Validering:** Zod på alle API-grenser, alle verktøykall og alle KI-svar
 - **KI:** OpenAI API via offisiell `openai` npm-SDK, Responses API med **function calling** og **Structured Outputs (JSON Schema)**. Modellnavn **kun via miljøvariabler**:
-  - `OPENAI_MODEL_TUTOR` (sterk modell, agent/dialog)
-  - `OPENAI_MODEL_FAST` (rask/billig: kontekstualisering, klassifisering, tolkning)
-  - `OPENAI_MODEL_REFLECT` (sterk modell, refleksjon etter økt)
+  - `OPENAI_MODEL_DEFAULT` (valgfri felles tekstmodell, standard `gpt-5-mini`; også generering, kontroll og refleksjon). Eldre TUTOR/FAST/REFLECT-variabler overstyrer ikke denne standarden.
   - `OPENAI_MODEL_TTS`, `OPENAI_TTS_VOICE`, `OPENAI_MODEL_STT`
 - **Matte:** `mathjs` for å evaluere og verifisere regneuttrykk
 - **Repetisjon:** `ts-fsrs` (FSRS-algoritmen)
@@ -278,7 +276,7 @@ Deteksjon: match mot `commonWrongAnswers` + klassifisering av Leos forklaringer.
 
 ## 8. Agenten og KI-laget
 
-Felles for alle KI-kall: Structured Outputs med JSON Schema, Zod-validering, maks 2 nye forsøk, deretter **deterministisk fallback** (malbasert tekst). Hvert kall logges i `ai_calls`, hvert verktøykall i `tool_calls`. Prompter lagres versjonert i `lib/agent/prompts/*.md`, og versjonen lagres på `items`/`messages`.
+Felles for tekstkall: Structured Outputs med JSON Schema og Zod-validering. Kapittelplanlegging tillater ett førsteutkast og høyst én omskriving; korte hjelpe-/tilleggskall har ett forsøk, mens agentens verktøyløkke har egne begrensede forsøk. Reservehjelp er regelstyrt. En mislykket interessehistorie skal ikke fremstilles som et vellykket generert kapittel; ny forberedelsesflyt følger §15. Hvert kall logges i `ai_calls`, hvert verktøykall i `tool_calls`. Prompter lagres versjonert i `lib/agent/prompts/*.md`, og versjonen lagres på `items`/`messages`.
 
 **Persondata til OpenAI:** kun fornavn, trinn og anonymiserte profilobservasjoner. Aldri etternavn, skole, adresse eller lignende.
 
@@ -331,7 +329,7 @@ Dagens funksjon mottar en generatoroppgave og valgt interesse, og ber modellen o
 ```json
 { "story": "På verkstedet trenger droiden deler.", "question": "Fordel 24 deler likt på 4 vinger. Hvor mange får hver vinge?", "expression": "24 / 4", "visual_spec": { "type": "grupper", "data": { "count": 24, "groups": 4 } } }
 ```
-Dagens begrensede innramming: `question` og `expression` skal kopieres tegnrett fra den kontrollerte oppgaven. Bare `story` kan tilføye en kort ramme uten tall, matematiske påstander eller fasit. Numerisk kontroll, lengdekontroll, moderering og semantisk bevaring må passere; etter høyst to nye forsøk brukes generatorspørsmålet. Returnert `visual_spec` er ikke bevis på at en scene eller samhandling faktisk vises.
+Dagens begrensede innramming: `question` og `expression` skal kopieres tegnrett fra den kontrollerte oppgaven. Bare `story` kan tilføye en kort ramme uten tall, matematiske påstander eller fasit. Numerisk kontroll, lengdekontroll, moderering og semantisk bevaring må passere; etter ett forsøk brukes generatorspørsmålet. Returnert `visual_spec` er ikke bevis på at en scene eller samhandling faktisk vises.
 
 Denne innrammingen er ikke hele eventyrarkitekturen. Historiedrevne oppdrag skal utvikle situasjon og matematikk samlet, med uavhengig kontroll før visning (seksjon 14). Dagens ordrette tekstkrav kan bare utvides sammen med validering og tester som sikrer både matematisk og semantisk samsvar.
 
@@ -486,8 +484,26 @@ Rapporter teknisk funksjon, ekte modellkvalitet og spillopplevelse separat. Oppg
 | --- | --- | --- |
 | Planlegging | Seks oppdrag, to valg, støtte for bestemte stage/effect/aktiviteter. Tallfrie fortellerfelter; koden setter inn generatorens matematikk. | Samlet situasjons-/oppgaveutvikling, større fortellingsbredde og fleksibel kapittellengde med tilsvarende sikker kontroll. |
 | Hukommelse | Minne, valg og verdensfelter sendes videre; reservefortsettelser gjenbruker faste mønstre. | Konsistent overordnet historie, dokumentert konkret påvirkning og mindre gjentakelse over flere kapitler. |
-| Research | Kapittelplanleggeren har ingen kildeinnhentingsverktøy. | Faktiske kilder og et gjenbrukbart kunnskapsgrunnlag. |
+| Research | Kapittelplanleggeren har webresearch med lagrede kilder og gjenbruk i elevtilstanden. | Varig kapittelforberedelse, kvalitet/pris på kilder og gjenopptakbar produksjon, se §15. |
 | Visuell handling | Lokale SVG-scener og bestemte svar-/animasjonsformer. | Relevant respons under arbeid, ved feil og ved riktig for hele oppdragskjeden. |
 | Lærerevaluering | Mocks som standard; eksplisitt nano-live har 30 scenarioer med smal sluttrespons-/sikkerhetskontroll og varig 10 kr-grense. | Flerturs-, pedagogisk og narrativ evaluering med sporbare responskilder. |
 
 Tabellen beskriver revisjonens kildegrunnlag, ikke ny runtime-verifisering. Se PROGRESS for faktisk utførte kontroller. Nye krav må ikke erklæres ferdige før implementasjon og relevante observasjoner foreligger.
+
+
+## 15. Avtalt spillrevisjon 16. oktober 2026
+
+Denne seksjonen presiserer den nye produktflyten og har forrang ved konflikt med eldre implementeringsbeskrivelser. Den erklærer ikke at flyten allerede er bygget. [Kravkart og PR-rekkefølge](GAME-REVISION.md) viser hele spesifikasjonens ansvar og gjenstående verifisering.
+
+- Et **oppdrag** er én matematikkoppgave. Et **kapittel** er en sammenhengende historie med flere oppdrag, eventuelle valg og avslutning. En **saga** videreføres gjennom faktiske tidligere hendelser/valg. En **økt** er læringstid og kan slutte før kapittelet er ferdig.
+- Interesse velges/skrives/sies ved nytt kapittel, med sist valgte interesse som forslag. Identitet skal ikke avhenge av store/små bokstaver. Fortsettelse av et uferdig kapittel starter samme lagrede innhold uten ny generering.
+- Hele kapittelet og nødvendige illustrasjoner/interaksjoner/animasjonsplaner forberedes og kontrolleres før spill. Arbeidet er varig, fasevis og gjenopptakbart; dobbeltklikk, refresh eller timeout må ikke gi en ny betalt produksjon. Forberedelse bruker ikke aktiv læringstid. Alle tidsgrenser kontrolleres før spillstart.
+- Den samlede historien planlegges innen læringsmotorens rammer. Matematikk, mengder, enheter, tekst, scene og handling bygger på samme kontrollerte faglige data. Ingen vilkårlig matematikkoppgave presses inn i en uegnet situasjon. Ingen fast kapittellengde eller obligatorisk åpning.
+- Ferdig plan betyr ikke låst undervisning. Forberedte støtte-/representasjonsvarianter velges etter motorens regler underveis, uten ulogiske endringer i verdensfakta. Eventuelle ulike ressursutfall krever planlagte, kontrollerte grener.
+- Én felles oppdragsflate brukes også ved kartlegging, repetisjon og mesterutfordring. Oppvarming, blandet øving og avslutning beholder sine pedagogiske funksjoner i kapittelflyten. Tildeling av mestring/medaljong og selvstendighet følger fortsatt motoren.
+- Mattelæreren er lett tilgjengelig og kjenner aktiv scene, synlige mengder, kapittelmål, faktisk historikk, valgt gren, elevens handling og tillatt hjelp. Historie-/ordforklaring skal ikke automatisk registreres som matematisk støtte. Faglig hjelp i mesterutfordring gir ikke selvstendig prøveevidens; lærerens tilgjengelighet beholdes.
+- Ressurser skal ha sammenhengende stil. Tellbare objekter kommer fra verifiserte gitte mengder, aldri fra et dekorativt bilde. Nye medier omfattes av moderering, husholdningstilgang, EU-krav, eksport/sletting og budsjett. Vilkårlig generert JavaScript/SVG skal ikke eksekveres.
+- Ingen stille overgang til generisk skog/vogn presentert som vellykket interessehistorie ved feil. Behold et gyldig lagret kapittel, eller vis ærlig forberedelses-/feilstatus med trygg separat øving.
+- Hver PR rapporterer teknisk funksjon, faktisk modellkvalitet og spillopplevelse separat. Tidlig kvalitetsport er tre sammenhengende oppdrag i den nye flaten; full godkjenning krever hele kravkartet, flere kapitler/interesser og relevante nettbrett-/tilgjengelighetsprøver. Under én krone per vanlig økt er fortsatt et mål som må måles, også når ny medieproduksjon inngår.
+
+R1 oppretter et additivt, versjonert kontraktlag i `lib/chapters/` med referanse-/matematikk-/rutekontroll og separate elev-/lærerprojeksjoner. Det er foreløpig ikke koblet til API, database, spiller eller modell. Det beviser derfor ikke ferdig kapittelproduksjon eller kvalitetsgodkjent fortelling. R2–R7 i kravkartet dekker de øvrige leveransene.
