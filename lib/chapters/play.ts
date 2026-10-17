@@ -16,13 +16,39 @@ import {
 } from './production-contracts';
 import { chapterDb } from './store';
 import { asJson } from '../learning/repository';
-import type { z } from 'zod';
+import { z } from 'zod';
 export function preparedPacket(job: ChapterJob) {
   const data = job.data as { packet?: unknown; manifest?: unknown };
   if (job.state !== 'ready' || job.phase !== 'ready')
     throw Error('Kapittelet er ikke klart.');
   const packet = validateChapterPackage(data.packet);
-  if (JSON.stringify(readyManifest(packet)) !== JSON.stringify(data.manifest))
+  const manifest = z
+    .array(
+      z
+        .object({
+          id: z.string(),
+          role: z.enum(['background', 'character', 'prop']),
+          version: z.literal(1),
+          state: z.literal('ready'),
+          sha256: z.string(),
+        })
+        .strict(),
+    )
+    .parse(data.manifest);
+  const expected = readyManifest(packet);
+  if (
+    manifest.length !== expected.length ||
+    expected.some((a, i) => {
+      const b = manifest[i];
+      return (
+        a.id !== b.id ||
+        a.role !== b.role ||
+        a.state !== b.state ||
+        a.version !== b.version ||
+        a.sha256 !== b.sha256
+      );
+    })
+  )
     throw Error('Illustrasjonene er ikke klare for denne versjonen.');
   return packet;
 }
@@ -52,7 +78,7 @@ const statusMessages: Record<ChapterJob['state'], string> = {
     'Kapittelet ble ikke klart. Arbeidet er beholdt. Du kan gå hjem og øve som vanlig.',
   budget: 'Vi har nådd KI-grensen. Det ferdige arbeidet er beholdt.',
   unknown:
-    'Et svar fra fortelleren kunne ikke bekreftes. Vi starter ikke samme betalte arbeid på nytt.',
+    'Fortelleren trenger en sjekk før kapittelet kan fortsette. Arbeidet ditt er tatt vare på. Du kan gå hjem og øve imens.',
   cancelled: 'Forberedelsen er stoppet.',
 };
 export function chapterView(

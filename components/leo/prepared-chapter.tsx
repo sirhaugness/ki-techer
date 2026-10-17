@@ -291,6 +291,19 @@ export function PreparedChapter({ tutorName }: { tutorName: string }) {
               Fortsett forberedelsen
             </button>
           )}
+          {view.canChooseNew && (
+            <button
+              disabled={busy}
+              onClick={async () => {
+                if (await request('cancel')) {
+                  history.replaceState(null, '', '/leo/kapittel');
+                  setInterest(view.interest);
+                }
+              }}
+            >
+              Velg et annet kapittel
+            </button>
+          )}
           <Link href="/leo">Gå hjem mens du venter</Link>
         </section>
       )}

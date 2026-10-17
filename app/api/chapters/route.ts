@@ -197,8 +197,11 @@ export async function POST(request: Request) {
         .update({ state: 'cancelled' })
         .eq('id', job.id)
         .eq('learner_id', profile.id)
-        .in('state', ['failed', 'budget']);
-      if (cancelled.error) throw Error('Kunne ikke avslutte forberedelsen.');
+        .in('state', ['failed', 'budget'])
+        .select('id')
+        .maybeSingle();
+      if (cancelled.error || !cancelled.data)
+        throw Error('Kunne ikke avslutte forberedelsen.');
       return Response.json({ view: null });
     }
     if (body.command === 'pause') {

@@ -11,6 +11,24 @@ import { asJson } from '../../lib/learning/repository';
 import { z } from 'zod';
 import { chapterAuthorSchema } from '../../lib/chapters/production';
 describe('R3 chapter contracts and server projection', () => {
+  it('accepts unchanged references and manifest after JSONB reorders object keys', () => {
+    const { packet, job, menu } = productionFixture();
+    const reorder = <T>(value: T): T =>
+      JSON.parse(JSON.stringify(value), (_key, v) =>
+        v && typeof v === 'object' && !Array.isArray(v)
+          ? Object.fromEntries(Object.entries(v).reverse())
+          : v,
+      );
+    expect(productionDraft(reorder(packet), job, menu)).toEqual(packet);
+    expect(
+      chapterView({ ...job, data: reorder(job.data) }, true).mission?.missionId,
+    ).toBe('lights');
+    const bad = reorder(job.data) as { manifest: { sha256: string }[] };
+    bad.manifest[0].sha256 = 'tampered';
+    expect(() => chapterView({ ...job, data: asJson(bad) }, true)).toThrow(
+      'Illustrasjonene',
+    );
+  });
   it('sends OpenAI a strict schema with anyOf instead of unsupported oneOf', () => {
     const { packet } = productionFixture();
     expect(chapterAuthorSchema.parse(packet)).toEqual(packet);
@@ -35,6 +53,13 @@ describe('R3 chapter contracts and server projection', () => {
       (o) => o.quantityKey === 'known',
     )!.assetId = 'stone';
     expect(() => productionDraft(mixed, job, menu)).toThrow('samme objekttype');
+    const changedOperation = structuredClone(packet);
+    const first = changedOperation.nodes.find((n) => n.kind === 'mission')!;
+    if (first.kind !== 'mission') throw Error('fixture');
+    first.variants[0].scene.interaction = 'distribution';
+    expect(() => productionDraft(changedOperation, job, menu)).toThrow(
+      'krever grouping',
+    );
   });
   it('never projects the answer, future ending or unearned consequence', () => {
     const { packet, job } = productionFixture(),

@@ -97,3 +97,25 @@ med en ny prøve mot rettet wire-kontrakt. Gammel unknown-journal og reservasjon
 beholdes med audit; `play_done` betyr da superseding av testjobb, ikke gjennomspilt
 historie. Bekreftet research-sjekkpunkt gjenbrukes. Ingen automatisk ny utsending
 av det usikre kallet. Ny generering og autentisert gjennomspilling står åpne.
+
+## Andre ekte prøve og presisering av menyen
+
+`58672ec`: research ble gjenbrukt uten nytt research-kall. Første utkast blandet
+gange og deling; kodeporten avviste det før elevvisning. Den ene tillatte
+forfatterrevisjonen beholdt samme ulovlige mengdefelt, og jobben stoppet
+`failed/review`. Ingen kritikerrespons eller godkjent kapittel ble produsert.
+Tutor regnet uavhengig: den feilaktige delingsordlyden ga 1, mens referansens
+ganging ga 18; dette ble aldri en elevoppgave. De to bekreftede utkastkallene
+kostet samlet 0,328944 kr. Konservativt totalregnskap er nå **3,81839425 kr**,
+inkludert uendret ukjent reservasjon; gjenstående **6,18160575 kr**.
+
+Menyen viser nå bare de semantisk riktige gitte mengdene, hva eleven skal finne
+og nødvendige mengdefelt. Referanse, handling og mengdefelt er én kontrakt.
+Detaljerte valideringsfunn navngir oppdrag/variant og forventet handling før
+generell pakkekontroll, slik at revisjonen får en konkret rettelse. Forfatter
+og kritiker krever ett konkret historiemål og faktisk årsak mellom oppdrag.
+
+En separat persistenskontroll fant også at JSONB omordner objektnøkler.
+Referanser og ressursmanifest sammenlignes nå feltvis, inkludert hash og
+klarstatus; de skal ikke avvises fordi JSON-nøklene skifter rekkefølge.
+Regresjonstesten prøver omordning og endret hash.

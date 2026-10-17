@@ -25,7 +25,7 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **3,48945025 kr av 10**, inkludert historisk 2,99981825 kr, ny research 0,17354975 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **6,51054975 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **3,81839425 kr av 10**, inkludert historisk 2,99981825 kr, ny research 0,17354975 kr, to utkastkall 0,328944 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **6,18160575 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 

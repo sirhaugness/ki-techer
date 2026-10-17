@@ -100,6 +100,13 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
   await input.fill('12');
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'solved');
+  await scene.evaluate((el) =>
+    Promise.all(
+      el
+        .getAnimations({ subtree: true })
+        .map((a) => a.finished.catch(() => {})),
+    ),
+  );
   await page.screenshot({
     path: 'test-results/r3-grouping.png',
     fullPage: true,
@@ -117,6 +124,13 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
   await input.fill('6');
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'solved');
+  await scene.evaluate((el) =>
+    Promise.all(
+      el
+        .getAnimations({ subtree: true })
+        .map((a) => a.finished.catch(() => {})),
+    ),
+  );
   await page.screenshot({
     path: 'test-results/r3-quantity.png',
     fullPage: true,
@@ -130,6 +144,13 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
         .click();
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'solved');
+  await scene.evaluate((el) =>
+    Promise.all(
+      el
+        .getAnimations({ subtree: true })
+        .map((a) => a.finished.catch(() => {})),
+    ),
+  );
   await expect(scene.getByText('4 levert', { exact: true })).toHaveCount(3);
   await page.screenshot({
     path: 'test-results/r3-distribution.png',
@@ -139,6 +160,9 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
   await expect(
     page.getByRole('heading', { name: 'Dette fikk du til!' }),
   ).toBeVisible();
+  await page.screenshot({ path: 'test-results/r3-ending.png' });
+  // Recording evidence: allow the last painted ending to reach the video encoder.
+  await page.waitForTimeout(350);
   await page.reload();
   await expect(
     page.getByRole('heading', { name: 'Dette fikk du til!' }),
