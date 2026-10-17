@@ -261,3 +261,12 @@ kan gjenoppta trygge sjekkpunkter. Generator v1 fryses før pakker persisteres.
 Kontrollert vektorbibliotek brukes i dette første produksjonssnittet; nye
 genererte medier og visuell bredde kommer i R5. Se R3-VERIFICATION for faktiske
 prøver, prisramme og begrensninger. R3 er ikke ferdig modellverifisert ennå.
+
+## 17. oktober 2026: kontroller alle faktiske kapittelruter
+
+Ekte modellprøve viste at en global kontinuitetsforklaring kunne overse startvalg
+som hoppet over nødvendig arbeid. Før kritikk teller kode nå alle ruter, med
+maks64 som lukket kontrollgrense. R3s tidlige prøve krever minst tre oppdrag
+på hver rute. Kritikeren får eksplisitte ruter og returnerer én vurdering med
+eksakt oppdragsrekkefølge og slutt per rute. Semantikken kontrolleres fortsatt
+av modell og menneske; riktige ID-er alene betyr ikke god fortelling.

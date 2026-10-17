@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 vi.mock('server-only', () => ({}));
 import { productionFixture } from './fixtures/production';
-import { productionDraft, reviewAccepted } from '../../lib/chapters/production';
+import {
+  productionDraft,
+  reviewAccepted,
+  chapterRoutes,
+} from '../../lib/chapters/production';
 import {
   advanceChapter,
   chapterView,
@@ -12,6 +16,66 @@ import { z } from 'zod';
 import { chapterAuthorSchema } from '../../lib/chapters/production';
 import { visibleChapter } from '../../lib/chapters/production';
 describe('R3 chapter contracts and server projection', () => {
+  it('rejects the actual shortcut pattern that the model critic missed', () => {
+    const { packet, job, menu } = productionFixture();
+    const missions = packet.nodes.filter((n) => n.kind === 'mission');
+    packet.nodes.push({
+      kind: 'choice',
+      id: 'start-choice',
+      prompt: 'Hva vil du gjøre først?',
+      options: missions.map((m, i) => ({
+        id: `option-${i}`,
+        label: m.goal,
+        next: m.id,
+      })),
+    });
+    packet.entryNodeId = 'start-choice';
+    expect(chapterRoutes(packet).map((r) => r.missionIds.length)).toEqual([
+      3, 2, 1,
+    ]);
+    expect(() => productionDraft(packet, job, menu)).toThrow('Hver rute');
+    // Converging alternatives remain distinct, fully reviewed paths.
+    const choice = packet.nodes.at(-1)!;
+    if (choice.kind !== 'choice') throw Error('fixture');
+    for (const option of choice.options) option.next = missions[0].id;
+    expect(productionDraft(packet, job, menu)).toEqual(packet);
+    expect(chapterRoutes(packet)).toHaveLength(3);
+    const review = {
+      approved: true,
+      issues: [],
+      continuity: 'Kjede.',
+      variation: 'Ulik handling.',
+      historyEventIds: [],
+      historyImpactQuote: '',
+      missions: missions.map((m) => ({
+        missionId: m.id,
+        physicalRuleQuote: m.goal,
+        mathematicalNeed: 'Behov.',
+        sceneAgreement: 'Samme ting.',
+      })),
+      routes: chapterRoutes(packet).map(
+        ({ routeId, missionIds, endingId }) => ({
+          routeId,
+          missionIds,
+          endingId,
+          coherent: true,
+          evidence: 'Alle handlinger vurdert.',
+        }),
+      ),
+    };
+    expect(reviewAccepted(review, packet, {})).toBe(true);
+    review.routes.pop();
+    expect(reviewAccepted(review, packet, {})).toBe(false);
+    review.routes.push({
+      ...review.routes[0],
+      routeId: 'route-3',
+      missionIds: [missions[2].id],
+    });
+    expect(reviewAccepted(review, packet, {})).toBe(false);
+    review.routes[2].missionIds = missions.map((m) => m.id);
+    review.routes[2].coherent = false;
+    expect(reviewAccepted(review, packet, {})).toBe(false);
+  });
   it('tells the critic what the player actually draws per group and in installed slots', () => {
     const { packet } = productionFixture();
     const shown = visibleChapter(packet).nodes.filter(
@@ -142,6 +206,19 @@ describe('R3 chapter contracts and server projection', () => {
       issues: [],
       continuity: 'Sammenhengende.',
       variation: 'Tre ulike formål.',
+      routes: chapterRoutes(packet)
+        .map((r) => ({
+          ...r,
+          coherent: true,
+          evidence: 'Alle tidligere utfall er gjennomført.',
+        }))
+        .map(({ routeId, missionIds, endingId, coherent, evidence }) => ({
+          routeId,
+          missionIds,
+          endingId,
+          coherent,
+          evidence,
+        })),
       historyEventIds: [],
       historyImpactQuote: '',
       missions: missions.map((m) => ({
@@ -167,6 +244,13 @@ describe('R3 chapter contracts and server projection', () => {
       issues: [],
       continuity: 'Sammenhengende.',
       variation: 'Ulike formål.',
+      routes: [] as {
+        routeId: string;
+        missionIds: string[];
+        endingId: string;
+        coherent: boolean;
+        evidence: string;
+      }[],
       historyEventIds: ['past-event'],
       historyImpactQuote: quote,
       missions: missions.map((m) => ({
@@ -176,6 +260,18 @@ describe('R3 chapter contracts and server projection', () => {
         sceneAgreement: 'Samme mengder.',
       })),
     };
+    const updateRoutes = () => {
+      review.routes = chapterRoutes(packet).map(
+        ({ routeId, missionIds, endingId }) => ({
+          routeId,
+          missionIds,
+          endingId,
+          coherent: true,
+          evidence: 'Vurdert.',
+        }),
+      );
+    };
+    updateRoutes();
     const facts = { events: [{ id: 'past-event' }] };
     missions[0].success += ' ' + quote;
     expect(reviewAccepted(review, packet, facts)).toBe(false);
@@ -191,6 +287,7 @@ describe('R3 chapter contracts and server projection', () => {
       ],
     });
     packet.entryNodeId = 'start-choice';
+    updateRoutes();
     expect(reviewAccepted(review, packet, facts)).toBe(false);
     missions[1].before += ' ' + quote;
     expect(reviewAccepted(review, packet, facts)).toBe(true);

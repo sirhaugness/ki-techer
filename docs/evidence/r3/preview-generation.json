@@ -1,12 +1,12 @@
 {
-  "commit": "a20c24927bdbf16a37805eacf32d66e908ace835",
+  "commit": "edb2b2b1346ca37971141688b83542705e99b13f",
   "source": "real model via authenticated Preview",
   "interest": "Rever",
   "errors": [],
   "views": [
     {
-      "time": "2026-10-17T10:06:58.572Z",
-      "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "time": "2026-10-17T10:16:04.961Z",
+      "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
       "state": "running",
       "phase": "draft",
       "revision": 0,
@@ -31,8 +31,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-17T10:08:26.542Z",
-      "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "time": "2026-10-17T10:17:19.174Z",
+      "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
       "state": "running",
       "phase": "review",
       "revision": 0,
@@ -57,24 +57,37 @@
       "failures": 0
     },
     {
-      "time": "2026-10-17T10:10:14.022Z",
-      "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
-      "state": "failed",
-      "phase": "review",
+      "time": "2026-10-17T10:18:00.443Z",
+      "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+      "state": "ready",
+      "phase": "ready",
       "revision": 0,
       "playing": false,
       "canRetry": false,
-      "canChooseNew": true,
+      "canChooseNew": false,
       "interest": "Rever",
-      "title": "Ditt neste kapittel",
-      "goal": "",
-      "opening": "",
-      "message": "Kapittelet ble ikke klart. Arbeidet er beholdt. Du kan gå hjem og øve som vanlig.",
+      "title": "Runi gjør hi trygt",
+      "goal": "Gjør hi trygt for rødrevungen Runi ved å pakke proviant, fylle lykter og reparere broen så den kan bære lasten.",
+      "opening": "Runi vil gjøre hi trygt før natten. Valgene du gjør bestemmer hva som må gjøres først.",
+      "message": "Hele kapittelet er klart.",
       "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
       "lastAnswer": null,
       "mission": null,
-      "choices": [],
-      "choicePrompt": null,
+      "choices": [
+        {
+          "id": "opt-pack-boxes",
+          "label": "Pakke proviant i kasser"
+        },
+        {
+          "id": "opt-fill-lanterns",
+          "label": "Fylle lykter med lyssteiner"
+        },
+        {
+          "id": "opt-lay-planks",
+          "label": "Legge planker over den skadde broen"
+        }
+      ],
+      "choicePrompt": "Hva skal vi begynne med for å gjøre hi trygt?",
       "solved": false,
       "outcome": null,
       "ending": null,
@@ -87,34 +100,47 @@
     "status": 200,
     "budget": {
       "limit": 7.00018175,
-      "spent": 1.12239325,
+      "spent": 1.589159,
       "warning": false,
       "fallback": false,
-      "remaining": 5.8777885
+      "remaining": 5.41102275
     },
     "models": {
       "text": "gpt-5-mini"
     }
   },
-  "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+  "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
   "finalView": {
-    "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
-    "state": "failed",
-    "phase": "review",
+    "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+    "state": "ready",
+    "phase": "ready",
     "revision": 0,
     "playing": false,
     "canRetry": false,
-    "canChooseNew": true,
+    "canChooseNew": false,
     "interest": "Rever",
-    "title": "Ditt neste kapittel",
-    "goal": "",
-    "opening": "",
-    "message": "Kapittelet ble ikke klart. Arbeidet er beholdt. Du kan gå hjem og øve som vanlig.",
+    "title": "Runi gjør hi trygt",
+    "goal": "Gjør hi trygt for rødrevungen Runi ved å pakke proviant, fylle lykter og reparere broen så den kan bære lasten.",
+    "opening": "Runi vil gjøre hi trygt før natten. Valgene du gjør bestemmer hva som må gjøres først.",
+    "message": "Hele kapittelet er klart.",
     "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
     "lastAnswer": null,
     "mission": null,
-    "choices": [],
-    "choicePrompt": null,
+    "choices": [
+      {
+        "id": "opt-pack-boxes",
+        "label": "Pakke proviant i kasser"
+      },
+      {
+        "id": "opt-fill-lanterns",
+        "label": "Fylle lykter med lyssteiner"
+      },
+      {
+        "id": "opt-lay-planks",
+        "label": "Legge planker over den skadde broen"
+      }
+    ],
+    "choicePrompt": "Hva skal vi begynne med for å gjøre hi trygt?",
     "solved": false,
     "outcome": null,
     "ending": null,

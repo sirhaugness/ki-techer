@@ -157,3 +157,27 @@ fortellingen mot denne tegningen og bevare menyens gitte mengder. Testen låser
 Nye bekreftede kall kostet 0,46676575 kr. Samlet konservativ belastning er
 **4,58897725 kr**, inkludert uendret usikker reservasjon; gjenstående
 **5,41102275 kr**. Alle råforsøk og kritikk er bevart. Ny prøve pågår.
+
+## Femte prøve: modellgodkjenning var ikke tilstrekkelig
+
+`edb2b2b`: modellen og kritikeren godkjente en matematisk gyldig pakke, men
+uavhengig tutor avviste den. Startvalg hoppet direkte til andre/tredje oppdrag;
+slutten hevdet likevel at alle tre var utført. Lykteoppgaven blandet antall tomme
+lykter og lyssteiner uten én-til-én-regel, og proviant ble til steiner.
+Pakken ble sperret i leo-dev med audit før første spillhandling (play_revision=0).
+Ingen gjennomspilling eller elev-/fortellerkvalitet godkjennes fra denne prøven.
+Rårespons/kritikk ligger i `attempt-5-raw.json`; offentlig `ready` er modellens
+status før menneskelig avvisning. Opptaksforsøket stoppet før sideopprettelse
+på manglende FFmpeg-søkesti; det er ikke et gjennomspillingsbevis.
+
+Koden teller nå alle komplette ruter, også valg som møtes igjen. R3-prøven
+krever minst tre oppdrag på hver rute, ikke bare samlet i pakken. Dette er en
+avgrenset kvalitetsprøve, ikke et permanent krav om kapittellengde. Kritikeren
+får alle ruter eksplisitt og må returnere vurdering av hver faktisk oppdragsrekkefølge
+og slutt. Manglende/duplikate/endrede ruter eller coherent=false avviser pakken.
+Over 64 ruter avvises. Regresjonstesten gjenskaper den observerte 3/2/1-feilen.
+Rutebevisets semantiske innhold trenger fortsatt faktisk modell-/menneskevurdering.
+
+Nye bekreftede kall kostet 0,27988950 kr. Konservativt samlet **4,86886675 kr
+av 10**, inkludert beholdt ukjent reservasjon; gjenstående **5,13113325 kr**.
+Ingen forbruksnullstilling, grenseøkning eller automatisk nykjøp av ukjent kall.

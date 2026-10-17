@@ -25,3 +25,7 @@ leses sammen med R3-VERIFICATION. En påbegynt fil er ikke en bestått port.
 
 Ingen cookies, API-nøkler, passord eller Preview-delingshemmeligheter skal
 bevares her. Kontoens tekniske UUID-er gjelder bare godkjente syntetiske data.
+
+`attempt-5-raw.json` og `preview-generation-attempt-5.json`: modellgodkjent,
+**menneskelig avvist**. Ready-status dokumenterer hva modellen/appen faktisk
+gjorde før kvalitetsfunnet, ikke at pakken er godkjent. Pakken ble sperret før spill.
