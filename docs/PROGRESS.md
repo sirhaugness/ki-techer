@@ -17,7 +17,7 @@ Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, 
 
 [Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest 538/538, simulering, full CI og dev-migrasjon på `f34b7b2` er grønne. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker fullførte i `arn1` etter lukket nettleser, med deduplisering og begge simulerte avbrudd.
 
-Sju ekte «Rever»-forsøk er bevart. De avdekket wire-/meny-/ressursfeil og svak modellkritikk. Femte pakke fikk modellgodkjenning, men menneskelig tutor fant falsk fortid på kortere valggrener samt enhets-/begrepsfeil; den er sperret før spill. Koden kontrollerer nå alle ruter og krever eksplisitt kritikk av hver rutes faktiske handlinger. Sjette forsøk traff ut-tokengrensen; forfatter bruker nå low reasoning, kritiker medium. Sjuende forsøk satte ubundne mengdeobjekter; wire-skjemaet krever nå eksplisitte mengdenøkler og to objekter. Ny prøve følger. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå; R3 er fortsatt utkast.
+Åtte ekte «Rever»-forsøk er bevart. De avdekket wire-/meny-/ressursfeil og svak modellkritikk. Femte pakke fikk modellgodkjenning, men menneskelig tutor fant falsk fortid på kortere valggrener samt enhets-/begrepsfeil; den er sperret før spill. Koden kontrollerer nå alle ruter og krever eksplisitt kritikk av hver rutes faktiske handlinger. Sjette forsøk traff ut-tokengrensen; forfatter bruker nå low reasoning, kritiker medium. Sjuende forsøk satte ubundne mengdeobjekter; wire-skjemaet krever nå eksplisitte mengdenøkler og to objekter. Åttende forsøk ble sperret for endret kapittel-ID; wire låser nå immutable felt til faktiske jobbverdier. Tutor fant også reelle gren-/enhets-/sceneproblemer. Ny prøve følger. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå; R3 er fortsatt utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -25,7 +25,7 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **5,38011375 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 2,06421325 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **4,61988625 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **5,55225550 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 2,23635500 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **4,44774450 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 

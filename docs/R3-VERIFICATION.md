@@ -204,3 +204,20 @@ og bare de tre støttede interaksjonene. Lagringskontrakten og rawresponsene
 endres ikke; ingen fortelling eller matte håndrepareres for å få den godkjent.
 Kallkostnad0,23347225 kr. Konservativt samlet **5,38011375 kr**, gjenstående
 **4,61988625 kr**. Ingen kriterier eller budsjettgrenser er senket.
+
+## Åttende prøve: identitetsgrammar og reelle semantiske funn
+
+`e7a2361`: to utkast ble avvist før kritikk fordi forfatteren la `-v1` til
+kapittel-ID. Wire bruker nå jobbens id, sagaId, revisjon og interesse som
+Zod-litteraler; kontrollen av lagret identitet beholdes. Ingen rårespons omskrives.
+Offline diagnose med bare forventet ID i minnet viser at øvrig struktur/matte
+passerer, og begge ruter har tre oppdrag. Dette er ikke publisering/godkjenning.
+
+Tutor fant reelle feil: etter sammenslåing forutsetter teksten en stolpe som
+verkstedgrenen aldri fylte; kasseillustrasjoner brukes som stolper; lykter
+blandes med lyssteiner uten én-til-én-regel; titler kopierer engelske menyvariabler;
+praktiske formål er for like. Forfatterinstruksen presiserer sammenslåinger,
+bibliotekets faktiske objekttyper, naturlige titler og ulik handling. Neste
+prøve må fortsatt passere faktisk per-rutekritikk og menneskevurdering.
+Kallkostnad0,17214175 kr. Konservativt samlet **5,55225550 kr**, gjenstående
+**4,44774450 kr**. R3 er fortsatt ikke kvalitetsgodkjent.

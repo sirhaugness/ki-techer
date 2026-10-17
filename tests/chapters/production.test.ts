@@ -5,6 +5,7 @@ import {
   productionDraft,
   reviewAccepted,
   chapterRoutes,
+  chapterAuthorSchemaFor,
 } from '../../lib/chapters/production';
 import {
   advanceChapter,
@@ -115,6 +116,16 @@ describe('R3 chapter contracts and server projection', () => {
     const wire: Record<string, unknown> = { ...packet };
     delete wire.assets;
     expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
+    const exact = chapterAuthorSchemaFor(job);
+    expect(exact.parse(wire)).toEqual(wire);
+    expect(exact.safeParse({ ...wire, id: packet.id + '-v1' }).success).toBe(
+      false,
+    );
+    expect(exact.safeParse({ ...wire, basedOnRevision: 1 }).success).toBe(
+      false,
+    );
+    expect(JSON.stringify(z.toJSONSchema(exact))).not.toContain('"oneOf"');
+
     const unbound = structuredClone(wire) as typeof packet;
     const mission = unbound.nodes.find((n) => n.kind === 'mission')!;
     if (mission.kind !== 'mission') throw Error('fixture');

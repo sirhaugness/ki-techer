@@ -1,0 +1,1665 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2692582101,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 4,
+          "positionsPerContainer": 2
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 4
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2692582118,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 2,
+          "positionsPerContainer": 4
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 2
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2692582135,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2692582202,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 10,
+          "alreadyInstalled": 6
+        },
+        "quantities": {
+          "known": 6,
+          "total": 10
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2692582219,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 14,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 14
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2692582236,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "alreadyInstalled": 5
+        },
+        "quantities": {
+          "known": 5,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-68e34d3c-2da5-4c42-8f69-c21e53d7f962-v1",
+      "goal": "Runi skal gjøre klar tre signalstolper og tenne lysene slik at revfamilien finner hi om natten.",
+      "nodes": [
+        {
+          "id": "choice-start",
+          "kind": "choice",
+          "prompt": "Hva vil Runi gjøre først for å få lyset til hi?",
+          "options": [
+            {
+              "id": "opt-repair-beacon",
+              "next": "mission-grouping-4x2",
+              "label": "Gå til signalstolpen i skogen og sjekk beholdere."
+            },
+            {
+              "id": "opt-fyll-lykter",
+              "next": "mission-quantity-10-6",
+              "label": "Gå til verkstedet og fylle lykter med lyssteiner."
+            }
+          ]
+        },
+        {
+          "id": "mission-grouping-4x2",
+          "goal": "Runi må finne hvor mange lykter som trengs for denne stolpen.",
+          "kind": "mission",
+          "next": "mission-grouping-2x4",
+          "title": "Finn totalt innhold i like grupper (groups × each).",
+          "before": "Runi står ved en signalstolpe i skogkanten. Forrige handling gjorde at stolpenes tomme beholdere nå er synlige og klare for fylling.",
+          "success": "Stolpens beholdere fylles med lykter.",
+          "variants": [
+            {
+              "id": "v-g1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beacon-box",
+                    "label": "tom signalbeholder",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "beacon-lantern",
+                    "label": "lykt (plass per beholder)",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-box"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beacon-box"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "beacon-lantern"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Beholderne fylles med lykter.",
+                    "working": "Du ser hvilke beholdere som skal fylles.",
+                    "incorrect": "Du ser hvor du forsøkte å legge lykter, men det ble ikke riktig."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 2692582101,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter trengs til stolpen totalt når hver beholder skal ha {{each}} lykter og det er {{groups}} beholdere?"
+            }
+          ]
+        },
+        {
+          "id": "mission-grouping-2x4",
+          "goal": "Runi må finne hvor mange lykter som trengs på hver av disse to stolpene sammenlagt.",
+          "kind": "mission",
+          "next": "mission-quantity-14-4",
+          "title": "Finn totalt innhold i like grupper (groups × each).",
+          "before": "Siden Runi fylte den første stolpen, ser hun nå to små stolper ved bryggekanten som også har synlige beholdere.",
+          "success": "Begge små stolper får fylt sine beholdere med lykter.",
+          "variants": [
+            {
+              "id": "v-g2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "small-beacon-boxes",
+                    "label": "små signalbeholdere",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "small-beacon-lanterns",
+                    "label": "lykt (plass per stolpe)",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "small-beacon-boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "small-beacon-boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "small-beacon-lanterns"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Begge stolpene ser nå fylte ut.",
+                    "working": "Du ser stolpene og deres tomme plasser.",
+                    "incorrect": "Forsøket viste hvor du prøvde å plassere lykter."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2692582118,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Gang sammen: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter trengs totalt når hver stolpe har {{each}} plasser og det er {{groups}} stolper?"
+            }
+          ]
+        },
+        {
+          "id": "mission-quantity-10-6",
+          "goal": "Runi må finne hvor mange lyssteiner som mangler for å fylle de merkede lyktene.",
+          "kind": "mission",
+          "next": "mission-grouping-2x4",
+          "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+          "before": "Runi er i verkstedet; etter forrige handling er en arbeidsbenk klar med en rekke lykter og merker for hvor mange som skal være ferdige.",
+          "success": "De merkede lyktene får de lyssteinene de mangler.",
+          "variants": [
+            {
+              "id": "v-q1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lamp-places",
+                    "label": "merkede lyktplasser",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "installed-lamps",
+                    "label": "allerede monterte lyssteiner i lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lamp-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lamp-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "installed-lamps"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende lyssteinene legges inn i lyktene.",
+                    "working": "Du ser hvilke lykter som mangler steiner.",
+                    "incorrect": "Du får hint om hvor steinene må ligge."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 2692582202,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Trekk fra: {{total}} minus {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle merkede lyktene når {{known}} allerede ligger på plass og det er plass til {{total}}?"
+            }
+          ]
+        },
+        {
+          "id": "mission-quantity-14-4",
+          "goal": "Runi må regne ut hvor mange lyssteiner som må hentes for å gjøre disse lyktene klare.",
+          "kind": "mission",
+          "next": "ending-lighted",
+          "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+          "before": "Etter at Runi fylt de to små stolpene, ser hun at flere lykter ved skogkanten fortsatt mangler lyssteiner før de kan tennes.",
+          "success": "Alle merkede lykter ved skogkanten er fylt med lyssteiner.",
+          "variants": [
+            {
+              "id": "v-q2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "forest-lamp-places",
+                    "label": "lyktplasser ved skogkanten",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "forest-installed-lamps",
+                    "label": "allerede monterte lyssteiner",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "forest-lamp-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "forest-lamp-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "forest-installed-lamps"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende lyssteinene settes på plass.",
+                    "working": "Du ser hvor mange plasser som mangler steiner.",
+                    "incorrect": "Du får et hint om hvor steinene mangler."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 2692582219,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler når {{known}} allerede er lagt og det er plass til {{total}}?"
+            }
+          ]
+        },
+        {
+          "id": "ending-lighted",
+          "hook": "Nå som lyset fungerer, kan Runi hjelpe Arktis med å finne en trygg plass i høyfjellet — eller telle flere stolper i nabolaget.",
+          "kind": "ending",
+          "narration": "Runi har fylt og montert alle lykter og stolper. Når natten kommer, leder de lysende stolpene revfamilien trygt tilbake til hi."
+        }
+      ],
+      "title": "Runi og de lysende stolpene",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "bot",
+          "name": "Liten robot",
+          "assetId": "robot"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi våkner ved skogkanten. Signalstolpene må repareres og lyktesystemet fylles, så familien finner hi om natten.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "forest",
+          "name": "Skogkanten"
+        },
+        {
+          "id": "harbor",
+          "name": "Liten havn"
+        },
+        {
+          "id": "workshop",
+          "name": "Verksted"
+        }
+      ],
+      "entryNodeId": "choice-start",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "Kapittelidentiteten er endret."
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-68e34d3c-2da5-4c42-8f69-c21e53d7f962-v2",
+      "goal": "Runi skal gjøre klar tre signalstolper og tenne lysene slik at revfamilien finner hi om natten.",
+      "nodes": [
+        {
+          "id": "choice-start",
+          "kind": "choice",
+          "prompt": "Hva vil Runi gjøre først for å få lyset til hi?",
+          "options": [
+            {
+              "id": "opt-repair-beacon",
+              "next": "mission-grouping-4x2",
+              "label": "Gå til signalstolpen i skogen og sjekk beholdere."
+            },
+            {
+              "id": "opt-fyll-lykter",
+              "next": "mission-quantity-10-6",
+              "label": "Gå til verkstedet og fylle lykter med lyssteiner."
+            }
+          ]
+        },
+        {
+          "id": "mission-grouping-4x2",
+          "goal": "Runi må finne hvor mange lykter som trengs for denne stolpen.",
+          "kind": "mission",
+          "next": "mission-grouping-2x4",
+          "title": "Finn totalt innhold i like grupper (groups × each).",
+          "before": "Runi står ved en signalstolpe i skogkanten. Forrige handling gjorde at stolpenes tomme beholdere nå er synlige og klare for fylling.",
+          "success": "Stolpens beholdere fylles med lykter.",
+          "variants": [
+            {
+              "id": "v-g1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beacon-box",
+                    "label": "tom signalbeholder",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "beacon-lantern",
+                    "label": "lykt (plass per beholder)",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-box"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beacon-box"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "beacon-lantern"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Beholderne fylles med lykter.",
+                    "working": "Du ser hvilke beholdere som skal fylles.",
+                    "incorrect": "Du ser hvor du forsøkte å legge lykter, men det ble ikke riktig."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 2692582101,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter trengs til stolpen totalt når hver beholder skal ha {{each}} lykter og det er {{groups}} beholdere?"
+            }
+          ]
+        },
+        {
+          "id": "mission-grouping-2x4",
+          "goal": "Runi må finne hvor mange lykter som trengs på hver av disse to stolpene sammenlagt.",
+          "kind": "mission",
+          "next": "mission-quantity-14-4",
+          "title": "Finn totalt innhold i like grupper (groups × each).",
+          "before": "Siden Runi fylte den første stolpen, ser hun nå to små stolper ved bryggekanten som også har synlige beholdere.",
+          "success": "Begge små stolper får fylt sine beholdere med lykter.",
+          "variants": [
+            {
+              "id": "v-g2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "small-beacon-boxes",
+                    "label": "små signalbeholdere",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "small-beacon-lanterns",
+                    "label": "lykt (plass per stolpe)",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "small-beacon-boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "small-beacon-boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "small-beacon-lanterns"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Begge stolpene ser nå fylte ut.",
+                    "working": "Du ser stolpene og deres tomme plasser.",
+                    "incorrect": "Forsøket viste hvor du prøvde å plassere lykter."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2692582118,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Gang sammen: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter trengs totalt når hver stolpe har {{each}} plasser og det er {{groups}} stolper?"
+            }
+          ]
+        },
+        {
+          "id": "mission-quantity-10-6",
+          "goal": "Runi må finne hvor mange lyssteiner som mangler for å fylle de merkede lyktene.",
+          "kind": "mission",
+          "next": "mission-grouping-2x4",
+          "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+          "before": "Runi er i verkstedet; etter forrige handling er en arbeidsbenk klar med en rekke lykter og merker for hvor mange som skal være ferdige.",
+          "success": "De merkede lyktene får de lyssteinene de mangler.",
+          "variants": [
+            {
+              "id": "v-q1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lamp-places",
+                    "label": "merkede lyktplasser",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "installed-lamps",
+                    "label": "allerede monterte lyssteiner i lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lamp-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lamp-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "installed-lamps"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende lyssteinene legges inn i lyktene.",
+                    "working": "Du ser hvilke lykter som mangler steiner.",
+                    "incorrect": "Du får hint om hvor steinene må ligge."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 2692582202,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Trekk fra: {{total}} minus {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle merkede lyktene når {{known}} allerede ligger på plass og det er plass til {{total}}?"
+            }
+          ]
+        },
+        {
+          "id": "mission-quantity-14-4",
+          "goal": "Runi må regne ut hvor mange lyssteiner som må hentes for å gjøre disse lyktene klare.",
+          "kind": "mission",
+          "next": "ending-lighted",
+          "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+          "before": "Etter at Runi fylte de to små stolpene, ser hun at flere lykter ved skogkanten fortsatt mangler lyssteiner før de kan tennes.",
+          "success": "Alle merkede lykter ved skogkanten er fylt med lyssteiner.",
+          "variants": [
+            {
+              "id": "v-q2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "forest-lamp-places",
+                    "label": "lyktplasser ved skogkanten",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "forest-installed-lamps",
+                    "label": "allerede monterte lyssteiner",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "forest-lamp-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "forest-lamp-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "forest-installed-lamps"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende lyssteinene settes på plass.",
+                    "working": "Du ser hvor mange plasser som mangler steiner.",
+                    "incorrect": "Du får et hint om hvor steinene mangler."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 2692582219,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler når {{known}} allerede er lagt og det er plass til {{total}}?"
+            }
+          ]
+        },
+        {
+          "id": "ending-lighted",
+          "hook": "Nå som lyset fungerer, kan Runi hjelpe Arktis med å finne en trygg plass i høyfjellet — eller telle flere stolper i nabolaget.",
+          "kind": "ending",
+          "narration": "Runi har fylt og montert alle lykter og stolper. Når natten kommer, leder de lysende stolpene revfamilien trygt tilbake til hi."
+        }
+      ],
+      "title": "Runi og de lysende stolpene",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "bot",
+          "name": "Liten robot",
+          "assetId": "robot"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi våkner ved skogkanten. Signalstolpene må repareres og lyktesystemet fylles, så familien finner hi om natten.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "forest",
+          "name": "Skogkanten"
+        },
+        {
+          "id": "harbor",
+          "name": "Liten havn"
+        },
+        {
+          "id": "workshop",
+          "name": "Verksted"
+        }
+      ],
+      "entryNodeId": "choice-start",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "e20a8e0e-2b3f-43b9-8178-b8fbd5acab5f",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 35903,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5043,
+        "cost_estimate": 0.09579625,
+        "output_tokens": 3724,
+        "chapter_number": 8,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "68e34d3c-2da5-4c42-8f69-c21e53d7f962",
+      "result": {
+        "id": "chapter-68e34d3c-2da5-4c42-8f69-c21e53d7f962-v1",
+        "goal": "Runi skal gjøre klar tre signalstolper og tenne lysene slik at revfamilien finner hi om natten.",
+        "nodes": [
+          {
+            "id": "choice-start",
+            "kind": "choice",
+            "prompt": "Hva vil Runi gjøre først for å få lyset til hi?",
+            "options": [
+              {
+                "id": "opt-repair-beacon",
+                "next": "mission-grouping-4x2",
+                "label": "Gå til signalstolpen i skogen og sjekk beholdere."
+              },
+              {
+                "id": "opt-fyll-lykter",
+                "next": "mission-quantity-10-6",
+                "label": "Gå til verkstedet og fylle lykter med lyssteiner."
+              }
+            ]
+          },
+          {
+            "id": "mission-grouping-4x2",
+            "goal": "Runi må finne hvor mange lykter som trengs for denne stolpen.",
+            "kind": "mission",
+            "next": "mission-grouping-2x4",
+            "title": "Finn totalt innhold i like grupper (groups × each).",
+            "before": "Runi står ved en signalstolpe i skogkanten. Forrige handling gjorde at stolpenes tomme beholdere nå er synlige og klare for fylling.",
+            "success": "Stolpens beholdere fylles med lykter.",
+            "variants": [
+              {
+                "id": "v-g1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beacon-box",
+                      "label": "tom signalbeholder",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "beacon-lantern",
+                      "label": "lykt (plass per beholder)",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-box"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beacon-box"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "beacon-lantern"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Beholderne fylles med lykter.",
+                      "working": "Du ser hvilke beholdere som skal fylles.",
+                      "incorrect": "Du ser hvor du forsøkte å legge lykter, men det ble ikke riktig."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 2692582101,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter trengs til stolpen totalt når hver beholder skal ha {{each}} lykter og det er {{groups}} beholdere?"
+              }
+            ]
+          },
+          {
+            "id": "mission-grouping-2x4",
+            "goal": "Runi må finne hvor mange lykter som trengs på hver av disse to stolpene sammenlagt.",
+            "kind": "mission",
+            "next": "mission-quantity-14-4",
+            "title": "Finn totalt innhold i like grupper (groups × each).",
+            "before": "Siden Runi fylte den første stolpen, ser hun nå to små stolper ved bryggekanten som også har synlige beholdere.",
+            "success": "Begge små stolper får fylt sine beholdere med lykter.",
+            "variants": [
+              {
+                "id": "v-g2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "small-beacon-boxes",
+                      "label": "små signalbeholdere",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "small-beacon-lanterns",
+                      "label": "lykt (plass per stolpe)",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "small-beacon-boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "small-beacon-boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "small-beacon-lanterns"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Begge stolpene ser nå fylte ut.",
+                      "working": "Du ser stolpene og deres tomme plasser.",
+                      "incorrect": "Forsøket viste hvor du prøvde å plassere lykter."
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2692582118,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Gang sammen: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter trengs totalt når hver stolpe har {{each}} plasser og det er {{groups}} stolper?"
+              }
+            ]
+          },
+          {
+            "id": "mission-quantity-10-6",
+            "goal": "Runi må finne hvor mange lyssteiner som mangler for å fylle de merkede lyktene.",
+            "kind": "mission",
+            "next": "mission-grouping-2x4",
+            "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+            "before": "Runi er i verkstedet; etter forrige handling er en arbeidsbenk klar med en rekke lykter og merker for hvor mange som skal være ferdige.",
+            "success": "De merkede lyktene får de lyssteinene de mangler.",
+            "variants": [
+              {
+                "id": "v-q1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lamp-places",
+                      "label": "merkede lyktplasser",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "installed-lamps",
+                      "label": "allerede monterte lyssteiner i lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lamp-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lamp-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "installed-lamps"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende lyssteinene legges inn i lyktene.",
+                      "working": "Du ser hvilke lykter som mangler steiner.",
+                      "incorrect": "Du får hint om hvor steinene må ligge."
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 2692582202,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Trekk fra: {{total}} minus {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle merkede lyktene når {{known}} allerede ligger på plass og det er plass til {{total}}?"
+              }
+            ]
+          },
+          {
+            "id": "mission-quantity-14-4",
+            "goal": "Runi må regne ut hvor mange lyssteiner som må hentes for å gjøre disse lyktene klare.",
+            "kind": "mission",
+            "next": "ending-lighted",
+            "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+            "before": "Etter at Runi fylt de to små stolpene, ser hun at flere lykter ved skogkanten fortsatt mangler lyssteiner før de kan tennes.",
+            "success": "Alle merkede lykter ved skogkanten er fylt med lyssteiner.",
+            "variants": [
+              {
+                "id": "v-q2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "forest-lamp-places",
+                      "label": "lyktplasser ved skogkanten",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "forest-installed-lamps",
+                      "label": "allerede monterte lyssteiner",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "forest-lamp-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "forest-lamp-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "forest-installed-lamps"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende lyssteinene settes på plass.",
+                      "working": "Du ser hvor mange plasser som mangler steiner.",
+                      "incorrect": "Du får et hint om hvor steinene mangler."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 2692582219,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler når {{known}} allerede er lagt og det er plass til {{total}}?"
+              }
+            ]
+          },
+          {
+            "id": "ending-lighted",
+            "hook": "Nå som lyset fungerer, kan Runi hjelpe Arktis med å finne en trygg plass i høyfjellet — eller telle flere stolper i nabolaget.",
+            "kind": "ending",
+            "narration": "Runi har fylt og montert alle lykter og stolper. Når natten kommer, leder de lysende stolpene revfamilien trygt tilbake til hi."
+          }
+        ],
+        "title": "Runi og de lysende stolpene",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "bot",
+            "name": "Liten robot",
+            "assetId": "robot"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi våkner ved skogkanten. Signalstolpene må repareres og lyktesystemet fylles, så familien finner hi om natten.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "forest",
+            "name": "Skogkanten"
+          },
+          {
+            "id": "harbor",
+            "name": "Liten havn"
+          },
+          {
+            "id": "workshop",
+            "name": "Verksted"
+          }
+        ],
+        "entryNodeId": "choice-start",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:35:16.625406+00:00",
+      "completed_at": "2026-10-17T10:35:52.924305+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "9347a9ef-ab2c-4e25-af4b-27309656b98c",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 25597,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 7130,
+        "cost_estimate": 0.0763455,
+        "output_tokens": 2579,
+        "chapter_number": 8,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "68e34d3c-2da5-4c42-8f69-c21e53d7f962",
+      "result": {
+        "id": "chapter-68e34d3c-2da5-4c42-8f69-c21e53d7f962-v2",
+        "goal": "Runi skal gjøre klar tre signalstolper og tenne lysene slik at revfamilien finner hi om natten.",
+        "nodes": [
+          {
+            "id": "choice-start",
+            "kind": "choice",
+            "prompt": "Hva vil Runi gjøre først for å få lyset til hi?",
+            "options": [
+              {
+                "id": "opt-repair-beacon",
+                "next": "mission-grouping-4x2",
+                "label": "Gå til signalstolpen i skogen og sjekk beholdere."
+              },
+              {
+                "id": "opt-fyll-lykter",
+                "next": "mission-quantity-10-6",
+                "label": "Gå til verkstedet og fylle lykter med lyssteiner."
+              }
+            ]
+          },
+          {
+            "id": "mission-grouping-4x2",
+            "goal": "Runi må finne hvor mange lykter som trengs for denne stolpen.",
+            "kind": "mission",
+            "next": "mission-grouping-2x4",
+            "title": "Finn totalt innhold i like grupper (groups × each).",
+            "before": "Runi står ved en signalstolpe i skogkanten. Forrige handling gjorde at stolpenes tomme beholdere nå er synlige og klare for fylling.",
+            "success": "Stolpens beholdere fylles med lykter.",
+            "variants": [
+              {
+                "id": "v-g1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beacon-box",
+                      "label": "tom signalbeholder",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "beacon-lantern",
+                      "label": "lykt (plass per beholder)",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-box"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beacon-box"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "beacon-lantern"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Beholderne fylles med lykter.",
+                      "working": "Du ser hvilke beholdere som skal fylles.",
+                      "incorrect": "Du ser hvor du forsøkte å legge lykter, men det ble ikke riktig."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 2692582101,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter trengs til stolpen totalt når hver beholder skal ha {{each}} lykter og det er {{groups}} beholdere?"
+              }
+            ]
+          },
+          {
+            "id": "mission-grouping-2x4",
+            "goal": "Runi må finne hvor mange lykter som trengs på hver av disse to stolpene sammenlagt.",
+            "kind": "mission",
+            "next": "mission-quantity-14-4",
+            "title": "Finn totalt innhold i like grupper (groups × each).",
+            "before": "Siden Runi fylte den første stolpen, ser hun nå to små stolper ved bryggekanten som også har synlige beholdere.",
+            "success": "Begge små stolper får fylt sine beholdere med lykter.",
+            "variants": [
+              {
+                "id": "v-g2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "small-beacon-boxes",
+                      "label": "små signalbeholdere",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "small-beacon-lanterns",
+                      "label": "lykt (plass per stolpe)",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "small-beacon-boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "small-beacon-boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "small-beacon-lanterns"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Begge stolpene ser nå fylte ut.",
+                      "working": "Du ser stolpene og deres tomme plasser.",
+                      "incorrect": "Forsøket viste hvor du prøvde å plassere lykter."
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2692582118,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Gang sammen: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter trengs totalt når hver stolpe har {{each}} plasser og det er {{groups}} stolper?"
+              }
+            ]
+          },
+          {
+            "id": "mission-quantity-10-6",
+            "goal": "Runi må finne hvor mange lyssteiner som mangler for å fylle de merkede lyktene.",
+            "kind": "mission",
+            "next": "mission-grouping-2x4",
+            "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+            "before": "Runi er i verkstedet; etter forrige handling er en arbeidsbenk klar med en rekke lykter og merker for hvor mange som skal være ferdige.",
+            "success": "De merkede lyktene får de lyssteinene de mangler.",
+            "variants": [
+              {
+                "id": "v-q1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lamp-places",
+                      "label": "merkede lyktplasser",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "installed-lamps",
+                      "label": "allerede monterte lyssteiner i lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lamp-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lamp-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "installed-lamps"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende lyssteinene legges inn i lyktene.",
+                      "working": "Du ser hvilke lykter som mangler steiner.",
+                      "incorrect": "Du får hint om hvor steinene må ligge."
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 2692582202,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Trekk fra: {{total}} minus {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle merkede lyktene når {{known}} allerede ligger på plass og det er plass til {{total}}?"
+              }
+            ]
+          },
+          {
+            "id": "mission-quantity-14-4",
+            "goal": "Runi må regne ut hvor mange lyssteiner som må hentes for å gjøre disse lyktene klare.",
+            "kind": "mission",
+            "next": "ending-lighted",
+            "title": "Finn antallet som mangler på de ledige plassene (total − known).",
+            "before": "Etter at Runi fylte de to små stolpene, ser hun at flere lykter ved skogkanten fortsatt mangler lyssteiner før de kan tennes.",
+            "success": "Alle merkede lykter ved skogkanten er fylt med lyssteiner.",
+            "variants": [
+              {
+                "id": "v-q2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "forest-lamp-places",
+                      "label": "lyktplasser ved skogkanten",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "forest-installed-lamps",
+                      "label": "allerede monterte lyssteiner",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "forest-lamp-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "forest-lamp-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "forest-installed-lamps"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende lyssteinene settes på plass.",
+                      "working": "Du ser hvor mange plasser som mangler steiner.",
+                      "incorrect": "Du får et hint om hvor steinene mangler."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 2692582219,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler når {{known}} allerede er lagt og det er plass til {{total}}?"
+              }
+            ]
+          },
+          {
+            "id": "ending-lighted",
+            "hook": "Nå som lyset fungerer, kan Runi hjelpe Arktis med å finne en trygg plass i høyfjellet — eller telle flere stolper i nabolaget.",
+            "kind": "ending",
+            "narration": "Runi har fylt og montert alle lykter og stolper. Når natten kommer, leder de lysende stolpene revfamilien trygt tilbake til hi."
+          }
+        ],
+        "title": "Runi og de lysende stolpene",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "bot",
+            "name": "Liten robot",
+            "assetId": "robot"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi våkner ved skogkanten. Signalstolpene må repareres og lyktesystemet fylles, så familien finner hi om natten.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "forest",
+            "name": "Skogkanten"
+          },
+          {
+            "id": "harbor",
+            "name": "Liten havn"
+          },
+          {
+            "id": "workshop",
+            "name": "Verksted"
+          }
+        ],
+        "entryNodeId": "choice-start",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:35:53.356474+00:00",
+      "completed_at": "2026-10-17T10:36:19.354042+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "18df17a7-f638-4f7b-8606-49f5efd8735f",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-17T10:35:52.839232+00:00",
+      "latency_ms": 35903,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5043,
+      "cost_estimate": 0.09579625,
+      "output_tokens": 3724,
+      "chapter_job_id": "68e34d3c-2da5-4c42-8f69-c21e53d7f962",
+      "chapter_number": 8,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-17T10:35:16.879+00:00"
+    },
+    {
+      "id": "7c3a34e6-52f0-43e0-8c16-d7c210ab1df9",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-17T10:36:19.255367+00:00",
+      "latency_ms": 25597,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 7130,
+      "cost_estimate": 0.0763455,
+      "output_tokens": 2579,
+      "chapter_job_id": "68e34d3c-2da5-4c42-8f69-c21e53d7f962",
+      "chapter_number": 8,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-17T10:35:53.6+00:00"
+    }
+  ],
+  "jobId": "68e34d3c-2da5-4c42-8f69-c21e53d7f962",
+  "phase": "review",
+  "state": "failed",
+  "error_code": "editorial_review_rejected",
+  "accountSpent": 2.55243725
+}
