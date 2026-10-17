@@ -115,6 +115,12 @@ describe('R3 chapter contracts and server projection', () => {
     const wire: Record<string, unknown> = { ...packet };
     delete wire.assets;
     expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
+    const unbound = structuredClone(wire) as typeof packet;
+    const mission = unbound.nodes.find((n) => n.kind === 'mission')!;
+    if (mission.kind !== 'mission') throw Error('fixture');
+    mission.variants[0].scene.objects[0].quantityKey = null;
+    expect(chapterAuthorSchema.safeParse(unbound).success).toBe(false);
+
     const compiled = productionDraft(wire, job, menu);
     expect(compiled.assets.some((a) => a.role === 'background')).toBe(true);
     expect(compiled.nodes).toEqual(packet.nodes);

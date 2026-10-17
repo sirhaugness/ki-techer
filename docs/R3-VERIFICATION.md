@@ -192,3 +192,15 @@ svar. Dette er ikke unknown og ikke en ny historie-/spillkvalitetsprøve.
 Kostnad0,27777475 kr; konservativt samlet **5,14664150 kr**, gjenstående
 **4,85335850 kr**. Forfatter får nå eksplisitt low reasoning innen samme token-,
 tids- og budsjettgrense; separat kritiker beholder medium. Ingen skjult retry.
+
+## Sjuende prøve: ubundne sceneobjekter avvises
+
+`3d711fa`: to bekreftede utkastkall fullførte, men begge satte quantityKey=null
+på alle mengdeobjekter. Den tillatte generelle pakkekontrakten åpnet for dette,
+mens R3s faktiske spiller krever bundne mengder. Begge ble avvist før modellkritikk
+og elevvisning. Dette beviser mengdeporten, ikke rutekontrollen eller spillkvalitet.
+Forfatterens wire-skjema er nå smalere: nøyaktig to objekter, eksplisitt mengdenøkkel
+og bare de tre støttede interaksjonene. Lagringskontrakten og rawresponsene
+endres ikke; ingen fortelling eller matte håndrepareres for å få den godkjent.
+Kallkostnad0,23347225 kr. Konservativt samlet **5,38011375 kr**, gjenstående
+**4,61988625 kr**. Ingen kriterier eller budsjettgrenser er senket.
