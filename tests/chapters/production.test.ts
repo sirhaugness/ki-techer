@@ -30,8 +30,13 @@ describe('R3 chapter contracts and server projection', () => {
     );
   });
   it('sends OpenAI a strict schema with anyOf instead of unsupported oneOf', () => {
-    const { packet } = productionFixture();
-    expect(chapterAuthorSchema.parse(packet)).toEqual(packet);
+    const { packet, job, menu } = productionFixture();
+    const wire: Record<string, unknown> = { ...packet };
+    delete wire.assets;
+    expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
+    const compiled = productionDraft(wire, job, menu);
+    expect(compiled.assets.some((a) => a.role === 'background')).toBe(true);
+    expect(compiled.nodes).toEqual(packet.nodes);
     const schema = JSON.stringify(z.toJSONSchema(chapterAuthorSchema));
     expect(schema).not.toContain('"oneOf"');
     expect(schema).toContain('"anyOf"');

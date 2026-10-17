@@ -119,3 +119,19 @@ En separat persistenskontroll fant også at JSONB omordner objektnøkler.
 Referanser og ressursmanifest sammenlignes nå feltvis, inkludert hash og
 klarstatus; de skal ikke avvises fordi JSON-nøklene skifter rekkefølge.
 Regresjonstesten prøver omordning og endret hash.
+
+## Tredje prøve: betrodd ressursoppslag
+
+`b52be31`: matematikkmenyen ble fulgt, men modellen utelot nødvendige bakgrunner
+og først også figurressurser fra den redundante assets-listen. Begge utkast ble
+avvist før elevvisning; ingen kritiker- eller elevrespons ble produsert.
+To utkastkall kostet 0,30381725 kr. Samlet konservativ belastning er
+**4,12221150 kr**, gjenstående **5,87778850 kr**.
+
+Forfatteren velger nå ressurs-ID-er i scener/figurer; koden samler den fullstendige
+ressurslisten med betrodde roller og beskrivelser fra biblioteket. Dette retter
+metadata, ikke fortelling, oppgave eller svar. Ukjente referanser/roller avvises
+fortsatt. Wire-skjemaet utelater den redundante assets-listen. Den registrerte
+rårevisjonen kompilerer med dette oppslaget (12 ressurser), uten håndredigering
+av historien. Regresjonsprøven dekker wire uten assets og gyldig bakgrunnsoppslag.
+En ny ekte prøve trengs fortsatt før elevkjeden/fortellerkvalitet godkjennes.

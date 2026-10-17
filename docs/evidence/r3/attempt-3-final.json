@@ -1,0 +1,1396 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3499368833,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 6
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3499368850,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 4
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3499368867,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3499368934,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 3,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3499368951,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 6,
+          "total": 15
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3499368968,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 4,
+          "total": 11
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+      "goal": "Få fyr på signalbeaconet så Arktis finner veien hjem.",
+      "nodes": [
+        {
+          "id": "mission-1-kasser",
+          "goal": "Gjøre kassene klare med steiner som skal byttes mot lanternemateriale.",
+          "kind": "mission",
+          "next": "mission-2-lanterner",
+          "title": "Fylle kassene med steiner",
+          "before": "Tidligere fant Runi steiner på stranden; nå skal de legges i kasser på brygga så de blir lette å frakte.",
+          "success": "Kassene er fylt og står klare på brygga.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "Kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones",
+                    "label": "Steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stones"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "group",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 3499368833,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver. Multipliser for å få totalt antall steiner.",
+              "representation": "konkret",
+              "questionTemplate": "Det står {{groups}} kasser på brygga og hver kasse har {{each}} steiner. Hvor mange steiner er det til sammen i kassene?"
+            }
+          ]
+        },
+        {
+          "id": "mission-2-lanterner",
+          "goal": "Fylle de tomme lanternene slik at de kan henges på beaconet.",
+          "kind": "mission",
+          "next": "mission-3-stotter",
+          "title": "Gjøre lanternene klare",
+          "before": "De fyllte kassene står ved verkstedet og kan byttes mot materialer. Nå må lanternene gjøres klare.",
+          "success": "Lanternene er klargjort og står klare til å henges opp.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-total",
+                    "label": "Lantern-plasser",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "lantern-known",
+                    "label": "Tent lantern",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3499368934,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: Hvor mange trengs for å nå totalt {{total}} når {{known}} allerede er tent?",
+              "representation": "konkret",
+              "questionTemplate": "Lanternene har plass til {{total}} i alt. {{known}} av dem er allerede tent. Hvor mange lantern er det som mangler å bli tent?"
+            }
+          ]
+        },
+        {
+          "id": "mission-3-stotter",
+          "goal": "Feste planker på støttene slik at beaconet blir sterkt nok til lanternene.",
+          "kind": "mission",
+          "next": "ending-1",
+          "title": "Bygge støtter til beaconet",
+          "before": "Lanternene er klare og kan snart henges på; først må beacon-støttene monteres slik at lanternene kan sitte trygt.",
+          "success": "Støttene står ferdige og beaconet er klart til å ta imot lanternene.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "supports",
+                    "label": "Beacon-støtter",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "planks",
+                    "label": "Planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["tiko"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "supports"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "supports"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "planks"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "forest-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 3499368850,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} støtter med {{each}} planker hver. Multipliser for å finne totalt antall planker.",
+              "representation": "konkret",
+              "questionTemplate": "Det er {{groups}} støtter på beaconet og hver støtte trenger {{each}} planker. Hvor mange planker trengs til sammen?"
+            }
+          ]
+        },
+        {
+          "id": "ending-1",
+          "hook": "Nå som beaconet virker, kan Runi hjelpe Arktis videre med en ny plan.",
+          "kind": "ending",
+          "narration": "Runi og vennene gjorde jobben: kassene ble fylt, lanternene tent og støttene bygget. Beaconet lyste opp, og Arktis fulgte lyset hjem."
+        }
+      ],
+      "title": "Runi og signalbeaconet",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "tiko",
+          "name": "Tiko",
+          "assetId": "robot"
+        }
+      ],
+      "assets": [
+        {
+          "id": "stone",
+          "role": "prop",
+          "description": "En lysende blå stein."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "lantern",
+          "role": "prop",
+          "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        },
+        {
+          "id": "beacon",
+          "role": "prop",
+          "description": "En signalstolpe med et rundt lys på toppen."
+        },
+        {
+          "id": "rope",
+          "role": "prop",
+          "description": "Ett sammenrullet tau."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi vil hjelpe Arktis å finne veien tilbake. For å bygge og tenne beaconet må Runi samle materialer, gjøre lanternene klare og bygge støttene.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "harbor-sky",
+          "name": "Havna"
+        },
+        {
+          "id": "workshop-sky",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "forest-sky",
+          "name": "Skogen ved fyret"
+        }
+      ],
+      "entryNodeId": "mission-1-kasser",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "Scenen mangler en bakgrunnsressurs."
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+      "goal": "Få fyr på signalbeaconet så Arktis finner veien hjem.",
+      "nodes": [
+        {
+          "id": "mission-1-kasser",
+          "goal": "Gjøre kassene klare med steiner som skal byttes mot lanternemateriale.",
+          "kind": "mission",
+          "next": "mission-2-lanterner",
+          "title": "Fylle kassene med steiner",
+          "before": "Tidligere fant Runi steiner på stranden; nå skal de legges i kasser på brygga så de blir lette å frakte. Siste hendelse: Runi har steiner klare ved brygga.",
+          "success": "Kassene er fylt og står klare på brygga.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "Kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones",
+                    "label": "Steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stones"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "group",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 3499368833,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver. Multipliser for å få totalt antall steiner.",
+              "representation": "konkret",
+              "questionTemplate": "Det står {{groups}} kasser på brygga og hver kasse har {{each}} steiner. Hvor mange steiner er det til sammen i kassene?"
+            }
+          ]
+        },
+        {
+          "id": "mission-2-lanterner",
+          "goal": "Fylle de tomme lanternene slik at de kan henges på beaconet.",
+          "kind": "mission",
+          "next": "mission-3-stotter",
+          "title": "Gjøre lanternene klare",
+          "before": "De fylte kassene står ved verkstedet og kan byttes mot materialer. Nå må lanternene gjøres klare. Siste hendelse: Kassene er levert til verkstedet og materialene venter der.",
+          "success": "Lanternene er klargjort og står klare til å henges opp.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-total",
+                    "label": "Lantern-plasser",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "lantern-known",
+                    "label": "Tent lantern",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3499368934,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: Hvor mange trengs for å nå totalt {{total}} når {{known}} allerede er tent?",
+              "representation": "konkret",
+              "questionTemplate": "Lanternene har plass til {{total}} i alt. {{known}} av dem er allerede tent. Hvor mange lantern er det som mangler å bli tent?"
+            }
+          ]
+        },
+        {
+          "id": "mission-3-stotter",
+          "goal": "Feste planker på støttene slik at beaconet blir sterkt nok til lanternene.",
+          "kind": "mission",
+          "next": "ending-1",
+          "title": "Bygge støtter til beaconet",
+          "before": "Lanternene er klare og kan snart henges på; først må beacon-støttene monteres slik at lanternene kan sitte trygt. Siste hendelse: Lanternene står klare og venter på at støttene skal være ferdige.",
+          "success": "Støttene står ferdige og beaconet er klart til å ta imot lanternene.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "supports",
+                    "label": "Beacon-støtter",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "planks",
+                    "label": "Planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["tiko"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "supports"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "supports"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "planks"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill",
+                    "working": "highlight",
+                    "incorrect": "highlight"
+                  }
+                },
+                "locationId": "forest-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 3499368850,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} støtter med {{each}} planker hver. Multipliser for å finne totalt antall planker.",
+              "representation": "konkret",
+              "questionTemplate": "Det er {{groups}} støtter på beaconet og hver støtte trenger {{each}} planker. Hvor mange planker trengs til sammen?"
+            }
+          ]
+        },
+        {
+          "id": "ending-1",
+          "hook": "Nå som beaconet virker, kan Runi hjelpe Arktis videre med en ny plan.",
+          "kind": "ending",
+          "narration": "Runi og vennene gjorde jobben: kassene ble fylt, lanternene tent og støttene bygget. Beaconet lyste opp, og Arktis fulgte lyset hjem."
+        }
+      ],
+      "title": "Runi og signalbeaconet",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "tiko",
+          "name": "Tiko",
+          "assetId": "robot"
+        }
+      ],
+      "assets": [
+        {
+          "id": "animal",
+          "role": "character",
+          "description": "Vennlig liten rev med spisse ører."
+        },
+        {
+          "id": "person",
+          "role": "character",
+          "description": "Vennlig menneskefigur med blå jakke."
+        },
+        {
+          "id": "robot",
+          "role": "character",
+          "description": "Liten vennlig rund robot med blå lys."
+        },
+        {
+          "id": "stone",
+          "role": "prop",
+          "description": "En lysende blå stein."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "lantern",
+          "role": "prop",
+          "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        },
+        {
+          "id": "beacon",
+          "role": "prop",
+          "description": "En signalstolpe med et rundt lys på toppen."
+        },
+        {
+          "id": "rope",
+          "role": "prop",
+          "description": "Ett sammenrullet tau."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi vil hjelpe Arktis å finne veien tilbake. For å bygge og tenne beaconet må Runi samle materialer, gjøre lanternene klare og bygge støttene.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "harbor-sky",
+          "name": "Havna"
+        },
+        {
+          "id": "workshop-sky",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "forest-sky",
+          "name": "Skogen ved fyret"
+        }
+      ],
+      "entryNodeId": "mission-1-kasser",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "96f8c13e-aaea-4e27-909a-c7dd7de22cdb",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 74931,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 4346,
+        "cost_estimate": 0.1793935,
+        "output_tokens": 7611,
+        "chapter_number": 3,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+      "result": {
+        "id": "chapter-3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+        "goal": "Få fyr på signalbeaconet så Arktis finner veien hjem.",
+        "nodes": [
+          {
+            "id": "mission-1-kasser",
+            "goal": "Gjøre kassene klare med steiner som skal byttes mot lanternemateriale.",
+            "kind": "mission",
+            "next": "mission-2-lanterner",
+            "title": "Fylle kassene med steiner",
+            "before": "Tidligere fant Runi steiner på stranden; nå skal de legges i kasser på brygga så de blir lette å frakte.",
+            "success": "Kassene er fylt og står klare på brygga.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes",
+                      "label": "Kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "stones",
+                      "label": "Steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stones"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "group",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 3499368833,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver. Multipliser for å få totalt antall steiner.",
+                "representation": "konkret",
+                "questionTemplate": "Det står {{groups}} kasser på brygga og hver kasse har {{each}} steiner. Hvor mange steiner er det til sammen i kassene?"
+              }
+            ]
+          },
+          {
+            "id": "mission-2-lanterner",
+            "goal": "Fylle de tomme lanternene slik at de kan henges på beaconet.",
+            "kind": "mission",
+            "next": "mission-3-stotter",
+            "title": "Gjøre lanternene klare",
+            "before": "De fyllte kassene står ved verkstedet og kan byttes mot materialer. Nå må lanternene gjøres klare.",
+            "success": "Lanternene er klargjort og står klare til å henges opp.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lantern-total",
+                      "label": "Lantern-plasser",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "lantern-known",
+                      "label": "Tent lantern",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 3499368934,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: Hvor mange trengs for å nå totalt {{total}} når {{known}} allerede er tent?",
+                "representation": "konkret",
+                "questionTemplate": "Lanternene har plass til {{total}} i alt. {{known}} av dem er allerede tent. Hvor mange lantern er det som mangler å bli tent?"
+              }
+            ]
+          },
+          {
+            "id": "mission-3-stotter",
+            "goal": "Feste planker på støttene slik at beaconet blir sterkt nok til lanternene.",
+            "kind": "mission",
+            "next": "ending-1",
+            "title": "Bygge støtter til beaconet",
+            "before": "Lanternene er klare og kan snart henges på; først må beacon-støttene monteres slik at lanternene kan sitte trygt.",
+            "success": "Støttene står ferdige og beaconet er klart til å ta imot lanternene.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "supports",
+                      "label": "Beacon-støtter",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "planks",
+                      "label": "Planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["tiko"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "supports"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "supports"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "planks"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "forest-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 3499368850,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} støtter med {{each}} planker hver. Multipliser for å finne totalt antall planker.",
+                "representation": "konkret",
+                "questionTemplate": "Det er {{groups}} støtter på beaconet og hver støtte trenger {{each}} planker. Hvor mange planker trengs til sammen?"
+              }
+            ]
+          },
+          {
+            "id": "ending-1",
+            "hook": "Nå som beaconet virker, kan Runi hjelpe Arktis videre med en ny plan.",
+            "kind": "ending",
+            "narration": "Runi og vennene gjorde jobben: kassene ble fylt, lanternene tent og støttene bygget. Beaconet lyste opp, og Arktis fulgte lyset hjem."
+          }
+        ],
+        "title": "Runi og signalbeaconet",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "tiko",
+            "name": "Tiko",
+            "assetId": "robot"
+          }
+        ],
+        "assets": [
+          {
+            "id": "stone",
+            "role": "prop",
+            "description": "En lysende blå stein."
+          },
+          {
+            "id": "box",
+            "role": "prop",
+            "description": "En trekasse som kan inneholde eller motta gjenstander."
+          },
+          {
+            "id": "lantern",
+            "role": "prop",
+            "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+          },
+          {
+            "id": "plank",
+            "role": "prop",
+            "description": "En treplanke til bygging eller reparasjon."
+          },
+          {
+            "id": "beacon",
+            "role": "prop",
+            "description": "En signalstolpe med et rundt lys på toppen."
+          },
+          {
+            "id": "rope",
+            "role": "prop",
+            "description": "Ett sammenrullet tau."
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi vil hjelpe Arktis å finne veien tilbake. For å bygge og tenne beaconet må Runi samle materialer, gjøre lanternene klare og bygge støttene.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "harbor-sky",
+            "name": "Havna"
+          },
+          {
+            "id": "workshop-sky",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "forest-sky",
+            "name": "Skogen ved fyret"
+          }
+        ],
+        "entryNodeId": "mission-1-kasser",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T09:59:48.741014+00:00",
+      "completed_at": "2026-10-17T10:01:04.683792+00:00"
+    },
+    {
+      "id": "f05d59da-9f5b-44e3-8dde-f8345c775619",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 52550,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5893,
+        "cost_estimate": 0.12442375,
+        "output_tokens": 4919,
+        "chapter_number": 3,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+      "result": {
+        "id": "chapter-3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+        "goal": "Få fyr på signalbeaconet så Arktis finner veien hjem.",
+        "nodes": [
+          {
+            "id": "mission-1-kasser",
+            "goal": "Gjøre kassene klare med steiner som skal byttes mot lanternemateriale.",
+            "kind": "mission",
+            "next": "mission-2-lanterner",
+            "title": "Fylle kassene med steiner",
+            "before": "Tidligere fant Runi steiner på stranden; nå skal de legges i kasser på brygga så de blir lette å frakte. Siste hendelse: Runi har steiner klare ved brygga.",
+            "success": "Kassene er fylt og står klare på brygga.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes",
+                      "label": "Kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "stones",
+                      "label": "Steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stones"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "group",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 3499368833,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} grupper med {{each}} i hver. Multipliser for å få totalt antall steiner.",
+                "representation": "konkret",
+                "questionTemplate": "Det står {{groups}} kasser på brygga og hver kasse har {{each}} steiner. Hvor mange steiner er det til sammen i kassene?"
+              }
+            ]
+          },
+          {
+            "id": "mission-2-lanterner",
+            "goal": "Fylle de tomme lanternene slik at de kan henges på beaconet.",
+            "kind": "mission",
+            "next": "mission-3-stotter",
+            "title": "Gjøre lanternene klare",
+            "before": "De fylte kassene står ved verkstedet og kan byttes mot materialer. Nå må lanternene gjøres klare. Siste hendelse: Kassene er levert til verkstedet og materialene venter der.",
+            "success": "Lanternene er klargjort og står klare til å henges opp.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lantern-total",
+                      "label": "Lantern-plasser",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "lantern-known",
+                      "label": "Tent lantern",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 3499368934,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: Hvor mange trengs for å nå totalt {{total}} når {{known}} allerede er tent?",
+                "representation": "konkret",
+                "questionTemplate": "Lanternene har plass til {{total}} i alt. {{known}} av dem er allerede tent. Hvor mange lantern er det som mangler å bli tent?"
+              }
+            ]
+          },
+          {
+            "id": "mission-3-stotter",
+            "goal": "Feste planker på støttene slik at beaconet blir sterkt nok til lanternene.",
+            "kind": "mission",
+            "next": "ending-1",
+            "title": "Bygge støtter til beaconet",
+            "before": "Lanternene er klare og kan snart henges på; først må beacon-støttene monteres slik at lanternene kan sitte trygt. Siste hendelse: Lanternene står klare og venter på at støttene skal være ferdige.",
+            "success": "Støttene står ferdige og beaconet er klart til å ta imot lanternene.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "supports",
+                      "label": "Beacon-støtter",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "planks",
+                      "label": "Planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["tiko"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "supports"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "supports"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "planks"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill",
+                      "working": "highlight",
+                      "incorrect": "highlight"
+                    }
+                  },
+                  "locationId": "forest-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 3499368850,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} støtter med {{each}} planker hver. Multipliser for å finne totalt antall planker.",
+                "representation": "konkret",
+                "questionTemplate": "Det er {{groups}} støtter på beaconet og hver støtte trenger {{each}} planker. Hvor mange planker trengs til sammen?"
+              }
+            ]
+          },
+          {
+            "id": "ending-1",
+            "hook": "Nå som beaconet virker, kan Runi hjelpe Arktis videre med en ny plan.",
+            "kind": "ending",
+            "narration": "Runi og vennene gjorde jobben: kassene ble fylt, lanternene tent og støttene bygget. Beaconet lyste opp, og Arktis fulgte lyset hjem."
+          }
+        ],
+        "title": "Runi og signalbeaconet",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "tiko",
+            "name": "Tiko",
+            "assetId": "robot"
+          }
+        ],
+        "assets": [
+          {
+            "id": "animal",
+            "role": "character",
+            "description": "Vennlig liten rev med spisse ører."
+          },
+          {
+            "id": "person",
+            "role": "character",
+            "description": "Vennlig menneskefigur med blå jakke."
+          },
+          {
+            "id": "robot",
+            "role": "character",
+            "description": "Liten vennlig rund robot med blå lys."
+          },
+          {
+            "id": "stone",
+            "role": "prop",
+            "description": "En lysende blå stein."
+          },
+          {
+            "id": "box",
+            "role": "prop",
+            "description": "En trekasse som kan inneholde eller motta gjenstander."
+          },
+          {
+            "id": "lantern",
+            "role": "prop",
+            "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+          },
+          {
+            "id": "plank",
+            "role": "prop",
+            "description": "En treplanke til bygging eller reparasjon."
+          },
+          {
+            "id": "beacon",
+            "role": "prop",
+            "description": "En signalstolpe med et rundt lys på toppen."
+          },
+          {
+            "id": "rope",
+            "role": "prop",
+            "description": "Ett sammenrullet tau."
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi vil hjelpe Arktis å finne veien tilbake. For å bygge og tenne beaconet må Runi samle materialer, gjøre lanternene klare og bygge støttene.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "harbor-sky",
+            "name": "Havna"
+          },
+          {
+            "id": "workshop-sky",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "forest-sky",
+            "name": "Skogen ved fyret"
+          }
+        ],
+        "entryNodeId": "mission-1-kasser",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:01:05.148826+00:00",
+      "completed_at": "2026-10-17T10:01:58.074517+00:00"
+    }
+  ],
+  "error": "editorial_review_rejected",
+  "jobId": "3b49bc5f-61db-4132-a0d6-df27f2e1e0f4",
+  "phase": "review",
+  "spent": 1.12239325,
+  "state": "failed",
+  "commit": "b52be312ec893e6d768126ce0dd03513f0a3186f"
+}
