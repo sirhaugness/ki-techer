@@ -135,3 +135,25 @@ fortsatt. Wire-skjemaet utelater den redundante assets-listen. Den registrerte
 rårevisjonen kompilerer med dette oppslaget (12 ressurser), uten håndredigering
 av historien. Regresjonsprøven dekker wire uten assets og gyldig bakgrunnsoppslag.
 En ny ekte prøve trengs fortsatt før elevkjeden/fortellerkvalitet godkjennes.
+
+## Fjerde prøve: kritiker må se den faktiske tegneplanen
+
+`a20c249`: første utkast passerte struktur/matematikk og fikk ekte modellkritikk.
+Kritikeren avviste det, men tolket grouping som bare each objekter totalt, selv
+om spilleren faktisk viser groups beholdere med each plasser i hver. Den ba
+forfatteren endre gitte mengder til total. Revisjonen endret problemreferanse
+og ble korrekt avvist av menyporten. Ingen pakke ble publisert for eleven.
+
+Uavhengig tutor fant også reelle språk-/sceneproblemer i råutkastet: engelsk
+«den» i stedet for «hi», tau på benk mot allerede monterte tau, én kasse i tekst
+men fem i scenen, og stolper langs stien mot verkstedbakgrunn. Matematikken
+var korrekt (15, 8, 6, 6), men det er ikke fortellerkvalitetsgodkjenning.
+
+Forfatter og kritiker får nå `rendering` fra kode med faktisk antall beholdere,
+plasser per beholder og allerede montert mengde. Kontrollen skal vurdere
+fortellingen mot denne tegningen og bevare menyens gitte mengder. Testen låser
+3 beholdere ×4 plasser og 9 plasser hvor3 er montert i prøvepakken.
+
+Nye bekreftede kall kostet 0,46676575 kr. Samlet konservativ belastning er
+**4,58897725 kr**, inkludert uendret usikker reservasjon; gjenstående
+**5,41102275 kr**. Alle råforsøk og kritikk er bevart. Ny prøve pågår.

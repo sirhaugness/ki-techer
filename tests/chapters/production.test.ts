@@ -10,7 +10,24 @@ import {
 import { asJson } from '../../lib/learning/repository';
 import { z } from 'zod';
 import { chapterAuthorSchema } from '../../lib/chapters/production';
+import { visibleChapter } from '../../lib/chapters/production';
 describe('R3 chapter contracts and server projection', () => {
+  it('tells the critic what the player actually draws per group and in installed slots', () => {
+    const { packet } = productionFixture();
+    const shown = visibleChapter(packet).nodes.filter(
+      (n) => n.kind === 'mission',
+    );
+    expect(shown[0].variants[0].rendering).toMatchObject({
+      kind: 'grouping',
+      containerCount: 3,
+      positionsPerContainer: 4,
+    });
+    expect(shown[1].variants[0].rendering).toMatchObject({
+      kind: 'quantity',
+      positionCount: 9,
+      alreadyInstalled: 3,
+    });
+  });
   it('accepts unchanged references and manifest after JSONB reorders object keys', () => {
     const { packet, job, menu } = productionFixture();
     const reorder = <T>(value: T): T =>
