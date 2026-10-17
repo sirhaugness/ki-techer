@@ -121,9 +121,7 @@
                     "quantityKey": "each"
                   }
                 ],
-                "actorIds": [
-                  "actor-runi"
-                ],
+                "actorIds": ["actor-runi"],
                 "feedback": {
                   "correct": [
                     {
@@ -192,10 +190,7 @@
                     "quantityKey": "groups"
                   }
                 ],
-                "actorIds": [
-                  "actor-runi",
-                  "actor-bot"
-                ],
+                "actorIds": ["actor-runi", "actor-bot"],
                 "feedback": {
                   "correct": [
                     {
@@ -264,9 +259,7 @@
                     "quantityKey": "known"
                   }
                 ],
-                "actorIds": [
-                  "actor-anna"
-                ],
+                "actorIds": ["actor-anna"],
                 "feedback": {
                   "correct": [
                     {
@@ -512,9 +505,7 @@
                       "quantityKey": "each"
                     }
                   ],
-                  "actorIds": [
-                    "actor-runi"
-                  ],
+                  "actorIds": ["actor-runi"],
                   "feedback": {
                     "correct": [
                       {
@@ -583,10 +574,7 @@
                       "quantityKey": "groups"
                     }
                   ],
-                  "actorIds": [
-                    "actor-runi",
-                    "actor-bot"
-                  ],
+                  "actorIds": ["actor-runi", "actor-bot"],
                   "feedback": {
                     "correct": [
                       {
@@ -655,9 +643,7 @@
                       "quantityKey": "known"
                     }
                   ],
-                  "actorIds": [
-                    "actor-anna"
-                  ],
+                  "actorIds": ["actor-anna"],
                   "feedback": {
                     "correct": [
                       {
