@@ -1,5 +1,28 @@
 # Personvern i M1–M9
 
+## Nye kapitler (R3)
+
+Den nye kapittelflyten lagrer interesse, kilder, utkast, redaksjonell vurdering,
+kontrollert kapittelpakke, kalljournal, faktisk sagahistorikk, svar/valg og
+spilletid i Supabase. Rå utkast, fremtidige oppgaver og fasit er bare tilgjengelige
+for serveren. Barnets API får en projeksjon av gjeldende oppdrag; forelderens
+eksport inkluderer de nye postene. Sletting av elev/appdata kaskaderer til dem.
+Sletting stopper nye sjekkpunkter, men kan ikke trekke tilbake et leverandørkall
+som allerede er sendt.
+
+Research sender interesse til webresearch, uten elevnavn eller rå samtalelogger.
+Utkast og kritikk får relevant faktisk sagahistorikk og kontrollerte oppgavemenyer.
+Interesse/saga kan derfor inneholde elevskrevet tekst; moderering og eksisterende
+leverandørvilkår gjelder. Ingen nye bildeleverandører brukes i R3.
+
+Vercel Workflow 5 kjører kapittelforberedelse med eksplisitt Stockholm-region
+`arn1`. Workflow lagrer også tekniske run-/stegdata og begrensede inngangsdata
+(elev-/husholdnings-ID og interesse). Hobby har én dags oppbevaring av fullførte
+runs; Supabase beholder de varige dataene. Dette er ikke en garanti om OpenAIs
+behandlingsregion eller øyeblikkelig sletting fra leverandørenes sikkerhetskopier.
+
+## Eksisterende læringsflyt
+
 Supabase lagrer forelderens e-post for innlogging, husholdningstilknytning, barnets fornavn/trinn/lærernavn, interesser og enhetslås. PIN lagres bare som saltet scrypt-hash i en tabell uten klienttilgang. Nettleseren får nødvendige HttpOnly sesjons- og enhetscookies. Ingen analyse- eller sporingsskript er lagt til.
 
 Matteøkter lagrer oppgaver, svar, hintbruk, fremgang, samtaler, verktøykall og kostnadsestimater. Forelderinnlogging, serverkontroll av Leo-låsen og RLS avgrenser husholdningene. Servernøkkelen er aldri tilgjengelig i nettleseren. Leo-modus er en UI-lås på en innlogget forelders nettleser; den erstatter ikke forelders tilgangssikring på enheten.
@@ -12,7 +35,7 @@ Velg EU-region for begge Supabase-prosjektene. Vercel-funksjoner er konfigurert 
 
 Foreldersiden tilbyr komplett JSON-eksport av husholdningens appdata, inkludert samtaler og verktøykall, uten PIN-hash, API-nøkler og innloggingstokener. Lydcache beskrives med filreferanser. «Slett alle appdata» fjerner alle elevprofiler, læringshistorikk, PIN, forbrukslogger og private lydfiler; innloggingskontoen beholdes. «Slett forelders innloggingskonto» på profilsiden sletter også din Auth-konto og logger ut alle dine økter. Andre foreldres Auth-kontoer slettes ikke. Ved tjenestefeil viser appen hva som ikke kunne fullføres og lar forelder prøve igjen.
 
-Forelder kan velge 1–36 måneders oppbevaring av samtalelogger (standard 12) og slette eldre logger nå. Kopien av meldinger i øktsnapshot ryddes samtidig; matematisk mestringsevidens bevares. Automatisk opprydding kjøres ved åpning av elevhjem eller autorisert foreldredashbord. Skoletema, inkludert råtekst i øktsnapshot, utløper etter sju dager. Privat opplesingslyd eldre enn 30 dager ryddes i grupper på inntil 100 filer per besøk. Ingen bakgrunnsjobb kjører for inaktive kontoer; opprydding skjer ved neste besøk. Matematisk mestring og forsøk beholdes til appdata slettes. Eksport/sletting påvirker ikke data som allerede er eksportert til en lokal fil eller eventuell leverandøroppbevaring hos OpenAI.
+Forelder kan velge 1–36 måneders oppbevaring av samtalelogger (standard 12) og slette eldre logger nå. Kopien av meldinger i øktsnapshot ryddes samtidig; matematisk mestringsevidens bevares. Automatisk opprydding kjøres ved åpning av elevhjem eller autorisert foreldredashbord. Skoletema, inkludert råtekst i øktsnapshot, utløper etter sju dager. Privat opplesingslyd eldre enn 30 dager ryddes i grupper på inntil 100 filer per besøk. Ingen egen bakgrunnsjobb kjører for denne aldersbaserte oppryddingen; den skjer ved neste besøk. Matematisk mestring og forsøk beholdes til appdata slettes. Eksport/sletting påvirker ikke data som allerede er eksportert til en lokal fil eller eventuell leverandøroppbevaring hos OpenAI.
 
 Profilminnet har faste confidence-regler, maks 25 aktive/låste observasjoner og bare synlige observasjoner i lærerens kontekst. Forelder kan redigere, låse og avvise. Gjentatt refleksjon over samme økt teller ikke dobbelt; manglende KI gir et faktabasert sammendrag uten oppdiktede observasjoner.
 

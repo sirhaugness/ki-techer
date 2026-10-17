@@ -1,0 +1,2185 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 4090012083,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 4,
+          "positionsPerContainer": 2
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 4
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 4090012100,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 5,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 4090012117,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 6,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 6
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 4090012184,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 8,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 8
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 4090012201,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 8,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 8
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 4090012218,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 13,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 13
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-b86b16f1-7914-49fa-a8d8-9f662256cfd9-v1",
+      "goal": "Runi skal sørge for at hi‑inngangen får lys slik at valpene finner veien hjem.",
+      "nodes": [
+        {
+          "id": "mission-startvalg",
+          "kind": "choice",
+          "prompt": "Kvelden senker seg. Hva gjør Runi først for å få lys ved hi‑inngangen?",
+          "options": [
+            {
+              "id": "opt-collect-lantern-stones",
+              "next": "mission-lantern-groups-4x2",
+              "label": "Hente steiner til lyktene i skogkanten"
+            },
+            {
+              "id": "opt-pack-boxes",
+              "next": "mission-pack-groups-5x5",
+              "label": "Pakke lyssteiner i kasser ved verkstedet"
+            },
+            {
+              "id": "opt-repair-beacon",
+              "next": "mission-beacon-quantity-8-2",
+              "label": "Sjekke signalstolpen ved havna"
+            }
+          ]
+        },
+        {
+          "id": "mission-lantern-groups-4x2",
+          "goal": "Legg lyssteiner i hver lykt så hver lykt får like mange.",
+          "kind": "mission",
+          "next": "choice-after-lanterns",
+          "title": "Fylle lyktene i skogkanten",
+          "before": "Sola gikk ned, og Runi ser at skogen trenger flere små lys. Runi står ved en rekke tomme lykter ved hi‑inngangen etter at hun valgte å hente steiner.",
+          "success": "Lyktene ved hi‑inngangen får steiner og lyser svakt.",
+          "variants": [
+            {
+              "id": "lantern-4x2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns-group-4",
+                    "label": "rekke med lykter",
+                    "assetId": "lantern",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-pile",
+                    "label": "bunke med lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lykter vises fylt og står stille.",
+                    "working": "Lyktene plasseres rolig i rette rekker for hver lykt.",
+                    "incorrect": "En lykt blir markert som ufullstendig."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 4090012083,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}} er det samme som å telle alle steinene i hver lykt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-lanterns",
+          "kind": "choice",
+          "prompt": "Lyktene ved hi‑inngangen er delvis ordnet. Hva gjør Runi nå?",
+          "options": [
+            {
+              "id": "opt-repair-stolpe",
+              "next": "mission-beacon-quantity-8-2",
+              "label": "Sjekke signalstolpen for ekstra lys"
+            },
+            {
+              "id": "opt-pack-more",
+              "next": "mission-pack-groups-5x5",
+              "label": "Pakke flere steiner i kasser for å ta med tilbake"
+            },
+            {
+              "id": "opt-call-anna",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Spørre Anna om byggemateriell"
+            }
+          ]
+        },
+        {
+          "id": "mission-pack-groups-5x5",
+          "goal": "Fyll kassene så hver kasse får like mange lyssteiner, klare for transport.",
+          "kind": "mission",
+          "next": "choice-after-pack",
+          "title": "Pakke lyssteinene i kasser",
+          "before": "Runi står ved verkstedet hvor hun nylig plukket opp en bunke steiner etter å ha valgt å pakke dem. Kasser står klare og trenger like mange steiner i hver.",
+          "success": "Kassene er ryddig pakket og klare til å bæres til hi.",
+          "variants": [
+            {
+              "id": "pack-5x5",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes-5",
+                    "label": "trekasser",
+                    "assetId": "box",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-bundle",
+                    "label": "bunke lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-robot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kasser står stille og ser ferdigpakket ut.",
+                    "working": "Kassene settes rolig på plass ved arbeidsbenken.",
+                    "incorrect": "En kasse blir markert som ikke fullstendig pakket."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 4090012100,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut en kasse av gangen: legg sammen {{groups}} like mengder med {{each}} i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver kasse får {{each}} og det er {{groups}} kasser?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-pack",
+          "kind": "choice",
+          "prompt": "Kassene er pakket. Hvordan bringer Runi lys til hi?",
+          "options": [
+            {
+              "id": "opt-carry-to-hi",
+              "next": "mission-lantern-groups-6x5",
+              "label": "Bære kassene til hi og fylle lyktene"
+            },
+            {
+              "id": "opt-fix-plank",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Sjekke plankene ved signalstolpen"
+            }
+          ]
+        },
+        {
+          "id": "mission-lantern-groups-6x5",
+          "goal": "Legg lyssteiner i hver av de mange lyktene, like mange i hver.",
+          "kind": "mission",
+          "next": "mission-end",
+          "title": "Fylle flere lykter ved hi",
+          "before": "Kassene er fraktet til hi etter at Runi valgte å bære dem hit. Flere lykter står klare langs stien og trenger steiner i hvert kammer.",
+          "success": "Hi‑stien lyser klart av like mange steiner i hver lykt.",
+          "variants": [
+            {
+              "id": "lantern-6x5",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns-6",
+                    "label": "rekke med flere lykter",
+                    "assetId": "lantern",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-crate",
+                    "label": "kasser med steiner",
+                    "assetId": "box",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lykter står stille og ser komplette ut.",
+                    "working": "Steinene legges rolig inn i hver lyktkammer.",
+                    "incorrect": "En lykt blir markert som ikke ferdigfylt."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 4090012117,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Du kan telle antall lykter og multiplisere med hvor mange i hver: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+            }
+          ]
+        },
+        {
+          "id": "mission-beacon-quantity-8-2",
+          "goal": "Legg de manglende lyssteinene på plass i signalstolpens lyskammers markerte plasser.",
+          "kind": "mission",
+          "next": "choice-after-beacon",
+          "title": "Fylle signalstolpens lyktrom",
+          "before": "Etter at Runi valgte å sjekke signalstolpen, ser hun at stolpen har tomme plasser for lyssteiner i toppen og noen allerede er montert.",
+          "success": "Signalstolpen lyser på toppen og kan vise veien mot hi.",
+          "variants": [
+            {
+              "id": "beacon-8-2-a",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beacon-top",
+                    "label": "signalstolpe med tomme plasser",
+                    "assetId": "beacon",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-bag",
+                    "label": "pose med lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plasser på stolpen vises jevnt fylt.",
+                    "working": "Steinene legger seg rolig i de tomme plasseene på stolpen.",
+                    "incorrect": "De tomme plassene blir svakt markert."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 4090012184,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Trekk fra: hvor mange er igjen når noen allerede sitter på plass?",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle plassene når det er {{total}} plasser og {{known}} allerede er montert?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-beacon",
+          "kind": "choice",
+          "prompt": "Stolpen trenger kanskje fortsatt materialer for å stå stødig. Hva gjør Runi videre?",
+          "options": [
+            {
+              "id": "opt-gather-planks",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Skaffe planker til festing ved verkstedet"
+            },
+            {
+              "id": "opt-carry-stones",
+              "next": "mission-lantern-groups-6x5",
+              "label": "Bære steiner fra havna til hi"
+            }
+          ]
+        },
+        {
+          "id": "mission-plank-quantity-13-4",
+          "goal": "Finn hvor mange planker som mangler for å gjøre festet komplett.",
+          "kind": "mission",
+          "next": "mission-end",
+          "title": "Montere planker ved signalstolpen",
+          "before": "Anna ga beskjed om at stolpen trenger planker for å feste lyskassen etter at Runi spurte om byggemateriell. Noen planker er allerede montert på stolpen.",
+          "success": "Stolpen er stødig og lyskassen sitter ordentlig fast.",
+          "variants": [
+            {
+              "id": "plank-13-4",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plank-slots",
+                    "label": "markerte plasser for planker",
+                    "assetId": "plank",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "rope-and-tools",
+                    "label": "tau og verktøy",
+                    "assetId": "rope",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-anna", "actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plankene ligger stille i sine plassar.",
+                    "working": "Plankene plasseres rolig på de markerte plassene.",
+                    "incorrect": "En plass for planke blir markert som ufullstendig."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 4090012218,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt minus det som allerede sitter på plass blir det som mangler.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler når totalt {{total}} plasser skal fylles og {{known}} allerede er montert?"
+            }
+          ]
+        },
+        {
+          "id": "mission-end",
+          "hook": "Nå som hi har lys, kan Runi undersøke hvem som laget fotsporene ved stien.",
+          "kind": "ending",
+          "narration": "Runi ser hi‑inngangen lyse klart nå. Lysene fra lyktene og signalstolpen viser vei, og valpene kan komme trygt hjem."
+        }
+      ],
+      "title": "Runi og lysjakten",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "actor-robot",
+          "name": "Mekki",
+          "assetId": "robot"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Kvelden faller på ved skogkanten og Runi vet at det blir mørkt snart. Hun må samle lys og lage ordnede lys i lykter og på signalstolpen for å lyse opp hi‑inngangen.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Lun havn"
+        }
+      ],
+      "entryNodeId": "mission-startvalg",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "mission-lantern-groups-4x2/lantern-4x2: sceneobjektene må bruke nøyaktig groups, each fra den valgte menyoppføringen."
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+      "goal": "Runi skal sørge for at hi‑inngangen får lys slik at valpene finner veien hjem.",
+      "nodes": [
+        {
+          "id": "mission-startvalg",
+          "kind": "choice",
+          "prompt": "Kvelden senker seg. Hva gjør Runi først for å få lys ved hi‑inngangen?",
+          "options": [
+            {
+              "id": "opt-collect-lantern-stones",
+              "next": "mission-lantern-groups-4x2",
+              "label": "Hente steiner til lyktene i skogkanten"
+            },
+            {
+              "id": "opt-pack-boxes",
+              "next": "mission-pack-groups-5x5",
+              "label": "Pakke lyssteiner i kasser ved verkstedet"
+            },
+            {
+              "id": "opt-repair-beacon",
+              "next": "mission-beacon-quantity-8-2",
+              "label": "Sjekke signalstolpen ved havna"
+            }
+          ]
+        },
+        {
+          "id": "mission-lantern-groups-4x2",
+          "goal": "Legg lyssteiner i hver lykt så hver lykt får like mange.",
+          "kind": "mission",
+          "next": "choice-after-lanterns",
+          "title": "Fylle lyktene i skogkanten",
+          "before": "Sola gikk ned, og Runi ser at skogen trenger flere små lys. Runi står ved en rekke tomme lykter ved hi‑inngangen etter at hun valgte å hente steiner.",
+          "success": "Lyktene ved hi‑inngangen får steiner og lyser svakt.",
+          "variants": [
+            {
+              "id": "lantern-4x2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns-group-4",
+                    "label": "rekke med lykter",
+                    "assetId": "lantern",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-pile",
+                    "label": "bunke med lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns-group-4"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lykter vises fylt og står stille.",
+                    "working": "Lyktene plasseres rolig i rette rekker for hver lykt.",
+                    "incorrect": "En lykt blir markert som ufullstendig."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 4090012083,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}} er det samme som å telle alle steinene i hver lykt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-lanterns",
+          "kind": "choice",
+          "prompt": "Lyktene ved hi‑inngangen er delvis ordnet. Hva gjør Runi nå?",
+          "options": [
+            {
+              "id": "opt-repair-stolpe",
+              "next": "mission-beacon-quantity-8-2",
+              "label": "Sjekke signalstolpen for ekstra lys"
+            },
+            {
+              "id": "opt-pack-more",
+              "next": "mission-pack-groups-5x5",
+              "label": "Pakke flere steiner i kasser for å ta med tilbake"
+            },
+            {
+              "id": "opt-call-anna",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Spørre Anna om byggemateriell"
+            }
+          ]
+        },
+        {
+          "id": "mission-pack-groups-5x5",
+          "goal": "Fyll kassene så hver kasse får like mange lyssteiner, klare for transport.",
+          "kind": "mission",
+          "next": "choice-after-pack",
+          "title": "Pakke lyssteinene i kasser",
+          "before": "Runi står ved verkstedet hvor hun nylig plukket opp en bunke steiner etter å ha valgt å pakke dem. Kasser står klare og trenger like mange steiner i hver.",
+          "success": "Kassene er ryddig pakket og klare til å bæres til hi.",
+          "variants": [
+            {
+              "id": "pack-5x5",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes-5",
+                    "label": "trekasser",
+                    "assetId": "box",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-bundle",
+                    "label": "bunke lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-robot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes-5"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kasser står stille og ser ferdigpakket ut.",
+                    "working": "Kassene settes rolig på plass ved arbeidsbenken.",
+                    "incorrect": "En kasse blir markert som ikke fullstendig pakket."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 4090012100,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut en kasse av gangen: legg sammen {{groups}} like mengder med {{each}} i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver kasse får {{each}} og det er {{groups}} kasser?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-pack",
+          "kind": "choice",
+          "prompt": "Kassene er pakket. Hvordan bringer Runi lys til hi?",
+          "options": [
+            {
+              "id": "opt-carry-to-hi",
+              "next": "mission-lantern-groups-6x5",
+              "label": "Bære kassene til hi og fylle lyktene"
+            },
+            {
+              "id": "opt-fix-plank",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Sjekke plankene ved signalstolpen"
+            }
+          ]
+        },
+        {
+          "id": "mission-lantern-groups-6x5",
+          "goal": "Legg lyssteiner i hver av de mange lyktene, like mange i hver.",
+          "kind": "mission",
+          "next": "mission-end",
+          "title": "Fylle flere lykter ved hi",
+          "before": "Kassene er fraktet til hi etter at Runi valgte å bære dem hit. Flere lykter står klare langs stien og trenger steiner i hvert kammer.",
+          "success": "Hi‑stien lyser klart av like mange steiner i hver lykt.",
+          "variants": [
+            {
+              "id": "lantern-6x5",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns-6",
+                    "label": "rekke med flere lykter",
+                    "assetId": "lantern",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-crate",
+                    "label": "kasser med steiner",
+                    "assetId": "box",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns-6"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lykter står stille og ser komplette ut.",
+                    "working": "Steinene legges rolig inn i hver lyktkammer.",
+                    "incorrect": "En lykt blir markert som ikke ferdigfylt."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 4090012117,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Du kan telle antall lykter og multiplisere med hvor mange i hver: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+            }
+          ]
+        },
+        {
+          "id": "mission-beacon-quantity-8-2",
+          "goal": "Legg de manglende lyssteinene på plass i signalstolpens lyskammers markerte plasser.",
+          "kind": "mission",
+          "next": "choice-after-beacon",
+          "title": "Fylle signalstolpens lyktrom",
+          "before": "Etter at Runi valgte å sjekke signalstolpen, ser hun at stolpen har tomme plasser for lyssteiner i toppen og noen allerede er montert.",
+          "success": "Signalstolpen lyser på toppen og kan vise veien mot hi.",
+          "variants": [
+            {
+              "id": "beacon-8-2-a",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beacon-top",
+                    "label": "signalstolpe med tomme plasser",
+                    "assetId": "beacon",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "stone-bag",
+                    "label": "pose med lyssteiner",
+                    "assetId": "stone",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beacon-top"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plasser på stolpen vises jevnt fylt.",
+                    "working": "Steinene legger seg rolig i de tomme plasseene på stolpen.",
+                    "incorrect": "De tomme plassene blir svakt markert."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 4090012184,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Trekk fra: hvor mange er igjen når noen allerede sitter på plass?",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle plassene når det er {{total}} plasser og {{known}} allerede er montert?"
+            }
+          ]
+        },
+        {
+          "id": "choice-after-beacon",
+          "kind": "choice",
+          "prompt": "Stolpen trenger kanskje fortsatt materialer for å stå stødig. Hva gjør Runi videre?",
+          "options": [
+            {
+              "id": "opt-gather-planks",
+              "next": "mission-plank-quantity-13-4",
+              "label": "Skaffe planker til festing ved verkstedet"
+            },
+            {
+              "id": "opt-carry-stones",
+              "next": "mission-lantern-groups-6x5",
+              "label": "Bære steiner fra havna til hi"
+            }
+          ]
+        },
+        {
+          "id": "mission-plank-quantity-13-4",
+          "goal": "Finn hvor mange planker som mangler for å gjøre festet komplett.",
+          "kind": "mission",
+          "next": "mission-end",
+          "title": "Montere planker ved signalstolpen",
+          "before": "Anna ga beskjed om at stolpen trenger planker for å feste lyskassen etter at Runi spurte om byggemateriell. Noen planker er allerede montert på stolpen.",
+          "success": "Stolpen er stødig og lyskassen sitter ordentlig fast.",
+          "variants": [
+            {
+              "id": "plank-13-4",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plank-slots",
+                    "label": "markerte plasser for planker",
+                    "assetId": "plank",
+                    "quantityKey": null
+                  },
+                  {
+                    "id": "rope-and-tools",
+                    "label": "tau og verktøy",
+                    "assetId": "rope",
+                    "quantityKey": null
+                  }
+                ],
+                "actorIds": ["actor-anna", "actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plank-slots"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plankene ligger stille i sine plassar.",
+                    "working": "Plankene plasseres rolig på de markerte plassene.",
+                    "incorrect": "En plass for planke blir markert som ufullstendig."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 4090012218,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt minus det som allerede sitter på plass blir det som mangler.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler når totalt {{total}} plasser skal fylles og {{known}} allerede er montert?"
+            }
+          ]
+        },
+        {
+          "id": "mission-end",
+          "hook": "Nå som hi har lys, kan Runi undersøke hvem som laget fotsporene ved stien.",
+          "kind": "ending",
+          "narration": "Runi ser hi‑inngangen lyse klart nå. Lysene fra lyktene og signalstolpen viser vei, og valpene kan komme trygt hjem."
+        }
+      ],
+      "title": "Runi og lysjakten",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "actor-robot",
+          "name": "Mekki",
+          "assetId": "robot"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Kvelden faller på ved skogkanten og Runi vet at det blir mørkt snart. Hun må samle lys og lage ordnede lys i lykter og på signalstolpen for å lyse opp hi‑inngangen.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Lun havn"
+        }
+      ],
+      "entryNodeId": "mission-startvalg",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "b243b73e-b210-4982-a2ef-f0a3602d4ef9",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 44153,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5010,
+        "cost_estimate": 0.1154615,
+        "output_tokens": 4622,
+        "chapter_number": 7,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+      "result": {
+        "id": "chapter-b86b16f1-7914-49fa-a8d8-9f662256cfd9-v1",
+        "goal": "Runi skal sørge for at hi‑inngangen får lys slik at valpene finner veien hjem.",
+        "nodes": [
+          {
+            "id": "mission-startvalg",
+            "kind": "choice",
+            "prompt": "Kvelden senker seg. Hva gjør Runi først for å få lys ved hi‑inngangen?",
+            "options": [
+              {
+                "id": "opt-collect-lantern-stones",
+                "next": "mission-lantern-groups-4x2",
+                "label": "Hente steiner til lyktene i skogkanten"
+              },
+              {
+                "id": "opt-pack-boxes",
+                "next": "mission-pack-groups-5x5",
+                "label": "Pakke lyssteiner i kasser ved verkstedet"
+              },
+              {
+                "id": "opt-repair-beacon",
+                "next": "mission-beacon-quantity-8-2",
+                "label": "Sjekke signalstolpen ved havna"
+              }
+            ]
+          },
+          {
+            "id": "mission-lantern-groups-4x2",
+            "goal": "Legg lyssteiner i hver lykt så hver lykt får like mange.",
+            "kind": "mission",
+            "next": "choice-after-lanterns",
+            "title": "Fylle lyktene i skogkanten",
+            "before": "Sola gikk ned, og Runi ser at skogen trenger flere små lys. Runi står ved en rekke tomme lykter ved hi‑inngangen etter at hun valgte å hente steiner.",
+            "success": "Lyktene ved hi‑inngangen får steiner og lyser svakt.",
+            "variants": [
+              {
+                "id": "lantern-4x2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns-group-4",
+                      "label": "rekke med lykter",
+                      "assetId": "lantern",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-pile",
+                      "label": "bunke med lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle lykter vises fylt og står stille.",
+                      "working": "Lyktene plasseres rolig i rette rekker for hver lykt.",
+                      "incorrect": "En lykt blir markert som ufullstendig."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 4090012083,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}} er det samme som å telle alle steinene i hver lykt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-lanterns",
+            "kind": "choice",
+            "prompt": "Lyktene ved hi‑inngangen er delvis ordnet. Hva gjør Runi nå?",
+            "options": [
+              {
+                "id": "opt-repair-stolpe",
+                "next": "mission-beacon-quantity-8-2",
+                "label": "Sjekke signalstolpen for ekstra lys"
+              },
+              {
+                "id": "opt-pack-more",
+                "next": "mission-pack-groups-5x5",
+                "label": "Pakke flere steiner i kasser for å ta med tilbake"
+              },
+              {
+                "id": "opt-call-anna",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Spørre Anna om byggemateriell"
+              }
+            ]
+          },
+          {
+            "id": "mission-pack-groups-5x5",
+            "goal": "Fyll kassene så hver kasse får like mange lyssteiner, klare for transport.",
+            "kind": "mission",
+            "next": "choice-after-pack",
+            "title": "Pakke lyssteinene i kasser",
+            "before": "Runi står ved verkstedet hvor hun nylig plukket opp en bunke steiner etter å ha valgt å pakke dem. Kasser står klare og trenger like mange steiner i hver.",
+            "success": "Kassene er ryddig pakket og klare til å bæres til hi.",
+            "variants": [
+              {
+                "id": "pack-5x5",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes-5",
+                      "label": "trekasser",
+                      "assetId": "box",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-bundle",
+                      "label": "bunke lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-robot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kasser står stille og ser ferdigpakket ut.",
+                      "working": "Kassene settes rolig på plass ved arbeidsbenken.",
+                      "incorrect": "En kasse blir markert som ikke fullstendig pakket."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 4090012100,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut en kasse av gangen: legg sammen {{groups}} like mengder med {{each}} i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver kasse får {{each}} og det er {{groups}} kasser?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-pack",
+            "kind": "choice",
+            "prompt": "Kassene er pakket. Hvordan bringer Runi lys til hi?",
+            "options": [
+              {
+                "id": "opt-carry-to-hi",
+                "next": "mission-lantern-groups-6x5",
+                "label": "Bære kassene til hi og fylle lyktene"
+              },
+              {
+                "id": "opt-fix-plank",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Sjekke plankene ved signalstolpen"
+              }
+            ]
+          },
+          {
+            "id": "mission-lantern-groups-6x5",
+            "goal": "Legg lyssteiner i hver av de mange lyktene, like mange i hver.",
+            "kind": "mission",
+            "next": "mission-end",
+            "title": "Fylle flere lykter ved hi",
+            "before": "Kassene er fraktet til hi etter at Runi valgte å bære dem hit. Flere lykter står klare langs stien og trenger steiner i hvert kammer.",
+            "success": "Hi‑stien lyser klart av like mange steiner i hver lykt.",
+            "variants": [
+              {
+                "id": "lantern-6x5",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns-6",
+                      "label": "rekke med flere lykter",
+                      "assetId": "lantern",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-crate",
+                      "label": "kasser med steiner",
+                      "assetId": "box",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle lykter står stille og ser komplette ut.",
+                      "working": "Steinene legges rolig inn i hver lyktkammer.",
+                      "incorrect": "En lykt blir markert som ikke ferdigfylt."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 4090012117,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Du kan telle antall lykter og multiplisere med hvor mange i hver: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+              }
+            ]
+          },
+          {
+            "id": "mission-beacon-quantity-8-2",
+            "goal": "Legg de manglende lyssteinene på plass i signalstolpens lyskammers markerte plasser.",
+            "kind": "mission",
+            "next": "choice-after-beacon",
+            "title": "Fylle signalstolpens lyktrom",
+            "before": "Etter at Runi valgte å sjekke signalstolpen, ser hun at stolpen har tomme plasser for lyssteiner i toppen og noen allerede er montert.",
+            "success": "Signalstolpen lyser på toppen og kan vise veien mot hi.",
+            "variants": [
+              {
+                "id": "beacon-8-2-a",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beacon-top",
+                      "label": "signalstolpe med tomme plasser",
+                      "assetId": "beacon",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-bag",
+                      "label": "pose med lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle plasser på stolpen vises jevnt fylt.",
+                      "working": "Steinene legger seg rolig i de tomme plasseene på stolpen.",
+                      "incorrect": "De tomme plassene blir svakt markert."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 4090012184,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Trekk fra: hvor mange er igjen når noen allerede sitter på plass?",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle plassene når det er {{total}} plasser og {{known}} allerede er montert?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-beacon",
+            "kind": "choice",
+            "prompt": "Stolpen trenger kanskje fortsatt materialer for å stå stødig. Hva gjør Runi videre?",
+            "options": [
+              {
+                "id": "opt-gather-planks",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Skaffe planker til festing ved verkstedet"
+              },
+              {
+                "id": "opt-carry-stones",
+                "next": "mission-lantern-groups-6x5",
+                "label": "Bære steiner fra havna til hi"
+              }
+            ]
+          },
+          {
+            "id": "mission-plank-quantity-13-4",
+            "goal": "Finn hvor mange planker som mangler for å gjøre festet komplett.",
+            "kind": "mission",
+            "next": "mission-end",
+            "title": "Montere planker ved signalstolpen",
+            "before": "Anna ga beskjed om at stolpen trenger planker for å feste lyskassen etter at Runi spurte om byggemateriell. Noen planker er allerede montert på stolpen.",
+            "success": "Stolpen er stødig og lyskassen sitter ordentlig fast.",
+            "variants": [
+              {
+                "id": "plank-13-4",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "plank-slots",
+                      "label": "markerte plasser for planker",
+                      "assetId": "plank",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "rope-and-tools",
+                      "label": "tau og verktøy",
+                      "assetId": "rope",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-anna", "actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle plankene ligger stille i sine plassar.",
+                      "working": "Plankene plasseres rolig på de markerte plassene.",
+                      "incorrect": "En plass for planke blir markert som ufullstendig."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 4090012218,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt minus det som allerede sitter på plass blir det som mangler.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler når totalt {{total}} plasser skal fylles og {{known}} allerede er montert?"
+              }
+            ]
+          },
+          {
+            "id": "mission-end",
+            "hook": "Nå som hi har lys, kan Runi undersøke hvem som laget fotsporene ved stien.",
+            "kind": "ending",
+            "narration": "Runi ser hi‑inngangen lyse klart nå. Lysene fra lyktene og signalstolpen viser vei, og valpene kan komme trygt hjem."
+          }
+        ],
+        "title": "Runi og lysjakten",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "actor-robot",
+            "name": "Mekki",
+            "assetId": "robot"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Kvelden faller på ved skogkanten og Runi vet at det blir mørkt snart. Hun må samle lys og lage ordnede lys i lykter og på signalstolpen for å lyse opp hi‑inngangen.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Lun havn"
+          }
+        ],
+        "entryNodeId": "mission-startvalg",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:30:37.205531+00:00",
+      "completed_at": "2026-10-17T10:31:22.01655+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "fac2eb8c-1aa6-4aa1-bb50-df37e78e3b71",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 41115,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 7929,
+        "cost_estimate": 0.11801075,
+        "output_tokens": 4373,
+        "chapter_number": 7,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+      "result": {
+        "id": "chapter-b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+        "goal": "Runi skal sørge for at hi‑inngangen får lys slik at valpene finner veien hjem.",
+        "nodes": [
+          {
+            "id": "mission-startvalg",
+            "kind": "choice",
+            "prompt": "Kvelden senker seg. Hva gjør Runi først for å få lys ved hi‑inngangen?",
+            "options": [
+              {
+                "id": "opt-collect-lantern-stones",
+                "next": "mission-lantern-groups-4x2",
+                "label": "Hente steiner til lyktene i skogkanten"
+              },
+              {
+                "id": "opt-pack-boxes",
+                "next": "mission-pack-groups-5x5",
+                "label": "Pakke lyssteiner i kasser ved verkstedet"
+              },
+              {
+                "id": "opt-repair-beacon",
+                "next": "mission-beacon-quantity-8-2",
+                "label": "Sjekke signalstolpen ved havna"
+              }
+            ]
+          },
+          {
+            "id": "mission-lantern-groups-4x2",
+            "goal": "Legg lyssteiner i hver lykt så hver lykt får like mange.",
+            "kind": "mission",
+            "next": "choice-after-lanterns",
+            "title": "Fylle lyktene i skogkanten",
+            "before": "Sola gikk ned, og Runi ser at skogen trenger flere små lys. Runi står ved en rekke tomme lykter ved hi‑inngangen etter at hun valgte å hente steiner.",
+            "success": "Lyktene ved hi‑inngangen får steiner og lyser svakt.",
+            "variants": [
+              {
+                "id": "lantern-4x2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns-group-4",
+                      "label": "rekke med lykter",
+                      "assetId": "lantern",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-pile",
+                      "label": "bunke med lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns-group-4"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle lykter vises fylt og står stille.",
+                      "working": "Lyktene plasseres rolig i rette rekker for hver lykt.",
+                      "incorrect": "En lykt blir markert som ufullstendig."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 4090012083,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}} er det samme som å telle alle steinene i hver lykt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-lanterns",
+            "kind": "choice",
+            "prompt": "Lyktene ved hi‑inngangen er delvis ordnet. Hva gjør Runi nå?",
+            "options": [
+              {
+                "id": "opt-repair-stolpe",
+                "next": "mission-beacon-quantity-8-2",
+                "label": "Sjekke signalstolpen for ekstra lys"
+              },
+              {
+                "id": "opt-pack-more",
+                "next": "mission-pack-groups-5x5",
+                "label": "Pakke flere steiner i kasser for å ta med tilbake"
+              },
+              {
+                "id": "opt-call-anna",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Spørre Anna om byggemateriell"
+              }
+            ]
+          },
+          {
+            "id": "mission-pack-groups-5x5",
+            "goal": "Fyll kassene så hver kasse får like mange lyssteiner, klare for transport.",
+            "kind": "mission",
+            "next": "choice-after-pack",
+            "title": "Pakke lyssteinene i kasser",
+            "before": "Runi står ved verkstedet hvor hun nylig plukket opp en bunke steiner etter å ha valgt å pakke dem. Kasser står klare og trenger like mange steiner i hver.",
+            "success": "Kassene er ryddig pakket og klare til å bæres til hi.",
+            "variants": [
+              {
+                "id": "pack-5x5",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes-5",
+                      "label": "trekasser",
+                      "assetId": "box",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-bundle",
+                      "label": "bunke lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-robot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes-5"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kasser står stille og ser ferdigpakket ut.",
+                      "working": "Kassene settes rolig på plass ved arbeidsbenken.",
+                      "incorrect": "En kasse blir markert som ikke fullstendig pakket."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 4090012100,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut en kasse av gangen: legg sammen {{groups}} like mengder med {{each}} i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver kasse får {{each}} og det er {{groups}} kasser?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-pack",
+            "kind": "choice",
+            "prompt": "Kassene er pakket. Hvordan bringer Runi lys til hi?",
+            "options": [
+              {
+                "id": "opt-carry-to-hi",
+                "next": "mission-lantern-groups-6x5",
+                "label": "Bære kassene til hi og fylle lyktene"
+              },
+              {
+                "id": "opt-fix-plank",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Sjekke plankene ved signalstolpen"
+              }
+            ]
+          },
+          {
+            "id": "mission-lantern-groups-6x5",
+            "goal": "Legg lyssteiner i hver av de mange lyktene, like mange i hver.",
+            "kind": "mission",
+            "next": "mission-end",
+            "title": "Fylle flere lykter ved hi",
+            "before": "Kassene er fraktet til hi etter at Runi valgte å bære dem hit. Flere lykter står klare langs stien og trenger steiner i hvert kammer.",
+            "success": "Hi‑stien lyser klart av like mange steiner i hver lykt.",
+            "variants": [
+              {
+                "id": "lantern-6x5",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns-6",
+                      "label": "rekke med flere lykter",
+                      "assetId": "lantern",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-crate",
+                      "label": "kasser med steiner",
+                      "assetId": "box",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns-6"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle lykter står stille og ser komplette ut.",
+                      "working": "Steinene legges rolig inn i hver lyktkammer.",
+                      "incorrect": "En lykt blir markert som ikke ferdigfylt."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 4090012117,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Du kan telle antall lykter og multiplisere med hvor mange i hver: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når hver lykt har {{each}} og det er {{groups}} lykter?"
+              }
+            ]
+          },
+          {
+            "id": "mission-beacon-quantity-8-2",
+            "goal": "Legg de manglende lyssteinene på plass i signalstolpens lyskammers markerte plasser.",
+            "kind": "mission",
+            "next": "choice-after-beacon",
+            "title": "Fylle signalstolpens lyktrom",
+            "before": "Etter at Runi valgte å sjekke signalstolpen, ser hun at stolpen har tomme plasser for lyssteiner i toppen og noen allerede er montert.",
+            "success": "Signalstolpen lyser på toppen og kan vise veien mot hi.",
+            "variants": [
+              {
+                "id": "beacon-8-2-a",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beacon-top",
+                      "label": "signalstolpe med tomme plasser",
+                      "assetId": "beacon",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "stone-bag",
+                      "label": "pose med lyssteiner",
+                      "assetId": "stone",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beacon-top"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle plasser på stolpen vises jevnt fylt.",
+                      "working": "Steinene legger seg rolig i de tomme plasseene på stolpen.",
+                      "incorrect": "De tomme plassene blir svakt markert."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 4090012184,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Trekk fra: hvor mange er igjen når noen allerede sitter på plass?",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner mangler for å fylle alle plassene når det er {{total}} plasser og {{known}} allerede er montert?"
+              }
+            ]
+          },
+          {
+            "id": "choice-after-beacon",
+            "kind": "choice",
+            "prompt": "Stolpen trenger kanskje fortsatt materialer for å stå stødig. Hva gjør Runi videre?",
+            "options": [
+              {
+                "id": "opt-gather-planks",
+                "next": "mission-plank-quantity-13-4",
+                "label": "Skaffe planker til festing ved verkstedet"
+              },
+              {
+                "id": "opt-carry-stones",
+                "next": "mission-lantern-groups-6x5",
+                "label": "Bære steiner fra havna til hi"
+              }
+            ]
+          },
+          {
+            "id": "mission-plank-quantity-13-4",
+            "goal": "Finn hvor mange planker som mangler for å gjøre festet komplett.",
+            "kind": "mission",
+            "next": "mission-end",
+            "title": "Montere planker ved signalstolpen",
+            "before": "Anna ga beskjed om at stolpen trenger planker for å feste lyskassen etter at Runi spurte om byggemateriell. Noen planker er allerede montert på stolpen.",
+            "success": "Stolpen er stødig og lyskassen sitter ordentlig fast.",
+            "variants": [
+              {
+                "id": "plank-13-4",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "plank-slots",
+                      "label": "markerte plasser for planker",
+                      "assetId": "plank",
+                      "quantityKey": null
+                    },
+                    {
+                      "id": "rope-and-tools",
+                      "label": "tau og verktøy",
+                      "assetId": "rope",
+                      "quantityKey": null
+                    }
+                  ],
+                  "actorIds": ["actor-anna", "actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plank-slots"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle plankene ligger stille i sine plassar.",
+                      "working": "Plankene plasseres rolig på de markerte plassene.",
+                      "incorrect": "En plass for planke blir markert som ufullstendig."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 4090012218,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt minus det som allerede sitter på plass blir det som mangler.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler når totalt {{total}} plasser skal fylles og {{known}} allerede er montert?"
+              }
+            ]
+          },
+          {
+            "id": "mission-end",
+            "hook": "Nå som hi har lys, kan Runi undersøke hvem som laget fotsporene ved stien.",
+            "kind": "ending",
+            "narration": "Runi ser hi‑inngangen lyse klart nå. Lysene fra lyktene og signalstolpen viser vei, og valpene kan komme trygt hjem."
+          }
+        ],
+        "title": "Runi og lysjakten",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "actor-robot",
+            "name": "Mekki",
+            "assetId": "robot"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Kvelden faller på ved skogkanten og Runi vet at det blir mørkt snart. Hun må samle lys og lage ordnede lys i lykter og på signalstolpen for å lyse opp hi‑inngangen.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Lun havn"
+          }
+        ],
+        "entryNodeId": "mission-startvalg",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:31:22.526972+00:00",
+      "completed_at": "2026-10-17T10:32:04.007251+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "db3baced-558d-4cf8-9848-38c0eaee5b21",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-17T10:31:21.912965+00:00",
+      "latency_ms": 44153,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5010,
+      "cost_estimate": 0.1154615,
+      "output_tokens": 4622,
+      "chapter_job_id": "b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+      "chapter_number": 7,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-17T10:30:37.584+00:00"
+    },
+    {
+      "id": "bcc7ff6f-6647-4806-8563-6b5b49a6ff99",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-17T10:32:03.925494+00:00",
+      "latency_ms": 41115,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 7929,
+      "cost_estimate": 0.11801075,
+      "output_tokens": 4373,
+      "chapter_job_id": "b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+      "chapter_number": 7,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-17T10:31:22.754+00:00"
+    }
+  ],
+  "jobId": "b86b16f1-7914-49fa-a8d8-9f662256cfd9",
+  "phase": "review",
+  "state": "failed",
+  "error_code": "editorial_review_rejected",
+  "accountSpent": 2.3802955
+}

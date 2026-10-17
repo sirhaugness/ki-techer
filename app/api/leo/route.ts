@@ -1,3 +1,10 @@
+import {
+  chapterMinutesUsed,
+  chapterClock,
+  pauseChapter,
+  chapterSettings,
+} from '@/lib/chapters/clock';
+import { mayContinue } from '@/lib/engine/session';
 import { after } from 'next/server';
 import { observations, reflectPending } from '@/lib/profile/repository';
 import { readFile } from 'node:fs/promises';
@@ -317,6 +324,26 @@ export async function POST(request: Request) {
       );
     }
     if (cmd.command === 'start') {
+      if (!mock) {
+        const chapterTime = await chapterClock(profile.id);
+        if (chapterTime) {
+          if (
+            mayContinue(
+              {
+                startedAt: chapterTime.started_at,
+                plannedMinutes: chapterTime.planned_minutes,
+                dailyUsedMinutesAtStart: 0,
+                settings: chapterSettings(profile),
+              },
+              now,
+            )
+          )
+            throw new Error(
+              'Ta pause i det nye kapittelet før du starter en vanlig matteøkt.',
+            );
+          await pauseChapter(profile.id);
+        }
+      }
       if (state && !state.endedAt)
         return Response.json(publicView(state, !mock), {
           headers: { 'Cache-Control': 'no-store' },
@@ -345,6 +372,7 @@ export async function POST(request: Request) {
             0,
           );
       }
+      if (!mock) used += await chapterMinutesUsed(profile.id, now);
       const mode = state?.diagnosticComplete ? cmd.mode : 'diagnostic';
       state = createSession(
         profile,

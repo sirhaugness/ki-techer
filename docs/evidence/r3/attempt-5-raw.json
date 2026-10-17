@@ -1,0 +1,1264 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1354537264,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 6,
+          "positionsPerContainer": 3
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 6
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1354537281,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 5,
+          "positionsPerContainer": 4
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1354537298,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 5,
+          "positionsPerContainer": 4
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1354537365,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 14,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 14
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1354537382,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 8,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 8
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1354537399,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 14,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 14
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+      "goal": "Gjør hi trygt for rødrevungen Runi ved å pakke proviant, fylle lykter og reparere broen så den kan bære lasten.",
+      "nodes": [
+        {
+          "id": "start-choice",
+          "kind": "choice",
+          "prompt": "Hva skal vi begynne med for å gjøre hi trygt?",
+          "options": [
+            {
+              "id": "opt-pack-boxes",
+              "next": "mission-pack-boxes",
+              "label": "Pakke proviant i kasser"
+            },
+            {
+              "id": "opt-fill-lanterns",
+              "next": "mission-fill-lanterns",
+              "label": "Fylle lykter med lyssteiner"
+            },
+            {
+              "id": "opt-lay-planks",
+              "next": "mission-lay-planks",
+              "label": "Legge planker over den skadde broen"
+            }
+          ]
+        },
+        {
+          "id": "mission-pack-boxes",
+          "goal": "Få alle kassene fylt så de kan bæres bort til hi.",
+          "kind": "mission",
+          "next": "mission-fill-lanterns",
+          "title": "Pakke kasser med steiner",
+          "before": "Kassene står åpne og klare. Runi og Klekko er på brygga og gjør seg klare til å legge steiner i kasser.",
+          "success": "Kassene er fulle og klare til å bæres.",
+          "variants": [
+            {
+              "id": "pack-boxes-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones-per-box",
+                    "label": "steiner i hver kasse",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "klekko"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stones-per-box"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kasser står fylt og rolige.",
+                    "working": "Hver kasse viser en svak markering der steinene skal ligge.",
+                    "incorrect": "Noen steiner ligger utenfor kassene og blafrer svakt."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1354537264,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det totalt når det er {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fill-lanterns",
+          "goal": "Fyll de tomme lyktene slik at stien blir opplyst.",
+          "kind": "mission",
+          "next": "mission-lay-planks",
+          "title": "Fylle lykter med lyssteiner",
+          "before": "De fylte kassene er klare til å bæres mot hi. Verkstedet er ryddet, og lyktene står klare på benken.",
+          "success": "Lyktene lyser og stien blir trygg å gå langs.",
+          "variants": [
+            {
+              "id": "fill-lanterns-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-total",
+                    "label": "markerte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "lantern-known",
+                    "label": "allerede fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "lantern-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De tomme lyktene fylles og står stille med et varmt lys.",
+                    "working": "Tom plass i lyktene er markert med svak ramme.",
+                    "incorrect": "Noen lykter blafrer svakt for å vise at de fortsatt mangler steiner."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 1354537365,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange må fylles i de tomme lyktene hvis det skal være {{total}} lykter i alt og {{known}} allerede er fylt?"
+            }
+          ]
+        },
+        {
+          "id": "mission-lay-planks",
+          "goal": "Legg de manglende plankene så brua kan bære kassene.",
+          "kind": "mission",
+          "next": "ending-safe-hi",
+          "title": "Legge planker over den skadde broen",
+          "before": "Lyset fra lyktene gjør det mulig å se brua bedre. Plankene ligger delvis lagt over sprekkene i den gamle brua.",
+          "success": "Brua er trygg å gå over og kassene kan bæres til hi.",
+          "variants": [
+            {
+              "id": "lay-planks-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plank-total",
+                    "label": "markerte plankplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "plank-known",
+                    "label": "allerede lagte planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "plank-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plank-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "plank-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Plankene ligger rolig på plass over bruas sprekker.",
+                    "working": "Tom plankplass har en svak skygge.",
+                    "incorrect": "Noen planker skjelver svakt for å vise hvor det fortsatt mangler."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 1354537382,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker må legges til hvis brua skal ha {{total}} plasser og {{known}} allerede er lagt?"
+            }
+          ]
+        },
+        {
+          "id": "ending-safe-hi",
+          "hook": "Runi sover trygt — nå kan du utforske et nytt eventyr med revene.",
+          "kind": "ending",
+          "narration": "Runi kan nå bære de fulle kassene trygt over brua og inn i hi. Lyktene lyser, kassene er på plass, og hi er klart for natten."
+        }
+      ],
+      "title": "Runi gjør hi trygt",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "klekko",
+          "name": "Klekko",
+          "assetId": "robot"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi vil gjøre hi trygt før natten. Valgene du gjør bestemmer hva som må gjøres først.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "workshop",
+          "name": "Verkstedet ved stien"
+        },
+        {
+          "id": "harbor",
+          "name": "Den lune havna"
+        },
+        {
+          "id": "forest",
+          "name": "Skogskanten ved bekken"
+        }
+      ],
+      "entryNodeId": "start-choice",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "packet": {
+      "id": "chapter-c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+      "goal": "Gjør hi trygt for rødrevungen Runi ved å pakke proviant, fylle lykter og reparere broen så den kan bære lasten.",
+      "nodes": [
+        {
+          "id": "start-choice",
+          "kind": "choice",
+          "prompt": "Hva skal vi begynne med for å gjøre hi trygt?",
+          "options": [
+            {
+              "id": "opt-pack-boxes",
+              "next": "mission-pack-boxes",
+              "label": "Pakke proviant i kasser"
+            },
+            {
+              "id": "opt-fill-lanterns",
+              "next": "mission-fill-lanterns",
+              "label": "Fylle lykter med lyssteiner"
+            },
+            {
+              "id": "opt-lay-planks",
+              "next": "mission-lay-planks",
+              "label": "Legge planker over den skadde broen"
+            }
+          ]
+        },
+        {
+          "id": "mission-pack-boxes",
+          "goal": "Få alle kassene fylt så de kan bæres bort til hi.",
+          "kind": "mission",
+          "next": "mission-fill-lanterns",
+          "title": "Pakke kasser med steiner",
+          "before": "Kassene står åpne og klare. Runi og Klekko er på brygga og gjør seg klare til å legge steiner i kasser.",
+          "success": "Kassene er fulle og klare til å bæres.",
+          "variants": [
+            {
+              "id": "pack-boxes-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones-per-box",
+                    "label": "steiner i hver kasse",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "klekko"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stones-per-box"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kasser står fylt og rolige.",
+                    "working": "Hver kasse viser en svak markering der steinene skal ligge.",
+                    "incorrect": "Noen steiner ligger utenfor kassene og blafrer svakt."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1354537264,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det totalt når det er {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fill-lanterns",
+          "goal": "Fyll de tomme lyktene slik at stien blir opplyst.",
+          "kind": "mission",
+          "next": "mission-lay-planks",
+          "title": "Fylle lykter med lyssteiner",
+          "before": "De fylte kassene er klare til å bæres mot hi. Verkstedet er ryddet, og lyktene står klare på benken.",
+          "success": "Lyktene lyser og stien blir trygg å gå langs.",
+          "variants": [
+            {
+              "id": "fill-lanterns-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-total",
+                    "label": "markerte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "lantern-known",
+                    "label": "allerede fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "lantern-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De tomme lyktene fylles og står stille med et varmt lys.",
+                    "working": "Tom plass i lyktene er markert med svak ramme.",
+                    "incorrect": "Noen lykter blafrer svakt for å vise at de fortsatt mangler steiner."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 1354537365,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange må fylles i de tomme lyktene hvis det skal være {{total}} lykter i alt og {{known}} allerede er fylt?"
+            }
+          ]
+        },
+        {
+          "id": "mission-lay-planks",
+          "goal": "Legg de manglende plankene så brua kan bære kassene.",
+          "kind": "mission",
+          "next": "ending-safe-hi",
+          "title": "Legge planker over den skadde broen",
+          "before": "Lyset fra lyktene gjør det mulig å se brua bedre. Plankene ligger delvis lagt over sprekkene i den gamle brua.",
+          "success": "Brua er trygg å gå over og kassene kan bæres til hi.",
+          "variants": [
+            {
+              "id": "lay-planks-v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plank-total",
+                    "label": "markerte plankplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "plank-known",
+                    "label": "allerede lagte planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "plank-total"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plank-total"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "reveal",
+                      "targetId": "plank-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Plankene ligger rolig på plass over bruas sprekker.",
+                    "working": "Tom plankplass har en svak skygge.",
+                    "incorrect": "Noen planker skjelver svakt for å vise hvor det fortsatt mangler."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 1354537382,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker må legges til hvis brua skal ha {{total}} plasser og {{known}} allerede er lagt?"
+            }
+          ]
+        },
+        {
+          "id": "ending-safe-hi",
+          "hook": "Runi sover trygt — nå kan du utforske et nytt eventyr med revene.",
+          "kind": "ending",
+          "narration": "Runi kan nå bære de fulle kassene trygt over brua og inn i hi. Lyktene lyser, kassene er på plass, og hi er klart for natten."
+        }
+      ],
+      "title": "Runi gjør hi trygt",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "klekko",
+          "name": "Klekko",
+          "assetId": "robot"
+        }
+      ],
+      "assets": [
+        {
+          "id": "animal",
+          "role": "character",
+          "description": "Vennlig liten rev med spisse ører."
+        },
+        {
+          "id": "person",
+          "role": "character",
+          "description": "Vennlig menneskefigur med blå jakke."
+        },
+        {
+          "id": "robot",
+          "role": "character",
+          "description": "Liten vennlig rund robot med blå lys."
+        },
+        {
+          "id": "harbor-sky",
+          "role": "background",
+          "description": "Lun havn med øyer, brygge og rolig sjø."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "stone",
+          "role": "prop",
+          "description": "En lysende blå stein."
+        },
+        {
+          "id": "workshop-sky",
+          "role": "background",
+          "description": "Varmt verksted med arbeidsbenk og vindu."
+        },
+        {
+          "id": "lantern",
+          "role": "prop",
+          "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+        },
+        {
+          "id": "forest-sky",
+          "role": "background",
+          "description": "Lys skog med en sti og grønne tretopper."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi vil gjøre hi trygt før natten. Valgene du gjør bestemmer hva som må gjøres først.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "workshop",
+          "name": "Verkstedet ved stien"
+        },
+        {
+          "id": "harbor",
+          "name": "Den lune havna"
+        },
+        {
+          "id": "forest",
+          "name": "Skogskanten ved bekken"
+        }
+      ],
+      "entryNodeId": "start-choice",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "review": {
+      "issues": [],
+      "approved": true,
+      "missions": [
+        {
+          "missionId": "mission-pack-boxes",
+          "sceneAgreement": "Spørsmålet nevner «6 kasser med 3 i hver» og scenen har objektene boxes (quantity: 6) og stones-per-box (quantity: 3). Rendering beskriver 6 beholdere med 3 posisjoner hver (containerCount:6, positionsPerContainer:3) og etter handling fylles de samme plassene. Det er dermed samsvar mellom tekst/spørsmål og det som skal vises/legges i bildet (6 containere × 3 plasser → totalt fylte plasser).",
+          "mathematicalNeed": "Multiplikasjon: må regne ut totalt antall steiner ved å multiplisere antall kasser (6) med antall plasser/steiner per kasse (3). Dette følger direkte av at steinene skal legges inn i hver av de 6 åpne kassene (grouping: hver beholder har 3 plasser).",
+          "physicalRuleQuote": "Kassene står åpne og klare. Runi og Klekko er på brygga og gjør seg klare til å legge steiner i kasser."
+        },
+        {
+          "missionId": "mission-fill-lanterns",
+          "sceneAgreement": "Spørsmålet sier «14 lykter i alt og 4 allerede er fylt». Scenen inneholder lantern-total (quantity:14) og lantern-known (quantity:4). Rendering er av typen quantity med positionCount:14 og alreadyInstalled:4, altså 14 markerte plasser på benken hvor 4 er montert — eleven legger til de manglende for å få alle lysene tent. Dette er konsistent med førtekstens plassering («lyktene står klare på benken») og renderingens forklaring (kjente ting er montert på plasser, ikke en løs haug).",
+          "mathematicalNeed": "Subtraksjon: fordi scenen viser totalt antall markerte lykteplasser (14) og hvor mange som allerede er fylt (4), trenger eleven å regne ut hvor mange tomme plasser som må fylles (14 − 4 = 10). Dette følger av regelen om at de tomme lyktene må fylles for å oppnå det fysiske målet (stien opplyst).",
+          "physicalRuleQuote": "Fyll de tomme lyktene slik at stien blir opplyst."
+        },
+        {
+          "missionId": "mission-lay-planks",
+          "sceneAgreement": "Spørsmålet spør etter «8 plasser og 2 allerede er lagt». Scenen har plank-total (quantity:8) og plank-known (quantity:2) og rendering type quantity med positionCount:8 og alreadyInstalled:2. Førteksten sier at plankene «ligger delvis lagt over sprekkene», så visningen av monterte posisjoner og tomme markerte posisjoner er i samsvar med teksten. Etter handling skal alle markerte plankplasser være fylt slik at broa blir trygg.",
+          "mathematicalNeed": "Subtraksjon: broa har 8 markerte plankplasser totalt og 2 er allerede lagt, så eleven må regne ut hvor mange som mangler (8 − 2 = 6). Regelen sier at manglende planker må legges for at broa fysisk skal kunne bære lasten (kassene), derfor er telling av manglende planker nødvendig og tilstrekkelig for å oppfylle målet.",
+          "physicalRuleQuote": "Legg de manglende plankene så brua kan bære kassene."
+        }
+      ],
+      "variation": "Oppdragene bruker to ulike representasjonsmåter (grouping for kasser; quantity/monterte posisjoner for lykter og planker). Scenene er konkrete (havna, verksted, skogskant), ulike medskuespillere vises og hver variant krever et annet regnegrep (multiplikasjon og subtraksjon), slik at handlingen og regningen varierer visuelt og kognitivt.",
+      "continuity": "Sekvensen er konsistent: først fylles kassene (klar til å bæres), så fylles lyktene (gir lys) og til slutt legges plankene (broa må være trygg for å bære kassene). Hver suksess settes som årsak for neste førtekst (pakkede kasser → «De fylte kassene er klare til å bæres», lykter lyser → «Lyset fra lyktene gjør det mulig å se brua bedre»), og kapittelets mål er konkret: hi skal bli trygt for Runi ved at kassene er fulle, stien opplyst og broa reparert.",
+      "historyEventIds": [],
+      "historyImpactQuote": ""
+    },
+    "attempts": 1,
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "manifest": [
+      {
+        "id": "animal",
+        "role": "character",
+        "state": "ready",
+        "sha256": "d9de018088cf1dff01a6ff2b098306883160d1bbb5d44e2bfa462e0f6b83a46e",
+        "version": 1
+      },
+      {
+        "id": "person",
+        "role": "character",
+        "state": "ready",
+        "sha256": "51197da60d22f26f2976c405b48af1066f47b2a8b3ed53f130e099281cd00f73",
+        "version": 1
+      },
+      {
+        "id": "robot",
+        "role": "character",
+        "state": "ready",
+        "sha256": "3d3bd837438e398db10d685b43ddd5432508a12a17af681183fb0f1b4ac567d7",
+        "version": 1
+      },
+      {
+        "id": "harbor-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "a5296a85515775bb008e8c1ffd74341d9f3aabd74651dace4204baa3cdcf1ce9",
+        "version": 1
+      },
+      {
+        "id": "box",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "a1498ebbd1daf03e99fa8ebb8f47fb46d3e060476d5ee121b24968490dcb3f54",
+        "version": 1
+      },
+      {
+        "id": "stone",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "7633a2a71660bf12bc43fc17f3017aafbe005cfc15dadaf76f80c3ff86ca6cfe",
+        "version": 1
+      },
+      {
+        "id": "workshop-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "554c44ffc26f49f084119e259f4d84af92a30e0f855d337612a84a811f5bee59",
+        "version": 1
+      },
+      {
+        "id": "lantern",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "a05d81eefcee356dfc4b5c351d947930df30a13cc6bafc1a1d9e902d4edb555d",
+        "version": 1
+      },
+      {
+        "id": "forest-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "91fdae112dde5402900d22794bfff725f03030831c552dde65ad345f83909e0b",
+        "version": 1
+      },
+      {
+        "id": "plank",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "50acec3b80cb93e5330c37704351c8d07a7dc2c514ab68d445fb2dcf661acbe1",
+        "version": 1
+      }
+    ],
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "8a59de8e-b68a-4474-9982-766013754bfb",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 71999,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 4897,
+        "cost_estimate": 0.17994075,
+        "output_tokens": 7567,
+        "chapter_number": 5,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+      "result": {
+        "id": "chapter-c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+        "goal": "Gjør hi trygt for rødrevungen Runi ved å pakke proviant, fylle lykter og reparere broen så den kan bære lasten.",
+        "nodes": [
+          {
+            "id": "start-choice",
+            "kind": "choice",
+            "prompt": "Hva skal vi begynne med for å gjøre hi trygt?",
+            "options": [
+              {
+                "id": "opt-pack-boxes",
+                "next": "mission-pack-boxes",
+                "label": "Pakke proviant i kasser"
+              },
+              {
+                "id": "opt-fill-lanterns",
+                "next": "mission-fill-lanterns",
+                "label": "Fylle lykter med lyssteiner"
+              },
+              {
+                "id": "opt-lay-planks",
+                "next": "mission-lay-planks",
+                "label": "Legge planker over den skadde broen"
+              }
+            ]
+          },
+          {
+            "id": "mission-pack-boxes",
+            "goal": "Få alle kassene fylt så de kan bæres bort til hi.",
+            "kind": "mission",
+            "next": "mission-fill-lanterns",
+            "title": "Pakke kasser med steiner",
+            "before": "Kassene står åpne og klare. Runi og Klekko er på brygga og gjør seg klare til å legge steiner i kasser.",
+            "success": "Kassene er fulle og klare til å bæres.",
+            "variants": [
+              {
+                "id": "pack-boxes-v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes",
+                      "label": "kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "stones-per-box",
+                      "label": "steiner i hver kasse",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "klekko"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stones-per-box"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kasser står fylt og rolige.",
+                      "working": "Hver kasse viser en svak markering der steinene skal ligge.",
+                      "incorrect": "Noen steiner ligger utenfor kassene og blafrer svakt."
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 1354537264,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner er det totalt når det er {{groups}} kasser med {{each}} i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-fill-lanterns",
+            "goal": "Fyll de tomme lyktene slik at stien blir opplyst.",
+            "kind": "mission",
+            "next": "mission-lay-planks",
+            "title": "Fylle lykter med lyssteiner",
+            "before": "De fylte kassene er klare til å bæres mot hi. Verkstedet er ryddet, og lyktene står klare på benken.",
+            "success": "Lyktene lyser og stien blir trygg å gå langs.",
+            "variants": [
+              {
+                "id": "fill-lanterns-v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lantern-total",
+                      "label": "markerte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "lantern-known",
+                      "label": "allerede fylte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna", "runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-total"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "lantern-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De tomme lyktene fylles og står stille med et varmt lys.",
+                      "working": "Tom plass i lyktene er markert med svak ramme.",
+                      "incorrect": "Noen lykter blafrer svakt for å vise at de fortsatt mangler steiner."
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 1354537365,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange må fylles i de tomme lyktene hvis det skal være {{total}} lykter i alt og {{known}} allerede er fylt?"
+              }
+            ]
+          },
+          {
+            "id": "mission-lay-planks",
+            "goal": "Legg de manglende plankene så brua kan bære kassene.",
+            "kind": "mission",
+            "next": "ending-safe-hi",
+            "title": "Legge planker over den skadde broen",
+            "before": "Lyset fra lyktene gjør det mulig å se brua bedre. Plankene ligger delvis lagt over sprekkene i den gamle brua.",
+            "success": "Brua er trygg å gå over og kassene kan bæres til hi.",
+            "variants": [
+              {
+                "id": "lay-planks-v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "plank-total",
+                      "label": "markerte plankplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "plank-known",
+                      "label": "allerede lagte planker",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "plank-total"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plank-total"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "reveal",
+                        "targetId": "plank-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Plankene ligger rolig på plass over bruas sprekker.",
+                      "working": "Tom plankplass har en svak skygge.",
+                      "incorrect": "Noen planker skjelver svakt for å vise hvor det fortsatt mangler."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 1354537382,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker må legges til hvis brua skal ha {{total}} plasser og {{known}} allerede er lagt?"
+              }
+            ]
+          },
+          {
+            "id": "ending-safe-hi",
+            "hook": "Runi sover trygt — nå kan du utforske et nytt eventyr med revene.",
+            "kind": "ending",
+            "narration": "Runi kan nå bære de fulle kassene trygt over brua og inn i hi. Lyktene lyser, kassene er på plass, og hi er klart for natten."
+          }
+        ],
+        "title": "Runi gjør hi trygt",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "klekko",
+            "name": "Klekko",
+            "assetId": "robot"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi vil gjøre hi trygt før natten. Valgene du gjør bestemmer hva som må gjøres først.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "workshop",
+            "name": "Verkstedet ved stien"
+          },
+          {
+            "id": "harbor",
+            "name": "Den lune havna"
+          },
+          {
+            "id": "forest",
+            "name": "Skogskanten ved bekken"
+          }
+        ],
+        "entryNodeId": "start-choice",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:16:04.582652+00:00",
+      "completed_at": "2026-10-17T10:17:17.156954+00:00"
+    },
+    {
+      "id": "bea28f84-d2fe-4aa6-8a5b-0a8b56920650",
+      "phase": "review",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-review",
+        "latency_ms": 39498,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5009,
+        "cost_estimate": 0.09994875,
+        "output_tokens": 3917,
+        "chapter_number": 5,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+      "result": {
+        "issues": [],
+        "approved": true,
+        "missions": [
+          {
+            "missionId": "mission-pack-boxes",
+            "sceneAgreement": "Spørsmålet nevner «6 kasser med 3 i hver» og scenen har objektene boxes (quantity: 6) og stones-per-box (quantity: 3). Rendering beskriver 6 beholdere med 3 posisjoner hver (containerCount:6, positionsPerContainer:3) og etter handling fylles de samme plassene. Det er dermed samsvar mellom tekst/spørsmål og det som skal vises/legges i bildet (6 containere × 3 plasser → totalt fylte plasser).",
+            "mathematicalNeed": "Multiplikasjon: må regne ut totalt antall steiner ved å multiplisere antall kasser (6) med antall plasser/steiner per kasse (3). Dette følger direkte av at steinene skal legges inn i hver av de 6 åpne kassene (grouping: hver beholder har 3 plasser).",
+            "physicalRuleQuote": "Kassene står åpne og klare. Runi og Klekko er på brygga og gjør seg klare til å legge steiner i kasser."
+          },
+          {
+            "missionId": "mission-fill-lanterns",
+            "sceneAgreement": "Spørsmålet sier «14 lykter i alt og 4 allerede er fylt». Scenen inneholder lantern-total (quantity:14) og lantern-known (quantity:4). Rendering er av typen quantity med positionCount:14 og alreadyInstalled:4, altså 14 markerte plasser på benken hvor 4 er montert — eleven legger til de manglende for å få alle lysene tent. Dette er konsistent med førtekstens plassering («lyktene står klare på benken») og renderingens forklaring (kjente ting er montert på plasser, ikke en løs haug).",
+            "mathematicalNeed": "Subtraksjon: fordi scenen viser totalt antall markerte lykteplasser (14) og hvor mange som allerede er fylt (4), trenger eleven å regne ut hvor mange tomme plasser som må fylles (14 − 4 = 10). Dette følger av regelen om at de tomme lyktene må fylles for å oppnå det fysiske målet (stien opplyst).",
+            "physicalRuleQuote": "Fyll de tomme lyktene slik at stien blir opplyst."
+          },
+          {
+            "missionId": "mission-lay-planks",
+            "sceneAgreement": "Spørsmålet spør etter «8 plasser og 2 allerede er lagt». Scenen har plank-total (quantity:8) og plank-known (quantity:2) og rendering type quantity med positionCount:8 og alreadyInstalled:2. Førteksten sier at plankene «ligger delvis lagt over sprekkene», så visningen av monterte posisjoner og tomme markerte posisjoner er i samsvar med teksten. Etter handling skal alle markerte plankplasser være fylt slik at broa blir trygg.",
+            "mathematicalNeed": "Subtraksjon: broa har 8 markerte plankplasser totalt og 2 er allerede lagt, så eleven må regne ut hvor mange som mangler (8 − 2 = 6). Regelen sier at manglende planker må legges for at broa fysisk skal kunne bære lasten (kassene), derfor er telling av manglende planker nødvendig og tilstrekkelig for å oppfylle målet.",
+            "physicalRuleQuote": "Legg de manglende plankene så brua kan bære kassene."
+          }
+        ],
+        "variation": "Oppdragene bruker to ulike representasjonsmåter (grouping for kasser; quantity/monterte posisjoner for lykter og planker). Scenene er konkrete (havna, verksted, skogskant), ulike medskuespillere vises og hver variant krever et annet regnegrep (multiplikasjon og subtraksjon), slik at handlingen og regningen varierer visuelt og kognitivt.",
+        "continuity": "Sekvensen er konsistent: først fylles kassene (klar til å bæres), så fylles lyktene (gir lys) og til slutt legges plankene (broa må være trygg for å bære kassene). Hver suksess settes som årsak for neste førtekst (pakkede kasser → «De fylte kassene er klare til å bæres», lykter lyser → «Lyset fra lyktene gjør det mulig å se brua bedre»), og kapittelets mål er konkret: hi skal bli trygt for Runi ved at kassene er fulle, stien opplyst og broa reparert.",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      },
+      "started_at": "2026-10-17T10:17:17.598893+00:00",
+      "completed_at": "2026-10-17T10:17:57.578742+00:00"
+    }
+  ],
+  "error": null,
+  "jobId": "c5a6a7d0-7a08-42e9-a9e8-9d9ef3affbdb",
+  "phase": "ready",
+  "spent": 1.8690485,
+  "state": "ready",
+  "commit": "edb2b2b1346ca37971141688b83542705e99b13f"
+}

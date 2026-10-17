@@ -29,11 +29,13 @@ export type ModelRequest = {
   schema: z.ZodType;
   maxOutputTokens?: number;
   timeoutMs?: number;
+  reasoningEffort?: 'low' | 'medium' | 'high';
   tools?: ToolDefinition[];
   conversation?: unknown[];
   results?: { call_id: string; output: string }[];
 };
 export type AiCall = {
+  chapter_job_id?: string;
   purpose: string;
   model: string;
   input_tokens: number;

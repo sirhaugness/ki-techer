@@ -1,0 +1,1463 @@
+{
+  "data": {
+    "menu": [
+      {
+        "problem": {
+          "seed": 958112410,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "a": 4,
+          "b": 3,
+          "each": 3,
+          "groups": 4
+        },
+        "interaction": "grouping"
+      },
+      {
+        "problem": {
+          "seed": 958112427,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "a": 6,
+          "b": 3,
+          "each": 3,
+          "groups": 6
+        },
+        "interaction": "grouping"
+      },
+      {
+        "problem": {
+          "seed": 958112444,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "a": 4,
+          "b": 3,
+          "each": 3,
+          "groups": 4
+        },
+        "interaction": "grouping"
+      },
+      {
+        "problem": {
+          "seed": 958112511,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "c": 5,
+          "known": 5,
+          "total": 14
+        },
+        "interaction": "quantity"
+      },
+      {
+        "problem": {
+          "seed": 958112528,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "c": 3,
+          "known": 3,
+          "total": 10
+        },
+        "interaction": "quantity"
+      },
+      {
+        "problem": {
+          "seed": 958112545,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "c": 3,
+          "known": 3,
+          "total": 8
+        },
+        "interaction": "quantity"
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-7658631b-6862-46b3-922f-1a75b66185fe",
+      "goal": "Lær å regne ved å hjelpe Runi med å ordne, dele og fylle ting i skogen, på brygga og i verkstedet.",
+      "nodes": [
+        {
+          "id": "mission-boxes",
+          "goal": "Legg steinene i kassene slik at alle kassene får like mange steiner.",
+          "kind": "mission",
+          "next": "mission-distribute",
+          "title": "Pakke kasser i skogkanten",
+          "before": "Sted: Skogskanten. Runi står ved flere trekasser og en haug lyse steiner ligger like ved kassene. Etter vindkastet ligger noen steiner spredt nær kassene.",
+          "success": "Alle kassene er fylt med like mange steiner. Runi smiler og legger lokkene på kassene; nå kan hun bære dem videre.",
+          "variants": [
+            {
+              "id": "v-boxes-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-boxes",
+                    "label": "Trekasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "obj-stones",
+                    "label": "Blå steiner i hver kasse",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "obj-boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-stones"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Marker kassene som fylt.",
+                    "working": "Marker kassene stille.",
+                    "incorrect": "Vis en svak markering av steinene."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 958112410,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det er {{groups}} trekasser, og i hver kasse skal det være {{each}} blå steiner. Hvor mange steiner trengs til sammen?"
+            }
+          ]
+        },
+        {
+          "id": "mission-distribute",
+          "goal": "Fordel tauene likt mellom signalstolpene slik at hver stolpe får like mange tau.",
+          "kind": "mission",
+          "next": "mission-plank",
+          "title": "Tau til signalstolpene på brygga",
+          "before": "Sted: Brygga. Runi og Bot står ved en haug tau nær bryggekanten. Flere signalstolper står langs bryggen. Etter vinden ligger tauene samlet ved bryggekanten.",
+          "success": "Hver signalstolpe har fått tau. Bot fester tauene slik at stolpene er klare til natten, og Runi peker mot neste oppgave.",
+          "variants": [
+            {
+              "id": "v-distribute-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-ropes",
+                    "label": "Tau",
+                    "assetId": "rope",
+                    "quantityKey": "a"
+                  },
+                  {
+                    "id": "obj-beacons",
+                    "label": "Signalstolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "distribute",
+                      "targetId": "obj-beacons"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-beacons"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "move",
+                      "targetId": "obj-ropes"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Plasser tauene stille ved hver stolpe.",
+                    "working": "Marker stolpene uten bevegelse.",
+                    "incorrect": "Flytt tauene litt sakte tilbake til haugen."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "distribution",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 958112427,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: Del {{a}} på {{groups}}.",
+              "representation": "konkret",
+              "questionTemplate": "Runi har {{a}} tau som skal fordeles likt på {{groups}} signalstolper. Hvor mange tau får hver signalstolpe?"
+            }
+          ]
+        },
+        {
+          "id": "mission-plank",
+          "goal": "Fyll alle plankplassene på benken ved å legge de manglende plankene dit.",
+          "kind": "mission",
+          "next": "ending",
+          "title": "Fylle plankplassene i verkstedet",
+          "before": "Sted: Verkstedet. Anna står ved en arbeidsbenk med plankestabler. Flere plankplasser på benken er delvis fylt. Etter at vinden rørt ved døren, ligger noen planker litt ut av plass.",
+          "success": "Alle plankplassene er fylt. Anna kan begynne å bygge, og hun inviterer Runi til å hente neste oppgave.",
+          "variants": [
+            {
+              "id": "v-plank-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-plank-places",
+                    "label": "Plankplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "obj-planks-known",
+                    "label": "Planker på plass",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "obj-plank-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-plank-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "move",
+                      "targetId": "obj-planks-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Vis at plassene er fylt uten animasjon.",
+                    "working": "Marker plassene rolig.",
+                    "incorrect": "Vis en rolig bevegelse av planker tilbake."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 958112511,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{total}} minus {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det er plass til {{total}} planker, og {{known}} ligger allerede på plass. Hvor mange planker mangler for å fylle alle plassene?"
+            }
+          ]
+        },
+        {
+          "id": "ending",
+          "hook": "Vil du følge sporene videre og løse flere oppgaver med Runi?",
+          "kind": "ending",
+          "narration": "Runi har hjulpet til på tre steder. Ting er ordnet, og Runi får en ny idé om å telle spor på stien."
+        }
+      ],
+      "title": "Runi og de flyttede tingene",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "actor-bot",
+          "name": "Bot",
+          "assetId": "robot"
+        }
+      ],
+      "assets": [
+        {
+          "id": "forest-sky",
+          "role": "background",
+          "description": "Lys skog med en sti og grønne tretopper."
+        },
+        {
+          "id": "harbor-sky",
+          "role": "background",
+          "description": "Lun havn med øyer, brygge og rolig sjø."
+        },
+        {
+          "id": "workshop-sky",
+          "role": "background",
+          "description": "Varmt verksted med arbeidsbenk og vindu."
+        },
+        {
+          "id": "animal",
+          "role": "character",
+          "description": "Vennlig liten rev med spisse ører."
+        },
+        {
+          "id": "person",
+          "role": "character",
+          "description": "Vennlig menneskefigur med blå jakke."
+        },
+        {
+          "id": "robot",
+          "role": "character",
+          "description": "Liten vennlig rund robot med blå lys."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "stone",
+          "role": "prop",
+          "description": "En lysende blå stein."
+        },
+        {
+          "id": "rope",
+          "role": "prop",
+          "description": "Ett sammenrullet tau."
+        },
+        {
+          "id": "beacon",
+          "role": "prop",
+          "description": "En signalstolpe med et rundt lys på toppen."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi, en liten rev, har funnet noen ting i tre ulike steder. Etter at vinden blåste gjennom, ligger noen gjenstander litt forskjøvet; du ser hvor de er. Les hvert oppdrag og hjelp Runi slik at alle steder blir i orden.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Brygga"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        }
+      ],
+      "entryNodeId": "mission-boxes",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "Spørsmålet må bruke kontrollerte gitte mengder."
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-7658631b-6862-46b3-922f-1a75b66185fe",
+      "goal": "Lær å regne ved å hjelpe Runi med å ordne, dele og fylle ting i skogen, på brygga og i verkstedet.",
+      "nodes": [
+        {
+          "id": "mission-boxes",
+          "goal": "Legg steinene i kassene slik at alle kassene får like mange steiner.",
+          "kind": "mission",
+          "next": "mission-distribute",
+          "title": "Pakke kasser i skogkanten",
+          "before": "Sted: Skogskanten. Runi står ved flere trekasser og en haug lyse steiner ligger like ved kassene. Etter at vinden blåste, ligger noen steiner spredt nær kassene. Regel: Én stein fyller én plass i en kasse.",
+          "success": "Alle kassene er fylt med like mange steiner. Runi smiler og legger lokkene på kassene; nå kan hun bære dem videre.",
+          "variants": [
+            {
+              "id": "v-boxes-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-boxes",
+                    "label": "Trekasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "obj-stones",
+                    "label": "Blå steiner i hver kasse",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "obj-boxes"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-boxes"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-stones"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Marker kassene som fylt.",
+                    "working": "Marker kassene stille.",
+                    "incorrect": "Vis en svak markering av steinene."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 958112410,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det er {{groups}} trekasser, og i hver kasse skal det være {{each}} blå steiner. Hvor mange steiner trengs til sammen?"
+            }
+          ]
+        },
+        {
+          "id": "mission-distribute",
+          "goal": "Fordel tauene likt mellom signalstolpene slik at hver stolpe får like mange tau.",
+          "kind": "mission",
+          "next": "mission-plank",
+          "title": "Tau til signalstolpene på brygga",
+          "before": "Sted: Brygga. Runi og Bot står ved en haug tau nær bryggekanten. Flere signalstolper står langs bryggen. Etter vinden ligger tauene samlet ved bryggekanten. Regel: Hvert tau legges helt til én stolpe — tau kan ikke deles.",
+          "success": "Hver signalstolpe har fått tau. Bot fester tauene slik at stolpene er klare til natten, og Runi peker mot neste oppgave.",
+          "variants": [
+            {
+              "id": "v-distribute-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-ropes",
+                    "label": "Tau",
+                    "assetId": "rope",
+                    "quantityKey": "a"
+                  },
+                  {
+                    "id": "obj-beacons",
+                    "label": "Signalstolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-bot"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "distribute",
+                      "targetId": "obj-beacons"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-beacons"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "move",
+                      "targetId": "obj-ropes"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Plasser tauene stille ved hver stolpe.",
+                    "working": "Marker stolpene uten bevegelse.",
+                    "incorrect": "Flytt tauene litt sakte tilbake til haugen."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "distribution",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 958112427,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: Del {{a}} på {{groups}}.",
+              "representation": "konkret",
+              "questionTemplate": "Runi har {{a}} tau som skal fordeles likt på {{groups}} signalstolper. Hvor mange tau får hver signalstolpe?"
+            }
+          ]
+        },
+        {
+          "id": "mission-plank",
+          "goal": "Fyll alle plankplassene på benken ved å legge de manglende plankene dit.",
+          "kind": "mission",
+          "next": "ending",
+          "title": "Fylle plankplassene i verkstedet",
+          "before": "Sted: Verkstedet. Anna står ved en arbeidsbenk med plankestabler. Flere plankplasser på benken er delvis fylt. Etter at vinden rørte døren, ligger noen planker litt ut av plass. Regel: Én planke fyller én plankplass.",
+          "success": "Alle plankplassene er fylt. Anna kan begynne å bygge, og hun inviterer Runi til å hente neste oppgave.",
+          "variants": [
+            {
+              "id": "v-plank-primary",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "obj-plank-places",
+                    "label": "Plankplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "obj-planks-known",
+                    "label": "Planker på plass",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "obj-plank-places"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "obj-plank-places"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "move",
+                      "targetId": "obj-planks-known"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Vis at plassene er fylt uten animasjon.",
+                    "working": "Marker plassene rolig.",
+                    "incorrect": "Vis en rolig bevegelse av planker tilbake."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 958112511,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{total}} minus {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det er plass til {{total}} planker, og {{known}} ligger allerede på plass. Hvor mange planker mangler for å fylle alle plassene?"
+            }
+          ]
+        },
+        {
+          "id": "ending",
+          "hook": "Vil du følge sporene videre og løse flere oppgaver med Runi?",
+          "kind": "ending",
+          "narration": "Runi har hjulpet til på flere steder. Ting er ordnet, og Runi får en ny idé om å telle spor på stien."
+        }
+      ],
+      "title": "Runi og de flyttede tingene",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        },
+        {
+          "id": "actor-bot",
+          "name": "Bot",
+          "assetId": "robot"
+        }
+      ],
+      "assets": [
+        {
+          "id": "forest-sky",
+          "role": "background",
+          "description": "Lys skog med en sti og grønne tretopper."
+        },
+        {
+          "id": "harbor-sky",
+          "role": "background",
+          "description": "Lun havn med øyer, brygge og rolig sjø."
+        },
+        {
+          "id": "workshop-sky",
+          "role": "background",
+          "description": "Varmt verksted med arbeidsbenk og vindu."
+        },
+        {
+          "id": "animal",
+          "role": "character",
+          "description": "Vennlig liten rev med spisse ører."
+        },
+        {
+          "id": "person",
+          "role": "character",
+          "description": "Vennlig menneskefigur med blå jakke."
+        },
+        {
+          "id": "robot",
+          "role": "character",
+          "description": "Liten vennlig rund robot med blå lys."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "stone",
+          "role": "prop",
+          "description": "En lysende blå stein."
+        },
+        {
+          "id": "rope",
+          "role": "prop",
+          "description": "Ett sammenrullet tau."
+        },
+        {
+          "id": "beacon",
+          "role": "prop",
+          "description": "En signalstolpe med et rundt lys på toppen."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi, en liten rev, har funnet noen ting på flere steder. Etter at vinden blåste gjennom, ligger noen gjenstander litt forskjøvet; du ser hvor de er. Les hvert oppdrag og hjelp Runi slik at alle steder blir i orden.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Brygga"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        }
+      ],
+      "entryNodeId": "mission-boxes",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "3cb86bdd-93f3-4334-a6c8-0fec03f89de6",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 86596,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 4047,
+        "cost_estimate": 0.19632525,
+        "output_tokens": 8418,
+        "chapter_number": 2,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "7658631b-6862-46b3-922f-1a75b66185fe",
+      "result": {
+        "id": "chapter-7658631b-6862-46b3-922f-1a75b66185fe",
+        "goal": "Lær å regne ved å hjelpe Runi med å ordne, dele og fylle ting i skogen, på brygga og i verkstedet.",
+        "nodes": [
+          {
+            "id": "mission-boxes",
+            "goal": "Legg steinene i kassene slik at alle kassene får like mange steiner.",
+            "kind": "mission",
+            "next": "mission-distribute",
+            "title": "Pakke kasser i skogkanten",
+            "before": "Sted: Skogskanten. Runi står ved flere trekasser og en haug lyse steiner ligger like ved kassene. Etter vindkastet ligger noen steiner spredt nær kassene.",
+            "success": "Alle kassene er fylt med like mange steiner. Runi smiler og legger lokkene på kassene; nå kan hun bære dem videre.",
+            "variants": [
+              {
+                "id": "v-boxes-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-boxes",
+                      "label": "Trekasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "obj-stones",
+                      "label": "Blå steiner i hver kasse",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "obj-boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-stones"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Marker kassene som fylt.",
+                      "working": "Marker kassene stille.",
+                      "incorrect": "Vis en svak markering av steinene."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 958112410,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det er {{groups}} trekasser, og i hver kasse skal det være {{each}} blå steiner. Hvor mange steiner trengs til sammen?"
+              }
+            ]
+          },
+          {
+            "id": "mission-distribute",
+            "goal": "Fordel tauene likt mellom signalstolpene slik at hver stolpe får like mange tau.",
+            "kind": "mission",
+            "next": "mission-plank",
+            "title": "Tau til signalstolpene på brygga",
+            "before": "Sted: Brygga. Runi og Bot står ved en haug tau nær bryggekanten. Flere signalstolper står langs bryggen. Etter vinden ligger tauene samlet ved bryggekanten.",
+            "success": "Hver signalstolpe har fått tau. Bot fester tauene slik at stolpene er klare til natten, og Runi peker mot neste oppgave.",
+            "variants": [
+              {
+                "id": "v-distribute-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-ropes",
+                      "label": "Tau",
+                      "assetId": "rope",
+                      "quantityKey": "a"
+                    },
+                    {
+                      "id": "obj-beacons",
+                      "label": "Signalstolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "distribute",
+                        "targetId": "obj-beacons"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-beacons"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "move",
+                        "targetId": "obj-ropes"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Plasser tauene stille ved hver stolpe.",
+                      "working": "Marker stolpene uten bevegelse.",
+                      "incorrect": "Flytt tauene litt sakte tilbake til haugen."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "distribution",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 958112427,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: Del {{a}} på {{groups}}.",
+                "representation": "konkret",
+                "questionTemplate": "Runi har {{a}} tau som skal fordeles likt på {{groups}} signalstolper. Hvor mange tau får hver signalstolpe?"
+              }
+            ]
+          },
+          {
+            "id": "mission-plank",
+            "goal": "Fyll alle plankplassene på benken ved å legge de manglende plankene dit.",
+            "kind": "mission",
+            "next": "ending",
+            "title": "Fylle plankplassene i verkstedet",
+            "before": "Sted: Verkstedet. Anna står ved en arbeidsbenk med plankestabler. Flere plankplasser på benken er delvis fylt. Etter at vinden rørt ved døren, ligger noen planker litt ut av plass.",
+            "success": "Alle plankplassene er fylt. Anna kan begynne å bygge, og hun inviterer Runi til å hente neste oppgave.",
+            "variants": [
+              {
+                "id": "v-plank-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-plank-places",
+                      "label": "Plankplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "obj-planks-known",
+                      "label": "Planker på plass",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "obj-plank-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-plank-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "move",
+                        "targetId": "obj-planks-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Vis at plassene er fylt uten animasjon.",
+                      "working": "Marker plassene rolig.",
+                      "incorrect": "Vis en rolig bevegelse av planker tilbake."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 958112511,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{total}} minus {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det er plass til {{total}} planker, og {{known}} ligger allerede på plass. Hvor mange planker mangler for å fylle alle plassene?"
+              }
+            ]
+          },
+          {
+            "id": "ending",
+            "hook": "Vil du følge sporene videre og løse flere oppgaver med Runi?",
+            "kind": "ending",
+            "narration": "Runi har hjulpet til på tre steder. Ting er ordnet, og Runi får en ny idé om å telle spor på stien."
+          }
+        ],
+        "title": "Runi og de flyttede tingene",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "actor-bot",
+            "name": "Bot",
+            "assetId": "robot"
+          }
+        ],
+        "assets": [
+          {
+            "id": "forest-sky",
+            "role": "background",
+            "description": "Lys skog med en sti og grønne tretopper."
+          },
+          {
+            "id": "harbor-sky",
+            "role": "background",
+            "description": "Lun havn med øyer, brygge og rolig sjø."
+          },
+          {
+            "id": "workshop-sky",
+            "role": "background",
+            "description": "Varmt verksted med arbeidsbenk og vindu."
+          },
+          {
+            "id": "animal",
+            "role": "character",
+            "description": "Vennlig liten rev med spisse ører."
+          },
+          {
+            "id": "person",
+            "role": "character",
+            "description": "Vennlig menneskefigur med blå jakke."
+          },
+          {
+            "id": "robot",
+            "role": "character",
+            "description": "Liten vennlig rund robot med blå lys."
+          },
+          {
+            "id": "box",
+            "role": "prop",
+            "description": "En trekasse som kan inneholde eller motta gjenstander."
+          },
+          {
+            "id": "stone",
+            "role": "prop",
+            "description": "En lysende blå stein."
+          },
+          {
+            "id": "rope",
+            "role": "prop",
+            "description": "Ett sammenrullet tau."
+          },
+          {
+            "id": "beacon",
+            "role": "prop",
+            "description": "En signalstolpe med et rundt lys på toppen."
+          },
+          {
+            "id": "plank",
+            "role": "prop",
+            "description": "En treplanke til bygging eller reparasjon."
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi, en liten rev, har funnet noen ting i tre ulike steder. Etter at vinden blåste gjennom, ligger noen gjenstander litt forskjøvet; du ser hvor de er. Les hvert oppdrag og hjelp Runi slik at alle steder blir i orden.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Brygga"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          }
+        ],
+        "entryNodeId": "mission-boxes",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T09:51:02.825935+00:00",
+      "completed_at": "2026-10-17T09:52:29.846246+00:00"
+    },
+    {
+      "id": "c9e7ccb3-3bc7-401a-bb65-ef2b9b44854f",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 47842,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5897,
+        "cost_estimate": 0.13261875,
+        "output_tokens": 5291,
+        "chapter_number": 2,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "7658631b-6862-46b3-922f-1a75b66185fe",
+      "result": {
+        "id": "chapter-7658631b-6862-46b3-922f-1a75b66185fe",
+        "goal": "Lær å regne ved å hjelpe Runi med å ordne, dele og fylle ting i skogen, på brygga og i verkstedet.",
+        "nodes": [
+          {
+            "id": "mission-boxes",
+            "goal": "Legg steinene i kassene slik at alle kassene får like mange steiner.",
+            "kind": "mission",
+            "next": "mission-distribute",
+            "title": "Pakke kasser i skogkanten",
+            "before": "Sted: Skogskanten. Runi står ved flere trekasser og en haug lyse steiner ligger like ved kassene. Etter at vinden blåste, ligger noen steiner spredt nær kassene. Regel: Én stein fyller én plass i en kasse.",
+            "success": "Alle kassene er fylt med like mange steiner. Runi smiler og legger lokkene på kassene; nå kan hun bære dem videre.",
+            "variants": [
+              {
+                "id": "v-boxes-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-boxes",
+                      "label": "Trekasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "obj-stones",
+                      "label": "Blå steiner i hver kasse",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "obj-boxes"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-boxes"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-stones"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Marker kassene som fylt.",
+                      "working": "Marker kassene stille.",
+                      "incorrect": "Vis en svak markering av steinene."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 958112410,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det er {{groups}} trekasser, og i hver kasse skal det være {{each}} blå steiner. Hvor mange steiner trengs til sammen?"
+              }
+            ]
+          },
+          {
+            "id": "mission-distribute",
+            "goal": "Fordel tauene likt mellom signalstolpene slik at hver stolpe får like mange tau.",
+            "kind": "mission",
+            "next": "mission-plank",
+            "title": "Tau til signalstolpene på brygga",
+            "before": "Sted: Brygga. Runi og Bot står ved en haug tau nær bryggekanten. Flere signalstolper står langs bryggen. Etter vinden ligger tauene samlet ved bryggekanten. Regel: Hvert tau legges helt til én stolpe — tau kan ikke deles.",
+            "success": "Hver signalstolpe har fått tau. Bot fester tauene slik at stolpene er klare til natten, og Runi peker mot neste oppgave.",
+            "variants": [
+              {
+                "id": "v-distribute-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-ropes",
+                      "label": "Tau",
+                      "assetId": "rope",
+                      "quantityKey": "a"
+                    },
+                    {
+                      "id": "obj-beacons",
+                      "label": "Signalstolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-bot"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "distribute",
+                        "targetId": "obj-beacons"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-beacons"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "move",
+                        "targetId": "obj-ropes"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Plasser tauene stille ved hver stolpe.",
+                      "working": "Marker stolpene uten bevegelse.",
+                      "incorrect": "Flytt tauene litt sakte tilbake til haugen."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "distribution",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 958112427,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: Del {{a}} på {{groups}}.",
+                "representation": "konkret",
+                "questionTemplate": "Runi har {{a}} tau som skal fordeles likt på {{groups}} signalstolper. Hvor mange tau får hver signalstolpe?"
+              }
+            ]
+          },
+          {
+            "id": "mission-plank",
+            "goal": "Fyll alle plankplassene på benken ved å legge de manglende plankene dit.",
+            "kind": "mission",
+            "next": "ending",
+            "title": "Fylle plankplassene i verkstedet",
+            "before": "Sted: Verkstedet. Anna står ved en arbeidsbenk med plankestabler. Flere plankplasser på benken er delvis fylt. Etter at vinden rørte døren, ligger noen planker litt ut av plass. Regel: Én planke fyller én plankplass.",
+            "success": "Alle plankplassene er fylt. Anna kan begynne å bygge, og hun inviterer Runi til å hente neste oppgave.",
+            "variants": [
+              {
+                "id": "v-plank-primary",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "obj-plank-places",
+                      "label": "Plankplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "obj-planks-known",
+                      "label": "Planker på plass",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "obj-plank-places"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "obj-plank-places"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "move",
+                        "targetId": "obj-planks-known"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Vis at plassene er fylt uten animasjon.",
+                      "working": "Marker plassene rolig.",
+                      "incorrect": "Vis en rolig bevegelse av planker tilbake."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 958112511,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{total}} minus {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det er plass til {{total}} planker, og {{known}} ligger allerede på plass. Hvor mange planker mangler for å fylle alle plassene?"
+              }
+            ]
+          },
+          {
+            "id": "ending",
+            "hook": "Vil du følge sporene videre og løse flere oppgaver med Runi?",
+            "kind": "ending",
+            "narration": "Runi har hjulpet til på flere steder. Ting er ordnet, og Runi får en ny idé om å telle spor på stien."
+          }
+        ],
+        "title": "Runi og de flyttede tingene",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          },
+          {
+            "id": "actor-bot",
+            "name": "Bot",
+            "assetId": "robot"
+          }
+        ],
+        "assets": [
+          {
+            "id": "forest-sky",
+            "role": "background",
+            "description": "Lys skog med en sti og grønne tretopper."
+          },
+          {
+            "id": "harbor-sky",
+            "role": "background",
+            "description": "Lun havn med øyer, brygge og rolig sjø."
+          },
+          {
+            "id": "workshop-sky",
+            "role": "background",
+            "description": "Varmt verksted med arbeidsbenk og vindu."
+          },
+          {
+            "id": "animal",
+            "role": "character",
+            "description": "Vennlig liten rev med spisse ører."
+          },
+          {
+            "id": "person",
+            "role": "character",
+            "description": "Vennlig menneskefigur med blå jakke."
+          },
+          {
+            "id": "robot",
+            "role": "character",
+            "description": "Liten vennlig rund robot med blå lys."
+          },
+          {
+            "id": "box",
+            "role": "prop",
+            "description": "En trekasse som kan inneholde eller motta gjenstander."
+          },
+          {
+            "id": "stone",
+            "role": "prop",
+            "description": "En lysende blå stein."
+          },
+          {
+            "id": "rope",
+            "role": "prop",
+            "description": "Ett sammenrullet tau."
+          },
+          {
+            "id": "beacon",
+            "role": "prop",
+            "description": "En signalstolpe med et rundt lys på toppen."
+          },
+          {
+            "id": "plank",
+            "role": "prop",
+            "description": "En treplanke til bygging eller reparasjon."
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi, en liten rev, har funnet noen ting på flere steder. Etter at vinden blåste gjennom, ligger noen gjenstander litt forskjøvet; du ser hvor de er. Les hvert oppdrag og hjelp Runi slik at alle steder blir i orden.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Brygga"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          }
+        ],
+        "entryNodeId": "mission-boxes",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T09:52:30.261866+00:00",
+      "completed_at": "2026-10-17T09:53:18.499138+00:00"
+    }
+  ],
+  "error": "editorial_review_rejected",
+  "jobId": "7658631b-6862-46b3-922f-1a75b66185fe",
+  "phase": "review",
+  "spent": 0.818576,
+  "state": "failed",
+  "commit": "58672eca37e3a529c6fcd93b443a2517f4d55c4b"
+}

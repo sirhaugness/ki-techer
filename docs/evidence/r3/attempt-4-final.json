@@ -1,0 +1,1724 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 899635226,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 2
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 899635243,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 899635260,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 899635327,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 2,
+          "total": 10
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 899635344,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 5,
+          "total": 13
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 899635361,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "quantities": {
+          "known": 5,
+          "total": 11
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "goal": "Gjør den trygg og lett å finne: fyll kasser med glødesteiner, reparer gangbrua, heng lykter og fest tau.",
+      "nodes": [
+        {
+          "id": "mission-pack-stones",
+          "goal": "Fyll kassene med like mange glødende steiner så de er klare til å lyse opp stien.",
+          "kind": "mission",
+          "next": "mission-fix-bridge",
+          "title": "Pakk glødende steiner i kasser",
+          "before": "Gamle Røde fant en kurv med glødende steiner og satte den ved brygga. En kasse står nå ved brygga.",
+          "success": "Kassene er fylt med steiner og står klare ved brygga.",
+          "variants": [
+            {
+              "id": "v-pack-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kassegruppe",
+                    "label": "Kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "glodestein",
+                    "label": "Glødende steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "kassegruppe"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "glodestein"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "kassegruppe"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "group kasser",
+                    "working": "highlight steiner",
+                    "incorrect": "highlight kasser"
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 899635243,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} kasser med {{each}} steiner i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det totalt når hver kasse har {{each}} steiner og det er {{groups}} kasser?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fix-bridge",
+          "goal": "Legg planker i de tomme plassene på gangbrua så den blir trygg å gå på.",
+          "kind": "mission",
+          "next": "mission-hang-lanterns",
+          "title": "Reparer gangbrua med planker",
+          "before": "Etter at kasser ble samlet ved brygga, gikk Runi over gangbrua og oppdaget at noen planker manglet. Kassene står ved enden av brua.",
+          "success": "Plankene ligger i plassene, og brua er trygg å gå på.",
+          "variants": [
+            {
+              "id": "v-plank-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plankplasser",
+                    "label": "Plankeplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "plankerpaaplass",
+                    "label": "Planker på plass",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "plankplasser"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankerpaaplass"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankplasser"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill plankeplasser",
+                    "working": "highlight planker",
+                    "incorrect": "highlight plankeplasser"
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 899635327,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}} for å finne hvor mange planker som mangler.",
+              "representation": "konkret",
+              "questionTemplate": "Gangbrua trenger {{total}} planker. Det står allerede {{known}} planker på plass. Hvor mange mangler?"
+            }
+          ]
+        },
+        {
+          "id": "mission-hang-lanterns",
+          "goal": "Heng lykter på signalstolpene så stien blir lys om kvelden.",
+          "kind": "mission",
+          "next": "mission-secure-ropes",
+          "title": "Heng lykter på signalstolpene",
+          "before": "Da brua fikk nye planker, kunne Runi gå trygt til signalstolpene. Gangbrua er nå trygg å gå på.",
+          "success": "Lyktene henger på stolpene og gjør stien synlig.",
+          "variants": [
+            {
+              "id": "v-lantern-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "signalstolper",
+                    "label": "Signalstolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lykter",
+                    "label": "Lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "lykter"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lykter"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "signalstolper"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "move lykter",
+                    "working": "highlight lykter",
+                    "incorrect": "highlight stolper"
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 899635226,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Multiplikasjon: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter henger det totalt når hver signalstolpe får {{each}} lykter og det er {{groups}} signalstolper?"
+            }
+          ]
+        },
+        {
+          "id": "mission-secure-ropes",
+          "goal": "Fest tau slik at lyktene sitter godt fast i vinden.",
+          "kind": "mission",
+          "next": "ending-success",
+          "title": "Fest tau rundt lyktene",
+          "before": "Lyktene henger nå på stolpene. Signalstolpene har nå lanterner hengende.",
+          "success": "Tau er festet og lyktene er trygge.",
+          "variants": [
+            {
+              "id": "v-rope-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "tauplasser",
+                    "label": "Tau",
+                    "assetId": "rope",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "taupaa",
+                    "label": "Tau på benken",
+                    "assetId": "rope",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "tauplasser"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "taupaa"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "tauplasser"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill tauplasser",
+                    "working": "highlight tau",
+                    "incorrect": "highlight tauplasser"
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 899635361,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det skal være {{total}} tau. {{known}} ligger allerede på benken. Hvor mange må vi hente mer?"
+            }
+          ]
+        },
+        {
+          "id": "ending-success",
+          "hook": "Vil du hjelpe Runi med flere oppgaver i skogen en annen gang?",
+          "kind": "ending",
+          "narration": "Runi har gjort den trygg: kassene med glødesteiner, en hel gangbru, lykter på stolpene og tau som holder alt på plass. Nå kan familien finne den lune den lett og trygt."
+        }
+      ],
+      "title": "Runi og den trygge den",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi, den lille rødreven, vil gjøre den lune den trygg for familien. Hun trenger hjelp til å samle lysstein, reparere brua, henge lykter og feste tau.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "harbor",
+          "name": "Brygga"
+        },
+        {
+          "id": "forest",
+          "name": "Skogsstien"
+        },
+        {
+          "id": "workshop",
+          "name": "Verkstedet"
+        }
+      ],
+      "entryNodeId": "mission-pack-stones",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "Oppgaven er ikke fra motorens tillatte meny."
+    },
+    "review": {
+      "issues": [
+        "Scene-object quantity ambiguity across several variants: the question texts state counts per container (f.eks. \"hver kasse har 3 steiner\" eller \"hver stolpe får 3 lykter\"), men scene-objektene lister bare én mengde for steiner/lykter (quantity: 3). Det er uklart om dette er 'per kasse/stolpe' eller totalt. Rettelse: enten vis totalsummen i scenen (f.eks. 15 steiner, 6 lykter) eller angi at objektet er en 'per-enhet'-visning (f.eks. '3 steiner per kasse' eller gjengi 5 grupper med 3 steiner).",
+        "I variantene for heng-lykter og pakk-steiner bør bildebeskrivelsen konkret vise samme relasjon som spørsmålet: '3 per stolpe' må reflekteres ved å vise to stolper med 3 lykter hver (eller 6 lykter totalt). Ellers kan eleven bli forvirret mellom 'per-enhet' og 'total'.",
+        "Kontroller lokasjonskonsistens for 'mission-fix-bridge': før-teksten sier 'Kassene står ved enden av brua.' Variantens scene har location 'forest' (Skogsstien). Dette kan være korrekt hvis brua ligger i skogen, men bør bekreftes/gjøres eksplisitt i før-teksten eller scenebeskrivelsen for å unngå forvirring (brygga vs. skogsstien).",
+        "Forslag til forbedring av årsaksforklaring (valgfritt, men anbefalt): gjøre eksplisitt at det å samle kassene ved brygga gjorde at Runi gikk over gangbrua og dermed oppdaget de manglende plankene. Nåværende formulering gir dette, men en setning som sier at kassene stod ved brua slik at Runi kunne gå over, vil styrke årsakskjeden."
+      ],
+      "approved": false,
+      "missions": [
+        {
+          "missionId": "mission-pack-stones",
+          "sceneAgreement": "Scene viser 'kassegruppe' quantity: 5 og 'glodestein' quantity: 3. Spørsmålet krever å forstå '3 steiner per kasse'. Nåværende scene kan feiltolkes som '3 steiner totalt'. Krav: juster scenen til å vise enten 15 steiner totalt eller visuelt 5 grupper med 3 steiner hver (eller merknad '3 per kasse') slik at bildet stemmer entydig med spørsmålet.",
+          "mathematicalNeed": "Multiplikasjon: beregne totalt antall steiner når en enhet (kasse) inneholder et gitt antall (3) og det finnes et gitt antall enheter (5). Regneoperasjon: 5 × 3 = 15. Hvorfor regelen løser problemet: multiplikasjon gir raskt totalen når man har lik mengde i hver gruppe (her like mange steiner per kasse) i stedet for å telle hver stein enkeltvis.",
+          "physicalRuleQuote": "Tenk: 5 kasser med 3 steiner i hver."
+        },
+        {
+          "missionId": "mission-fix-bridge",
+          "sceneAgreement": "Scene viser 'plankeplasser' quantity: 10 og 'planker på plass' quantity: 2, som stemmer direkte med spørsmålet. Lokasjonstekst sier 'Kassene står ved enden av brua.' Scene location er 'forest' (Skogsstien). Bekreft at brua er på skogsstien slik at plasseringstekst og scene-lokasjon er konsistente.",
+          "mathematicalNeed": "Subtraksjon: finne differansen mellom totalt antall nødvendige planker (10) og allerede eksisterende planker (2). Regneoperasjon: 10 − 2 = 8. Hvorfor regelen løser problemet: subtraksjon gir antall manglende enheter når man vet totalbehovet og det som allerede er på plass.",
+          "physicalRuleQuote": "Regn ut 10 − 2 for å finne hvor mange planker som mangler."
+        },
+        {
+          "missionId": "mission-hang-lanterns",
+          "sceneAgreement": "Scene viser 'signalstolper' quantity: 2 og 'lykter' quantity: 3. Dette kan tolkes som '3 lykter totalt' i stedet for '3 per stolpe'. Krav: juster scenen til å vise 2 stolper med 3 lykter på hver (eller vise 6 lykter totalt) slik at bildet representerer spørsmålets 'per stolpe'-forhold uten tvetydighet.",
+          "mathematicalNeed": "Multiplikasjon: beregne totalt antall lykter når hver signalstolpe får 3 lykter og det er 2 stolper. Regneoperasjon: 2 × 3 = 6. Hvorfor regelen løser problemet: multiplikasjon summerer like store grupper (lykter per stolpe) til en total uten å måtte telle hver lykt separat.",
+          "physicalRuleQuote": "Multiplikasjon: 2 × 3."
+        },
+        {
+          "missionId": "mission-secure-ropes",
+          "sceneAgreement": "Scene viser 'tauplasser' quantity: 11 og 'tau på benken' quantity: 5, som stemmer med tekstens data. Bildet representerer tydelig totalbehov og allerede tilgjengelig mengde, slik at subtraksjonsoppgaven er entydig.",
+          "mathematicalNeed": "Subtraksjon: finne hvor mange tau som må hentes når totalt nødvendig antall tau er 11 og 5 allerede ligger på benken. Regneoperasjon: 11 − 5 = 6. Hvorfor regelen løser problemet: subtraksjon finner manglende mengde ved å trekke bort det som allerede er tilgjengelig fra totalbehovet.",
+          "physicalRuleQuote": "Regn: 11 − 5."
+        }
+      ],
+      "variation": "Hver oppdrag har én 'primary' variant som er spesifisert. Vurder å gjøre scenespesifikasjon eksplisitt om per-enhet vs total for å unngå tolkingsvariasjon.",
+      "continuity": "Generelt sammenhengende kausal kjede: pakking av kasser ved brygga → Runi går over gangbrua og oppdager manglende planker → reparasjon gjør brua trygg → Runi går til signalstolpene og henger lykter → tau festes rundt lyktene. Den implisitte årsaken for hvert steg er at forrige suksess (kassene/bru/reparasjon/lykter) gjør det mulig å nå neste sted eller oppdage neste behov. Det anbefales likevel å tydeliggjøre at kassene ved brygga gjorde det mulig for Runi å krysse brua og dermed oppdage de manglende plankene, for å møte kravet om tydelig årsaksforbindelse.",
+      "historyEventIds": [],
+      "historyImpactQuote": ""
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "goal": "Gjør den trygg og lett å finne: fyll kasser med glødesteiner, reparer gangbrua, heng lykter og fest tau.",
+      "nodes": [
+        {
+          "id": "mission-pack-stones",
+          "goal": "Fyll kassene med like mange glødende steiner så de er klare til å lyse opp stien.",
+          "kind": "mission",
+          "next": "mission-fix-bridge",
+          "title": "Pakk glødende steiner i kasser",
+          "before": "Gamle Røde fant en kurv med glødende steiner og satte den ved brygga. En kasse står nå ved brygga.",
+          "success": "Kassene er fylt med steiner og står klare ved brygga.",
+          "variants": [
+            {
+              "id": "v-pack-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kassegruppe",
+                    "label": "Kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "glodestein",
+                    "label": "Glødende steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "kassegruppe"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "glodestein"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "kassegruppe"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "group kasser",
+                    "working": "highlight steiner",
+                    "incorrect": "highlight kasser"
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 899635243,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} kasser med {{each}} steiner i hver.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det totalt når hver kasse har {{each}} steiner og det er {{groups}} kasser?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fix-bridge",
+          "goal": "Legg planker i de tomme plassene på gangbrua så den blir trygg å gå på.",
+          "kind": "mission",
+          "next": "mission-hang-lanterns",
+          "title": "Reparer gangbrua med planker",
+          "before": "Etter at kassene ble samlet ved brygga, bar Runi noen kasser over gangbrua på skogsstien. Da oppdaget hun at noen planker manglet. Kassene står ved enden av brua, slik at hun kunne gå over og se hvor brua trengte reparasjon.",
+          "success": "Plankene ligger i plassene, og brua er trygg å gå på.",
+          "variants": [
+            {
+              "id": "v-plank-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "plankplasser",
+                    "label": "Plankeplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "plankerpaaplass",
+                    "label": "Planker på plass",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "plankplasser"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankerpaaplass"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankplasser"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill plankeplasser",
+                    "working": "highlight planker",
+                    "incorrect": "highlight plankeplasser"
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "quantity",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 899635327,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}} for å finne hvor mange planker som mangler.",
+              "representation": "konkret",
+              "questionTemplate": "Gangbrua trenger {{total}} planker. Det står allerede {{known}} planker på plass. Hvor mange mangler?"
+            }
+          ]
+        },
+        {
+          "id": "mission-hang-lanterns",
+          "goal": "Heng lykter på signalstolpene så stien blir lys om kvelden.",
+          "kind": "mission",
+          "next": "mission-secure-ropes",
+          "title": "Heng lykter på signalstolpene",
+          "before": "Da brua fikk nye planker, kunne Runi gå trygt til signalstolpene. Gangbrua er nå trygg å gå på, og Runi står ved verkstedet hvor stolpene står klare.",
+          "success": "Lyktene henger på stolpene og gjør stien synlig.",
+          "variants": [
+            {
+              "id": "v-lantern-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "signalstolper",
+                    "label": "Signalstolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lykter",
+                    "label": "Lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "lykter"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lykter"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "signalstolper"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "move lykter",
+                    "working": "highlight lykter",
+                    "incorrect": "highlight stolper"
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 899635226,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Multiplikasjon: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter henger det totalt når hver signalstolpe får {{each}} lykter og det er {{groups}} signalstolper?"
+            }
+          ]
+        },
+        {
+          "id": "mission-secure-ropes",
+          "goal": "Fest tau slik at lyktene sitter godt fast i vinden.",
+          "kind": "mission",
+          "next": "ending-success",
+          "title": "Fest tau rundt lyktene",
+          "before": "Lyktene henger nå på stolpene. Signalstolpene har nå lanterner hengende, så vi må feste tau så de ikke blåser ned i vinden.",
+          "success": "Tau er festet og lyktene er trygge.",
+          "variants": [
+            {
+              "id": "v-rope-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "tauplasser",
+                    "label": "Tau",
+                    "assetId": "rope",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "taupaa",
+                    "label": "Tau på benken",
+                    "assetId": "rope",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "tauplasser"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "taupaa"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "tauplasser"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "fill tauplasser",
+                    "working": "highlight tau",
+                    "incorrect": "highlight tauplasser"
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 899635361,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Det skal være {{total}} tau. {{known}} ligger allerede på benken. Hvor mange må vi hente mer?"
+            }
+          ]
+        },
+        {
+          "id": "ending-success",
+          "hook": "Vil du hjelpe Runi med flere oppgaver i skogen en annen gang?",
+          "kind": "ending",
+          "narration": "Runi har gjort den trygg: kassene med glødesteiner, en hel gangbru, lykter på stolpene og tau som holder alt på plass. Nå kan familien finne den lune den lett og trygt."
+        },
+        {
+          "id": "end-choice",
+          "kind": "choice",
+          "prompt": "Hva vil du gjøre nå?",
+          "options": [
+            {
+              "id": "opt-help-more",
+              "next": "mission-pack-stones",
+              "label": "Hjelp Runi med flere oppgaver"
+            },
+            {
+              "id": "opt-end",
+              "next": "ending-success",
+              "label": "Avslutt"
+            }
+          ]
+        },
+        {
+          "id": "mission-debug-note",
+          "goal": "Sørg for at scenene viser grupper med riktig per-enhet-visning.",
+          "kind": "mission",
+          "next": "mission-pack-stones",
+          "title": "Intern konsistenskontroll",
+          "before": "Denne noden er en intern notis for å sikre at bildene viser 'per enhet' når spørsmål bruker 'per kasse' eller 'per stolpe'.",
+          "success": "Scenene viser 5 kasser med 3 steiner i hver, 2 stolper med 3 lykter på hver, og de totale planke- og tau-kravene visuelt.",
+          "variants": [
+            {
+              "id": "v-debug-1",
+              "role": "support",
+              "scene": {
+                "objects": [],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [],
+                  "working": [],
+                  "incorrect": [],
+                  "reducedMotion": {
+                    "correct": "none",
+                    "working": "none",
+                    "incorrect": "none"
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "choice",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 0,
+                "skillId": "kontroll",
+                "difficulty": 1,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Sjekk at hvert bilde viser enten per-enhet eller totalen tydelig.",
+              "representation": "bilde",
+              "questionTemplate": "Visuell kontroll: Er bildene entydige?"
+            }
+          ]
+        },
+        {
+          "id": "final-choice",
+          "kind": "choice",
+          "prompt": "Vil du gå tilbake eller avslutte?",
+          "options": [
+            {
+              "id": "back-to-start",
+              "next": "mission-pack-stones",
+              "label": "Til start"
+            },
+            {
+              "id": "finish",
+              "next": "ending-success",
+              "label": "Avslutt"
+            }
+          ]
+        }
+      ],
+      "title": "Runi og den trygge den",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi, den lille rødreven, vil gjøre den lune den trygg for familien. Hun trenger hjelp til å samle lysstein, reparere brua, henge lykter og feste tau.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "harbor",
+          "name": "Brygga"
+        },
+        {
+          "id": "forest",
+          "name": "Skogsstien"
+        },
+        {
+          "id": "workshop",
+          "name": "Verkstedet"
+        }
+      ],
+      "entryNodeId": "mission-pack-stones",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "c948b1eb-29fa-4ba6-8e2c-4be9da16ef61",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 85093,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 4345,
+        "cost_estimate": 0.21219275,
+        "output_tokens": 9102,
+        "chapter_number": 4,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "result": {
+        "id": "chapter-41e2c064-dcb7-43e6-bd08-1825900d3144",
+        "goal": "Gjør den trygg og lett å finne: fyll kasser med glødesteiner, reparer gangbrua, heng lykter og fest tau.",
+        "nodes": [
+          {
+            "id": "mission-pack-stones",
+            "goal": "Fyll kassene med like mange glødende steiner så de er klare til å lyse opp stien.",
+            "kind": "mission",
+            "next": "mission-fix-bridge",
+            "title": "Pakk glødende steiner i kasser",
+            "before": "Gamle Røde fant en kurv med glødende steiner og satte den ved brygga. En kasse står nå ved brygga.",
+            "success": "Kassene er fylt med steiner og står klare ved brygga.",
+            "variants": [
+              {
+                "id": "v-pack-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kassegruppe",
+                      "label": "Kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "glodestein",
+                      "label": "Glødende steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "kassegruppe"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "glodestein"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "kassegruppe"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "group kasser",
+                      "working": "highlight steiner",
+                      "incorrect": "highlight kasser"
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 899635243,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} kasser med {{each}} steiner i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner er det totalt når hver kasse har {{each}} steiner og det er {{groups}} kasser?"
+              }
+            ]
+          },
+          {
+            "id": "mission-fix-bridge",
+            "goal": "Legg planker i de tomme plassene på gangbrua så den blir trygg å gå på.",
+            "kind": "mission",
+            "next": "mission-hang-lanterns",
+            "title": "Reparer gangbrua med planker",
+            "before": "Etter at kasser ble samlet ved brygga, gikk Runi over gangbrua og oppdaget at noen planker manglet. Kassene står ved enden av brua.",
+            "success": "Plankene ligger i plassene, og brua er trygg å gå på.",
+            "variants": [
+              {
+                "id": "v-plank-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "plankplasser",
+                      "label": "Plankeplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "plankerpaaplass",
+                      "label": "Planker på plass",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "plankplasser"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankerpaaplass"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankplasser"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill plankeplasser",
+                      "working": "highlight planker",
+                      "incorrect": "highlight plankeplasser"
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 899635327,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut {{total}} − {{known}} for å finne hvor mange planker som mangler.",
+                "representation": "konkret",
+                "questionTemplate": "Gangbrua trenger {{total}} planker. Det står allerede {{known}} planker på plass. Hvor mange mangler?"
+              }
+            ]
+          },
+          {
+            "id": "mission-hang-lanterns",
+            "goal": "Heng lykter på signalstolpene så stien blir lys om kvelden.",
+            "kind": "mission",
+            "next": "mission-secure-ropes",
+            "title": "Heng lykter på signalstolpene",
+            "before": "Da brua fikk nye planker, kunne Runi gå trygt til signalstolpene. Gangbrua er nå trygg å gå på.",
+            "success": "Lyktene henger på stolpene og gjør stien synlig.",
+            "variants": [
+              {
+                "id": "v-lantern-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "signalstolper",
+                      "label": "Signalstolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lykter",
+                      "label": "Lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "lykter"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lykter"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "signalstolper"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "move lykter",
+                      "working": "highlight lykter",
+                      "incorrect": "highlight stolper"
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 899635226,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Multiplikasjon: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter henger det totalt når hver signalstolpe får {{each}} lykter og det er {{groups}} signalstolper?"
+              }
+            ]
+          },
+          {
+            "id": "mission-secure-ropes",
+            "goal": "Fest tau slik at lyktene sitter godt fast i vinden.",
+            "kind": "mission",
+            "next": "ending-success",
+            "title": "Fest tau rundt lyktene",
+            "before": "Lyktene henger nå på stolpene. Signalstolpene har nå lanterner hengende.",
+            "success": "Tau er festet og lyktene er trygge.",
+            "variants": [
+              {
+                "id": "v-rope-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "tauplasser",
+                      "label": "Tau",
+                      "assetId": "rope",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "taupaa",
+                      "label": "Tau på benken",
+                      "assetId": "rope",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "tauplasser"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "taupaa"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "tauplasser"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill tauplasser",
+                      "working": "highlight tau",
+                      "incorrect": "highlight tauplasser"
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 899635361,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det skal være {{total}} tau. {{known}} ligger allerede på benken. Hvor mange må vi hente mer?"
+              }
+            ]
+          },
+          {
+            "id": "ending-success",
+            "hook": "Vil du hjelpe Runi med flere oppgaver i skogen en annen gang?",
+            "kind": "ending",
+            "narration": "Runi har gjort den trygg: kassene med glødesteiner, en hel gangbru, lykter på stolpene og tau som holder alt på plass. Nå kan familien finne den lune den lett og trygt."
+          }
+        ],
+        "title": "Runi og den trygge den",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi, den lille rødreven, vil gjøre den lune den trygg for familien. Hun trenger hjelp til å samle lysstein, reparere brua, henge lykter og feste tau.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "harbor",
+            "name": "Brygga"
+          },
+          {
+            "id": "forest",
+            "name": "Skogsstien"
+          },
+          {
+            "id": "workshop",
+            "name": "Verkstedet"
+          }
+        ],
+        "entryNodeId": "mission-pack-stones",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:06:58.544635+00:00",
+      "completed_at": "2026-10-17T10:08:24.105746+00:00"
+    },
+    {
+      "id": "bd434b61-6448-4cbf-8c43-f65c5f0c5cf4",
+      "phase": "review",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-review",
+        "latency_ms": 40424,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 4889,
+        "cost_estimate": 0.10371075,
+        "output_tokens": 4103,
+        "chapter_number": 4,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "result": {
+        "issues": [
+          "Scene-object quantity ambiguity across several variants: the question texts state counts per container (f.eks. \"hver kasse har 3 steiner\" eller \"hver stolpe får 3 lykter\"), men scene-objektene lister bare én mengde for steiner/lykter (quantity: 3). Det er uklart om dette er 'per kasse/stolpe' eller totalt. Rettelse: enten vis totalsummen i scenen (f.eks. 15 steiner, 6 lykter) eller angi at objektet er en 'per-enhet'-visning (f.eks. '3 steiner per kasse' eller gjengi 5 grupper med 3 steiner).",
+          "I variantene for heng-lykter og pakk-steiner bør bildebeskrivelsen konkret vise samme relasjon som spørsmålet: '3 per stolpe' må reflekteres ved å vise to stolper med 3 lykter hver (eller 6 lykter totalt). Ellers kan eleven bli forvirret mellom 'per-enhet' og 'total'.",
+          "Kontroller lokasjonskonsistens for 'mission-fix-bridge': før-teksten sier 'Kassene står ved enden av brua.' Variantens scene har location 'forest' (Skogsstien). Dette kan være korrekt hvis brua ligger i skogen, men bør bekreftes/gjøres eksplisitt i før-teksten eller scenebeskrivelsen for å unngå forvirring (brygga vs. skogsstien).",
+          "Forslag til forbedring av årsaksforklaring (valgfritt, men anbefalt): gjøre eksplisitt at det å samle kassene ved brygga gjorde at Runi gikk over gangbrua og dermed oppdaget de manglende plankene. Nåværende formulering gir dette, men en setning som sier at kassene stod ved brua slik at Runi kunne gå over, vil styrke årsakskjeden."
+        ],
+        "approved": false,
+        "missions": [
+          {
+            "missionId": "mission-pack-stones",
+            "sceneAgreement": "Scene viser 'kassegruppe' quantity: 5 og 'glodestein' quantity: 3. Spørsmålet krever å forstå '3 steiner per kasse'. Nåværende scene kan feiltolkes som '3 steiner totalt'. Krav: juster scenen til å vise enten 15 steiner totalt eller visuelt 5 grupper med 3 steiner hver (eller merknad '3 per kasse') slik at bildet stemmer entydig med spørsmålet.",
+            "mathematicalNeed": "Multiplikasjon: beregne totalt antall steiner når en enhet (kasse) inneholder et gitt antall (3) og det finnes et gitt antall enheter (5). Regneoperasjon: 5 × 3 = 15. Hvorfor regelen løser problemet: multiplikasjon gir raskt totalen når man har lik mengde i hver gruppe (her like mange steiner per kasse) i stedet for å telle hver stein enkeltvis.",
+            "physicalRuleQuote": "Tenk: 5 kasser med 3 steiner i hver."
+          },
+          {
+            "missionId": "mission-fix-bridge",
+            "sceneAgreement": "Scene viser 'plankeplasser' quantity: 10 og 'planker på plass' quantity: 2, som stemmer direkte med spørsmålet. Lokasjonstekst sier 'Kassene står ved enden av brua.' Scene location er 'forest' (Skogsstien). Bekreft at brua er på skogsstien slik at plasseringstekst og scene-lokasjon er konsistente.",
+            "mathematicalNeed": "Subtraksjon: finne differansen mellom totalt antall nødvendige planker (10) og allerede eksisterende planker (2). Regneoperasjon: 10 − 2 = 8. Hvorfor regelen løser problemet: subtraksjon gir antall manglende enheter når man vet totalbehovet og det som allerede er på plass.",
+            "physicalRuleQuote": "Regn ut 10 − 2 for å finne hvor mange planker som mangler."
+          },
+          {
+            "missionId": "mission-hang-lanterns",
+            "sceneAgreement": "Scene viser 'signalstolper' quantity: 2 og 'lykter' quantity: 3. Dette kan tolkes som '3 lykter totalt' i stedet for '3 per stolpe'. Krav: juster scenen til å vise 2 stolper med 3 lykter på hver (eller vise 6 lykter totalt) slik at bildet representerer spørsmålets 'per stolpe'-forhold uten tvetydighet.",
+            "mathematicalNeed": "Multiplikasjon: beregne totalt antall lykter når hver signalstolpe får 3 lykter og det er 2 stolper. Regneoperasjon: 2 × 3 = 6. Hvorfor regelen løser problemet: multiplikasjon summerer like store grupper (lykter per stolpe) til en total uten å måtte telle hver lykt separat.",
+            "physicalRuleQuote": "Multiplikasjon: 2 × 3."
+          },
+          {
+            "missionId": "mission-secure-ropes",
+            "sceneAgreement": "Scene viser 'tauplasser' quantity: 11 og 'tau på benken' quantity: 5, som stemmer med tekstens data. Bildet representerer tydelig totalbehov og allerede tilgjengelig mengde, slik at subtraksjonsoppgaven er entydig.",
+            "mathematicalNeed": "Subtraksjon: finne hvor mange tau som må hentes når totalt nødvendig antall tau er 11 og 5 allerede ligger på benken. Regneoperasjon: 11 − 5 = 6. Hvorfor regelen løser problemet: subtraksjon finner manglende mengde ved å trekke bort det som allerede er tilgjengelig fra totalbehovet.",
+            "physicalRuleQuote": "Regn: 11 − 5."
+          }
+        ],
+        "variation": "Hver oppdrag har én 'primary' variant som er spesifisert. Vurder å gjøre scenespesifikasjon eksplisitt om per-enhet vs total for å unngå tolkingsvariasjon.",
+        "continuity": "Generelt sammenhengende kausal kjede: pakking av kasser ved brygga → Runi går over gangbrua og oppdager manglende planker → reparasjon gjør brua trygg → Runi går til signalstolpene og henger lykter → tau festes rundt lyktene. Den implisitte årsaken for hvert steg er at forrige suksess (kassene/bru/reparasjon/lykter) gjør det mulig å nå neste sted eller oppdage neste behov. Det anbefales likevel å tydeliggjøre at kassene ved brygga gjorde det mulig for Runi å krysse brua og dermed oppdage de manglende plankene, for å møte kravet om tydelig årsaksforbindelse.",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      },
+      "started_at": "2026-10-17T10:08:24.694513+00:00",
+      "completed_at": "2026-10-17T10:09:05.679632+00:00"
+    },
+    {
+      "id": "e96d6442-8c86-46cb-afc3-6fecfc338306",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 55721,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 7555,
+        "cost_estimate": 0.15086225,
+        "output_tokens": 5913,
+        "chapter_number": 4,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+      "result": {
+        "id": "chapter-41e2c064-dcb7-43e6-bd08-1825900d3144",
+        "goal": "Gjør den trygg og lett å finne: fyll kasser med glødesteiner, reparer gangbrua, heng lykter og fest tau.",
+        "nodes": [
+          {
+            "id": "mission-pack-stones",
+            "goal": "Fyll kassene med like mange glødende steiner så de er klare til å lyse opp stien.",
+            "kind": "mission",
+            "next": "mission-fix-bridge",
+            "title": "Pakk glødende steiner i kasser",
+            "before": "Gamle Røde fant en kurv med glødende steiner og satte den ved brygga. En kasse står nå ved brygga.",
+            "success": "Kassene er fylt med steiner og står klare ved brygga.",
+            "variants": [
+              {
+                "id": "v-pack-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kassegruppe",
+                      "label": "Kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "glodestein",
+                      "label": "Glødende steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "kassegruppe"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "glodestein"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "kassegruppe"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "group kasser",
+                      "working": "highlight steiner",
+                      "incorrect": "highlight kasser"
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 899635243,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} kasser med {{each}} steiner i hver.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner er det totalt når hver kasse har {{each}} steiner og det er {{groups}} kasser?"
+              }
+            ]
+          },
+          {
+            "id": "mission-fix-bridge",
+            "goal": "Legg planker i de tomme plassene på gangbrua så den blir trygg å gå på.",
+            "kind": "mission",
+            "next": "mission-hang-lanterns",
+            "title": "Reparer gangbrua med planker",
+            "before": "Etter at kassene ble samlet ved brygga, bar Runi noen kasser over gangbrua på skogsstien. Da oppdaget hun at noen planker manglet. Kassene står ved enden av brua, slik at hun kunne gå over og se hvor brua trengte reparasjon.",
+            "success": "Plankene ligger i plassene, og brua er trygg å gå på.",
+            "variants": [
+              {
+                "id": "v-plank-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "plankplasser",
+                      "label": "Plankeplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "plankerpaaplass",
+                      "label": "Planker på plass",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "plankplasser"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankerpaaplass"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankplasser"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill plankeplasser",
+                      "working": "highlight planker",
+                      "incorrect": "highlight plankeplasser"
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 899635327,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut {{total}} − {{known}} for å finne hvor mange planker som mangler.",
+                "representation": "konkret",
+                "questionTemplate": "Gangbrua trenger {{total}} planker. Det står allerede {{known}} planker på plass. Hvor mange mangler?"
+              }
+            ]
+          },
+          {
+            "id": "mission-hang-lanterns",
+            "goal": "Heng lykter på signalstolpene så stien blir lys om kvelden.",
+            "kind": "mission",
+            "next": "mission-secure-ropes",
+            "title": "Heng lykter på signalstolpene",
+            "before": "Da brua fikk nye planker, kunne Runi gå trygt til signalstolpene. Gangbrua er nå trygg å gå på, og Runi står ved verkstedet hvor stolpene står klare.",
+            "success": "Lyktene henger på stolpene og gjør stien synlig.",
+            "variants": [
+              {
+                "id": "v-lantern-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "signalstolper",
+                      "label": "Signalstolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lykter",
+                      "label": "Lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "lykter"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lykter"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "signalstolper"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "move lykter",
+                      "working": "highlight lykter",
+                      "incorrect": "highlight stolper"
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 899635226,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Multiplikasjon: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter henger det totalt når hver signalstolpe får {{each}} lykter og det er {{groups}} signalstolper?"
+              }
+            ]
+          },
+          {
+            "id": "mission-secure-ropes",
+            "goal": "Fest tau slik at lyktene sitter godt fast i vinden.",
+            "kind": "mission",
+            "next": "ending-success",
+            "title": "Fest tau rundt lyktene",
+            "before": "Lyktene henger nå på stolpene. Signalstolpene har nå lanterner hengende, så vi må feste tau så de ikke blåser ned i vinden.",
+            "success": "Tau er festet og lyktene er trygge.",
+            "variants": [
+              {
+                "id": "v-rope-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "tauplasser",
+                      "label": "Tau",
+                      "assetId": "rope",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "taupaa",
+                      "label": "Tau på benken",
+                      "assetId": "rope",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "tauplasser"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "taupaa"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "tauplasser"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "fill tauplasser",
+                      "working": "highlight tau",
+                      "incorrect": "highlight tauplasser"
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 899635361,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Det skal være {{total}} tau. {{known}} ligger allerede på benken. Hvor mange må vi hente mer?"
+              }
+            ]
+          },
+          {
+            "id": "ending-success",
+            "hook": "Vil du hjelpe Runi med flere oppgaver i skogen en annen gang?",
+            "kind": "ending",
+            "narration": "Runi har gjort den trygg: kassene med glødesteiner, en hel gangbru, lykter på stolpene og tau som holder alt på plass. Nå kan familien finne den lune den lett og trygt."
+          },
+          {
+            "id": "end-choice",
+            "kind": "choice",
+            "prompt": "Hva vil du gjøre nå?",
+            "options": [
+              {
+                "id": "opt-help-more",
+                "next": "mission-pack-stones",
+                "label": "Hjelp Runi med flere oppgaver"
+              },
+              {
+                "id": "opt-end",
+                "next": "ending-success",
+                "label": "Avslutt"
+              }
+            ]
+          },
+          {
+            "id": "mission-debug-note",
+            "goal": "Sørg for at scenene viser grupper med riktig per-enhet-visning.",
+            "kind": "mission",
+            "next": "mission-pack-stones",
+            "title": "Intern konsistenskontroll",
+            "before": "Denne noden er en intern notis for å sikre at bildene viser 'per enhet' når spørsmål bruker 'per kasse' eller 'per stolpe'.",
+            "success": "Scenene viser 5 kasser med 3 steiner i hver, 2 stolper med 3 lykter på hver, og de totale planke- og tau-kravene visuelt.",
+            "variants": [
+              {
+                "id": "v-debug-1",
+                "role": "support",
+                "scene": {
+                  "objects": [],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [],
+                    "working": [],
+                    "incorrect": [],
+                    "reducedMotion": {
+                      "correct": "none",
+                      "working": "none",
+                      "incorrect": "none"
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "choice",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 0,
+                  "skillId": "kontroll",
+                  "difficulty": 1,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Sjekk at hvert bilde viser enten per-enhet eller totalen tydelig.",
+                "representation": "bilde",
+                "questionTemplate": "Visuell kontroll: Er bildene entydige?"
+              }
+            ]
+          },
+          {
+            "id": "final-choice",
+            "kind": "choice",
+            "prompt": "Vil du gå tilbake eller avslutte?",
+            "options": [
+              {
+                "id": "back-to-start",
+                "next": "mission-pack-stones",
+                "label": "Til start"
+              },
+              {
+                "id": "finish",
+                "next": "ending-success",
+                "label": "Avslutt"
+              }
+            ]
+          }
+        ],
+        "title": "Runi og den trygge den",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "opening": "Runi, den lille rødreven, vil gjøre den lune den trygg for familien. Hun trenger hjelp til å samle lysstein, reparere brua, henge lykter og feste tau.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "locations": [
+          {
+            "id": "harbor",
+            "name": "Brygga"
+          },
+          {
+            "id": "forest",
+            "name": "Skogsstien"
+          },
+          {
+            "id": "workshop",
+            "name": "Verkstedet"
+          }
+        ],
+        "entryNodeId": "mission-pack-stones",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-17T10:09:05.768692+00:00",
+      "completed_at": "2026-10-17T10:10:03.608156+00:00"
+    }
+  ],
+  "error": "editorial_review_rejected",
+  "jobId": "41e2c064-dcb7-43e6-bd08-1825900d3144",
+  "phase": "review",
+  "spent": 1.589159,
+  "state": "failed",
+  "commit": "a20c24927bdbf16a37805eacf32d66e908ace835"
+}

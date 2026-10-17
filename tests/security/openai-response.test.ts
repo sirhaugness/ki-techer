@@ -76,6 +76,44 @@ describe('OpenAI response accounting', () => {
       expect.objectContaining({ purpose: 'story-review', chapter_number: 4 }),
     );
   });
+  it('allows chapter authors to bound reasoning without weakening the review default', async () => {
+    vi.stubEnv('OPENAI_MODEL_DEFAULT', 'gpt-5-mini');
+    create.mockResolvedValue({
+      status: 'completed',
+      output_text: '{}',
+      output: [],
+      usage: { input_tokens: 100, output_tokens: 100 },
+    });
+    const provider = openaiProvider(vi.fn(), {
+      reserve: vi.fn().mockResolvedValue('r'),
+      settle: vi.fn(),
+    });
+    await provider.respond({
+      purpose: 'story-generate',
+      reasoningEffort: 'low',
+      instructions: '',
+      input: '{}',
+      schema: z.object({}),
+      maxOutputTokens: 12000,
+    });
+    expect(create).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        reasoning: { effort: 'low' },
+        max_output_tokens: 12000,
+      }),
+      expect.any(Object),
+    );
+    await provider.respond({
+      purpose: 'story-review',
+      instructions: '',
+      input: '{}',
+      schema: z.object({}),
+    });
+    expect(create).toHaveBeenLastCalledWith(
+      expect.objectContaining({ reasoning: { effort: 'medium' } }),
+      expect.any(Object),
+    );
+  });
   it.each([
     {
       status: 'incomplete',
