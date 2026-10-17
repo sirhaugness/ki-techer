@@ -600,11 +600,13 @@ function PreparedScene({
                   key={i}
                   data-effect={effect(get('groups').id)}
                 >
-                  <div className={styles.groupName}>
+                  <div
+                    className={styles.groupName}
+                    role="group"
+                    aria-label={`${get('groups').label} ${i + 1}`}
+                  >
                     <Picture id={get('groups').assetId} />
-                    <span>
-                      {get('groups').label} {i + 1}
-                    </span>
+                    <span>{i + 1}</span>
                   </div>
                   <div
                     className={
@@ -652,9 +654,9 @@ function PreparedScene({
           </>
         )}
       </div>
-      <p className={styles.sceneCaption}>
-        {view.outcome?.sceneText ?? mission.clue}
-      </p>
+      {view.outcome && (
+        <p className={styles.sceneCaption}>{view.outcome.sceneText}</p>
+      )}
     </div>
   );
 }

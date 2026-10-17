@@ -74,7 +74,19 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
   ).toBeVisible();
   const input = page.getByRole('textbox', { name: 'Svaret ditt' }),
     scene = page.getByTestId('prepared-scene');
-  await page.screenshot({ path: 'test-results/r3-grouping-viewport.png' });
+  async function viewportEvidence(name: string) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    const check = await page
+      .getByRole('button', { name: 'Sjekk svaret' })
+      .boundingBox();
+    expect(check).not.toBeNull();
+    expect(check!.y + check!.height).toBeLessThanOrEqual(768);
+    await expect(
+      page.getByRole('button', { name: 'Hjelp med regningen' }),
+    ).toBeInViewport();
+    await page.screenshot({ path: `test-results/r3-${name}-viewport.png` });
+  }
+  await viewportEvidence('grouping');
   await input.fill('11');
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'retry');
@@ -101,7 +113,7 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
   await page
     .getByRole('button', { name: 'Start eller fortsett kapittelet' })
     .click();
-  await page.screenshot({ path: 'test-results/r3-quantity-viewport.png' });
+  await viewportEvidence('quantity');
   await input.fill('6');
   await page.getByRole('button', { name: 'Sjekk svaret' }).click();
   await expect(scene).toHaveAttribute('data-phase', 'solved');
@@ -110,7 +122,7 @@ test('R3 controlled UI: interest, whole preparation, help, three missions and pe
     fullPage: true,
   });
   await page.getByRole('button', { name: 'Fortsett historien' }).click();
-  await page.screenshot({ path: 'test-results/r3-distribution-viewport.png' });
+  await viewportEvidence('distribution');
   for (let i = 1; i <= 3; i++)
     for (let n = 0; n < 4; n++)
       await page

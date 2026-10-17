@@ -9,13 +9,15 @@ Les deretter [GAME-REVISION](GAME-REVISION.md) og [SPEC §15](SPEC.md#15-avtalt-
 - R1/PR #16 er merget til main `5ad9807`. R2/PR #17 ble merget til gammel featurebranch, **ikke main**; den skal ikke videreføres.
 - R2 er [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18), `feat/chapter-player` → `main`, head `588578e`. Levende status kontrollert 17. oktober: åpen, full CI og migrasjoner grønne på head. Ingen merge utført av agenten.
 - R2s innloggede Preview-port er **bestått** på `55cdbdd`: ekte Auth/RLS/Leo-lås, tre oppdrag, feil/hjelp/riktig, observert bevegelse, pause/gjenopptak, reload og avslutning; 17 serverhandlinger med HTTP 200, ingen browserfeil. [Bevis](R2-VERIFICATION.md), [opptak/bilder](evidence/r2/README.md). Historie/hjelp er kodebestemt, ingen KI-kall.
-- Aktiv videreføring er `feat/chapter-preparation`, opprettet fra siste R2 `588578e`. R3-PR skal ha `feat/chapter-player` som base så lenge #18 er åpen. Kontroller live status før base endres.
+- Aktiv videreføring er `feat/chapter-preparation`, opprettet fra siste R2 `588578e`. [R3 utkast-PR #20](https://github.com/sirhaugness/ki-techer/pull/20) har `feat/chapter-player` som base så lenge #18 er åpen. Kontroller live status før base endres.
 
 ### R3: implementert, verifisering pågår
 
 Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, helt utkast, separat kontroll, ressursmanifest, service-only lagring, lease/idempotens, varig kall-/budsjettjournal, sikker projeksjon og lagret fortsettelse. Generator v1 er frosset før persistens. Forberedelse tar ingen økttid; gammel og ny spiller deler tidsgrenser. Full faglig tilpasning og flerturshjelp er fortsatt R4/R5.
 
-[Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest før siste recovery-rettelser: 531/531; nye database-/recovery-/generatorprøver: 15/15. Produksjonsbygg bestått. Nettleserprøve og faktisk Preview-worker/generert kapittel står fortsatt åpne; ikke kall R3 ferdig på grunnlag av disse lokale testene.
+[Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest 538/538, simulering, full CI og dev-migrasjon på `f34b7b2` er grønne. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker fullførte i `arn1` etter lukket nettleser, med deduplisering og begge simulerte avbrudd.
+
+Første ekte «Rever»-forsøk med gpt-5-mini hentet research, men stoppet unknown/draft uten elevvist oppdrag. Offline wire-feil (`oneOf`) er rettet til `anyOf`; ingen automatisk repetering eller frigitt ukjent forbruk. Ny prøve mot rettet kontrakt og menneskelig kapittelvurdering står åpne. R3 er derfor fortsatt utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -23,7 +25,7 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet tidligere KI-testforbruk er **2,99981825 kr av 10**, gjenstående **7,00018175 kr**. Ingen nye betalte R3-kall hittil. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen.
+Samlet konservativ KI-testbelastning er **3,48945025 kr av 10**, inkludert historisk 2,99981825 kr, ny research 0,17354975 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **6,51054975 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 

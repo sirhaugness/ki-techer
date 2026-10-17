@@ -108,7 +108,19 @@ export async function paidPhase<T>(
       : reserved && !usage?.usage_known
         ? 'unknown'
         : 'failed';
-    await finish(state, null);
+    const status = (error as { status?: unknown })?.status;
+    const message = error instanceof Error ? error.message : '';
+    await finish(state, {
+      failure: {
+        name: error instanceof Error ? error.name : 'Error',
+        status: typeof status === 'number' ? status : null,
+        // Never retain credentials, request headers or arbitrary provider text.
+        schemaError:
+          status === 400 && /schema/i.test(message)
+            ? message.slice(0, 1600)
+            : null,
+      },
+    });
     throw new PreparationError(
       state,
       denied

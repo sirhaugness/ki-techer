@@ -171,7 +171,7 @@ export function chapterView(
       ? 'Se hva du fikk til. Fortsett når du er klar.'
       : p.hintLevel
         ? hints[p.hintLevel - 1]
-        : view.teacher);
+        : view.mission.clue);
   return view;
 }
 export function advanceChapter(

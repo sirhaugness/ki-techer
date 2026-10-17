@@ -8,7 +8,16 @@ import {
   initialFacts,
 } from '../../lib/chapters/play';
 import { asJson } from '../../lib/learning/repository';
+import { z } from 'zod';
+import { chapterAuthorSchema } from '../../lib/chapters/production';
 describe('R3 chapter contracts and server projection', () => {
+  it('sends OpenAI a strict schema with anyOf instead of unsupported oneOf', () => {
+    const { packet } = productionFixture();
+    expect(chapterAuthorSchema.parse(packet)).toEqual(packet);
+    const schema = JSON.stringify(z.toJSONSchema(chapterAuthorSchema));
+    expect(schema).not.toContain('"oneOf"');
+    expect(schema).toContain('"anyOf"');
+  });
   it('requires a real supported asset and matching slots before publication', () => {
     const { packet, job, menu } = productionFixture();
     expect(productionDraft(packet, job, menu)).toEqual(packet);
@@ -101,5 +110,42 @@ describe('R3 chapter contracts and server projection', () => {
     );
     review.missions[0].physicalRuleQuote = 'En regel som ingen ser.';
     expect(reviewAccepted(review, packet, {})).toBe(false);
+  });
+  it('requires historical impact before the first task, including both entry choices', () => {
+    const { packet } = productionFixture();
+    const missions = packet.nodes.filter((n) => n.kind === 'mission');
+    const quote = 'Mira husker brevet fra den forrige turen.';
+    const review = {
+      approved: true,
+      issues: [],
+      continuity: 'Sammenhengende.',
+      variation: 'Ulike formål.',
+      historyEventIds: ['past-event'],
+      historyImpactQuote: quote,
+      missions: missions.map((m) => ({
+        missionId: m.id,
+        physicalRuleQuote: m.goal,
+        mathematicalNeed: 'Regningen løser hindringen.',
+        sceneAgreement: 'Samme mengder.',
+      })),
+    };
+    const facts = { events: [{ id: 'past-event' }] };
+    missions[0].success += ' ' + quote;
+    expect(reviewAccepted(review, packet, facts)).toBe(false);
+    missions[0].before += ' ' + quote;
+    expect(reviewAccepted(review, packet, facts)).toBe(true);
+    packet.nodes.push({
+      kind: 'choice',
+      id: 'start-choice',
+      prompt: 'Velg vei.',
+      options: [
+        { id: 'first', label: 'Første vei', next: missions[0].id },
+        { id: 'second', label: 'Andre vei', next: missions[1].id },
+      ],
+    });
+    packet.entryNodeId = 'start-choice';
+    expect(reviewAccepted(review, packet, facts)).toBe(false);
+    missions[1].before += ' ' + quote;
+    expect(reviewAccepted(review, packet, facts)).toBe(true);
   });
 });

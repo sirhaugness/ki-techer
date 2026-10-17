@@ -216,7 +216,7 @@
 }
 .actor {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 }
 .actor > span {
@@ -226,7 +226,7 @@
   background: #fff4dfee;
 }
 .workbench {
-  padding: 14px;
+  padding: 10px;
   background: #fff8e8e8;
 }
 .groupGrid {
@@ -306,7 +306,7 @@
   flex-wrap: wrap;
   gap: 12px;
   align-items: end;
-  margin-top: 16px;
+  margin-top: 8px;
 }
 .answer > p {
   flex: 1 0 100%;

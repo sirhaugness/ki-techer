@@ -1,0 +1,121 @@
+{
+  "commit": "f34b7b2c72569039c5b466dda219b2d544e9a6ea",
+  "jobId": "033eb8e6-24ac-46a0-bc0a-66258d433484",
+  "starts": [
+    {
+      "status": 200,
+      "body": {
+        "probeJobId": "033eb8e6-24ac-46a0-bc0a-66258d433484",
+        "runId": "wrun_41M54KPDCQ60KQ8Q0FPP9DJZQ5"
+      }
+    },
+    {
+      "status": 200,
+      "body": {
+        "probeJobId": "033eb8e6-24ac-46a0-bc0a-66258d433484",
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    }
+  ],
+  "errors": [],
+  "browserClosedBeforeCompletion": true,
+  "polls": [
+    {
+      "time": "2026-10-17T09:39:41.616Z",
+      "probe": {
+        "state": "running",
+        "phase": "research",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true
+        },
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    },
+    {
+      "time": "2026-10-17T09:39:45.082Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    },
+    {
+      "time": "2026-10-17T09:39:48.699Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    },
+    {
+      "time": "2026-10-17T09:39:52.282Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    },
+    {
+      "time": "2026-10-17T09:39:55.898Z",
+      "probe": {
+        "state": "ready",
+        "phase": "ready",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M54KPDDD60GWTF1YZJ5T6057"
+      }
+    }
+  ]
+}

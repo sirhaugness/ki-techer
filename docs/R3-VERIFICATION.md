@@ -54,21 +54,46 @@ er ikke foreldrearkiv. Faktisk Preview-region og kjøring må observeres separat
 
 ## Observerte kontroller
 
-- Før siste recovery-rettelser: full Vitest, **531/531**, 41 filer.
-- Etter rettelsene: **15/15** i database-, recovery- og frossen-generatorprøven.
-  Databasetesten kjører alle migrasjoner i PGlite, også familiegrenser,
-  eksport/sletting, budsjett og klokkelås. Recovery bruker mocks; det er ikke
-  en gjennomført Preview-worker.
-- Produksjonsbygg med Next 16.4/Turbopack og Workflow: bestått. Et tidligere
-  bygg manglet sandboxens child-process-rettighet (`spawnSync EPERM`); bygg
-  med godkjente miljørettigheter fullførte uten kodeomgåelse.
-- Nettleserprøve, aktuell CI, innlogget Preview-worker og første ekte
-  genererte kapittel registreres etter faktisk kjøring. De er foreløpig åpne.
+- Full Vitest på første implementasjon: **538/538**, 43 filer. Simulering bestått.
+- [Full CI på f34b7b2](https://github.com/sirhaugness/ki-techer/actions/runs/39021673546)
+  er grønn: statiske kontroller, tester, browser, ekte lokal Supabase/Auth,
+  produksjonsbygg og eksisterende tilgjengelighetsprøve. [Dev-migrasjon](https://github.com/sirhaugness/ki-techer/actions/runs/39021673564) er grønn.
+- Lokal samlet browser: 24 bestått, to Auth-prøver hoppet over. Én eldre mobiltest
+  traff femsekunders venting under kald oppstart og bestod målrettet omkjøring;
+  ingen timeout er økt. CI bestod uten denne feilen.
+- Ny spiller gjennomspilt med kontrollert API-fixture: feil, historie-/mattehjelp,
+  reload, tre konkrete konsekvenser, pause og avslutning. Etter kompaktering er
+  spørsmål, kontroll og hjelp samtidig synlige ved 1024×768. Opptak og bilder i
+  [evidens](evidence/r3/README.md). Dette er håndskrevet innhold, ikke modellkvalitet.
+- [Faktisk Preview](https://ki-techer-5w5nq203j-team-thor1.vercel.app/leo/kapittel),
+  `f34b7b2`, READY i `arn1`. To samtidige gratis probe-starter ga samme jobb;
+  den fullførte etter lukket nettleser, med observert gjenopptak av begge
+  simulerte avbrudd og worker-region `arn1`. Null KI-kall i proben.
+- Første ekte modellprøve: interesse «Rever», `gpt-5-mini`. Research fullført med
+  faktiske kilder. Utkast stoppet `unknown/draft`, uten elevvist oppdrag. Journalen
+  beholdes og sendes ikke automatisk på nytt. Ingen kapittel-/fortellerkvalitet
+  er godkjent fra dette forsøket.
+- Offline kontroll fant `oneOf` fra Zods diskriminerte nodeunion, som OpenAI
+  strict structured output ikke støtter. Wire-skjemaet bruker nå tilsvarende
+  `anyOf`; den lagrede kontrakten er uendret. Reviewer kontrollerte 18 strenge
+  objektformer, null `oneOf`. Dette er sannsynlig forklaring på det raske
+  leverandøravslaget, men første konkrete HTTP-feil ble ikke bevart. Senere
+  schemafeil får private, avgrensede diagnostikkdata i kalljournalen.
+- Tutor fant at historikksitat kunne ligge bare i en framtidig slutt/annen gren.
+  Porten krever nå synlig virkning før første oppgave på alle mulige startruter.
+  Regresjonstest dekker framtidig success og innledende valg.
 
 ## Kostnadsregnskap
 
-Tidligere forbruk **2,99981825 kr**. Ingen nye betalte R3-kall hittil.
-Gjenstående **7,00018175 kr** innen samlet godkjent ramme på 10 kr.
-En midlertidig konto nullstiller ikke dette regnskapet. Før ekte generering
-settes kontoens lavere testgrense til gjenstående ramme; både faktiske kall
-og uavklarte reservasjoner føres før eventuell ny prøve.
+Tidligere forbruk **2,99981825 kr**. Første R3-forsøk: bekreftet research
+**0,17354975 kr**, samt fullt beholdt usikker draft-reservasjon **0,31608225 kr**.
+Konservativt samlet **3,48945025 kr av 10**, gjenstående **6,51054975 kr**.
+Den usikre reservasjonen er ikke et bekreftet fakturabeløp, og frigis ikke på
+antakelse om schemafeil. Kontoens testgrense er fortsatt 7,00018175 kr inkludert
+alt nytt R3-arbeid; den er ikke økt eller nullstilt.
+
+Etter eksplisitt teknisk kontroll kan den avgrensede syntetiske jobben erstattes
+med en ny prøve mot rettet wire-kontrakt. Gammel unknown-journal og reservasjon
+beholdes med audit; `play_done` betyr da superseding av testjobb, ikke gjennomspilt
+historie. Bekreftet research-sjekkpunkt gjenbrukes. Ingen automatisk ny utsending
+av det usikre kallet. Ny generering og autentisert gjennomspilling står åpne.
