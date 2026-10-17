@@ -1,5 +1,23 @@
 # Bevarte R2-artefakter
 
+## Autentisert Preview
+
+16. oktober, commit `55cdbdd`, Chromium 1024×768, ekte Supabase Auth/RLS og
+    Leo-lås med uttrykkelig godkjente syntetiske testdata. Håndskrevet historie og
+    direkte kodebestemt hjelp; ingen KI-kall. Ingen innloggingshemmeligheter i filene.
+
+- [Hele gjennomspillingen](preview/full-chain.webm), med faktisk båtbevegelse,
+  feil/hjelp/riktig, pause, reload og avslutning.
+- [Åpning](preview/r2-opening.png), [hjelp](preview/r2-help.png),
+  [lykter](preview/r2-lights-solved.png),
+  [landgang](preview/r2-gangway-solved.png),
+  [levering](preview/r2-letters-solved.png).
+
+17 faktiske serverhandlinger svarte 200, ingen browserfeil. Ikke fysisk iPad,
+Safari eller barnetest. Se R2-VERIFICATION for versjon og oppryddingsstatus.
+
+## Tidligere lokal prøve
+
 Lokal Chromium, 16. oktober 2026, `4ae1549` med scenearia-rettelsen som ble `5710f6b`. Håndskrevet kapittel, direkte kodebestemt lærer og lokal Auth-fixture. Ingen ekte KI, virkelige elevdata eller innlogget Preview i disse filene.
 
 Kjøring: `PLAYWRIGHT_BROWSERS_PATH=/tmp/leo-playwright PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium npm run test:e2e -- tests/e2e/chapter-player.spec.ts`. To tester bestått. Skjermbilder bruker `fullPage`; de kan være høyere enn selve viewporten. Vanlig viewport er 1024×768; redusert bevegelse er 768×1024. Testen kontrollerer også 390×844 uten horisontal overflyt og knapper på minst 48×48.

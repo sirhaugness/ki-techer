@@ -198,6 +198,7 @@ export function LeoExperience({
         <Link href="/leo">🌱 Hjem</Link>
         <Link href="/leo/interesser">Mine interesser</Link>
         <Link href="/leo/provekapittel">Prøv den nye spillflaten</Link>
+        <Link href="/leo/kapittel">Lag et nytt eventyrkapittel</Link>
       </nav>
       {!view ? (
         <div className="leo-welcome">

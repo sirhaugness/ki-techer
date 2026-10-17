@@ -1,13 +1,13 @@
 import 'server-only';
-import { generate } from '../engine/skills/generators';
-import { seededRng } from '../engine/random';
+import { generate } from './generator-v1/skills/generators';
+import { seededRng } from './generator-v1/random';
 import type { MissionVariant } from './contracts';
-import { verifyGeneratedItem } from '../engine/verified-item';
+import { verifyGeneratedItem } from './generator-v1/verified-item';
 import {
   bindStoryProblem,
   storyQuantities,
   validateStoryProblem,
-} from '../engine/story-problem';
+} from './generator-v1/story-problem';
 import {
   chapterPackageSchema,
   chapterProgressSchema,

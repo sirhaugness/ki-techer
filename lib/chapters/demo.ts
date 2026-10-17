@@ -1,7 +1,7 @@
 import 'server-only';
 import { demoChapter } from './demo-chapter';
 import { materializeProblem, tutorContext } from './compile';
-import { checkAnswer } from '../engine/skills/generators';
+import { checkAnswer } from './generator-v1/skills/generators';
 import {
   demoCommandSchema,
   demoStateSchema,

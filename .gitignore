@@ -7,3 +7,9 @@ coverage/
 playwright-report/
 test-results/
 supabase/.temp/
+
+# Generated Workflow SDK handlers and local run data
+app/.well-known/workflow/
+.workflow-data/
+/.swc
+/.cache/

@@ -188,6 +188,14 @@ export const sagaFactsSchema = z
         z.object({ id, chapterId: id, missionId: id, summary: text }).strict(),
       )
       .max(10000),
+    choices: z
+      .array(
+        z
+          .object({ chapterId: id, nodeId: id, optionId: id, label: text })
+          .strict(),
+      )
+      .max(1000)
+      .optional(),
     inventory: z
       .array(
         z

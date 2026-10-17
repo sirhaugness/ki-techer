@@ -249,3 +249,15 @@ CI på `fa1aa98` viste `working` etter umiddelbar reload etter svarinnsending. P
 ## 2026-10-16: godkjent syntetisk testtilgang og innlogget R2-port
 
 Thor har uttrykkelig godkjent midlertidig syntetisk konto med husholdning/elev/enhet i leo-dev og sletting/etterkontroll, og ønsker færrest mulig nye godkjenningsspørsmål. Dette mandatet beholdes i AGENTS. Det omfatter avtalt Preview-/dev-verifisering, ikke produksjonsendringer eller forhøyet KI-budsjett. Innlogget R2 på 55cdbdd er bestått uten KI-kall. Tekniske slettingsfeil fra connectoren registreres som gjenstående opprydding, ikke som avslag eller utført sletting.
+
+## 17. oktober 2026: R3 bruker Workflow 5 og varig kalljournal
+
+Kapittelforberedelse flyttes til Workflow 5.2.2 med eksplisitt `arn1`, etter
+kontroll av multi-region/Hobby-støtte. Supabase beholder varig status og innhold;
+Workflow har kortere historikkretensjon. Start aksepteres før domain-jobbopprettelse.
+Separate, unike kalljournaler med stabil budsjettreservasjon hindrer automatisk
+gjenkjøp ved pending/unknown. Betalte steg har ingen SDK-retry; orkestratoren
+kan gjenoppta trygge sjekkpunkter. Generator v1 fryses før pakker persisteres.
+Kontrollert vektorbibliotek brukes i dette første produksjonssnittet; nye
+genererte medier og visuell bredde kommer i R5. Se R3-VERIFICATION for faktiske
+prøver, prisramme og begrensninger. R3 er ikke ferdig modellverifisert ennå.

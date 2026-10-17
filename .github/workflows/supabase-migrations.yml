@@ -1,7 +1,7 @@
 name: Supabase-migrasjoner
 on:
   pull_request:
-    branches: [main, leo-dev]
+    branches: [main, leo-dev, 'feat/chapter-*']
   push:
     branches: [main]
 permissions:

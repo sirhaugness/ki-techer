@@ -59,6 +59,7 @@ export type InterestRow = {
   times_used: number;
 };
 type AiCallRow = {
+  chapter_job_id: string | null;
   id: string;
   household_id: string;
   purpose: string;

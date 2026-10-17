@@ -34,6 +34,7 @@ export type ModelRequest = {
   results?: { call_id: string; output: string }[];
 };
 export type AiCall = {
+  chapter_job_id?: string;
   purpose: string;
   model: string;
   input_tokens: number;

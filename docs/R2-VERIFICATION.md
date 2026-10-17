@@ -76,3 +76,12 @@ Thor godkjente uttrykkelig den midlertidige syntetiske testkontoen med tilhøren
 Innloggingsøkten er globalt logget ut; read-only etterkontroll viste null aktive sessions/refresh-tokens og null ai_calls. Nettleserlagring og private lokale innloggingsfiler er slettet; egen midlertidig Vercel-deling er tilbakekalt. Sletting av de fire syntetiske dataradene/authbrukeren returnerte to ganger verktøyfeilen `Invalid or expired requestState`; etterkontroll viste fortsatt konto/husholdning/elev/enhet, uten aktive innlogginger. Sletting er uttrykkelig autorisert og følges opp; feilen er ikke en ny avvisning eller en ferdig opprydding.
 
 Den innloggede spillporten er bestått. R3 kan nå bygges fra R2, med oppryddingen som eksplisitt gjenstående driftspunkt. PR #18 forblir utkast og produksjon er uendret.
+
+## Opprydding ferdig 17. oktober
+
+Husholdning, elev og enhet ble slettet etter gjennomspillingen. Sletting av den
+gjenværende syntetiske Auth-brukeren lyktes nå gjennom samme Supabase-connector.
+Etterkontroll viste null Auth-bruker, sessions og parent-rader for testidentiteten.
+Ingen aktive tokens, private innloggingsfiler eller egen Preview-deling gjenstår.
+Preview-bilder og opptak er bevart i `docs/evidence/r2/preview/` uten hemmeligheter.
+R2-porten er ferdig; ingen ny godkjenning trengs for denne prøven.
