@@ -114,6 +114,10 @@ export async function paidPhase<T>(
       failure: {
         name: error instanceof Error ? error.name : 'Error',
         status: typeof status === 'number' ? status : null,
+        code:
+          (error as { code?: unknown })?.code === 'model_response_incomplete'
+            ? 'model_response_incomplete'
+            : null,
         // Never retain credentials, request headers or arbitrary provider text.
         schemaError:
           status === 400 && /schema/i.test(message)

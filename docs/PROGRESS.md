@@ -17,7 +17,7 @@ Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, 
 
 [Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest 538/538, simulering, full CI og dev-migrasjon på `f34b7b2` er grønne. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker fullførte i `arn1` etter lukket nettleser, med deduplisering og begge simulerte avbrudd.
 
-Første ekte «Rever»-forsøk med gpt-5-mini hentet research, men stoppet unknown/draft uten elevvist oppdrag. Offline wire-feil (`oneOf`) er rettet til `anyOf`; ingen automatisk repetering eller frigitt ukjent forbruk. Ny prøve mot rettet kontrakt og menneskelig kapittelvurdering står åpne. R3 er derfor fortsatt utkast.
+Seks ekte «Rever»-forsøk er bevart. De avdekket wire-/meny-/ressursfeil og svak modellkritikk. Femte pakke fikk modellgodkjenning, men menneskelig tutor fant falsk fortid på kortere valggrener samt enhets-/begrepsfeil; den er sperret før spill. Koden kontrollerer nå alle ruter og krever eksplisitt kritikk av hver rutes faktiske handlinger. Sjette forsøk traff ut-tokengrensen før brukbart utkast; forfatterens reasoning justeres til low, separat kritiker beholder medium. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå; R3 er fortsatt utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -25,11 +25,11 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **4,58897725 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 1,27307675 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **5,41102275 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **5,14664150 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 1,83074100 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **4,85335850 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 
-1. Fullfør R3-nettleserprøve, aktuell CI og dev-migrasjon. Prøv faktisk Preview-worker uten KI først, med nettleseren lukket og observerte sjekkpunkter/region.
+1. Gratis Preview-worker og kontrollert spiller er bestått; ikke bygg dem på nytt. Fullfør aktuell CI og ekte modell-/spillprøve etter rettet rutekontroll.
 2. Prøv første ekte genererte kapittel innen resterende budsjett; vurder råforsøk, avvisninger, elevsynlig tekst/scene, feil/hjelp/riktig og lagret fortsettelse. Faktisk designer/tutor/reviewer skal vurdere relevant bevis. En positiv modellkritiker er ikke menneskelig kvalitetsgodkjenning.
 3. Oppdater kostnad/evidens, rydd syntetiske data, oppdater PR og denne overleveringen. Bevar R2 som separat avhengighet; ingen produksjonsmerge.
 4. Deretter R4 (læringsmotor/adaptiv avvikling), R5 (lærer/tale/visuell bredde), R6 (overgang/foreldreinnsyn), R7 (full SPEC-verifisering). Hele kravkartet i GAME-REVISION gjelder; tre demooppdrag er ikke hele produktet.

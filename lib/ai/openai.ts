@@ -155,9 +155,11 @@ export function openaiProvider(
             ...(/^(gpt-[56]|o[134])/.test(model)
               ? {
                   reasoning: {
-                    effort: request.purpose.startsWith('story-')
-                      ? ('medium' as const)
-                      : ('low' as const),
+                    effort:
+                      request.reasoningEffort ??
+                      (request.purpose.startsWith('story-')
+                        ? ('medium' as const)
+                        : ('low' as const)),
                   },
                 }
               : {}),

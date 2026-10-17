@@ -181,3 +181,14 @@ Rutebevisets semantiske innhold trenger fortsatt faktisk modell-/menneskevurderi
 Nye bekreftede kall kostet 0,27988950 kr. Konservativt samlet **4,86886675 kr
 av 10**, inkludert beholdt ukjent reservasjon; gjenstående **5,13113325 kr**.
 Ingen forbruksnullstilling, grenseøkning eller automatisk nykjøp av ukjent kall.
+
+## Sjette prøve: kjent forbruk, ubrukelig svar
+
+`f2f9b88`: author-kallet brukte hele grensen på 12000 ut-token på108sekunder,
+returnerte ikke et brukbart utkast og stoppet failed/provider_failed i draft.
+Forbruket er kjent og ført, ingen pakke ble publisert. Konkrete incomplete-koder
+var ikke bevart i denne journalen; feltet registreres nå eksplisitt ved slike
+svar. Dette er ikke unknown og ikke en ny historie-/spillkvalitetsprøve.
+Kostnad0,27777475 kr; konservativt samlet **5,14664150 kr**, gjenstående
+**4,85335850 kr**. Forfatter får nå eksplisitt low reasoning innen samme token-,
+tids- og budsjettgrense; separat kritiker beholder medium. Ingen skjult retry.
