@@ -14,6 +14,7 @@ import {
   productionDraft,
   author,
   critic,
+  reviewIssues,
   reviewAccepted,
   readyManifest,
   type ProblemOption,
@@ -32,6 +33,7 @@ import { asJson } from '../lib/learning/repository';
 type PhaseData = {
   mode?: string;
   probeFailed?: boolean;
+  probeRevisionRan?: boolean;
   interest: { key: string; label: string };
   facts: unknown;
   menu: ProblemOption[];
@@ -137,6 +139,7 @@ async function phase(
   owner: string,
   expected: ChapterJob['phase'],
   work: (job: ChapterJob, data: PhaseData) => Promise<void>,
+  runProbeWork = false,
 ) {
   const job = await jobById(jobId);
   if (job.phase !== expected) return;
@@ -156,7 +159,7 @@ async function phase(
   });
   try {
     const data = job.data as unknown as PhaseData;
-    if (data.mode === 'probe') {
+    if (data.mode === 'probe' && !runProbeWork) {
       if (expected === 'research' && !data.probeFailed) {
         const flag = await chapterDb()
           .from('chapter_jobs')
@@ -266,62 +269,144 @@ export async function draftChapter(jobId: string, owner: string) {
   });
 }
 draftChapter.maxRetries = 0;
-export async function reviewChapter(jobId: string, owner: string) {
+type ReviewDecision =
+  { needsRevision: false } | { needsRevision: true; issues: unknown };
+/** One critic call per durable step: correction never shares its 300s window. */
+export async function reviewChapter(
+  jobId: string,
+  owner: string,
+  attempt: 0 | 1 = 0,
+): Promise<ReviewDecision> {
   'use step';
-  await phase(jobId, owner, 'review', async (job, d) => {
-    let draft = d.draft,
-      packet: ChapterPackage | undefined,
-      review: unknown,
-      issues: unknown;
-    for (let attempt = 0; attempt < 2; attempt++) {
-      if (attempt === 1)
-        draft = await paidPhase(job, owner, 'draft-revision', (provider) =>
-          author(provider, job, d.menu, d.research, { draft, issues }),
-        );
-      try {
-        packet = productionDraft(draft, job, d.menu);
-      } catch (e) {
-        issues = {
-          structural: e instanceof Error ? e.message : 'Invalid draft',
-        };
-        continue;
-      }
-      review = await paidPhase(
-        job,
-        owner,
-        attempt === 0 ? 'review' : 'review-revision',
-        (provider) => critic(provider, packet!, d.facts, d.research),
-      );
-      if (reviewAccepted(review, packet, d.facts)) {
-        // Moderation is free but still logged, and covers every new narrative field.
-        const moderator = openaiProvider(
-          aiLogger(job.household_id),
-          budgetGuard(job.household_id),
-        );
-        if (!(await moderator.moderate(JSON.stringify(packet))))
-          throw new PreparationError('failed', 'chapter_not_approved');
+  let decision: ReviewDecision = { needsRevision: false };
+  await phase(
+    jobId,
+    owner,
+    'review',
+    async (job, d) => {
+      if (d.mode === 'probe') {
+        if (attempt === 0) {
+          decision = {
+            needsRevision: true,
+            issues: { probe: 'controlled editorial correction' },
+          };
+          return;
+        }
+        if (!d.probeRevisionRan)
+          throw new PreparationError('failed', 'probe_revision_missing');
         await checkpoint(job, owner, 'assets', {
-          packet,
-          review,
-          attempts: attempt + 1,
+          probeReviewRecovered: true,
+          workerRegion: process.env.VERCEL_REGION ?? 'local',
         });
         return;
       }
-      issues = { editorial: review };
-    }
-    // Preserve actual attempts and findings, without publishing a rejected packet.
-    const stored = await chapterDb()
-      .from('chapter_jobs')
-      .update({ data: asJson({ ...d, rejectedDraft: draft, review, issues }) })
-      .eq('id', job.id)
-      .eq('owner', owner)
-      .eq('state', 'running');
-    if (stored.error)
-      throw new PreparationError('failed', 'review_diagnostics_unavailable');
-    throw new PreparationError('failed', 'editorial_review_rejected');
-  });
+      let draft = d.draft;
+      if (attempt === 1) {
+        const revised = await chapterDb()
+          .from('chapter_calls')
+          .select('state,result')
+          .eq('job_id', job.id)
+          .eq('phase', 'draft-revision')
+          .maybeSingle();
+        if (revised.error || revised.data?.state !== 'completed')
+          throw new PreparationError('failed', 'revision_result_missing');
+        draft = revised.data.result;
+      }
+      async function reject(issues: unknown, review: unknown = null) {
+        if (attempt === 0) {
+          decision = { needsRevision: true, issues };
+          return;
+        }
+        const stored = await chapterDb()
+          .from('chapter_jobs')
+          .update({
+            data: asJson({ ...d, rejectedDraft: draft, review, issues }),
+          })
+          .eq('id', job.id)
+          .eq('owner', owner)
+          .eq('state', 'running')
+          .eq('phase', 'review')
+          .select('id')
+          .maybeSingle();
+        if (stored.error || !stored.data)
+          throw new PreparationError(
+            'failed',
+            'review_diagnostics_unavailable',
+          );
+        throw new PreparationError('failed', 'editorial_review_rejected');
+      }
+      let packet: ChapterPackage;
+      try {
+        packet = productionDraft(draft, job, d.menu);
+      } catch (e) {
+        await reject({
+          structural: e instanceof Error ? e.message : 'Invalid draft',
+        });
+        return;
+      }
+      const review = await paidPhase(
+        job,
+        owner,
+        attempt === 0 ? 'review' : 'review-revision',
+        (provider) => critic(provider, packet, d.facts, d.research),
+      );
+      const contractIssues = reviewIssues(review, packet, d.facts);
+      if (contractIssues.length) {
+        await reject({ editorial: review, contract: contractIssues }, review);
+        return;
+      }
+      const moderator = openaiProvider(
+        aiLogger(job.household_id),
+        budgetGuard(job.household_id),
+      );
+      if (!(await moderator.moderate(JSON.stringify(packet))))
+        throw new PreparationError('failed', 'chapter_not_approved');
+      await checkpoint(job, owner, 'assets', {
+        packet,
+        review,
+        attempts: attempt + 1,
+      });
+    },
+    true,
+  );
+  return decision;
 }
 reviewChapter.maxRetries = 0;
+export async function reviseChapter(
+  jobId: string,
+  owner: string,
+  issues: unknown,
+) {
+  'use step';
+  await phase(
+    jobId,
+    owner,
+    'review',
+    async (job, d) => {
+      if (d.mode === 'probe') {
+        const saved = await chapterDb()
+          .from('chapter_jobs')
+          .update({ data: asJson({ ...d, probeRevisionRan: true }) })
+          .eq('id', job.id)
+          .eq('owner', owner)
+          .eq('state', 'running')
+          .eq('phase', 'review')
+          .select('id')
+          .maybeSingle();
+        if (saved.error || !saved.data)
+          throw new CheckpointUnavailable('Could not save correction probe.');
+        return;
+      }
+      // The existing journal stores the result before this step acknowledges it.
+      // A replay reads it; it never purchases a pending/unknown call again.
+      await paidPhase(job, owner, 'draft-revision', (provider) =>
+        author(provider, job, d.menu, d.research, { draft: d.draft, issues }),
+      );
+    },
+    true,
+  );
+}
+reviseChapter.maxRetries = 0;
 export async function prepareAssets(jobId: string, owner: string) {
   'use step';
   await phase(jobId, owner, 'assets', async (job, d) => {

@@ -1,0 +1,1870 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1999326775,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 4,
+          "positionsPerContainer": 2
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 4
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1999326792,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 2,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 2
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 1999326809,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1999326876,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 13,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 13
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1999326893,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "alreadyInstalled": 3
+        },
+        "quantities": {
+          "known": 3,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 1999326910,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 14,
+          "alreadyInstalled": 5
+        },
+        "quantities": {
+          "known": 5,
+          "total": 14
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "goal": "Hjelpe Runi med å få lys i hi og reparere signalstolpen så hi har lys og vei viser klart.",
+      "title": "Runi og lyset til hi",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "ending-lyset-pa-hi",
+          "hook": "Runi ser stolt på lyset og signalet. Kanskje hun snart bygger en liten bro ved stien.",
+          "kind": "ending",
+          "narration": "Runi får lys i hi og signalstolpen viser vei. Nå kan revunger og naboer finne hjem trygt om kvelden."
+        }
+      ],
+      "opening": "Runi den lille reven vil at hi skal få lys til kveldsturene. For å få det må hun samle lyssteiner, putte dem i lyktene og bruke planker til å reparere den gamle signalstolpen. Du skal hjelpe Runi med telling og regning underveis.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "mission-fylle-kassene",
+          "goal": "Finn totalt antall lyssteiner i kassene.",
+          "kind": "mission",
+          "next": "mission-fylle-lyktene",
+          "title": "Fylle kassene",
+          "before": "Runi står ved en kasse med tomme plasser klare til å fylles.",
+          "success": "Runi fylte kassene med lyssteiner.",
+          "variants": [
+            {
+              "id": "variant-kassene-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kasse1",
+                    "label": "kasse",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "steinbunke1",
+                    "label": "lysstein",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "steinbunke1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Kassene vises fylt uten bevegelse.",
+                    "working": "Elementene markeres rolig uten animasjon mens kassene fylles.",
+                    "incorrect": "Feil markeres ved at den aktuelle bunken blir rolig rammet inn."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 1999326775,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fylle-lyktene",
+          "goal": "Finn hvor mange lykter som fortsatt mangler steiner.",
+          "kind": "mission",
+          "next": "mission-samle-planker",
+          "title": "Fylle lyktene",
+          "before": "Kassene ble fylt med lyssteiner, og nå har Runi steiner til lyktene.",
+          "success": "Runi la lyssteiner i de lyktene som manglet.",
+          "variants": [
+            {
+              "id": "variant-lyktene-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lyktplasser1",
+                    "label": "lyktplass",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "fyltelykter1",
+                    "label": "fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lyktplasser1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "lyktplasser1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "fyltelykter1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende plassene vises fylt uten animasjon.",
+                    "working": "Fyllingen vises som diskrete markeringer uten bevegelse.",
+                    "incorrect": "Det markeres rolig hvilke plasser som fortsatt er tomme."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 1999326876,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut forskjellen mellom {{total}} og {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter mangler for å fylle alle {{total}} plasser når {{known}} allerede er på plass?"
+            }
+          ]
+        },
+        {
+          "id": "mission-samle-planker",
+          "goal": "Finn totalt antall planker når de fordeles i like kasser.",
+          "kind": "mission",
+          "next": "mission-reparere-stolpen",
+          "title": "Samle planker",
+          "before": "Nå som lyktene har steiner, kan Runi jobbe trygt ved stolpen og hente materialer.",
+          "success": "Runi samlet planker i kassene slik at hun har nok materialer til reparasjon.",
+          "variants": [
+            {
+              "id": "variant-planker-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kasseplanker1",
+                    "label": "kasse",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "plankebunke1",
+                    "label": "planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "kasseplanker1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "kasseplanker1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankebunke1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Kassene vises fylt med planker uten animasjon.",
+                    "working": "Plankene plasseres rolig i kassene uten bevegelse.",
+                    "incorrect": "Feil markeres ved at bunken blir stille omrammet."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1999326792,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-reparere-stolpen",
+          "goal": "Finn hvor mange planker som mangler for å fylle alle platene på stolpen.",
+          "kind": "mission",
+          "next": "ending-lyset-pa-hi",
+          "title": "Reparere stolpen",
+          "before": "Plankene er samlet og ligger klare ved stolpen, klare til å festes.",
+          "success": "Runi la de manglende plankene på signalstolpen og fikk den til å skinne igjen.",
+          "variants": [
+            {
+              "id": "variant-stolpen-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolpeplasser1",
+                    "label": "stolpeplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "monterteplanker1",
+                    "label": "monterte planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "stolpeplasser1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "stolpeplasser1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "monterteplanker1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Stolpen vises komplett uten bevegelse.",
+                    "working": "Plankene vises rolig plassert uten animasjon.",
+                    "incorrect": "Det markeres stille hvilke deler som fortsatt mangler."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1999326893,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut differansen mellom {{total}} og {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Brygga"
+        }
+      ],
+      "entryNodeId": "mission-fylle-kassene",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "editorial": {
+        "issues": [],
+        "routes": [
+          {
+            "routeId": "route-1",
+            "coherent": true,
+            "endingId": "ending-lyset-pa-hi",
+            "evidence": "mission-fylle-kassene gir 3 kasser med 5 lyssteiner i hver → 3×5 = 15 lyssteiner tilgjengelige. mission-fylle-lyktene krever at 13 plasser fylles når 4 allerede er på plass → 13−4 = 9 lyssteiner må settes i lyktene. 15 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 15−9 = 6 lyssteiner. mission-samle-planker gir 2 kasser med 5 planker i hver → 2×5 = 10 planker. mission-reparere-stolpen krever 12−3 = 9 planker for å fylle stolpen. 10 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 1 planke. Disse konkrete mengdeendringene forklarer hvorfor slutten (lys i hi og reparert stolpe) er mulig.",
+            "missionIds": [
+              "mission-fylle-kassene",
+              "mission-fylle-lyktene",
+              "mission-samle-planker",
+              "mission-reparere-stolpen"
+            ]
+          }
+        ],
+        "approved": true,
+        "missions": [
+          {
+            "missionId": "mission-fylle-kassene",
+            "sceneAgreement": "Sceneobjektene gir kasse1 quantity=3 og steinbunke1 quantity=5, som samsvarer med rendering (containerCount=3, positionsPerContainer=5). Derfor er totalsummen 3×5 = 15 lyssteiner. Regelen sitert over gjør at hvert sett må telles per beholder, ikke som én felles haug.",
+            "mathematicalNeed": "Multiplikasjon: regn ut antall ved å multiplisere antall beholdere (3) med antall plasser per beholder (5).",
+            "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+          },
+          {
+            "missionId": "mission-fylle-lyktene",
+            "sceneAgreement": "Sceneobjektene viser lyktplasser1 quantity=13 og fyltelykter1 quantity=4, som samsvarer med rendering (positionCount=13, alreadyInstalled=4). Kombinert med regelen at hver plass fylles med samme objekttype innebærer dette at 9 individuelle lyssteiner må brukes. Tidligere oppsamlede 15 lyssteiner er tilstrekkelig.",
+            "mathematicalNeed": "Subtraksjon: finn hvor mange plasser som er tomme ved å trekke allerede fylte (4) fra totalen (13): 13−4 = 9. Hver tom plass representerer ett objekt som må settes dit.",
+            "physicalRuleQuote": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler."
+          },
+          {
+            "missionId": "mission-samle-planker",
+            "sceneAgreement": "Sceneobjektene gir kasseplanker1 quantity=2 og plankebunke1 quantity=5, som matcher rendering (containerCount=2, positionsPerContainer=5). Dermed er 10 planker samlet og ligger klare ved stolpen.",
+            "mathematicalNeed": "Multiplikasjon: regn ut totalt antall planker ved å multiplisere antall kasser (2) med antall plasser per kasse (5): 2×5 = 10 planker.",
+            "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+          },
+          {
+            "missionId": "mission-reparere-stolpen",
+            "sceneAgreement": "Sceneobjektene viser stolpeplasser1 quantity=12 og monterteplanker1 quantity=3, som stemmer med rendering (positionCount=12, alreadyInstalled=3). De 10 planker som ble samlet tidligere dekker behovet på 9 planker, slik at stolpen kan fylles komplett.",
+            "mathematicalNeed": "Subtraksjon: finn hvor mange planker som mangler ved å trekke allerede monterte (3) fra totalen (12): 12−3 = 9 planker må festes.",
+            "physicalRuleQuote": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting."
+          }
+        ],
+        "variation": "Én lineær route med én variant per oppdrag. Representasjonene veksler mellom 'grouping' (multiplikasjon) og 'quantity' (differanse), begge konkrete og visuelt entydige.",
+        "continuity": "Lineær og konsistent: antall i hver scene stemmer sammen gjennom hele ruten. Kassene gir 3×5 = 15 lyssteiner, som dekker de 9 som mangler på 13-lyktplassene. Plankekassene gir 2×5 = 10 planker, som dekker de 9 som mangler på stolpen. Etter bruk blir det 6 lyssteiner og 1 planke til overs — dette er konsistent med alle førtekster og successtekster på ruten.",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      }
+    },
+    "review": {
+      "issues": [],
+      "routes": [
+        {
+          "routeId": "route-1",
+          "coherent": true,
+          "endingId": "ending-lyset-pa-hi",
+          "evidence": "mission-fylle-kassene gir 3 kasser med 5 lyssteiner i hver → 3×5 = 15 lyssteiner tilgjengelige. mission-fylle-lyktene krever at 13 plasser fylles når 4 allerede er på plass → 13−4 = 9 lyssteiner må settes i lyktene. 15 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 15−9 = 6 lyssteiner. mission-samle-planker gir 2 kasser med 5 planker i hver → 2×5 = 10 planker. mission-reparere-stolpen krever 12−3 = 9 planker for å fylle stolpen. 10 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 1 planke. Disse konkrete mengdeendringene forklarer hvorfor slutten (lys i hi og reparert stolpe) er mulig.",
+          "missionIds": [
+            "mission-fylle-kassene",
+            "mission-fylle-lyktene",
+            "mission-samle-planker",
+            "mission-reparere-stolpen"
+          ]
+        }
+      ],
+      "approved": true,
+      "missions": [
+        {
+          "missionId": "mission-fylle-kassene",
+          "sceneAgreement": "Sceneobjektene gir kasse1 quantity=3 og steinbunke1 quantity=5, som samsvarer med rendering (containerCount=3, positionsPerContainer=5). Derfor er totalsummen 3×5 = 15 lyssteiner. Regelen sitert over gjør at hvert sett må telles per beholder, ikke som én felles haug.",
+          "mathematicalNeed": "Multiplikasjon: regn ut antall ved å multiplisere antall beholdere (3) med antall plasser per beholder (5).",
+          "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+        },
+        {
+          "missionId": "mission-fylle-lyktene",
+          "sceneAgreement": "Sceneobjektene viser lyktplasser1 quantity=13 og fyltelykter1 quantity=4, som samsvarer med rendering (positionCount=13, alreadyInstalled=4). Kombinert med regelen at hver plass fylles med samme objekttype innebærer dette at 9 individuelle lyssteiner må brukes. Tidligere oppsamlede 15 lyssteiner er tilstrekkelig.",
+          "mathematicalNeed": "Subtraksjon: finn hvor mange plasser som er tomme ved å trekke allerede fylte (4) fra totalen (13): 13−4 = 9. Hver tom plass representerer ett objekt som må settes dit.",
+          "physicalRuleQuote": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler."
+        },
+        {
+          "missionId": "mission-samle-planker",
+          "sceneAgreement": "Sceneobjektene gir kasseplanker1 quantity=2 og plankebunke1 quantity=5, som matcher rendering (containerCount=2, positionsPerContainer=5). Dermed er 10 planker samlet og ligger klare ved stolpen.",
+          "mathematicalNeed": "Multiplikasjon: regn ut totalt antall planker ved å multiplisere antall kasser (2) med antall plasser per kasse (5): 2×5 = 10 planker.",
+          "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+        },
+        {
+          "missionId": "mission-reparere-stolpen",
+          "sceneAgreement": "Sceneobjektene viser stolpeplasser1 quantity=12 og monterteplanker1 quantity=3, som stemmer med rendering (positionCount=12, alreadyInstalled=3). De 10 planker som ble samlet tidligere dekker behovet på 9 planker, slik at stolpen kan fylles komplett.",
+          "mathematicalNeed": "Subtraksjon: finn hvor mange planker som mangler ved å trekke allerede monterte (3) fra totalen (12): 12−3 = 9 planker må festes.",
+          "physicalRuleQuote": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting."
+        }
+      ],
+      "variation": "Én lineær route med én variant per oppdrag. Representasjonene veksler mellom 'grouping' (multiplikasjon) og 'quantity' (differanse), begge konkrete og visuelt entydige.",
+      "continuity": "Lineær og konsistent: antall i hver scene stemmer sammen gjennom hele ruten. Kassene gir 3×5 = 15 lyssteiner, som dekker de 9 som mangler på 13-lyktplassene. Plankekassene gir 2×5 = 10 planker, som dekker de 9 som mangler på stolpen. Etter bruk blir det 6 lyssteiner og 1 planke til overs — dette er konsistent med alle førtekster og successtekster på ruten.",
+      "historyEventIds": [],
+      "historyImpactQuote": ""
+    },
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "goal": "Hjelpe Runi med å få lys i hi og reparere signalstolpen så hi har lys og vei viser klart.",
+      "title": "Runi og lyset til hi",
+      "actors": [
+        {
+          "id": "actor-runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "actor-anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "ending-lyset-pa-hi",
+          "hook": "Runi ser stolt på lyset og signalet. Kanskje hun snart bygger en liten bro ved stien.",
+          "kind": "ending",
+          "narration": "Runi får lys i hi og signalstolpen viser vei. Nå kan revunger og naboer finne hjem trygt om kvelden."
+        }
+      ],
+      "opening": "Runi den lille reven vil at hi skal få lys til kveldsturene. For å få det må hun samle lyssteiner, putte dem i lyktene og bruke planker til å reparere den gamle signalstolpen. Du skal hjelpe Runi med telling og regning underveis.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "mission-fylle-kassene",
+          "goal": "Finn totalt antall lyssteiner i kassene.",
+          "kind": "mission",
+          "next": "mission-fylle-lyktene",
+          "title": "Fylle kassene",
+          "before": "Runi står ved en kasse med tomme plasser klare til å fylles.",
+          "success": "Runi fylte kassene med lyssteiner.",
+          "variants": [
+            {
+              "id": "variant-kassene-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kasse1",
+                    "label": "kasse",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "steinbunke1",
+                    "label": "lysstein",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "steinbunke1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Kassene vises fylt uten bevegelse.",
+                    "working": "Elementene markeres rolig uten animasjon mens kassene fylles.",
+                    "incorrect": "Feil markeres ved at den aktuelle bunken blir rolig rammet inn."
+                  }
+                },
+                "locationId": "loc-forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 1999326809,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lyssteiner er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-fylle-lyktene",
+          "goal": "Finn hvor mange lykter som fortsatt mangler steiner.",
+          "kind": "mission",
+          "next": "mission-samle-planker",
+          "title": "Fylle lyktene",
+          "before": "Kassene ble fylt med lyssteiner, og nå har Runi steiner til lyktene.",
+          "success": "Runi la lyssteiner i de lyktene som manglet.",
+          "variants": [
+            {
+              "id": "variant-lyktene-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lyktplasser1",
+                    "label": "lyktplass",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "fyltelykter1",
+                    "label": "fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lyktplasser1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "lyktplasser1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "fyltelykter1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "De manglende plassene vises fylt uten animasjon.",
+                    "working": "Fyllingen vises som diskrete markeringer uten bevegelse.",
+                    "incorrect": "Det markeres rolig hvilke plasser som fortsatt er tomme."
+                  }
+                },
+                "locationId": "loc-workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 1999326876,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut forskjellen mellom {{total}} og {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter mangler for å fylle alle {{total}} plasser når {{known}} allerede er på plass?"
+            }
+          ]
+        },
+        {
+          "id": "mission-samle-planker",
+          "goal": "Finn totalt antall planker når de fordeles i like kasser.",
+          "kind": "mission",
+          "next": "mission-reparere-stolpen",
+          "title": "Samle planker",
+          "before": "Nå som lyktene har steiner, kan Runi jobbe trygt ved stolpen og hente materialer.",
+          "success": "Runi samlet planker i kassene slik at hun har nok materialer til reparasjon.",
+          "variants": [
+            {
+              "id": "variant-planker-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kasseplanker1",
+                    "label": "kasse",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "plankebunke1",
+                    "label": "planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "kasseplanker1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "kasseplanker1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "plankebunke1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Kassene vises fylt med planker uten animasjon.",
+                    "working": "Plankene plasseres rolig i kassene uten bevegelse.",
+                    "incorrect": "Feil markeres ved at bunken blir stille omrammet."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1999326792,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-reparere-stolpen",
+          "goal": "Finn hvor mange planker som mangler for å fylle alle platene på stolpen.",
+          "kind": "mission",
+          "next": "ending-lyset-pa-hi",
+          "title": "Reparere stolpen",
+          "before": "Plankene er samlet og ligger klare ved stolpen, klare til å festes.",
+          "success": "Runi la de manglende plankene på signalstolpen og fikk den til å skinne igjen.",
+          "variants": [
+            {
+              "id": "variant-stolpen-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolpeplasser1",
+                    "label": "stolpeplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "monterteplanker1",
+                    "label": "monterte planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["actor-runi", "actor-anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "stolpeplasser1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "stolpeplasser1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "monterteplanker1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Stolpen vises komplett uten bevegelse.",
+                    "working": "Plankene vises rolig plassert uten animasjon.",
+                    "incorrect": "Det markeres stille hvilke deler som fortsatt mangler."
+                  }
+                },
+                "locationId": "loc-harbor",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 1999326893,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut differansen mellom {{total}} og {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "loc-forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "loc-workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "loc-harbor",
+          "name": "Brygga"
+        }
+      ],
+      "entryNodeId": "mission-fylle-kassene",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "d4c8cada-44b8-4d24-95e7-5b670a2c055d",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 85814,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5443,
+        "cost_estimate": 0.16476625,
+        "output_tokens": 6809,
+        "chapter_number": 12,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "result": {
+        "id": "chapter-a764bef5-85cb-4c48-94dd-1672680cdd6e",
+        "goal": "Hjelpe Runi med å få lys i hi og reparere signalstolpen så hi har lys og vei viser klart.",
+        "title": "Runi og lyset til hi",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "ending-lyset-pa-hi",
+            "hook": "Runi ser stolt på lyset og signalet. Kanskje hun snart bygger en liten bro ved stien.",
+            "kind": "ending",
+            "narration": "Runi får lys i hi og signalstolpen viser vei. Nå kan revunger og naboer finne hjem trygt om kvelden."
+          }
+        ],
+        "opening": "Runi den lille reven vil at hi skal få lys til kveldsturene. For å få det må hun samle lyssteiner, putte dem i lyktene og bruke planker til å reparere den gamle signalstolpen. Du skal hjelpe Runi med telling og regning underveis.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "mission-fylle-kassene",
+            "goal": "Finn totalt antall lyssteiner i kassene.",
+            "kind": "mission",
+            "next": "mission-fylle-lyktene",
+            "title": "Fylle kassene",
+            "before": "Runi står ved en kasse med tomme plasser klare til å fylles.",
+            "success": "Runi fylte kassene med lyssteiner.",
+            "variants": [
+              {
+                "id": "variant-kassene-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kasse1",
+                      "label": "kasse",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "steinbunke1",
+                      "label": "lysstein",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "steinbunke1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Kassene vises fylt uten bevegelse.",
+                      "working": "Elementene markeres rolig uten animasjon mens kassene fylles.",
+                      "incorrect": "Feil markeres ved at den aktuelle bunken blir rolig rammet inn."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 1999326775,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-fylle-lyktene",
+            "goal": "Finn hvor mange lykter som fortsatt mangler steiner.",
+            "kind": "mission",
+            "next": "mission-samle-planker",
+            "title": "Fylle lyktene",
+            "before": "Kassene ble fylt med lyssteiner, og nå har Runi steiner til lyktene.",
+            "success": "Runi la lyssteiner i de lyktene som manglet.",
+            "variants": [
+              {
+                "id": "variant-lyktene-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lyktplasser1",
+                      "label": "lyktplass",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "fyltelykter1",
+                      "label": "fylte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lyktplasser1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "lyktplasser1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "fyltelykter1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende plassene vises fylt uten animasjon.",
+                      "working": "Fyllingen vises som diskrete markeringer uten bevegelse.",
+                      "incorrect": "Det markeres rolig hvilke plasser som fortsatt er tomme."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 1999326876,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut forskjellen mellom {{total}} og {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter mangler for å fylle alle {{total}} plasser når {{known}} allerede er på plass?"
+              }
+            ]
+          },
+          {
+            "id": "mission-samle-planker",
+            "goal": "Finn totalt antall planker når de fordeles i like kasser.",
+            "kind": "mission",
+            "next": "mission-reparere-stolpen",
+            "title": "Samle planker",
+            "before": "Nå som lyktene har steiner, kan Runi jobbe trygt ved stolpen og hente materialer.",
+            "success": "Runi samlet planker i kassene slik at hun har nok materialer til reparasjon.",
+            "variants": [
+              {
+                "id": "variant-planker-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kasseplanker1",
+                      "label": "kasse",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "plankebunke1",
+                      "label": "planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "kasseplanker1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "kasseplanker1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankebunke1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Kassene vises fylt med planker uten animasjon.",
+                      "working": "Plankene plasseres rolig i kassene uten bevegelse.",
+                      "incorrect": "Feil markeres ved at bunken blir stille omrammet."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 1999326792,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-reparere-stolpen",
+            "goal": "Finn hvor mange planker som mangler for å fylle alle platene på stolpen.",
+            "kind": "mission",
+            "next": "ending-lyset-pa-hi",
+            "title": "Reparere stolpen",
+            "before": "Plankene er samlet og ligger klare ved stolpen, klare til å festes.",
+            "success": "Runi la de manglende plankene på signalstolpen og fikk den til å skinne igjen.",
+            "variants": [
+              {
+                "id": "variant-stolpen-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolpeplasser1",
+                      "label": "stolpeplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "monterteplanker1",
+                      "label": "monterte planker",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "stolpeplasser1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "stolpeplasser1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "monterteplanker1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Stolpen vises komplett uten bevegelse.",
+                      "working": "Plankene vises rolig plassert uten animasjon.",
+                      "incorrect": "Det markeres stille hvilke deler som fortsatt mangler."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 1999326893,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut differansen mellom {{total}} og {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Brygga"
+          }
+        ],
+        "entryNodeId": "mission-fylle-kassene",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T19:44:33.047872+00:00",
+      "completed_at": "2026-10-19T19:45:59.595985+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "40cdaa35-9cf6-453d-8e23-a98bd2c53448",
+      "phase": "review",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-review",
+        "latency_ms": 36529,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5884,
+        "cost_estimate": 0.101079,
+        "output_tokens": 3859,
+        "chapter_number": 12,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "result": {
+        "issues": [
+          "Mengderegnskap: Det er mangel på lyssteiner mellom oppdraget 'Fylle kassene' og 'Fylle lyktene'. Variantene viser at kassene gir 4 kasser × 2 steiner = 8 lyssteiner totalt, mens lyktene krever 13 plasser med 4 allerede fylt → 13 - 4 = 9 steiner mangler. Det finnes kun 8 steiner fra kassene, men førteksten i 'Fylle lyktene' sier kun «har steiner til lyktene» uten å vise ekstra steiner. Dette er en konkret kvantitetskonflikt som gjør ruten inkonsistent.",
+          "Kausalitet/fortsettelse: Suksessmeldingen fra 'Fylle kassene' sier at kassene ble fylt, men scenen og etterfølgende spørsmål krever at de samme steinene faktisk dekker behovet i neste oppdrag. Manglende eksplisitt ekstra beholdning eller en forklaring på overførbare steiner gjør at neste oppdrag (fylle lyktene) ikke fysisk kan fullføres med de viste gjenstandene.",
+          "Klargjøring nødvendig: Første oppdrag (kassene) må eksplisitt vise eller beskrive at steinene i kassene kan transporteres og hvor mange som er tilgjengelige for lanternene, eller tallene i en av scenene må justeres for å unngå knapphet. (Forslag til retteregler gis, men endringer må gjøres i input.)",
+          "Historikk: actualHistory er tom. Derfor skal historyEventIds være tom og historyImpactQuote være tom. Dette er korrekt nå, men vær oppmerksom på at dersom historikk skal påvirke første oppdrag, må et konkret historyEventId og et eksakt sitat legges inn i førtekst/clue/goal.",
+          "Notat om representasjon: Grouping-renderingene (kassene og plankene) forklares riktig i rendering-teksten ('each er per beholder, aldri totalt'). Dette er korrekt brukt, men krever at leseren forstår at steinene i hver kasse summeres til total beholdning — dette må kobles eksplisitt i teksten hvis tilgjengelighet på tvers av oppdrag skal brukes."
+        ],
+        "routes": [
+          {
+            "routeId": "route-1",
+            "coherent": false,
+            "endingId": "ending-lyset-pa-hi",
+            "evidence": "Etter 'Fylle kassene' viser scenen 4 kasser med 2 lyssteiner hver → 4×2 = 8 steiner tilgjengelige. Neste oppdrag 'Fylle lyktene' har 13 plasser med 4 allerede fylt → 13 - 4 = 9 manglende steiner. De tilgjengelige 8 steinene fra kassene er ikke nok til de 9 som trengs; det finnes ingen annen eksplisitt kilde til ytterligere lyssteiner i scenene eller tekst. Derfor kan ikke det neste trinnet faktisk fullføres med de viste gjenstandene, og ruten er incoherent. Plankene og stolpen er konsistente (2 kasser × 5 planker = 10 planker tilgjengelig; stolpen trenger 12 - 3 = 9 planker).",
+            "missionIds": [
+              "mission-fylle-kassene",
+              "mission-fylle-lyktene",
+              "mission-samle-planker",
+              "mission-reparere-stolpen"
+            ]
+          }
+        ],
+        "approved": false,
+        "missions": [
+          {
+            "missionId": "mission-fylle-kassene",
+            "sceneAgreement": "Scenen viser 'kasse1' med quantity: 4 og 'steinbunke1' med quantity: 2. Rendering angir containerCount:4 og positionsPerContainer:2, som konkret representerer 4 beholdere hver med 2 posisjoner. Dette stemmer med operasjonen 4×2=8. Representasjonen er konsekvent for dette oppdraget.",
+            "mathematicalNeed": "Multiplikasjon: regn ut totalen ved å multiplisere antall beholdere med antall elementer per beholder. Her: 4 kasser × 2 lyssteiner per kasse = 8 lyssteiner totalt.",
+            "physicalRuleQuote": "Tenk: 4 ganger 2."
+          },
+          {
+            "missionId": "mission-fylle-lyktene",
+            "sceneAgreement": "Scenen viser 'lyktplasser1' quantity:13 og 'fyltelykter1' quantity:4, og rendering sier positionCount:13 med alreadyInstalled:4. Dette krever at 9 ytterligere lyssteiner settes inn. Konflikt: de tidligere kassene ga totalt 8 steiner (se 'Fylle kassene'), men oppdraget krever 9. Det finnes ingen eksplisitt ekstra steinkilde i scenene eller teksten som løser denne knappheten, så scenene er ikke fullstendig konsistente over ruten uten en ekstra forklaring eller endring.",
+            "mathematicalNeed": "Differanse/subtraksjon: finn hvor mange tomme plasser som gjenstår ved å trekke antall allerede fylte fra totalt antall plasser. Her: 13 - 4 = 9 lykter mangler lyssteiner.",
+            "physicalRuleQuote": "Regn ut forskjellen mellom 13 og 4."
+          },
+          {
+            "missionId": "mission-samle-planker",
+            "sceneAgreement": "Scenen viser 'kasseplanker1' quantity:2 og 'plankebunke1' quantity:5 med grouping-rendering containerCount:2 og positionsPerContainer:5. Det følger at Runi samlet 10 planker. Dette er eksplisitt og konsistent med den matematiske operasjonen som oppgaven spør etter.",
+            "mathematicalNeed": "Multiplikasjon: regn ut totalt antall planker ved å multiplisere antall kasser med antall planker per kasse. Her: 2 kasser × 5 planker = 10 planker.",
+            "physicalRuleQuote": "Tenk: 2 ganger 5."
+          },
+          {
+            "missionId": "mission-reparere-stolpen",
+            "sceneAgreement": "Scenen viser 'stolpeplasser1' quantity:12 og 'monterteplanker1' quantity:3, og rendering beskriver positionCount:12 med alreadyInstalled:3. Fra 'Samle planker' har Runi 10 planker tilgjengelig, som fysisk dekker de 9 som mangler. Dette leddet er derfor kvantitativt konsistent.",
+            "mathematicalNeed": "Differanse/subtraksjon: finn hvor mange planker som mangler for å fylle alle stolpeplatene ved å trekke allerede monterte fra totalt antall plasser. Her: 12 - 3 = 9 planker mangler.",
+            "physicalRuleQuote": "Regn ut differansen mellom 12 og 3."
+          }
+        ],
+        "variation": "Representasjonen veksler hensiktsmessig mellom 'grouping' (kasser og planker: beholdere med X posisjoner hver) og 'quantity' (lyktplasser og stolpeplasser: totale posisjoner med allerede-installerte som teller). Hver variant inneholder et klart fysisk hint (clue) som forklarer hvilken regneoperasjon som trengs (multiplikasjon eller differanse).",
+        "continuity": "Ruten følger en naturlig narrativ rekkefølge (fylle kasser → fylle lykter → samle planker → reparere stolpen → slutt). Imidlertid er kvantitetskontinuiteten brutt mellom 'Fylle kassene' (totalt 8 lyssteiner) og 'Fylle lyktene' (trenger 9 steiner for å fylle alle tomme plasser). Plankemengdene er konsistente (2 kasser × 5 = 10 planker, nok til de 9 som mangler).",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      },
+      "started_at": "2026-10-19T19:46:00.113845+00:00",
+      "completed_at": "2026-10-19T19:46:37.10644+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "46c63287-1c78-44ee-a1a8-3b84bab11038",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 61914,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 8984,
+        "cost_estimate": 0.137324,
+        "output_tokens": 5119,
+        "chapter_number": 12,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "result": {
+        "id": "chapter-a764bef5-85cb-4c48-94dd-1672680cdd6e",
+        "goal": "Hjelpe Runi med å få lys i hi og reparere signalstolpen så hi har lys og vei viser klart.",
+        "title": "Runi og lyset til hi",
+        "actors": [
+          {
+            "id": "actor-runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "actor-anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "ending-lyset-pa-hi",
+            "hook": "Runi ser stolt på lyset og signalet. Kanskje hun snart bygger en liten bro ved stien.",
+            "kind": "ending",
+            "narration": "Runi får lys i hi og signalstolpen viser vei. Nå kan revunger og naboer finne hjem trygt om kvelden."
+          }
+        ],
+        "opening": "Runi den lille reven vil at hi skal få lys til kveldsturene. For å få det må hun samle lyssteiner, putte dem i lyktene og bruke planker til å reparere den gamle signalstolpen. Du skal hjelpe Runi med telling og regning underveis.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "mission-fylle-kassene",
+            "goal": "Finn totalt antall lyssteiner i kassene.",
+            "kind": "mission",
+            "next": "mission-fylle-lyktene",
+            "title": "Fylle kassene",
+            "before": "Runi står ved en kasse med tomme plasser klare til å fylles.",
+            "success": "Runi fylte kassene med lyssteiner.",
+            "variants": [
+              {
+                "id": "variant-kassene-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kasse1",
+                      "label": "kasse",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "steinbunke1",
+                      "label": "lysstein",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "steinbunke1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Kassene vises fylt uten bevegelse.",
+                      "working": "Elementene markeres rolig uten animasjon mens kassene fylles.",
+                      "incorrect": "Feil markeres ved at den aktuelle bunken blir rolig rammet inn."
+                    }
+                  },
+                  "locationId": "loc-forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 1999326809,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lyssteiner er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-fylle-lyktene",
+            "goal": "Finn hvor mange lykter som fortsatt mangler steiner.",
+            "kind": "mission",
+            "next": "mission-samle-planker",
+            "title": "Fylle lyktene",
+            "before": "Kassene ble fylt med lyssteiner, og nå har Runi steiner til lyktene.",
+            "success": "Runi la lyssteiner i de lyktene som manglet.",
+            "variants": [
+              {
+                "id": "variant-lyktene-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lyktplasser1",
+                      "label": "lyktplass",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "fyltelykter1",
+                      "label": "fylte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lyktplasser1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "lyktplasser1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "fyltelykter1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "De manglende plassene vises fylt uten animasjon.",
+                      "working": "Fyllingen vises som diskrete markeringer uten bevegelse.",
+                      "incorrect": "Det markeres rolig hvilke plasser som fortsatt er tomme."
+                    }
+                  },
+                  "locationId": "loc-workshop",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 1999326876,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut forskjellen mellom {{total}} og {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter mangler for å fylle alle {{total}} plasser når {{known}} allerede er på plass?"
+              }
+            ]
+          },
+          {
+            "id": "mission-samle-planker",
+            "goal": "Finn totalt antall planker når de fordeles i like kasser.",
+            "kind": "mission",
+            "next": "mission-reparere-stolpen",
+            "title": "Samle planker",
+            "before": "Nå som lyktene har steiner, kan Runi jobbe trygt ved stolpen og hente materialer.",
+            "success": "Runi samlet planker i kassene slik at hun har nok materialer til reparasjon.",
+            "variants": [
+              {
+                "id": "variant-planker-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kasseplanker1",
+                      "label": "kasse",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "plankebunke1",
+                      "label": "planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "kasseplanker1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "kasseplanker1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "plankebunke1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Kassene vises fylt med planker uten animasjon.",
+                      "working": "Plankene plasseres rolig i kassene uten bevegelse.",
+                      "incorrect": "Feil markeres ved at bunken blir stille omrammet."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 1999326792,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} ganger {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker er det totalt når du har {{groups}} kasser med {{each}} i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-reparere-stolpen",
+            "goal": "Finn hvor mange planker som mangler for å fylle alle platene på stolpen.",
+            "kind": "mission",
+            "next": "ending-lyset-pa-hi",
+            "title": "Reparere stolpen",
+            "before": "Plankene er samlet og ligger klare ved stolpen, klare til å festes.",
+            "success": "Runi la de manglende plankene på signalstolpen og fikk den til å skinne igjen.",
+            "variants": [
+              {
+                "id": "variant-stolpen-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolpeplasser1",
+                      "label": "stolpeplasser",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "monterteplanker1",
+                      "label": "monterte planker",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["actor-runi", "actor-anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "stolpeplasser1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "stolpeplasser1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "monterteplanker1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Stolpen vises komplett uten bevegelse.",
+                      "working": "Plankene vises rolig plassert uten animasjon.",
+                      "incorrect": "Det markeres stille hvilke deler som fortsatt mangler."
+                    }
+                  },
+                  "locationId": "loc-harbor",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 1999326893,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut differansen mellom {{total}} og {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "loc-forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "loc-workshop",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "loc-harbor",
+            "name": "Brygga"
+          }
+        ],
+        "entryNodeId": "mission-fylle-kassene",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T19:46:37.266472+00:00",
+      "completed_at": "2026-10-19T19:47:39.572726+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "fe9cd646-2b69-4c9d-8d7a-9978433f0bc8",
+      "phase": "review-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-review",
+        "latency_ms": 69390,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5884,
+        "cost_estimate": 0.116875,
+        "output_tokens": 4577,
+        "chapter_number": 12,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "result": {
+        "issues": [],
+        "routes": [
+          {
+            "routeId": "route-1",
+            "coherent": true,
+            "endingId": "ending-lyset-pa-hi",
+            "evidence": "mission-fylle-kassene gir 3 kasser med 5 lyssteiner i hver → 3×5 = 15 lyssteiner tilgjengelige. mission-fylle-lyktene krever at 13 plasser fylles når 4 allerede er på plass → 13−4 = 9 lyssteiner må settes i lyktene. 15 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 15−9 = 6 lyssteiner. mission-samle-planker gir 2 kasser med 5 planker i hver → 2×5 = 10 planker. mission-reparere-stolpen krever 12−3 = 9 planker for å fylle stolpen. 10 tilgjengelige ≥ 9 som trengs, så oppdraget kan fullføres; dette etterlater 1 planke. Disse konkrete mengdeendringene forklarer hvorfor slutten (lys i hi og reparert stolpe) er mulig.",
+            "missionIds": [
+              "mission-fylle-kassene",
+              "mission-fylle-lyktene",
+              "mission-samle-planker",
+              "mission-reparere-stolpen"
+            ]
+          }
+        ],
+        "approved": true,
+        "missions": [
+          {
+            "missionId": "mission-fylle-kassene",
+            "sceneAgreement": "Sceneobjektene gir kasse1 quantity=3 og steinbunke1 quantity=5, som samsvarer med rendering (containerCount=3, positionsPerContainer=5). Derfor er totalsummen 3×5 = 15 lyssteiner. Regelen sitert over gjør at hvert sett må telles per beholder, ikke som én felles haug.",
+            "mathematicalNeed": "Multiplikasjon: regn ut antall ved å multiplisere antall beholdere (3) med antall plasser per beholder (5).",
+            "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+          },
+          {
+            "missionId": "mission-fylle-lyktene",
+            "sceneAgreement": "Sceneobjektene viser lyktplasser1 quantity=13 og fyltelykter1 quantity=4, som samsvarer med rendering (positionCount=13, alreadyInstalled=4). Kombinert med regelen at hver plass fylles med samme objekttype innebærer dette at 9 individuelle lyssteiner må brukes. Tidligere oppsamlede 15 lyssteiner er tilstrekkelig.",
+            "mathematicalNeed": "Subtraksjon: finn hvor mange plasser som er tomme ved å trekke allerede fylte (4) fra totalen (13): 13−4 = 9. Hver tom plass representerer ett objekt som må settes dit.",
+            "physicalRuleQuote": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler."
+          },
+          {
+            "missionId": "mission-samle-planker",
+            "sceneAgreement": "Sceneobjektene gir kasseplanker1 quantity=2 og plankebunke1 quantity=5, som matcher rendering (containerCount=2, positionsPerContainer=5). Dermed er 10 planker samlet og ligger klare ved stolpen.",
+            "mathematicalNeed": "Multiplikasjon: regn ut totalt antall planker ved å multiplisere antall kasser (2) med antall plasser per kasse (5): 2×5 = 10 planker.",
+            "physicalRuleQuote": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt."
+          },
+          {
+            "missionId": "mission-reparere-stolpen",
+            "sceneAgreement": "Sceneobjektene viser stolpeplasser1 quantity=12 og monterteplanker1 quantity=3, som stemmer med rendering (positionCount=12, alreadyInstalled=3). De 10 planker som ble samlet tidligere dekker behovet på 9 planker, slik at stolpen kan fylles komplett.",
+            "mathematicalNeed": "Subtraksjon: finn hvor mange planker som mangler ved å trekke allerede monterte (3) fra totalen (12): 12−3 = 9 planker må festes.",
+            "physicalRuleQuote": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting."
+          }
+        ],
+        "variation": "Én lineær route med én variant per oppdrag. Representasjonene veksler mellom 'grouping' (multiplikasjon) og 'quantity' (differanse), begge konkrete og visuelt entydige.",
+        "continuity": "Lineær og konsistent: antall i hver scene stemmer sammen gjennom hele ruten. Kassene gir 3×5 = 15 lyssteiner, som dekker de 9 som mangler på 13-lyktplassene. Plankekassene gir 2×5 = 10 planker, som dekker de 9 som mangler på stolpen. Etter bruk blir det 6 lyssteiner og 1 planke til overs — dette er konsistent med alle førtekster og successtekster på ruten.",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      },
+      "started_at": "2026-10-19T19:47:39.665269+00:00",
+      "completed_at": "2026-10-19T19:48:49.458269+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "f41c05d9-05d2-451f-b544-0af16d9f5c40",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T19:45:59.505326+00:00",
+      "latency_ms": 85814,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5443,
+      "cost_estimate": 0.16476625,
+      "output_tokens": 6809,
+      "chapter_job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "chapter_number": 12,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T19:44:33.628+00:00"
+    },
+    {
+      "id": "0d4f265b-daa9-4030-a0fb-7a693c942edc",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-review",
+      "created_at": "2026-10-19T19:46:37.0213+00:00",
+      "latency_ms": 36529,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5884,
+      "cost_estimate": 0.101079,
+      "output_tokens": 3859,
+      "chapter_job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "chapter_number": 12,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T19:46:00.361+00:00"
+    },
+    {
+      "id": "c4a8ce41-11ee-47d0-91c3-611fcb7126a7",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T19:47:39.484901+00:00",
+      "latency_ms": 61914,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 8984,
+      "cost_estimate": 0.137324,
+      "output_tokens": 5119,
+      "chapter_job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "chapter_number": 12,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T19:46:37.511+00:00"
+    },
+    {
+      "id": "83d8b832-1d3a-4769-bc8d-4aa8156b315a",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-review",
+      "created_at": "2026-10-19T19:48:49.360693+00:00",
+      "latency_ms": 69390,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5884,
+      "cost_estimate": 0.116875,
+      "output_tokens": 4577,
+      "chapter_job_id": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+      "chapter_number": 12,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T19:47:39.916+00:00"
+    }
+  ],
+  "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
+  "phase": "review",
+  "state": "failed",
+  "error_code": "editorial_review_rejected",
+  "accountSpent": 3.829331
+}

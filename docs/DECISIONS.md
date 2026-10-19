@@ -270,3 +270,20 @@ maks64 som lukket kontrollgrense. R3s tidlige prøve krever minst tre oppdrag
 på hver rute. Kritikeren får eksplisitte ruter og returnerer én vurdering med
 eksakt oppdragsrekkefølge og slutt per rute. Semantikken kontrolleres fortsatt
 av modell og menneske; riktige ID-er alene betyr ikke god fortelling.
+
+## 19. oktober2026: kritikerens bevis må være faktisk elevtekst
+
+Ekte prøve12 ga approved=true med fysiske-regel-sitater hentet fra intern
+renderingbeskrivelse. Eksisterende kodeport avviste korrekt. Kritikerens
+responsgrammatikk velger nå sitat fra et oppdragsspesifikt enum av faktiske
+elevsetninger. none tillater ærlig avvisning når en fysisk regel mangler;
+rene regneinstruksjoner er ingen regel. Kodeporten håndhever fortsatt samme
+grense og sender konkret avvisningsgrunn til ett kontrollert rettingsforsøk.
+Dette beviser sitatets kilde, ikke semantikken eller generell modellkvalitet.
+
+## 19. oktober2026: ett betalt kall per varig kontrollsteg
+
+Kritikk, retting og ny kritikk ble delt for å holde hver kjøring innenfor
+Hobby-grensen på300sekunder. Ett langt korrekt forløp skal kunne ta mer enn
+fem minutter totalt uten at et nytt uavklart modellkjøp avbrytes av stegets
+tidsgrense. Samme kalljournal og lease-/eierkontroll beholdes mellom stegene.

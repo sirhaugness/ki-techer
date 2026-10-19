@@ -7,6 +7,7 @@ import {
   researchChapter,
   draftChapter,
   reviewChapter,
+  reviseChapter,
   prepareAssets,
 } from './chapter-steps';
 import type { PreparationInput } from '../lib/chapters/production-contracts';
@@ -28,7 +29,11 @@ export async function prepareChapter(input: PreparationInput) {
       await researchChapter(jobId, owner);
       if (input.mode === 'probe') await sleep('5s');
       await draftChapter(jobId, owner);
-      await reviewChapter(jobId, owner);
+      const review = await reviewChapter(jobId, owner, 0);
+      if (review.needsRevision) {
+        await reviseChapter(jobId, owner, review.issues);
+        await reviewChapter(jobId, owner, 1);
+      }
       await prepareAssets(jobId, owner);
       return { claimed: true, jobId };
     } catch (error) {

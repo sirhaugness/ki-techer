@@ -6,6 +6,8 @@ import {
   reviewAccepted,
   chapterRoutes,
   chapterAuthorSchemaFor,
+  reviewSchemaFor,
+  reviewIssues,
 } from '../../lib/chapters/production';
 import {
   advanceChapter,
@@ -50,6 +52,7 @@ describe('R3 chapter contracts and server projection', () => {
       historyImpactQuote: '',
       missions: missions.map((m) => ({
         missionId: m.id,
+        physicalRuleKind: 'design_requirement',
         physicalRuleQuote: m.goal,
         mathematicalNeed: 'Behov.',
         sceneAgreement: 'Samme ting.',
@@ -91,6 +94,7 @@ describe('R3 chapter contracts and server projection', () => {
       kind: 'quantity',
       positionCount: 9,
       alreadyInstalled: 3,
+      countedAssetId: 'plank',
     });
   });
   it('accepts unchanged references and manifest after JSONB reorders object keys', () => {
@@ -274,6 +278,7 @@ describe('R3 chapter contracts and server projection', () => {
       historyImpactQuote: '',
       missions: missions.map((m) => ({
         missionId: m.id,
+        physicalRuleKind: 'design_requirement',
         physicalRuleQuote: m.goal,
         mathematicalNeed: 'Regningen løser hindringen.',
         sceneAgreement: 'Samme mengder.',
@@ -283,6 +288,23 @@ describe('R3 chapter contracts and server projection', () => {
     expect(chapterView(job, true).mission!.goal).toBe(
       review.missions[0].physicalRuleQuote,
     );
+    expect(reviewSchemaFor(packet).safeParse(review).success).toBe(true);
+    const first = missions[0];
+    review.missions[0].physicalRuleQuote = visibleChapter(packet).nodes.filter(
+      (n) => n.kind === 'mission',
+    )[0].variants[0].rendering.before;
+    expect(reviewSchemaFor(packet).safeParse(review).success).toBe(false);
+    expect(reviewIssues(review, packet, {}).join(' ')).toContain(
+      missions[0].id,
+    );
+    expect(reviewAccepted(review, packet, {})).toBe(false);
+    first.variants[0].clueTemplate = 'Tenk: {{groups}} ganger {{each}}.';
+    review.missions[0].physicalRuleQuote = 'Tenk: 3 ganger 4.';
+    expect(reviewSchemaFor(packet).safeParse(review).success).toBe(false);
+    review.missions[0].physicalRuleQuote = first.goal;
+    review.missions[0].physicalRuleKind = 'none';
+    expect(reviewAccepted(review, packet, {})).toBe(false);
+    review.missions[0].physicalRuleKind = 'design_requirement';
     review.missions[0].physicalRuleQuote = 'En regel som ingen ser.';
     expect(reviewAccepted(review, packet, {})).toBe(false);
   });
@@ -306,6 +328,7 @@ describe('R3 chapter contracts and server projection', () => {
       historyImpactQuote: quote,
       missions: missions.map((m) => ({
         missionId: m.id,
+        physicalRuleKind: 'design_requirement',
         physicalRuleQuote: m.goal,
         mathematicalNeed: 'Regningen løser hindringen.',
         sceneAgreement: 'Samme mengder.',

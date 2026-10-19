@@ -1,38 +1,12 @@
 {
-  "commit": "910294f3a263e80c735715503a41afd9d125ca0c",
+  "commit": "b6f080e2adf519d1e02abb4c864eba4a0b7d942a",
   "source": "real model via authenticated Preview; retained synthetic account and budget",
   "interest": "Rever",
   "errors": [],
   "views": [
     {
-      "time": "2026-10-19T19:36:13.010Z",
-      "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
-      "state": "running",
-      "phase": "research",
-      "revision": 0,
-      "playing": false,
-      "canRetry": true,
-      "canChooseNew": false,
-      "interest": "Rever",
-      "title": "Ditt neste kapittel",
-      "goal": "",
-      "opening": "",
-      "message": "Vi gjør hele kapittelet klart. Du kan ta en pause mens vi arbeider.",
-      "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
-      "lastAnswer": null,
-      "mission": null,
-      "choices": [],
-      "choicePrompt": null,
-      "solved": false,
-      "outcome": null,
-      "ending": null,
-      "history": [],
-      "hintLevel": 0,
-      "failures": 0
-    },
-    {
-      "time": "2026-10-19T19:36:23.061Z",
-      "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+      "time": "2026-10-19T19:44:33.203Z",
+      "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
       "state": "running",
       "phase": "draft",
       "revision": 0,
@@ -57,8 +31,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-19T19:37:29.062Z",
-      "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+      "time": "2026-10-19T19:46:00.999Z",
+      "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
       "state": "running",
       "phase": "review",
       "revision": 0,
@@ -83,8 +57,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-19T19:38:20.440Z",
-      "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+      "time": "2026-10-19T19:48:52.888Z",
+      "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
       "state": "failed",
       "phase": "review",
       "revision": 0,
@@ -113,18 +87,18 @@
     "status": 200,
     "budget": {
       "limit": 7.00018175,
-      "spent": 2.99100175,
+      "spent": 3.30928675,
       "warning": false,
       "fallback": false,
-      "remaining": 4.00918
+      "remaining": 3.690895
     },
     "models": {
       "text": "gpt-5-mini"
     }
   },
-  "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+  "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
   "finalView": {
-    "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+    "jobId": "a764bef5-85cb-4c48-94dd-1672680cdd6e",
     "state": "failed",
     "phase": "review",
     "revision": 0,

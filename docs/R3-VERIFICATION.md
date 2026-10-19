@@ -279,3 +279,47 @@ Det mislykkede kallet kjøpes ikke automatisk på nytt.
 
 Bekreftet kostnad0,31828500 kr. Konservativt samlet **6,30910500 kr av10**,
 gjenstående **3,69089500 kr**. Første unknown-reservasjon er fortsatt medregnet.
+
+## Tolvte prøve: kritikk/revisjon virket, kodesitatsperren stoppet pakken
+
+`b6f080e`: ny per-rutekritikk oppdaget samme8<9ressursunderskudd som tutor.
+Forfatteren rettet til15samlede steiner. Siste kritikk godkjente, men alle
+fysiske-regel-sitatene kom fra intern rendering-metadata, ikke elevtekst.
+Eksisterende kodeport avviste dette og jobbet endte failed/editorial_review_rejected.
+Ingen elevpakke eller gjennomspilling. Tutor fant fortsatt forskjell mellom
+å fylle lykter med steiner og montere manglende lykter, samt lovet lysende
+signalstolpe mens scenen bare viste planker. Alle responser/kritikker er bevart.
+
+Kritikerens wire bruker nå oppdragsspesifikke sitatenum fra faktisk bundet
+førtekst, mål, spørsmål og ledetråd; intern metadata kan ikke velges. Hele
+strenger/setninger bevares eksakt. Rene Tenk/Regn/Beregn-instruksjoner utelates.
+Kritikeren må klassifisere regeltypen og kan melde none/INGEN SYNLIG FYSISK REGEL.
+Både grammatikk og kode kontrollerer beviset. Regeltypens semantiske riktighet
+er fortsatt modell-/menneskevurdering, ikke bevist av enumet alene. Konkrete
+kodeavvisninger sendes nå med i forfatterens ene korrigeringsforsøk; tidligere
+kunne den få approved=true/issues=[] uten å se hvorfor koden likevel avviste.
+
+Tegneplanen presiserer at enheten er selve assetId-objektet og at plankeikoner
+ikke automatisk viser en ferdig lysende stolpe. Ingen ny visuell effekt er
+påstått. Regresjonstester dekker metadatasitat, ren regneinstruksjon og none.
+
+Fire bekreftede kall kostet0,52004425 kr. Konservativt samlet **6,82914925 kr
+av10**, gjenstående **3,17085075 kr**, inkludert beholdt usikker reservasjon.
+Alle testdelinger fra dagens ferdige prøver er tilbakekalt. Ingen budsjettøkning.
+
+## Varige korreksjonssteg og300sekundersgrensen
+
+Reviewer fant at tre120sekunderskall kunne ligge i ett review-step.
+[Vercels Hobby-grense](https://vercel.com/docs/functions/configuring-functions/duration)
+er300sekunder per funksjonskjøring. Kritikk, forfatterretting og ny kritikk er
+nå egne use-step-funksjoner. Hvert steg har maksimalt ett betalt kall. Ferdig
+retting leses fra completed-kalljournalen før ny kritikk; ingen ny DB-migrasjon
+eller automatisk nykjøp av pending/unknown. Første avvisning returneres varig
+til rettingssteget, også når koden overprøver approved=true.
+
+Test med simulert klokke kjører faktiske kontrollfunksjoner og orkestrator med
+mockede provider/DB:105+105+105sekunder fullføres i tre steg. Et godkjent første
+utkast hopper over retting, og allerede førte review/draft-revision kjøpes ikke
+på nytt. Dette er teknisk kontroll, ikke modell- eller ekte prosessdrapsbevis.
+Gratis Preview-probe utvides til å kreve separat rettingssteg før siste kontroll
+(probeRevisionRan/probeReviewRecovered), sammen med de tidligere to avbruddene.
