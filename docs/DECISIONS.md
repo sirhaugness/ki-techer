@@ -287,3 +287,10 @@ Kritikk, retting og ny kritikk ble delt for å holde hver kjøring innenfor
 Hobby-grensen på300sekunder. Ett langt korrekt forløp skal kunne ta mer enn
 fem minutter totalt uten at et nytt uavklart modellkjøp avbrytes av stegets
 tidsgrense. Samme kalljournal og lease-/eierkontroll beholdes mellom stegene.
+
+## 19. oktober: mer ventetid innen separate Workflow-steg
+
+Trettende forfatterkall stoppet ved120sekunder uten kjent forbruk eller utkast.
+Hele reservasjonen beholdes. Etter oppdelingen av kritikk/revisjon får hvert
+modellkall180sekunders timeout innen funksjonsgrensen300sekunder; ingen
+modell-, token- eller budsjettøkning. Unknown-kallet kjøpes aldri på nytt.

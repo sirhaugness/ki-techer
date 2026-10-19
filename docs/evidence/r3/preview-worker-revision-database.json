@@ -1,0 +1,24 @@
+[
+  {
+    "id": "c28963b6-8ecb-4e9f-8bb5-7dadebf39488",
+    "state": "ready",
+    "phase": "ready",
+    "error_code": null,
+    "data": {
+      "mode": "probe",
+      "facts": {},
+      "interest": {
+        "key": "internal-worker-probe",
+        "label": "internal-worker-probe"
+      },
+      "probeFailed": true,
+      "workerRegion": "arn1",
+      "probeRecovered": true,
+      "probeRevisionRan": true,
+      "probeStepAborted": true,
+      "probeReviewRecovered": true
+    },
+    "call_count": 0,
+    "ai_count": 0
+  }
+]

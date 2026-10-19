@@ -1,0 +1,141 @@
+{
+  "commit": "e256394a703542e004378a11fadc2ac4309812c1",
+  "source": "unpaid infrastructure probe with actual Auth and Workflow; no model",
+  "starts": [
+    {
+      "status": 200,
+      "body": {
+        "probeJobId": "c28963b6-8ecb-4e9f-8bb5-7dadebf39488",
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "status": 200,
+      "body": {
+        "probeJobId": "c28963b6-8ecb-4e9f-8bb5-7dadebf39488",
+        "runId": "wrun_41M5AW9VC560GVWKZMYKV1P7GA"
+      }
+    }
+  ],
+  "errors": [],
+  "polls": [
+    {
+      "time": "2026-10-19T20:05:36.438Z",
+      "probe": {
+        "state": "running",
+        "phase": "research",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "time": "2026-10-19T20:05:39.447Z",
+      "probe": {
+        "state": "running",
+        "phase": "research",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "time": "2026-10-19T20:05:42.406Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "time": "2026-10-19T20:05:45.580Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "time": "2026-10-19T20:05:48.489Z",
+      "probe": {
+        "state": "running",
+        "phase": "draft",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeStepAborted": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    },
+    {
+      "time": "2026-10-19T20:05:51.934Z",
+      "probe": {
+        "state": "ready",
+        "phase": "ready",
+        "data": {
+          "mode": "probe",
+          "facts": {},
+          "interest": {
+            "key": "internal-worker-probe",
+            "label": "internal-worker-probe"
+          },
+          "probeFailed": true,
+          "workerRegion": "arn1",
+          "probeRecovered": true,
+          "probeRevisionRan": true,
+          "probeStepAborted": true,
+          "probeReviewRecovered": true
+        },
+        "runId": "wrun_41M5AW9VDA60XGR6H1KDYM2ZHT"
+      }
+    }
+  ],
+  "jobId": "c28963b6-8ecb-4e9f-8bb5-7dadebf39488",
+  "browserClosedBeforeCompletion": true
+}

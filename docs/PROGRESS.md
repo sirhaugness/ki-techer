@@ -17,7 +17,7 @@ Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, 
 
 [Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest 538/538, simulering, full CI og dev-migrasjon på `f34b7b2` er grønne. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker fullførte i `arn1` etter lukket nettleser, med deduplisering og begge simulerte avbrudd.
 
-Tolv ekte «Rever»-forsøk er bevart i R3-evidensen. Koden håndhever jobbidentitet, komplette oppdrags-/avslutningslister, én primary som i dagens spiller, tillatte motorreferanser og alle ruter. Siste per-rutekritikk fant et reelt steinunderskudd og forfatteren rettet det; koden avviste likevel siste modellgodkjenning fordi fysisk-regel-sitatene var intern metadata. Ny kritikergrammatikk låser sitater til faktisk elevtekst, klassifiserer regeltypen og sender konkrete kodeavvisninger til rettingsforsøket. Tegneplanen presiserer selve telleenheten og begrensede visuelle konsekvenser. Begge modellfaser bruker medium/12000-ut-token/120sekunder. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå. R3 er fortsatt utkast.
+Tolv ekte «Rever»-forsøk er bevart i R3-evidensen. Koden håndhever jobbidentitet, komplette oppdrags-/avslutningslister, én primary som i dagens spiller, tillatte motorreferanser og alle ruter. Siste per-rutekritikk fant et reelt steinunderskudd og forfatteren rettet det; koden avviste likevel siste modellgodkjenning fordi fysisk-regel-sitatene var intern metadata. Ny kritikergrammatikk låser sitater til faktisk elevtekst, klassifiserer regeltypen og sender konkrete kodeavvisninger til rettingsforsøket. Tegneplanen presiserer selve telleenheten og begrensede visuelle konsekvenser. Begge modellfaser bruker medium/12000-ut-token/180sekunder. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå. R3 er fortsatt utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -25,7 +25,7 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **6,82914925 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 3,51324875 kr og beholdt usikker draft-reservasjon 0,31608225 kr. Gjenstående **3,17085075 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **7,16450350 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 3,51324875 kr og beholdte usikre draft-reservasjoner 0,65143650 kr. Gjenstående **2,83549650 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 

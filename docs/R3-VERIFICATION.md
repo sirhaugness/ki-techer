@@ -323,3 +323,22 @@ utkast hopper over retting, og allerede førte review/draft-revision kjøpes ikk
 på nytt. Dette er teknisk kontroll, ikke modell- eller ekte prosessdrapsbevis.
 Gratis Preview-probe utvides til å kreve separat rettingssteg før siste kontroll
 (probeRevisionRan/probeReviewRecovered), sammen med de tidligere to avbruddene.
+
+## Trettende prøve: tidsavbrudd uten utkast
+
+`e256394`: gratis Preview-probe bestod den nye oppdelte rettingsflyten i
+`arn1`, etter lukket browser, med én jobb ved dobbeltstart, begge tidligere
+avbrudd og `probeRevisionRan/probeReviewRecovered`. Database bekrefter null
+modellkall for proben.
+
+Ekte forfatterkall stoppet etter120103ms uten respons eller kjent usage.
+Jobb og kall er unknown; reservasjonen0,33535425kr beholdes i sin helhet.
+Ingen utkast, kritikk eller elevvisning. Nå som hvert betalte kall er et eget
+Workflow-steg, økes author/critic-timeout til180sekunder, med uendret modell,
+reasoning, tokengrense og budsjett. Hvert steg har fortsatt høyst ett betalt
+kall og ligger innen Hobby-grensen300sekunder. Den ukjente forespørselen
+sendes ikke på nytt. En ny separat testjobb kan opprettes etter eksplisitt
+kontroll/audit; dette er superseding av syntetisk testjobb, aldri spillhistorikk.
+
+Konservativ total **7,16450350 kr av10**, inkludert to usikre reservasjoner
+på til sammen0,65143650kr. Gjenstående **2,83549650kr**.
