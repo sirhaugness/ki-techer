@@ -142,6 +142,12 @@ describe('R3 chapter contracts and server projection', () => {
       missions: Extract<(typeof packet.nodes)[number], { kind: 'mission' }>[];
     };
     const mission = unbound.missions[0];
+    const unsupported = structuredClone(unbound);
+    unsupported.missions[0].variants.push(
+      structuredClone(unsupported.missions[0].variants[0]),
+    );
+    expect(chapterAuthorSchema.safeParse(unsupported).success).toBe(false);
+
     if (mission.kind !== 'mission') throw Error('fixture');
     mission.variants[0].scene.objects[0].quantityKey = null;
     expect(chapterAuthorSchema.safeParse(unbound).success).toBe(false);

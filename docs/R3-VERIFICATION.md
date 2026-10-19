@@ -242,3 +242,22 @@ kan leses uten endret nodeorden. Blandede formater eller ukjente noder avvises.
 Dette uttrykker R3-prøvens eksisterende minstekrav i responsgrammatikken.
 Unike motorreferanser og alle ruter kontrolleres fortsatt; duplicate-feil peker
 nå til begge oppdragene og eksakt referanse før ett kontrollert rettingsforsøk.
+
+## Tiende prøve: hele lister, fortsatt ugyldig rute og innhold
+
+`8cf2dc2`: tre komplette oppdrag levert. Første utkast hadde en uoppnåelig
+valgnode; revisjonen gjorde den tilgjengelig, men lot ett valg hoppe over
+første oppdrag. Begge ble avvist før modellkritikk/elevvisning. Råresponsene
+er bevart. Tutor fant også feil ressurs (kasse i stedet for planke), pakking
+som senere ble omtalt som montering, regnet beholdning uten etablert behov,
+gjentatt lyktefylling og støttevarianter som endret verdensfakta.
+
+R3-spilleren velger faktisk bare primary. Wire begrenses derfor til én primary
+per oppdrag i denne leveransen; adaptivt støttevalg og verdensfakta-bevarende
+varianter må innføres og verifiseres i R4. Lagrede kontrakter og gamle spillpakker
+endres ikke. Forfatter bruker igjen medium reasoning med samme12000-token- og
+120sekundersgrense; den separate kritikeren beholder medium. Ubrukte noder,
+beholdning/behov og faktisk utført handling presiseres i kontrakten.
+
+Bekreftet kostnad0,21614450 kr. Konservativt samlet **5,99082000 kr av10**,
+gjenstående **4,00918000 kr**. Ingen ukjent reservasjon er frigitt.
