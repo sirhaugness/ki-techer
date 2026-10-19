@@ -7,7 +7,7 @@ Les deretter [GAME-REVISION](GAME-REVISION.md) og [SPEC §15](SPEC.md#15-avtalt-
 ### Gjeldende kode og PR-er
 
 - R1/PR #16 er merget til main `5ad9807`. R2/PR #17 ble merget til gammel featurebranch, **ikke main**; den skal ikke videreføres.
-- R2 er [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18), `feat/chapter-player` → `main`, head `588578e`. Levende status kontrollert 17. oktober: åpen, full CI og migrasjoner grønne på head. Ingen merge utført av agenten.
+- R2 er [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18), `feat/chapter-player` → `main`, head `588578e`. Levende status kontrollert 19. oktober: åpen, full CI og migrasjoner grønne på head. Ingen merge utført av agenten.
 - R2s innloggede Preview-port er **bestått** på `55cdbdd`: ekte Auth/RLS/Leo-lås, tre oppdrag, feil/hjelp/riktig, observert bevegelse, pause/gjenopptak, reload og avslutning; 17 serverhandlinger med HTTP 200, ingen browserfeil. [Bevis](R2-VERIFICATION.md), [opptak/bilder](evidence/r2/README.md). Historie/hjelp er kodebestemt, ingen KI-kall.
 - Aktiv videreføring er `feat/chapter-preparation`, opprettet fra siste R2 `588578e`. [R3 utkast-PR #20](https://github.com/sirhaugness/ki-techer/pull/20) har `feat/chapter-player` som base så lenge #18 er åpen. Kontroller live status før base endres.
 
@@ -15,9 +15,9 @@ Les deretter [GAME-REVISION](GAME-REVISION.md) og [SPEC §15](SPEC.md#15-avtalt-
 
 Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, helt utkast, separat kontroll, ressursmanifest, service-only lagring, lease/idempotens, varig kall-/budsjettjournal, sikker projeksjon og lagret fortsettelse. Generator v1 er frosset før persistens. Forberedelse tar ingen økttid; gammel og ny spiller deler tidsgrenser. Full faglig tilpasning og flerturshjelp er fortsatt R4/R5.
 
-[Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full Vitest 538/538, simulering, full CI og dev-migrasjon på `f34b7b2` er grønne. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker fullførte i `arn1` etter lukket nettleser, med deduplisering og begge simulerte avbrudd.
+[Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full CI på `e256394` er grønn: 548 Vitest-tester, simulering, 25 browserprøver og fem Auth-prøver mot lokal Supabase, bygg og tilgjengelighet. Dev-migrasjon er grønn. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker på samme commit fullførte i `arn1` etter lukket nettleser, med deduplisering, begge simulerte avbrudd og separate kritikk-/rettingssteg.
 
-Tolv ekte «Rever»-forsøk er bevart i R3-evidensen. Koden håndhever jobbidentitet, komplette oppdrags-/avslutningslister, én primary som i dagens spiller, tillatte motorreferanser og alle ruter. Siste per-rutekritikk fant et reelt steinunderskudd og forfatteren rettet det; koden avviste likevel siste modellgodkjenning fordi fysisk-regel-sitatene var intern metadata. Ny kritikergrammatikk låser sitater til faktisk elevtekst, klassifiserer regeltypen og sender konkrete kodeavvisninger til rettingsforsøket. Tegneplanen presiserer selve telleenheten og begrensede visuelle konsekvenser. Begge modellfaser bruker medium/12000-ut-token/180sekunder. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå. R3 er fortsatt utkast.
+Fjorten avsluttede ekte «Rever»-forsøk er bevart i R3-evidensen. Koden håndhever jobbidentitet, komplette oppdrags-/avslutningslister, én primary som i dagens spiller, tillatte motorreferanser og alle ruter. Siste per-rutekritikk fant et reelt steinunderskudd og forfatteren rettet det; koden avviste likevel siste modellgodkjenning fordi fysisk-regel-sitatene var intern metadata. Ny kritikergrammatikk låser sitater til faktisk elevtekst, klassifiserer regeltypen og sender konkrete kodeavvisninger til rettingsforsøket. Tegneplanen presiserer selve telleenheten og begrensede visuelle konsekvenser. Forfatter bruker low, separat kritiker medium; begge har12000-ut-token/180sekunder. Prøve 13 og14 traff henholdsvis120- og180sekunders-timeout uten utkast; fulle reservasjoner beholdes. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå. R3 er fortsatt utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -25,11 +25,11 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **7,16450350 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 3,51324875 kr og beholdte usikre draft-reservasjoner 0,65143650 kr. Gjenstående **2,83549650 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **7,49984675 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 3,51324875 kr og beholdte usikre draft-reservasjoner 0,98677975 kr. Gjenstående **2,50015325 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
 
 ### Neste arbeid og byggeorden
 
-1. Gratis Preview-worker og kontrollert spiller er bestått; ikke bygg dem på nytt. Fullfør aktuell CI og ekte modell-/spillprøve etter rettet rutekontroll.
+1. Gratis Preview-worker, inkludert nye separate rettingssteg, og kontrollert spiller er bestått. Fullfør aktuell CI og ekte modell-/spillprøve etter nedjustert forfatter-reasoning.
 2. Prøv første ekte genererte kapittel innen resterende budsjett; vurder råforsøk, avvisninger, elevsynlig tekst/scene, feil/hjelp/riktig og lagret fortsettelse. Faktisk designer/tutor/reviewer skal vurdere relevant bevis. En positiv modellkritiker er ikke menneskelig kvalitetsgodkjenning.
 3. Oppdater kostnad/evidens, rydd syntetiske data, oppdater PR og denne overleveringen. Bevar R2 som separat avhengighet; ingen produksjonsmerge.
 4. Deretter R4 (læringsmotor/adaptiv avvikling), R5 (lærer/tale/visuell bredde), R6 (overgang/foreldreinnsyn), R7 (full SPEC-verifisering). Hele kravkartet i GAME-REVISION gjelder; tre demooppdrag er ikke hele produktet.

@@ -294,3 +294,10 @@ Trettende forfatterkall stoppet ved120sekunder uten kjent forbruk eller utkast.
 Hele reservasjonen beholdes. Etter oppdelingen av kritikk/revisjon får hvert
 modellkall180sekunders timeout innen funksjonsgrensen300sekunder; ingen
 modell-, token- eller budsjettøkning. Unknown-kallet kjøpes aldri på nytt.
+
+## 19. oktober: lavere forfatter-reasoning etter to lokale tidsavbrudd
+
+Både120- og180sekundersprøven ga unknown uten utkast/usage. Neste separate
+prøve bruker low hos forfatteren med samme12000token/180sekunder. Den separate
+kritikeren beholder medium, og alle kodeporter beholdes. Ingen ukjente kall
+kjøpes på nytt, og alle tre usikre reservasjoner teller fullt i10kronersrammen.

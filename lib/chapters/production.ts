@@ -603,7 +603,7 @@ export async function author(
   };
   const response = await provider.respond({
     purpose: 'story-generate',
-    reasoningEffort: 'medium',
+    reasoningEffort: 'low',
     schema: chapterAuthorSchemaFor(job),
     maxOutputTokens: 12000,
     timeoutMs: 180000,

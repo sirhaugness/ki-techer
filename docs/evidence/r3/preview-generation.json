@@ -1,12 +1,38 @@
 {
-  "commit": "e256394a703542e004378a11fadc2ac4309812c1",
+  "commit": "7af1fd71d49f48b61357a132e56f37a2429684c7",
   "source": "real model via authenticated Preview; retained synthetic account and budget",
   "interest": "Rever",
   "errors": [],
   "views": [
     {
-      "time": "2026-10-19T20:06:26.421Z",
-      "jobId": "3a1207c1-5978-4f39-9882-3290aa08c364",
+      "time": "2026-10-19T20:18:17.721Z",
+      "jobId": "c59f77e1-767f-478b-8feb-d2a338b23973",
+      "state": "running",
+      "phase": "research",
+      "revision": 0,
+      "playing": false,
+      "canRetry": true,
+      "canChooseNew": false,
+      "interest": "Rever",
+      "title": "Ditt neste kapittel",
+      "goal": "",
+      "opening": "",
+      "message": "Vi gjør hele kapittelet klart. Du kan ta en pause mens vi arbeider.",
+      "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
+      "lastAnswer": null,
+      "mission": null,
+      "choices": [],
+      "choicePrompt": null,
+      "solved": false,
+      "outcome": null,
+      "ending": null,
+      "history": [],
+      "hintLevel": 0,
+      "failures": 0
+    },
+    {
+      "time": "2026-10-19T20:18:21.605Z",
+      "jobId": "c59f77e1-767f-478b-8feb-d2a338b23973",
       "state": "running",
       "phase": "draft",
       "revision": 0,
@@ -31,8 +57,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-19T20:08:29.005Z",
-      "jobId": "3a1207c1-5978-4f39-9882-3290aa08c364",
+      "time": "2026-10-19T20:21:20.329Z",
+      "jobId": "c59f77e1-767f-478b-8feb-d2a338b23973",
       "state": "unknown",
       "phase": "draft",
       "revision": 0,
@@ -61,18 +87,18 @@
     "status": 200,
     "budget": {
       "limit": 7.00018175,
-      "spent": 3.829331,
+      "spent": 4.16468525,
       "warning": false,
       "fallback": false,
-      "remaining": 3.17085075
+      "remaining": 2.8354965
     },
     "models": {
       "text": "gpt-5-mini"
     }
   },
-  "jobId": "3a1207c1-5978-4f39-9882-3290aa08c364",
+  "jobId": "c59f77e1-767f-478b-8feb-d2a338b23973",
   "finalView": {
-    "jobId": "3a1207c1-5978-4f39-9882-3290aa08c364",
+    "jobId": "c59f77e1-767f-478b-8feb-d2a338b23973",
     "state": "unknown",
     "phase": "draft",
     "revision": 0,

@@ -1,6 +1,6 @@
 # R3: varig kapittelforberedelse
 
-Arbeid 16.–17. oktober 2026 på `feat/chapter-preparation`, fra R2 `588578e`.
+Arbeid 16.–19. oktober 2026 på `feat/chapter-preparation`, fra R2 `588578e`.
 Dette er en avhengig leveranse etter PR #18. Ingen produksjonsmerge.
 
 ## Avgrenset elevreise
@@ -342,3 +342,29 @@ kontroll/audit; dette er superseding av syntetisk testjobb, aldri spillhistorikk
 
 Konservativ total **7,16450350 kr av10**, inkludert to usikre reservasjoner
 på til sammen0,65143650kr. Gjenstående **2,83549650kr**.
+
+## Ny teknisk sluttkontroll19. oktober
+
+[Full CI39316210965](https://github.com/sirhaugness/ki-techer/actions/runs/39316210965)
+på `e256394` bestod548Vitest-tester i45filer, simulering,25browserprøver
+(to Auth-prøver eksplisitt hoppet over i vanlig jobb), fem reelle lokale
+Supabase/Auth-prøver, lint, typer, formatering, bygg og tilgjengelighet.
+[Dev-migrasjon39316210821](https://github.com/sirhaugness/ki-techer/actions/runs/39316210821)
+bestod. Lokal relevant kapittelprøve:69tester i10filer; typecheck/lint/bygg grønne.
+Etter timeout-endringen bestod12berørte produksjons-/Workflow-tester.
+Dette er teknisk kontroll; ekte innholds-/spillport er fortsatt åpen.
+
+## Fjortende prøve:180sekunder ga heller ikke respons
+
+`7af1fd7`: utkastkallet stoppet etter180099ms, ingen kjent usage eller tekst.
+Workflow-loggene viser kontrollert provider_outcome_unknown, ingen funksjons-
+tidsgrense. Offentlig OpenAI-status viste All Systems Operational; det beviser
+ikke årsaken til de konkrete kallene. Ny reservasjon0,33534325kr beholdes.
+Ingen kritikk, spillpakke eller elevvisning. Samlet konservativt7,49984675kr,
+gjenstående2,50015325kr.
+
+Forfatter-reasoning reduseres til low for neste separate prøve; kritiker
+beholder medium. De siste stramme identitets-/oppdrags-/mengdekontraktene og
+alle innholdskontroller beholdes. Dette er en avgrenset ytelsesprøve, ingen
+påstand om bedre kvalitet. Unknown-kallet sendes aldri på nytt; testjobbens
+superseding logges med hele reservasjonen beholdt.

@@ -29,3 +29,8 @@ bevares her. Kontoens tekniske UUID-er gjelder bare godkjente syntetiske data.
 `attempt-5-raw.json` og `preview-generation-attempt-5.json`: modellgodkjent,
 **menneskelig avvist**. Ready-status dokumenterer hva modellen/appen faktisk
 gjorde før kvalitetsfunnet, ikke at pakken er godkjent. Pakken ble sperret før spill.
+
+`preview-worker-revision.json` og `preview-worker-revision-database.json`:
+ny faktisk gratis Preview på `e256394`, samme browserlukking/deduplisering
+og begge avbrudd, i tillegg separat rettingssteg og ny kontroll.
+`probeRevisionRan`/`probeReviewRecovered` og null kall bekreftet i database.
