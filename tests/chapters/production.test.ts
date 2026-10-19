@@ -111,10 +111,16 @@ describe('R3 chapter contracts and server projection', () => {
       'Illustrasjonene',
     );
   });
-  it('sends OpenAI a strict schema with anyOf instead of unsupported oneOf', () => {
+  it('sends a complete typed author grammar without unsupported oneOf', () => {
     const { packet, job, menu } = productionFixture();
-    const wire: Record<string, unknown> = { ...packet };
+    const wire: Record<string, unknown> = {
+      ...packet,
+      missions: packet.nodes.filter((n) => n.kind === 'mission'),
+      choices: packet.nodes.filter((n) => n.kind === 'choice'),
+      endings: packet.nodes.filter((n) => n.kind === 'ending'),
+    };
     delete wire.assets;
+    delete wire.nodes;
     expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
     const exact = chapterAuthorSchemaFor(job);
     expect(exact.parse(wire)).toEqual(wire);
@@ -126,18 +132,40 @@ describe('R3 chapter contracts and server projection', () => {
     );
     expect(JSON.stringify(z.toJSONSchema(exact))).not.toContain('"oneOf"');
 
-    const unbound = structuredClone(wire) as typeof packet;
-    const mission = unbound.nodes.find((n) => n.kind === 'mission')!;
+    expect(
+      chapterAuthorSchema.safeParse({ ...wire, missions: [] }).success,
+    ).toBe(false);
+    expect(
+      chapterAuthorSchema.safeParse({ ...wire, endings: [] }).success,
+    ).toBe(false);
+    const unbound = structuredClone(wire) as {
+      missions: Extract<(typeof packet.nodes)[number], { kind: 'mission' }>[];
+    };
+    const mission = unbound.missions[0];
     if (mission.kind !== 'mission') throw Error('fixture');
     mission.variants[0].scene.objects[0].quantityKey = null;
     expect(chapterAuthorSchema.safeParse(unbound).success).toBe(false);
 
+    expect(() =>
+      productionDraft({ ...wire, nodes: packet.nodes }, job, menu),
+    ).toThrow('blander');
+    expect(() =>
+      productionDraft(
+        {
+          ...packet,
+          nodes: [...packet.nodes, { kind: 'unknown', id: 'hidden' }],
+        },
+        job,
+        menu,
+      ),
+    ).toThrow('Ukjent kapittelnode');
     const compiled = productionDraft(wire, job, menu);
     expect(compiled.assets.some((a) => a.role === 'background')).toBe(true);
-    expect(compiled.nodes).toEqual(packet.nodes);
+    expect(compiled.nodes).toHaveLength(packet.nodes.length);
+    expect(compiled.nodes).toEqual(expect.arrayContaining(packet.nodes));
     const schema = JSON.stringify(z.toJSONSchema(chapterAuthorSchema));
     expect(schema).not.toContain('"oneOf"');
-    expect(schema).toContain('"anyOf"');
+    expect(JSON.parse(schema).properties.missions.minItems).toBe(3);
   });
   it('requires a real supported asset and matching slots before publication', () => {
     const { packet, job, menu } = productionFixture();

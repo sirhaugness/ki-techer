@@ -221,3 +221,24 @@ bibliotekets faktiske objekttyper, naturlige titler og ulik handling. Neste
 prøve må fortsatt passere faktisk per-rutekritikk og menneskevurdering.
 Kallkostnad0,17214175 kr. Konservativt samlet **5,55225550 kr**, gjenstående
 **4,44774450 kr**. R3 er fortsatt ikke kvalitetsgodkjent.
+
+## 19. oktober: niende prøve og komplett forfatterformat
+
+Siste tidligere sourcehead8047702 har grønn full CI39025647775 og dev-migrasjon39025647788.
+Etter miljørestart beholdes samme syntetiske husholdning, elev og hele forbruket.
+Bare det tapte midlertidige innloggingspassordet ble erstattet i leo-dev; ingen
+ny konto, nullstilling eller endret testgrense.
+
+Niende prøve: første råutkast hadde bare ett oppdrag og manglende referanser.
+Revisjonen hadde fire oppdrag, men gjenbrukte samme motorreferanse. Begge
+ble korrekt avvist før separat modellkritikk og elevvisning. To bekreftede kall
+kostet0,22242000 kr. Konservativt samlet **5,77467550 kr av10**, gjenstående
+**4,22532450 kr**, inkludert uendret ukjent reservasjon0,31608225 kr.
+
+Forfatterens wire har nå separate missions(min3,max8), choices(valgfri) og
+endings(min1). Kode samler de uendrede nodene til samme lagrede grafkontrakt;
+ingen tekst, kant, oppgavereferanse eller svar repareres. Gamle nodes-responser
+kan leses uten endret nodeorden. Blandede formater eller ukjente noder avvises.
+Dette uttrykker R3-prøvens eksisterende minstekrav i responsgrammatikken.
+Unike motorreferanser og alle ruter kontrolleres fortsatt; duplicate-feil peker
+nå til begge oppdragene og eksakt referanse før ett kontrollert rettingsforsøk.
