@@ -1,0 +1,893 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 697472247,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "positionsPerContainer": 4
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 697472264,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 6,
+          "positionsPerContainer": 5
+        },
+        "quantities": {
+          "each": 5,
+          "groups": 6
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 697472281,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 2,
+          "positionsPerContainer": 3
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 2
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 697472348,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 697472365,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 7,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 7
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 697472382,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "alreadyInstalled": 3
+        },
+        "quantities": {
+          "known": 3,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-45bd5289-af72-4870-99e6-2049182f856b",
+      "goal": "Hjelpe Runi med å gjøre stien til hi trygg ved å sette opp og lyse lykter langs veien.",
+      "title": "Runi og stien til hi",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "ending-lykter-paa-stien",
+          "hook": "Nå som stien er trygg, kan Runi lære valpene å gå hjem i kveld.",
+          "kind": "ending",
+          "narration": "Runi og Anna trår tilbake og ser at lyktene henger på stolpene langs stien. Lyset gjør det trygt for valpene å finne hi i mørket."
+        }
+      ],
+      "opening": "Det er kveld i skogen. Runi vil at valpene skal kunne finne hjem til hi uten å famle i mørket. For å klare det trenger Runi lykter, stativer til stolpene og lyssteinene som tenner lyktene.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "mission-samle-lykter",
+          "goal": "Fylle kassene med lykter slik at de er klare til transport.",
+          "kind": "mission",
+          "next": "mission-bygg-stativ",
+          "title": "Samle lykter",
+          "before": "Kassene står ved verkstedbenken og venter. Runi har funnet steder der lyktene ligger lagret i skogen.",
+          "success": "Runi har samlet lykter i kassene og kassene er klare ved verkstedet.",
+          "variants": [
+            {
+              "id": "v-samle-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "kasse1",
+                    "label": "Tre kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lykt",
+                    "label": "Lykter i kassene",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "kasse1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lykt"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kassene blir fylt med lykter.",
+                    "working": "Kassene er markert for å vise hvor du jobber.",
+                    "incorrect": "Et element er markert for å vise feil sted."
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 697472247,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter er det totalt når du har {{groups}} kasser med {{each}} lykter i hver?"
+            }
+          ]
+        },
+        {
+          "id": "mission-bygg-stativ",
+          "goal": "Gjøre stativene klare ved å feste planker der stolpene skal stå.",
+          "kind": "mission",
+          "next": "mission-plasser-stolper",
+          "title": "Bygg stativ",
+          "before": "Kassene med lykter står ved verkstedbenken etter at Runi samlet dem. Planker og verktøy er klare på benken.",
+          "success": "Stativene er bygd og står ferdige ved verkstedet.",
+          "variants": [
+            {
+              "id": "v-stativ-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stativplass",
+                    "label": "Plass til planker på stativ",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "planker-pa-benk",
+                    "label": "Planker på benken",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "stativplass"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stativplass"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "planker-pa-benk"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle stativplassene viser planker montert.",
+                    "working": "Stativplassene er markert.",
+                    "incorrect": "Plankene på benken er markert for å vise hva som mangler."
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 697472348,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn ut {{total}} − {{known}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+            }
+          ]
+        },
+        {
+          "id": "mission-plasser-stolper",
+          "goal": "Sette stolpene på plass langs stien slik at lyktene kan henge i høyden.",
+          "kind": "mission",
+          "next": "mission-sett-lykter",
+          "title": "Plasser stolper",
+          "before": "Stativene er bygd og står ferdige ved verkstedet etter at plankene ble montert. Verkstedet ligger ved starten av stien.",
+          "success": "Stolpene står langs stien og er klare til lykter.",
+          "variants": [
+            {
+              "id": "v-stolper-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolper",
+                    "label": "Stolper langs stien",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "planker-per-stolpe",
+                    "label": "Planker per stolpe",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "planker-per-stolpe"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Plankene er flyttet på plass og festet til stolpene.",
+                    "working": "Stolpeplassene er markert langs stien.",
+                    "incorrect": "Plankene som trengs er markert for å vise feilvalg."
+                  }
+                },
+                "locationId": "forest-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 697472264,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker trengs i alt når du har {{groups}} stolper og {{each}} planker per stolpe?"
+            }
+          ]
+        },
+        {
+          "id": "mission-sett-lykter",
+          "goal": "Henge lykter på stolpene slik at stien blir lysere.",
+          "kind": "mission",
+          "next": "ending-lykter-paa-stien",
+          "title": "Sett opp lykter",
+          "before": "Stolpene står langs stien etter at de ble plassert. Kassene med lykter står klare ved verkstedet etter at Runi samlet dem.",
+          "success": "Lyktene henger på stolpene langs stien og gjør det lettere å finne hi.",
+          "variants": [
+            {
+              "id": "v-lys-1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolper-til-lykter",
+                    "label": "Stolper med kroker",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lykter-klare",
+                    "label": "Lykter klare til oppheng",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "stolper-til-lykter"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stolper-til-lykter"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lykter-klare"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Lyktene henger nå på stolpene langs stien.",
+                    "working": "Stolpene er markert for hvor lyktene skal henge.",
+                    "incorrect": "Lyktene er markert for å vise feil plassering."
+                  }
+                },
+                "locationId": "forest-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 697472281,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange lykter trengs i alt hvis du har {{groups}} stolper med {{each}} lykter på hver?"
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "forest-sky",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "workshop-sky",
+          "name": "Verkstedet"
+        }
+      ],
+      "entryNodeId": "mission-samle-lykter",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "a2940667-9e4b-4629-926d-5daa9a88be69",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 72739,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5435,
+        "cost_estimate": 0.17017825,
+        "output_tokens": 7056,
+        "chapter_number": 11,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "45bd5289-af72-4870-99e6-2049182f856b",
+      "result": {
+        "id": "chapter-45bd5289-af72-4870-99e6-2049182f856b",
+        "goal": "Hjelpe Runi med å gjøre stien til hi trygg ved å sette opp og lyse lykter langs veien.",
+        "title": "Runi og stien til hi",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "ending-lykter-paa-stien",
+            "hook": "Nå som stien er trygg, kan Runi lære valpene å gå hjem i kveld.",
+            "kind": "ending",
+            "narration": "Runi og Anna trår tilbake og ser at lyktene henger på stolpene langs stien. Lyset gjør det trygt for valpene å finne hi i mørket."
+          }
+        ],
+        "opening": "Det er kveld i skogen. Runi vil at valpene skal kunne finne hjem til hi uten å famle i mørket. For å klare det trenger Runi lykter, stativer til stolpene og lyssteinene som tenner lyktene.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "mission-samle-lykter",
+            "goal": "Fylle kassene med lykter slik at de er klare til transport.",
+            "kind": "mission",
+            "next": "mission-bygg-stativ",
+            "title": "Samle lykter",
+            "before": "Kassene står ved verkstedbenken og venter. Runi har funnet steder der lyktene ligger lagret i skogen.",
+            "success": "Runi har samlet lykter i kassene og kassene er klare ved verkstedet.",
+            "variants": [
+              {
+                "id": "v-samle-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "kasse1",
+                      "label": "Tre kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lykt",
+                      "label": "Lykter i kassene",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "kasse1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lykt"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kassene blir fylt med lykter.",
+                      "working": "Kassene er markert for å vise hvor du jobber.",
+                      "incorrect": "Et element er markert for å vise feil sted."
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 697472247,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter er det totalt når du har {{groups}} kasser med {{each}} lykter i hver?"
+              }
+            ]
+          },
+          {
+            "id": "mission-bygg-stativ",
+            "goal": "Gjøre stativene klare ved å feste planker der stolpene skal stå.",
+            "kind": "mission",
+            "next": "mission-plasser-stolper",
+            "title": "Bygg stativ",
+            "before": "Kassene med lykter står ved verkstedbenken etter at Runi samlet dem. Planker og verktøy er klare på benken.",
+            "success": "Stativene er bygd og står ferdige ved verkstedet.",
+            "variants": [
+              {
+                "id": "v-stativ-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stativplass",
+                      "label": "Plass til planker på stativ",
+                      "assetId": "plank",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "planker-pa-benk",
+                      "label": "Planker på benken",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna", "runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "stativplass"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stativplass"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "planker-pa-benk"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle stativplassene viser planker montert.",
+                      "working": "Stativplassene er markert.",
+                      "incorrect": "Plankene på benken er markert for å vise hva som mangler."
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 697472348,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn ut {{total}} − {{known}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} plasser når {{known}} allerede er montert?"
+              }
+            ]
+          },
+          {
+            "id": "mission-plasser-stolper",
+            "goal": "Sette stolpene på plass langs stien slik at lyktene kan henge i høyden.",
+            "kind": "mission",
+            "next": "mission-sett-lykter",
+            "title": "Plasser stolper",
+            "before": "Stativene er bygd og står ferdige ved verkstedet etter at plankene ble montert. Verkstedet ligger ved starten av stien.",
+            "success": "Stolpene står langs stien og er klare til lykter.",
+            "variants": [
+              {
+                "id": "v-stolper-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolper",
+                      "label": "Stolper langs stien",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "planker-per-stolpe",
+                      "label": "Planker per stolpe",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "planker-per-stolpe"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Plankene er flyttet på plass og festet til stolpene.",
+                      "working": "Stolpeplassene er markert langs stien.",
+                      "incorrect": "Plankene som trengs er markert for å vise feilvalg."
+                    }
+                  },
+                  "locationId": "forest-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 697472264,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker trengs i alt når du har {{groups}} stolper og {{each}} planker per stolpe?"
+              }
+            ]
+          },
+          {
+            "id": "mission-sett-lykter",
+            "goal": "Henge lykter på stolpene slik at stien blir lysere.",
+            "kind": "mission",
+            "next": "ending-lykter-paa-stien",
+            "title": "Sett opp lykter",
+            "before": "Stolpene står langs stien etter at de ble plassert. Kassene med lykter står klare ved verkstedet etter at Runi samlet dem.",
+            "success": "Lyktene henger på stolpene langs stien og gjør det lettere å finne hi.",
+            "variants": [
+              {
+                "id": "v-lys-1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolper-til-lykter",
+                      "label": "Stolper med kroker",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lykter-klare",
+                      "label": "Lykter klare til oppheng",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "stolper-til-lykter"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stolper-til-lykter"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lykter-klare"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Lyktene henger nå på stolpene langs stien.",
+                      "working": "Stolpene er markert for hvor lyktene skal henge.",
+                      "incorrect": "Lyktene er markert for å vise feil plassering."
+                    }
+                  },
+                  "locationId": "forest-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 697472281,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{groups}} × {{each}}.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange lykter trengs i alt hvis du har {{groups}} stolper med {{each}} lykter på hver?"
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "forest-sky",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "workshop-sky",
+            "name": "Verkstedet"
+          }
+        ],
+        "entryNodeId": "mission-samle-lykter",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T19:36:13.089896+00:00",
+      "completed_at": "2026-10-19T19:37:26.455467+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "a9c8cf3f-b730-4932-92a2-2d87d0ac701f",
+      "phase": "review",
+      "state": "pending",
+      "usage": null,
+      "job_id": "45bd5289-af72-4870-99e6-2049182f856b",
+      "result": null,
+      "started_at": "2026-10-19T19:37:26.885622+00:00",
+      "completed_at": null,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "da8c7964-0e8a-447e-a059-9e82b2381203",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T19:37:26.280789+00:00",
+      "latency_ms": 72739,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5435,
+      "cost_estimate": 0.17017825,
+      "output_tokens": 7056,
+      "chapter_job_id": "45bd5289-af72-4870-99e6-2049182f856b",
+      "chapter_number": 11,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T19:36:13.485+00:00"
+    }
+  ],
+  "jobId": "45bd5289-af72-4870-99e6-2049182f856b",
+  "phase": "review",
+  "state": "running",
+  "error_code": null,
+  "accountSpent": 3.35809925
+}

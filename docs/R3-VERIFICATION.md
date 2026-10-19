@@ -261,3 +261,21 @@ beholdning/behov og faktisk utført handling presiseres i kontrakten.
 
 Bekreftet kostnad0,21614450 kr. Konservativt samlet **5,99082000 kr av10**,
 gjenstående **4,00918000 kr**. Ingen ukjent reservasjon er frigitt.
+
+## Ellevte prøve: første fullstendige utkast etter grammar-rettelsene
+
+`910294f`: fire oppdrag, én primary hver, gyldig graf/matte og faktisk separat
+kritikerkall. Ingen grener. Tutor fant bedre årsakskjede, men seks stolper i
+et oppdrag ble til to i neste uten forklart utvalg. «Planker på benken» var
+misvisende metadata, men vises ikke til barnet i quantity-scenen; dette skal
+ikke omtales som observert elevvist feil.
+
+Kritikeren traff6000-ut-tokengrensen og returnerte model_response_incomplete.
+Ingen kritikervurdering, revisjon eller spillpakke ble publisert. Koden har
+logget kjent forbruk og avvist sikkert. Kritikerens rom økes til12000ut-token
+og120sekunder, innenfor eksisterende provider- og budsjettvakt; forfatterens
+grenser er uendret. Mengdekontinuitet på hele ruten presiseres eksplisitt.
+Det mislykkede kallet kjøpes ikke automatisk på nytt.
+
+Bekreftet kostnad0,31828500 kr. Konservativt samlet **6,30910500 kr av10**,
+gjenstående **3,69089500 kr**. Første unknown-reservasjon er fortsatt medregnet.
