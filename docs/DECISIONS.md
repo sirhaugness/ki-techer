@@ -301,3 +301,11 @@ Både120- og180sekundersprøven ga unknown uten utkast/usage. Neste separate
 prøve bruker low hos forfatteren med samme12000token/180sekunder. Den separate
 kritikeren beholder medium, og alle kodeporter beholdes. Ingen ukjente kall
 kjøpes på nytt, og alle tre usikre reservasjoner teller fullt i10kronersrammen.
+
+## 19. oktober: én ressursreferanse for quantity-mengder i forfatter-wire
+
+Etter at begge utkast i prøve15blandet signalstolpe/planke for total/known,
+velger forfatteren countedAssetId én gang. Koden binder begge mengder til
+den ressursen. Lagret kontrakt og eldre utkast endres ikke. Dette fjerner et
+redundant modellvalg; det er ingen semantisk godkjenning eller reparasjon av
+råforsøk. Numerisk spørsmålsform og ingen interne node-IDer presiseres også.

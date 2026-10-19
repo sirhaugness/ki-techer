@@ -368,3 +368,23 @@ beholder medium. De siste stramme identitets-/oppdrags-/mengdekontraktene og
 alle innholdskontroller beholdes. Dette er en avgrenset ytelsesprøve, ingen
 påstand om bedre kvalitet. Unknown-kallet sendes aldri på nytt; testjobbens
 superseding logges med hele reservasjonen beholdt.
+
+## Femtende prøve: raskere respons, fortsatt avvist før kritikk
+
+`52e52b5`: forfatter low returnerte etter45sekunder; revisjon etter34sekunder.
+Begge brukte ulike objekttyper for total/known, og hele revisjonen var identisk
+med førsteutkastet. Kodeporten avviste begge før kritiker og elevvisning. Tutor
+fant dessuten6samlede steiner mot9som trengtes; ja/nei-spørsmål med numerisk
+motorfasit9; interne m-IDer i elevtekst; steiner-i-lykter mot lyktmontering.
+Bekreftet kostnad0,21220650kr. Samlet konservativt7,71205325kr av10,
+gjenstående2,28794675kr. Ingen reservasjoner frigitt eller budsjettøkning.
+
+Ny quantity-wire velger countedAssetId én gang; total/known-objekter har bare
+id/label/mengdefelt. Kompilatoren binder begge til samme valgte type uten å
+endre ordlyd, tall eller handling. Gruppescener beholder separate ressurser.
+Historiske lagrede pakker er uendret, og eldre blandede utkast avvises fortsatt;
+prøve15repareres aldri i etterkant. Dette sikrer bare objekttypen. Enhet,
+ressursregnskap, fysisk regel og spørsmålsform krever fortsatt separat kritikk
+og menneskelig vurdering. Promptene presiserer numerisk svar og ingen node-IDer
+i elevtekst. Regresjon kontrollerer lik kompilert pakke og avviser tvetydig
+wire med både countedAssetId og separate assetId-er.

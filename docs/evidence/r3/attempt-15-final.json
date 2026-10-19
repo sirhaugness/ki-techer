@@ -1,0 +1,1955 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2950538739,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "positionsPerContainer": 2
+        },
+        "quantities": {
+          "each": 2,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2950538756,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 4,
+          "positionsPerContainer": 3
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 4
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 2950538773,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "positionsPerContainer": 3
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2950538840,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 11,
+          "countedAssetId": null,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 11
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2950538857,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 9,
+          "countedAssetId": null,
+          "alreadyInstalled": 2
+        },
+        "quantities": {
+          "known": 2,
+          "total": 9
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 2950538874,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 7,
+          "countedAssetId": null,
+          "alreadyInstalled": 3
+        },
+        "quantities": {
+          "known": 3,
+          "total": 7
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "goal": "Sammen skal Runi og vennene reparere signallyktene ved havna slik at alle stolpene får lys.",
+      "title": "Runi og lyktene ved havna",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "ending1",
+          "hook": "Nå som lyktene lyser, kan Runi hjelpe med å merke stien i skogen neste gang.",
+          "kind": "ending",
+          "narration": "Runi og Anna jobbet sammen: kassene ble ryddet, planker lagt, lykter fylt og satt på plass. Signalene ved havna lyser nå. Runi har gjort bryggekanten tryggere for båtene."
+        }
+      ],
+      "opening": "Runi, en nysgjerrig liten revunge, finner gamle signallykter ved havna. Noen kasser med steiner og planker ligger klare. For å få lys i alle stolpene må Runi telle, gruppere og fylle på riktig antall gjenstander. Hver oppgave endrer hva som er lagt i kasser eller satt på plass, så Runi kan ikke hoppe over stegene.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "m1",
+          "goal": "Finn hvor mange steiner som ligger totalt i kassene ved å bruke antall kasser og steiner per kasse.",
+          "kind": "mission",
+          "next": "m2",
+          "title": "Rydde kassene",
+          "before": "Runi står ved en brygge med tre kasser. Hver kasse har plasser for like mange steiner. Når kassen er ryddet, blir steinene klare til å fylles i lykter senere.",
+          "success": "Runi har telt totalt antall steiner og flyttet dem i en merket boks ved bryggekanten.",
+          "variants": [
+            {
+              "id": "m1v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes1",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones1",
+                    "label": "steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes1"
+                    },
+                    {
+                      "action": "move",
+                      "targetId": "stones1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi plasserer alle steinene i kassene og viser totalen.",
+                    "working": "Runi setter steinene inn i hver kasse en og en så du kan se mønsteret.",
+                    "incorrect": "Runi peker på kassene som fortsatt er ufullstendige."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538739,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{each}} steiner i hver kasse, ganger {{groups}} kasser.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det til sammen i de {{groups}} kassene hvis det ligger {{each}} steiner i hver kasse?"
+            }
+          ]
+        },
+        {
+          "id": "m2",
+          "goal": "Finn totalt antall planker som trengs for alle beholdere ved å multiplisere antall beholdere med planker per beholder.",
+          "kind": "mission",
+          "next": "m3",
+          "title": "Fylle små beholdere",
+          "before": "Etter å ha ryddet kasser, har Runi en haug med små beholdere som hver skal få tre planker. Noen beholdere er tomme på verkstedet.",
+          "success": "Runi fant riktig antall planker og la dem i en merket bunke ved arbeidsbenken.",
+          "variants": [
+            {
+              "id": "m2v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes2",
+                    "label": "beholdere",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "planks2",
+                    "label": "planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "planks2"
+                    },
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi legger de siste plankene i hver beholder.",
+                    "working": "Runi setter planker i hver beholder langsomt så du kan telle med.",
+                    "incorrect": "Runi viser beholderne som fremdeles mangler planker."
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 2950538756,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{each}} planker per beholder, ganger {{groups}} beholdere.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker trengs til sammen for {{groups}} beholdere hvis det skal være {{each}} planker i hver?"
+            }
+          ]
+        },
+        {
+          "id": "m3",
+          "goal": "Regn ut hvor mange steiner som trengs til de tomme lyktene når noen allerede har steiner.",
+          "kind": "mission",
+          "next": "m4",
+          "title": "Pakke lyktene",
+          "before": "Ved bryggekanten står lyktene klare, men ikke alle har lysstein i seg. Runi har steiner fra kassene i en boks fra m1 som skal fylles i lyktene.",
+          "success": "Runi fylte de manglende steinene i lyktene og plasserte dem i en kurv ved bryggekanten.",
+          "variants": [
+            {
+              "id": "m3v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns1",
+                    "label": "lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "filled1",
+                    "label": "allerede fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns1"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "filled1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi viser de nylig fylte lyktene i kurven.",
+                    "working": "Runi setter en og en stein i lyktene slik at du ser arbeidet.",
+                    "incorrect": "Runi peker på lykter som fortsatt mangler steiner."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538840,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt {{total}} minus de {{known}} som allerede er fylt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner mangler for å fylle alle {{total}} lykter hvis {{known}} allerede er fylt?"
+            }
+          ]
+        },
+        {
+          "id": "m4",
+          "goal": "Regn ut hvor mange planker som trengs for å fylle alle stolpeplassene når noen allerede er på plass.",
+          "kind": "mission",
+          "next": "m5",
+          "title": "Sikre stolpene",
+          "before": "Nå skal planker fra m2 brukes til å feste stolper, men noen stolper mangler planker allerede montert. Runi må finne hvor mange planker som fortsatt trengs.",
+          "success": "Runi la de siste plankene på de åpne stolpeplassene og gjorde stolpene klare for lyktene.",
+          "variants": [
+            {
+              "id": "m4v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beaconplaces",
+                    "label": "stolpeplasser",
+                    "assetId": "beacon",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "planksinstalled",
+                    "label": "allerede la planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "reveal",
+                      "targetId": "planksinstalled"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi triller plankebunken bort til de ferdigstilte stolpene.",
+                    "working": "Runi setter planker på stolpeplassene rolig så du ser hvor mange det blir.",
+                    "incorrect": "Runi viser plassene som fortsatt trenger planker."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538857,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt {{total}} minus {{known}} som allerede er lagt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} stolpeplasser hvis {{known}} allerede er lagt?"
+            }
+          ]
+        },
+        {
+          "id": "m5",
+          "goal": "Sjekk at antall ferdige lykter er nok til alle stolpene og plasser dem korrekt.",
+          "kind": "mission",
+          "next": "ending1",
+          "title": "Tenning og plassering",
+          "before": "Lyktene er fylt (m3) og stolpene er ferdige (m4). Nå skal lyktene settes på stolpene og festes. Dette krever at antall lykter i kurven minst matcher antall stolper som trenger lykter.",
+          "success": "Runi plasserte og festet lyktene på alle stolpene ved bryggekanten. Signalene lyser nå langs bryggekanten.",
+          "variants": [
+            {
+              "id": "m5v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolper",
+                    "label": "stolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "kurvlykter",
+                    "label": "lykter i kurven",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "kurvlykter"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "distribute",
+                      "targetId": "kurvlykter"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi setter de siste lyktene på stolpene og viser at de sitter fast.",
+                    "working": "Runi løfter en og en lykt forsiktig og plasserer dem ved stolpene.",
+                    "incorrect": "Runi peker på stolper som mangler lykter."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538773,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: hvor mange lykter blir det hvis du ganger {{groups}} med {{each}}, og sammenlign med antall stolper.",
+              "representation": "konkret",
+              "questionTemplate": "Er antall ferdige lykter (i kurven) nok hvis det er {{groups}} stolper som skal få én lykt hver og kurven har {{each}} lykter i hver liten gruppe?"
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "harbor-sky",
+          "name": "Havna"
+        },
+        {
+          "id": "workshop-sky",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "forest-sky",
+          "name": "Skogskanten"
+        }
+      ],
+      "entryNodeId": "m1",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "issues": {
+      "structural": "Plasser og allerede plasserte ting må vise samme objekttype."
+    },
+    "review": null,
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "rejectedDraft": {
+      "id": "chapter-8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "goal": "Sammen skal Runi og vennene reparere signallyktene ved havna slik at alle stolpene får lys.",
+      "title": "Runi og lyktene ved havna",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "ending1",
+          "hook": "Nå som lyktene lyser, kan Runi hjelpe med å merke stien i skogen neste gang.",
+          "kind": "ending",
+          "narration": "Runi og Anna jobbet sammen: kassene ble ryddet, planker lagt, lykter fylt og satt på plass. Signalene ved havna lyser nå. Runi har gjort bryggekanten tryggere for båtene."
+        }
+      ],
+      "opening": "Runi, en nysgjerrig liten revunge, finner gamle signallykter ved havna. Noen kasser med steiner og planker ligger klare. For å få lys i alle stolpene må Runi telle, gruppere og fylle på riktig antall gjenstander. Hver oppgave endrer hva som er lagt i kasser eller satt på plass, så Runi kan ikke hoppe over stegene.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "m1",
+          "goal": "Finn hvor mange steiner som ligger totalt i kassene ved å bruke antall kasser og steiner per kasse.",
+          "kind": "mission",
+          "next": "m2",
+          "title": "Rydde kassene",
+          "before": "Runi står ved en brygge med tre kasser. Hver kasse har plasser for like mange steiner. Når kassen er ryddet, blir steinene klare til å fylles i lykter senere.",
+          "success": "Runi har telt totalt antall steiner og flyttet dem i en merket boks ved bryggekanten.",
+          "variants": [
+            {
+              "id": "m1v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes1",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "stones1",
+                    "label": "steiner",
+                    "assetId": "stone",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes1"
+                    },
+                    {
+                      "action": "move",
+                      "targetId": "stones1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi plasserer alle steinene i kassene og viser totalen.",
+                    "working": "Runi setter steinene inn i hver kasse en og en så du kan se mønsteret.",
+                    "incorrect": "Runi peker på kassene som fortsatt er ufullstendige."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538739,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: {{each}} steiner i hver kasse, ganger {{groups}} kasser.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner er det til sammen i de {{groups}} kassene hvis det ligger {{each}} steiner i hver kasse?"
+            }
+          ]
+        },
+        {
+          "id": "m2",
+          "goal": "Finn totalt antall planker som trengs for alle beholdere ved å multiplisere antall beholdere med planker per beholder.",
+          "kind": "mission",
+          "next": "m3",
+          "title": "Fylle små beholdere",
+          "before": "Etter å ha ryddet kasser, har Runi en haug med små beholdere som hver skal få tre planker. Noen beholdere er tomme på verkstedet.",
+          "success": "Runi fant riktig antall planker og la dem i en merket bunke ved arbeidsbenken.",
+          "variants": [
+            {
+              "id": "m2v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes2",
+                    "label": "beholdere",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "planks2",
+                    "label": "planker",
+                    "assetId": "plank",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "planks2"
+                    },
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes2"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi legger de siste plankene i hver beholder.",
+                    "working": "Runi setter planker i hver beholder langsomt så du kan telle med.",
+                    "incorrect": "Runi viser beholderne som fremdeles mangler planker."
+                  }
+                },
+                "locationId": "workshop-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 2950538756,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Regn: {{each}} planker per beholder, ganger {{groups}} beholdere.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker trengs til sammen for {{groups}} beholdere hvis det skal være {{each}} planker i hver?"
+            }
+          ]
+        },
+        {
+          "id": "m3",
+          "goal": "Regn ut hvor mange steiner som trengs til de tomme lyktene når noen allerede har steiner.",
+          "kind": "mission",
+          "next": "m4",
+          "title": "Pakke lyktene",
+          "before": "Ved bryggekanten står lyktene klare, men ikke alle har lysstein i seg. Runi har steiner fra kassene i en boks fra m1 som skal fylles i lyktene.",
+          "success": "Runi fylte de manglende steinene i lyktene og plasserte dem i en kurv ved bryggekanten.",
+          "variants": [
+            {
+              "id": "m3v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lanterns1",
+                    "label": "lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "filled1",
+                    "label": "allerede fylte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns1"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "filled1"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns1"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns1"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi viser de nylig fylte lyktene i kurven.",
+                    "working": "Runi setter en og en stein i lyktene slik at du ser arbeidet.",
+                    "incorrect": "Runi peker på lykter som fortsatt mangler steiner."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538840,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt {{total}} minus de {{known}} som allerede er fylt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange steiner mangler for å fylle alle {{total}} lykter hvis {{known}} allerede er fylt?"
+            }
+          ]
+        },
+        {
+          "id": "m4",
+          "goal": "Regn ut hvor mange planker som trengs for å fylle alle stolpeplassene når noen allerede er på plass.",
+          "kind": "mission",
+          "next": "m5",
+          "title": "Sikre stolpene",
+          "before": "Nå skal planker fra m2 brukes til å feste stolper, men noen stolper mangler planker allerede montert. Runi må finne hvor mange planker som fortsatt trengs.",
+          "success": "Runi la de siste plankene på de åpne stolpeplassene og gjorde stolpene klare for lyktene.",
+          "variants": [
+            {
+              "id": "m4v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "beaconplaces",
+                    "label": "stolpeplasser",
+                    "assetId": "beacon",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "planksinstalled",
+                    "label": "allerede la planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "reveal",
+                      "targetId": "planksinstalled"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "fill",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "beaconplaces"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi triller plankebunken bort til de ferdigstilte stolpene.",
+                    "working": "Runi setter planker på stolpeplassene rolig så du ser hvor mange det blir.",
+                    "incorrect": "Runi viser plassene som fortsatt trenger planker."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "quantity",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538857,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: totalt {{total}} minus {{known}} som allerede er lagt.",
+              "representation": "konkret",
+              "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} stolpeplasser hvis {{known}} allerede er lagt?"
+            }
+          ]
+        },
+        {
+          "id": "m5",
+          "goal": "Sjekk at antall ferdige lykter er nok til alle stolpene og plasser dem korrekt.",
+          "kind": "mission",
+          "next": "ending1",
+          "title": "Tenning og plassering",
+          "before": "Lyktene er fylt (m3) og stolpene er ferdige (m4). Nå skal lyktene settes på stolpene og festes. Dette krever at antall lykter i kurven minst matcher antall stolper som trenger lykter.",
+          "success": "Runi plasserte og festet lyktene på alle stolpene ved bryggekanten. Signalene lyser nå langs bryggekanten.",
+          "variants": [
+            {
+              "id": "m5v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "stolper",
+                    "label": "stolper",
+                    "assetId": "beacon",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "kurvlykter",
+                    "label": "lykter i kurven",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "move",
+                      "targetId": "kurvlykter"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "distribute",
+                      "targetId": "kurvlykter"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "stolper"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Runi setter de siste lyktene på stolpene og viser at de sitter fast.",
+                    "working": "Runi løfter en og en lykt forsiktig og plasserer dem ved stolpene.",
+                    "incorrect": "Runi peker på stolper som mangler lykter."
+                  }
+                },
+                "locationId": "harbor-sky",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 2950538773,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Tenk: hvor mange lykter blir det hvis du ganger {{groups}} med {{each}}, og sammenlign med antall stolper.",
+              "representation": "konkret",
+              "questionTemplate": "Er antall ferdige lykter (i kurven) nok hvis det er {{groups}} stolper som skal få én lykt hver og kurven har {{each}} lykter i hver liten gruppe?"
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "harbor-sky",
+          "name": "Havna"
+        },
+        {
+          "id": "workshop-sky",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "forest-sky",
+          "name": "Skogskanten"
+        }
+      ],
+      "entryNodeId": "m1",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "00e75007-c4b3-4508-bfd0-5220f364763e",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 42024,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 5788,
+        "cost_estimate": 0.104621,
+        "output_tokens": 4032,
+        "chapter_number": 15,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "result": {
+        "id": "chapter-8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+        "goal": "Sammen skal Runi og vennene reparere signallyktene ved havna slik at alle stolpene får lys.",
+        "title": "Runi og lyktene ved havna",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "ending1",
+            "hook": "Nå som lyktene lyser, kan Runi hjelpe med å merke stien i skogen neste gang.",
+            "kind": "ending",
+            "narration": "Runi og Anna jobbet sammen: kassene ble ryddet, planker lagt, lykter fylt og satt på plass. Signalene ved havna lyser nå. Runi har gjort bryggekanten tryggere for båtene."
+          }
+        ],
+        "opening": "Runi, en nysgjerrig liten revunge, finner gamle signallykter ved havna. Noen kasser med steiner og planker ligger klare. For å få lys i alle stolpene må Runi telle, gruppere og fylle på riktig antall gjenstander. Hver oppgave endrer hva som er lagt i kasser eller satt på plass, så Runi kan ikke hoppe over stegene.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "m1",
+            "goal": "Finn hvor mange steiner som ligger totalt i kassene ved å bruke antall kasser og steiner per kasse.",
+            "kind": "mission",
+            "next": "m2",
+            "title": "Rydde kassene",
+            "before": "Runi står ved en brygge med tre kasser. Hver kasse har plasser for like mange steiner. Når kassen er ryddet, blir steinene klare til å fylles i lykter senere.",
+            "success": "Runi har telt totalt antall steiner og flyttet dem i en merket boks ved bryggekanten.",
+            "variants": [
+              {
+                "id": "m1v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes1",
+                      "label": "kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "stones1",
+                      "label": "steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes1"
+                      },
+                      {
+                        "action": "move",
+                        "targetId": "stones1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi plasserer alle steinene i kassene og viser totalen.",
+                      "working": "Runi setter steinene inn i hver kasse en og en så du kan se mønsteret.",
+                      "incorrect": "Runi peker på kassene som fortsatt er ufullstendige."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538739,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{each}} steiner i hver kasse, ganger {{groups}} kasser.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner er det til sammen i de {{groups}} kassene hvis det ligger {{each}} steiner i hver kasse?"
+              }
+            ]
+          },
+          {
+            "id": "m2",
+            "goal": "Finn totalt antall planker som trengs for alle beholdere ved å multiplisere antall beholdere med planker per beholder.",
+            "kind": "mission",
+            "next": "m3",
+            "title": "Fylle små beholdere",
+            "before": "Etter å ha ryddet kasser, har Runi en haug med små beholdere som hver skal få tre planker. Noen beholdere er tomme på verkstedet.",
+            "success": "Runi fant riktig antall planker og la dem i en merket bunke ved arbeidsbenken.",
+            "variants": [
+              {
+                "id": "m2v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes2",
+                      "label": "beholdere",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "planks2",
+                      "label": "planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "planks2"
+                      },
+                      {
+                        "action": "group",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi legger de siste plankene i hver beholder.",
+                      "working": "Runi setter planker i hver beholder langsomt så du kan telle med.",
+                      "incorrect": "Runi viser beholderne som fremdeles mangler planker."
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 2950538756,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{each}} planker per beholder, ganger {{groups}} beholdere.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker trengs til sammen for {{groups}} beholdere hvis det skal være {{each}} planker i hver?"
+              }
+            ]
+          },
+          {
+            "id": "m3",
+            "goal": "Regn ut hvor mange steiner som trengs til de tomme lyktene når noen allerede har steiner.",
+            "kind": "mission",
+            "next": "m4",
+            "title": "Pakke lyktene",
+            "before": "Ved bryggekanten står lyktene klare, men ikke alle har lysstein i seg. Runi har steiner fra kassene i en boks fra m1 som skal fylles i lyktene.",
+            "success": "Runi fylte de manglende steinene i lyktene og plasserte dem i en kurv ved bryggekanten.",
+            "variants": [
+              {
+                "id": "m3v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns1",
+                      "label": "lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "filled1",
+                      "label": "allerede fylte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns1"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "filled1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi viser de nylig fylte lyktene i kurven.",
+                      "working": "Runi setter en og en stein i lyktene slik at du ser arbeidet.",
+                      "incorrect": "Runi peker på lykter som fortsatt mangler steiner."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538840,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt {{total}} minus de {{known}} som allerede er fylt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner mangler for å fylle alle {{total}} lykter hvis {{known}} allerede er fylt?"
+              }
+            ]
+          },
+          {
+            "id": "m4",
+            "goal": "Regn ut hvor mange planker som trengs for å fylle alle stolpeplassene når noen allerede er på plass.",
+            "kind": "mission",
+            "next": "m5",
+            "title": "Sikre stolpene",
+            "before": "Nå skal planker fra m2 brukes til å feste stolper, men noen stolper mangler planker allerede montert. Runi må finne hvor mange planker som fortsatt trengs.",
+            "success": "Runi la de siste plankene på de åpne stolpeplassene og gjorde stolpene klare for lyktene.",
+            "variants": [
+              {
+                "id": "m4v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beaconplaces",
+                      "label": "stolpeplasser",
+                      "assetId": "beacon",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "planksinstalled",
+                      "label": "allerede la planker",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "reveal",
+                        "targetId": "planksinstalled"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi triller plankebunken bort til de ferdigstilte stolpene.",
+                      "working": "Runi setter planker på stolpeplassene rolig så du ser hvor mange det blir.",
+                      "incorrect": "Runi viser plassene som fortsatt trenger planker."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538857,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt {{total}} minus {{known}} som allerede er lagt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} stolpeplasser hvis {{known}} allerede er lagt?"
+              }
+            ]
+          },
+          {
+            "id": "m5",
+            "goal": "Sjekk at antall ferdige lykter er nok til alle stolpene og plasser dem korrekt.",
+            "kind": "mission",
+            "next": "ending1",
+            "title": "Tenning og plassering",
+            "before": "Lyktene er fylt (m3) og stolpene er ferdige (m4). Nå skal lyktene settes på stolpene og festes. Dette krever at antall lykter i kurven minst matcher antall stolper som trenger lykter.",
+            "success": "Runi plasserte og festet lyktene på alle stolpene ved bryggekanten. Signalene lyser nå langs bryggekanten.",
+            "variants": [
+              {
+                "id": "m5v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolper",
+                      "label": "stolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "kurvlykter",
+                      "label": "lykter i kurven",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "kurvlykter"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "distribute",
+                        "targetId": "kurvlykter"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi setter de siste lyktene på stolpene og viser at de sitter fast.",
+                      "working": "Runi løfter en og en lykt forsiktig og plasserer dem ved stolpene.",
+                      "incorrect": "Runi peker på stolper som mangler lykter."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538773,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: hvor mange lykter blir det hvis du ganger {{groups}} med {{each}}, og sammenlign med antall stolper.",
+                "representation": "konkret",
+                "questionTemplate": "Er antall ferdige lykter (i kurven) nok hvis det er {{groups}} stolper som skal få én lykt hver og kurven har {{each}} lykter i hver liten gruppe?"
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "harbor-sky",
+            "name": "Havna"
+          },
+          {
+            "id": "workshop-sky",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "forest-sky",
+            "name": "Skogskanten"
+          }
+        ],
+        "entryNodeId": "m1",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T20:24:22.664076+00:00",
+      "completed_at": "2026-10-19T20:25:07.812103+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "32fbcfd9-230e-4381-8a97-0ad706a26aaa",
+      "phase": "draft-revision",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 33677,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 8370,
+        "cost_estimate": 0.1075855,
+        "output_tokens": 3844,
+        "chapter_number": 15,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "result": {
+        "id": "chapter-8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+        "goal": "Sammen skal Runi og vennene reparere signallyktene ved havna slik at alle stolpene får lys.",
+        "title": "Runi og lyktene ved havna",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "ending1",
+            "hook": "Nå som lyktene lyser, kan Runi hjelpe med å merke stien i skogen neste gang.",
+            "kind": "ending",
+            "narration": "Runi og Anna jobbet sammen: kassene ble ryddet, planker lagt, lykter fylt og satt på plass. Signalene ved havna lyser nå. Runi har gjort bryggekanten tryggere for båtene."
+          }
+        ],
+        "opening": "Runi, en nysgjerrig liten revunge, finner gamle signallykter ved havna. Noen kasser med steiner og planker ligger klare. For å få lys i alle stolpene må Runi telle, gruppere og fylle på riktig antall gjenstander. Hver oppgave endrer hva som er lagt i kasser eller satt på plass, så Runi kan ikke hoppe over stegene.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "m1",
+            "goal": "Finn hvor mange steiner som ligger totalt i kassene ved å bruke antall kasser og steiner per kasse.",
+            "kind": "mission",
+            "next": "m2",
+            "title": "Rydde kassene",
+            "before": "Runi står ved en brygge med tre kasser. Hver kasse har plasser for like mange steiner. Når kassen er ryddet, blir steinene klare til å fylles i lykter senere.",
+            "success": "Runi har telt totalt antall steiner og flyttet dem i en merket boks ved bryggekanten.",
+            "variants": [
+              {
+                "id": "m1v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes1",
+                      "label": "kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "stones1",
+                      "label": "steiner",
+                      "assetId": "stone",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes1"
+                      },
+                      {
+                        "action": "move",
+                        "targetId": "stones1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi plasserer alle steinene i kassene og viser totalen.",
+                      "working": "Runi setter steinene inn i hver kasse en og en så du kan se mønsteret.",
+                      "incorrect": "Runi peker på kassene som fortsatt er ufullstendige."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538739,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: {{each}} steiner i hver kasse, ganger {{groups}} kasser.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner er det til sammen i de {{groups}} kassene hvis det ligger {{each}} steiner i hver kasse?"
+              }
+            ]
+          },
+          {
+            "id": "m2",
+            "goal": "Finn totalt antall planker som trengs for alle beholdere ved å multiplisere antall beholdere med planker per beholder.",
+            "kind": "mission",
+            "next": "m3",
+            "title": "Fylle små beholdere",
+            "before": "Etter å ha ryddet kasser, har Runi en haug med små beholdere som hver skal få tre planker. Noen beholdere er tomme på verkstedet.",
+            "success": "Runi fant riktig antall planker og la dem i en merket bunke ved arbeidsbenken.",
+            "variants": [
+              {
+                "id": "m2v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes2",
+                      "label": "beholdere",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "planks2",
+                      "label": "planker",
+                      "assetId": "plank",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "planks2"
+                      },
+                      {
+                        "action": "group",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes2"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi legger de siste plankene i hver beholder.",
+                      "working": "Runi setter planker i hver beholder langsomt så du kan telle med.",
+                      "incorrect": "Runi viser beholderne som fremdeles mangler planker."
+                    }
+                  },
+                  "locationId": "workshop-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 2950538756,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Regn: {{each}} planker per beholder, ganger {{groups}} beholdere.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker trengs til sammen for {{groups}} beholdere hvis det skal være {{each}} planker i hver?"
+              }
+            ]
+          },
+          {
+            "id": "m3",
+            "goal": "Regn ut hvor mange steiner som trengs til de tomme lyktene når noen allerede har steiner.",
+            "kind": "mission",
+            "next": "m4",
+            "title": "Pakke lyktene",
+            "before": "Ved bryggekanten står lyktene klare, men ikke alle har lysstein i seg. Runi har steiner fra kassene i en boks fra m1 som skal fylles i lyktene.",
+            "success": "Runi fylte de manglende steinene i lyktene og plasserte dem i en kurv ved bryggekanten.",
+            "variants": [
+              {
+                "id": "m3v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lanterns1",
+                      "label": "lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "filled1",
+                      "label": "allerede fylte lykter",
+                      "assetId": "lantern",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns1"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "filled1"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns1"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns1"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi viser de nylig fylte lyktene i kurven.",
+                      "working": "Runi setter en og en stein i lyktene slik at du ser arbeidet.",
+                      "incorrect": "Runi peker på lykter som fortsatt mangler steiner."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538840,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt {{total}} minus de {{known}} som allerede er fylt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange steiner mangler for å fylle alle {{total}} lykter hvis {{known}} allerede er fylt?"
+              }
+            ]
+          },
+          {
+            "id": "m4",
+            "goal": "Regn ut hvor mange planker som trengs for å fylle alle stolpeplassene når noen allerede er på plass.",
+            "kind": "mission",
+            "next": "m5",
+            "title": "Sikre stolpene",
+            "before": "Nå skal planker fra m2 brukes til å feste stolper, men noen stolper mangler planker allerede montert. Runi må finne hvor mange planker som fortsatt trengs.",
+            "success": "Runi la de siste plankene på de åpne stolpeplassene og gjorde stolpene klare for lyktene.",
+            "variants": [
+              {
+                "id": "m4v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "beaconplaces",
+                      "label": "stolpeplasser",
+                      "assetId": "beacon",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "planksinstalled",
+                      "label": "allerede la planker",
+                      "assetId": "plank",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "reveal",
+                        "targetId": "planksinstalled"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "fill",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "beaconplaces"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi triller plankebunken bort til de ferdigstilte stolpene.",
+                      "working": "Runi setter planker på stolpeplassene rolig så du ser hvor mange det blir.",
+                      "incorrect": "Runi viser plassene som fortsatt trenger planker."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "quantity",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538857,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: totalt {{total}} minus {{known}} som allerede er lagt.",
+                "representation": "konkret",
+                "questionTemplate": "Hvor mange planker mangler for å fylle alle {{total}} stolpeplasser hvis {{known}} allerede er lagt?"
+              }
+            ]
+          },
+          {
+            "id": "m5",
+            "goal": "Sjekk at antall ferdige lykter er nok til alle stolpene og plasser dem korrekt.",
+            "kind": "mission",
+            "next": "ending1",
+            "title": "Tenning og plassering",
+            "before": "Lyktene er fylt (m3) og stolpene er ferdige (m4). Nå skal lyktene settes på stolpene og festes. Dette krever at antall lykter i kurven minst matcher antall stolper som trenger lykter.",
+            "success": "Runi plasserte og festet lyktene på alle stolpene ved bryggekanten. Signalene lyser nå langs bryggekanten.",
+            "variants": [
+              {
+                "id": "m5v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "stolper",
+                      "label": "stolper",
+                      "assetId": "beacon",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "kurvlykter",
+                      "label": "lykter i kurven",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "move",
+                        "targetId": "kurvlykter"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "distribute",
+                        "targetId": "kurvlykter"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "stolper"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Runi setter de siste lyktene på stolpene og viser at de sitter fast.",
+                      "working": "Runi løfter en og en lykt forsiktig og plasserer dem ved stolpene.",
+                      "incorrect": "Runi peker på stolper som mangler lykter."
+                    }
+                  },
+                  "locationId": "harbor-sky",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 2950538773,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Tenk: hvor mange lykter blir det hvis du ganger {{groups}} med {{each}}, og sammenlign med antall stolper.",
+                "representation": "konkret",
+                "questionTemplate": "Er antall ferdige lykter (i kurven) nok hvis det er {{groups}} stolper som skal få én lykt hver og kurven har {{each}} lykter i hver liten gruppe?"
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "harbor-sky",
+            "name": "Havna"
+          },
+          {
+            "id": "workshop-sky",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "forest-sky",
+            "name": "Skogskanten"
+          }
+        ],
+        "entryNodeId": "m1",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T20:25:08.816911+00:00",
+      "completed_at": "2026-10-19T20:25:42.886192+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "acb5ed7b-bfbe-40b7-846f-b9929d83c743",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T20:25:07.628021+00:00",
+      "latency_ms": 42024,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 5788,
+      "cost_estimate": 0.104621,
+      "output_tokens": 4032,
+      "chapter_job_id": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "chapter_number": 15,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T20:24:25.465+00:00"
+    },
+    {
+      "id": "ec224ffb-20e7-4745-881c-9e978d014c1a",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T20:25:42.801077+00:00",
+      "latency_ms": 33677,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 8370,
+      "cost_estimate": 0.1075855,
+      "output_tokens": 3844,
+      "chapter_job_id": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "chapter_number": 15,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T20:25:09.077+00:00"
+    }
+  ],
+  "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+  "phase": "review",
+  "state": "failed",
+  "error_code": "editorial_review_rejected",
+  "accountSpent": 4.712235
+}

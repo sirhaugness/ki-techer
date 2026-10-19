@@ -127,11 +127,49 @@ describe('R3 chapter contracts and server projection', () => {
     delete wire.nodes;
     expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
     const exact = chapterAuthorSchemaFor(job);
-    expect(exact.parse(wire)).toEqual(wire);
-    expect(exact.safeParse({ ...wire, id: packet.id + '-v1' }).success).toBe(
-      false,
+    const exactWire = {
+      ...wire,
+      missions: packet.nodes
+        .filter((n) => n.kind === 'mission')
+        .map((m) => ({
+          ...m,
+          variants: m.variants.map((v) =>
+            v.scene.interaction === 'quantity'
+              ? {
+                  ...v,
+                  scene: {
+                    ...v.scene,
+                    countedAssetId: v.scene.objects[0].assetId,
+                    objects: v.scene.objects.map((o) => ({
+                      id: o.id,
+                      label: o.label,
+                      quantityKey: o.quantityKey,
+                    })),
+                  },
+                }
+              : v,
+          ),
+        })),
+    };
+    expect(exact.parse(exactWire)).toEqual(exactWire);
+    expect(productionDraft(exactWire, job, menu)).toEqual(
+      productionDraft(wire, job, menu),
     );
-    expect(exact.safeParse({ ...wire, basedOnRevision: 1 }).success).toBe(
+    const quantity = exactWire.missions.find(
+      (m) => m.variants[0].scene.interaction === 'quantity',
+    )!.variants[0].scene;
+    expect(quantity.objects.every((o) => !('assetId' in o))).toBe(true);
+    const ambiguous = structuredClone(exactWire);
+    const ambiguousScene = ambiguous.missions.find(
+      (m) => m.variants[0].scene.interaction === 'quantity',
+    )!.variants[0].scene;
+    Object.assign(ambiguousScene.objects[0], { assetId: 'stone' });
+    expect(exact.safeParse(ambiguous).success).toBe(false);
+    expect(() => productionDraft(ambiguous, job, menu)).toThrow();
+    expect(
+      exact.safeParse({ ...exactWire, id: packet.id + '-v1' }).success,
+    ).toBe(false);
+    expect(exact.safeParse({ ...exactWire, basedOnRevision: 1 }).success).toBe(
       false,
     );
     expect(JSON.stringify(z.toJSONSchema(exact))).not.toContain('"oneOf"');
