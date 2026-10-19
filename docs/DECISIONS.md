@@ -309,3 +309,11 @@ velger forfatteren countedAssetId én gang. Koden binder begge mengder til
 den ressursen. Lagret kontrakt og eldre utkast endres ikke. Dette fjerner et
 redundant modellvalg; det er ingen semantisk godkjenning eller reparasjon av
 råforsøk. Numerisk spørsmålsform og ingen interne node-IDer presiseres også.
+
+## 19. oktober: eksakt meny i wire og entydig kritikerprojeksjon
+
+Et rettingsforsøk i prøve16endret difficultyutenfor menyen. Problemreferansen
+begrenses nå til faktiske menyoppføringer i grammatikk, med vanlig kodekontroll
+i tillegg. Kritikerens input skiller objektroller fra faktisk tegnet mengde,
+siden rå each-verdi gjentatte ganger ble feiltolket som løs totalmengde.
+Dette endrer bare kritikerkonteksten, ikke rendering, råforsøk eller elev-API.

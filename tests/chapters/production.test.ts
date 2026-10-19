@@ -85,11 +85,21 @@ describe('R3 chapter contracts and server projection', () => {
     const shown = visibleChapter(packet).nodes.filter(
       (n) => n.kind === 'mission',
     );
+    expect(
+      shown[0].variants[0].visible.scene.objects.every(
+        (o) => !('quantity' in o),
+      ),
+    ).toBe(true);
     expect(shown[0].variants[0].rendering).toMatchObject({
       kind: 'grouping',
       containerCount: 3,
       positionsPerContainer: 4,
+      initiallyPlacedPerContainer: 0,
+      looseSourceCount: 0,
     });
+    expect(
+      shown[0].variants[0].visible.scene.objects.map((o) => o.renderingRole),
+    ).toEqual(['containers', 'positions_per_container']);
     expect(shown[1].variants[0].rendering).toMatchObject({
       kind: 'quantity',
       positionCount: 9,
@@ -126,7 +136,7 @@ describe('R3 chapter contracts and server projection', () => {
     delete wire.assets;
     delete wire.nodes;
     expect(chapterAuthorSchema.parse(wire)).toEqual(wire);
-    const exact = chapterAuthorSchemaFor(job);
+    const exact = chapterAuthorSchemaFor(job, menu);
     const exactWire = {
       ...wire,
       missions: packet.nodes
@@ -152,6 +162,9 @@ describe('R3 chapter contracts and server projection', () => {
         })),
     };
     expect(exact.parse(exactWire)).toEqual(exactWire);
+    const wrongLevel = structuredClone(exactWire);
+    wrongLevel.missions[0].variants[0].problem.difficulty = 5;
+    expect(exact.safeParse(wrongLevel).success).toBe(false);
     expect(productionDraft(exactWire, job, menu)).toEqual(
       productionDraft(wire, job, menu),
     );

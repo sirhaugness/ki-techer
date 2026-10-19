@@ -1,12 +1,12 @@
 {
-  "commit": "52e52b5d05d4f6b61fa765fdfe419674298c639c",
+  "commit": "4bf2cbadc9ac3ee0f5cb881054729290d8d6c5d8",
   "source": "real model via authenticated Preview; retained synthetic account and budget",
   "interest": "Rever",
   "errors": [],
   "views": [
     {
-      "time": "2026-10-19T20:24:22.882Z",
-      "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "time": "2026-10-19T20:30:57.794Z",
+      "jobId": "f45ee5c4-c3e0-406e-8f63-12f789dab9b4",
       "state": "running",
       "phase": "draft",
       "revision": 0,
@@ -31,8 +31,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-19T20:25:11.242Z",
-      "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "time": "2026-10-19T20:31:40.529Z",
+      "jobId": "f45ee5c4-c3e0-406e-8f63-12f789dab9b4",
       "state": "running",
       "phase": "review",
       "revision": 0,
@@ -57,8 +57,8 @@
       "failures": 0
     },
     {
-      "time": "2026-10-19T20:25:46.779Z",
-      "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+      "time": "2026-10-19T20:33:45.379Z",
+      "jobId": "f45ee5c4-c3e0-406e-8f63-12f789dab9b4",
       "state": "failed",
       "phase": "review",
       "revision": 0,
@@ -87,18 +87,18 @@
     "status": 200,
     "budget": {
       "limit": 7.00018175,
-      "spent": 4.5000285,
+      "spent": 4.712235,
       "warning": false,
       "fallback": false,
-      "remaining": 2.50015325
+      "remaining": 2.28794675
     },
     "models": {
       "text": "gpt-5-mini"
     }
   },
-  "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+  "jobId": "f45ee5c4-c3e0-406e-8f63-12f789dab9b4",
   "finalView": {
-    "jobId": "8612cea5-5bd5-4f4f-a2af-15f91bdaad11",
+    "jobId": "f45ee5c4-c3e0-406e-8f63-12f789dab9b4",
     "state": "failed",
     "phase": "review",
     "revision": 0,

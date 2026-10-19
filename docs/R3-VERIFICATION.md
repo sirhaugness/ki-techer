@@ -388,3 +388,23 @@ ressursregnskap, fysisk regel og spørsmålsform krever fortsatt separat kritikk
 og menneskelig vurdering. Promptene presiserer numerisk svar og ingen node-IDer
 i elevtekst. Regresjon kontrollerer lik kompilert pakke og avviser tvetydig
 wire med både countedAssetId og separate assetId-er.
+
+## Sekstende prøve: faktisk kritikk, deretter ulovlig referanse i rettingen
+
+`4bf2cba`: quantity-wire virket; førsteutkast bestod struktur/matte. Tutor
+fant ingenP1 i dette avgrensede utkastet:15steiner,8planker,4lykter. P2:
+verksted i førtekst mot skogsbakgrunn i sisteoppdrag. Ingen elevvisning.
+Kritikeren fant manglende uttrykkelig regel for steiner per lykt, men mistolket
+også sceneobjektets each-verdi som en separat løs/ferdig mengde. Korreksjonen
+endret siste problem til difficulty3utenfor menyen, og ble strukturelt avvist
+før ny kritikk. Tre bekreftede kall0,31784225kr. Konservativt samlet8,02989550kr
+av10, gjenstående1,97010450kr.
+
+Forfatterens problemfelt låses nå til en union av eksakte tilgjengelige
+menyreferanser i selve svargrammatikken, også ved retting. Nivå/seed kan
+fortsatt velges fra menyen, men ikke fritt endres. Duplikater håndheves fortsatt
+i kode. Kritikerprojeksjonen viser objektreferanser med uttrykkelig rolle
+(beholder/plasser per beholder osv.) og alle tegnede mengder i rendering; rå
+quantity-definisjoner presenteres ikke lenger som en egen mengdeliste. Grouping
+angir eksplisitt null løse ting og null plasserte ting før svaret. Råforsøk og
+API-/lagringskontrakter endres ikke. Kritikerprompten krever også stedssamsvar.
