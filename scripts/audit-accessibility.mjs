@@ -90,8 +90,8 @@ try {
   await fetch(origin + '/leo?fixture=master');
   await audit('leo-home', '/leo');
   await audit('leo-r2-player', '/leo/provekapittel');
-  const post = async (body) => {
-    const r = await fetch(origin + '/api/leo', {
+  const post = async (body, path = '/api/leo') => {
+    const r = await fetch(origin + path, {
       method: 'POST',
       headers: { origin, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -138,6 +138,20 @@ try {
     event: { type: 'mood', mood: 'rolig' },
   });
   await audit('leo-story', '/leo');
+  await fetch(origin + '/leo?fixture=quiet');
+  await audit('leo-free-interests', '/leo/eventyr');
+  const prepared = await post(
+    { command: 'prepare', interests: ['Verdensrommet'] },
+    '/api/free-chapters',
+  );
+  await post(
+    { command: 'start', chapterId: prepared.view.chapterId },
+    '/api/free-chapters',
+  );
+  await audit(
+    'leo-free-chapter',
+    '/leo/eventyr?chapter=' + prepared.view.chapterId,
+  );
   await audit(
     'parent',
     '/forelder/00000000-0000-4000-8000-000000000099?fixture=reset',

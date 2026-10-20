@@ -1,5 +1,27 @@
 # Fremdrift
 
+## Start her – fri kapittelhistorie 20. oktober 2026
+
+R2/PR #18 er merget til main `be45e18`. Grenen `feat/free-story-chapters` bygger på denne. PR #20/`feat/chapter-preparation` er parkert og skal ikke merges. Ny bestilling og plan er godkjent; se SPEC §16 og AGENTS. Ingen ekte KI-test er godkjent for denne leveransen. Tidligere testbelastning på 8,24392525 kr av 10 kr beholdes.
+
+Implementert: motorstyrte 20–25 matteplasser, én strømmet JSON-respons, kodekontroll, maksimalt ett rettingskall og generatorreserve. Fristen er 90 sekunder og rammen 1 kr per kapittel. Første godkjente oppdrag publiseres progressivt; neste kapittel får egen stabil identitet ved 70 prosent. Den nye flaten åpnes fra lenken til `/leo/eventyr` på kartet. R2-prøvespilleren og den eldre øvingsflaten er beholdt; den nye kapittelruten bruker ingen KI-kritiker.
+
+Kapittelstart lagrer økt og første oppgave atomisk. Svar og hint bruker eksisterende læringsmotor, mestring, FSRS, foreldrenes tidsgrenser og kostnadsvern. Kapittelfremdrift hentes separat fra siste læringssnapshot ved gjenopptak. Eksakt spørsmålstekst fra motoren hindrer at modellens spørsmål endrer regneart. Fagfigurer viser bare gitte data; opplesing bruker samme tekstgrunnlag som skjermen og eksisterende cache.
+
+Tre native spesialister leverte planlegger, spillerflate, genererings-/lagringskontroll og avgrensede tester. Gjennomgangen fant blant annet feil regneart i synlig spørsmål, manglende fagfigur, avvik i opplesing, ikke-atomisk oppstart og tapt kapittelplass etter vanlig øving. Disse er rettet med kode og regresjonstester. Dette dokumenterer teknisk funksjon med syntetiske data, ikke ekte fortellerkvalitet eller observerte barnereaksjoner.
+
+Lokalt verifisert: 626 enhetstester (44 filer) består med maks to arbeidere, inkludert PGlite-migrasjoner og RLS. Lint, typekontroll, formatering og motorsimulering består. Hele nye kapitlet er gjennomspilt med håndskrevet fixture: feil → hint → riktig → konsekvens → pause → reload → 20 oppdrag → én nesteidentitet ved 70 prosent → neste kapittel. Skjermbilder produseres utenfor git som CI-vedlegget `chapter-preview-screenshots`. Til sammen består 25 syntetiske nettlesertester; to tester som krever lokal Supabase Auth er utelatt i fixture-kjøringen. En første samtidig kjøring ble avbrutt etter tidsavbrudd; seks videotester ble deretter kjørt på nytt etter installasjon av manglende FFmpeg. Produksjonsbygget består.
+
+Gammel låsing av uferdig jobb og saga-revisjon passer ikke forhåndsgenerering. Neste kapittel får derfor egen stabil identitet og fast kontekst. Den allerede anvendte dev-migrasjonen fra PR #20 er bevart byte-identisk; ny funksjonalitet har en egen migrasjon. Ingen SQL er kjørt via connector, og produksjon er ikke endret.
+
+Innlogget Preview og ekte modell er ennå ikke verifisert. Pris og varighet med ekte modell er ikke målt; 1 kr og 90 sekunder er kodegrenser, ikke observerte gjennomsnitt. Den nye leveransen bruker ingen betalte tester og endrer ikke det historiske testregnskapet. Ekte KI-testing krever særskilt godkjenning.
+
+**PR og Preview:** [PR #21](https://github.com/sirhaugness/ki-techer/pull/21) er utkast. Preview for kodeleveransen: https://ki-techer-git-feat-free-story-chapters-team-thor1.vercel.app. Dev-migrasjonen er grønn via Actions; Preview er READY og sender uinnloggede besøk til foreldreinnlogging. Kvalitetsjobben og CI-vedlegget følges i PR-en. Lokalt ga tilgjengelighetskontrollen 100/100 på begge nye flater. Den siste tekstjusteringen fjerner gjentatt lærerfylltekst ved nye oppdrag.
+
+**Hva Thor må gjøre:** Se over utkastet og prøv interessevalg → oppdrag → feil/hint/riktig → pause/gjenopptak i Preview når du ønsker. Ekte KI-test utført av agenten og produksjonsmerge krever egne godkjenninger.
+
+---
+
 ## Start her: aktiv spillrevisjon (oppdatert 16. oktober 2026)
 
 Denne delen er overleveringen til neste arbeidsøkt. Den erstatter ikke produktkravene i [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026), eller kravkartet og byggeplanen i [GAME-REVISION.md](GAME-REVISION.md). Eldre milepæler nedenfor er historikk; «implementert» der betyr ikke at dagens spill oppfyller den nye visjonen. Oppdater denne delen etter hver leveranse, sammen med daterte bevis og åpne funn.

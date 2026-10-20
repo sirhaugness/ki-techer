@@ -8,7 +8,8 @@ export function SpeechControls({
   initialAuto = false,
   source = 'all',
 }: {
-  view: LearningView;
+  view: Pick<LearningView, 'id' | 'revision' | 'speech' | 'ended' | 'task'> &
+    Partial<LearningView>;
   initialAuto?: boolean;
   source?: 'home' | 'all';
 }) {
