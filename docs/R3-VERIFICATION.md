@@ -408,3 +408,23 @@ i kode. Kritikerprojeksjonen viser objektreferanser med uttrykkelig rolle
 quantity-definisjoner presenteres ikke lenger som en egen mengdeliste. Grouping
 angir eksplisitt null løse ting og null plasserte ting før svaret. Råforsøk og
 API-/lagringskontrakter endres ikke. Kritikerprompten krever også stedssamsvar.
+
+## Stopp20. oktober – siste forsøk17 bevart, ingen nye KI-prøver
+
+På uttrykkelig stoppordre ble bare eksisterende resultat hentet og bevart.
+`e9c8845`: draft og review fullførte19. oktober, ready/play_revision0,
+ingen spillstart eller gjennomspilling. Full CI39320861860 og dev-migrasjon
+39320861897 er grønne. Siste pakke var modellgodkjent, men uavhengig
+Codex-tutor rapporterte P2:20lykter samlet før ytterligere15 etterspørres,
+selv om bare8mangler;27overskytende har ingen forklart bruk. Anna tegnes
+samtidig ved Runi mens førteksten sier hun er borte. Agentkvoten stoppet
+resten av tutorens vurdering. Ingen påstand om fullført kvalitetskontroll.
+
+To bekreftede kall kostet0,21402975kr. Varig sluttregnskap i
+[evidens](evidence/r3/cost-ledger.json): historisk2,99981825kr, bekreftet
+R3forbruk4,25732725kr, beholdt usikkert forbruk0,98677975kr. Konservativt
+samlet8,24392525kr av10. settled=true for de ukjente reservasjonene betyr
+at hele takbeløpet er belastet budsjettet, ikke at faktisk leverandørpris er kjent.
+Ingen queued/running-jobber ved avsluttende read-only-kontroll. Ingen flere
+genereringer, KI-tester eller databaseendringer utført etter stoppordren.
+Midlertidig R3-konto er ikke ryddet; ingen produksjonsmerge.

@@ -1,0 +1,1576 @@
+{
+  "data": {
+    "menu": [
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3568501991,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 5,
+          "countedAssetId": null,
+          "looseSourceCount": 0,
+          "positionsPerContainer": 4,
+          "initiallyPlacedPerContainer": 0
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3568502008,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 5,
+          "countedAssetId": null,
+          "looseSourceCount": 0,
+          "positionsPerContainer": 3,
+          "initiallyPlacedPerContainer": 0
+        },
+        "quantities": {
+          "each": 3,
+          "groups": 5
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn totalt innhold i like grupper (groups × each).",
+        "problem": {
+          "seed": 3568502025,
+          "skillId": "mult-telling-grupper",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "grouping",
+          "after": "De samme plassene fylles i hver beholder. Ingen separate løse ting ligger utenfor gruppene.",
+          "before": "Hver beholder viser sitt eget sett med tomme innholdsplasser. each er per beholder, aldri totalt.",
+          "containerCount": 3,
+          "countedAssetId": null,
+          "looseSourceCount": 0,
+          "positionsPerContainer": 4,
+          "initiallyPlacedPerContainer": 0
+        },
+        "quantities": {
+          "each": 4,
+          "groups": 3
+        },
+        "interaction": "grouping",
+        "requiredQuestionKeys": ["groups", "each"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3568502092,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 14,
+          "countedAssetId": null,
+          "alreadyInstalled": 6
+        },
+        "quantities": {
+          "known": 6,
+          "total": 14
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3568502109,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "countedAssetId": null,
+          "alreadyInstalled": 4
+        },
+        "quantities": {
+          "known": 4,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      },
+      {
+        "target": "Finn antallet som mangler på de ledige plassene (total − known).",
+        "problem": {
+          "seed": 3568502126,
+          "skillId": "likhetstegn",
+          "difficulty": 2,
+          "generatorVersion": 1
+        },
+        "rendering": {
+          "kind": "quantity",
+          "unit": "Enheten er selve sceneobjektet: lantern betyr en lykt som monteres, aldri lyssteiner inne i en lykt. plank betyr en planke som legges på plass.",
+          "after": "Alle plassene er fylt med samme objekttype. Eleven legger til det som mangler.",
+          "limit": "Bare de valgte objektene på sine plasser tegnes. Plankeikoner blir ikke automatisk en komplett lysende signalstolpe, og lyktikoner viser ikke innfylling av steiner.",
+          "before": "known ting er allerede montert på sine plasser; resten er tomme markerte plasser. Dette er ikke en løs haug eller en benk med tilgjengelige ting.",
+          "positionCount": 12,
+          "countedAssetId": null,
+          "alreadyInstalled": 6
+        },
+        "quantities": {
+          "known": 6,
+          "total": 12
+        },
+        "interaction": "quantity",
+        "requiredQuestionKeys": ["total", "known"]
+      }
+    ],
+    "mode": "model",
+    "draft": {
+      "id": "chapter-45734895-8032-4525-a33e-7790f2ee2931",
+      "goal": "Få den ødelagte signalstolpen lyst igjen ved å samle lykter og planker og montere dem på stedet.",
+      "title": "Runi og signalstolpen",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "gamle",
+          "name": "Gamle Røde",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "choices": [],
+      "endings": [
+        {
+          "id": "end1",
+          "hook": "Runi ser Arktis trygt komme frem og gleder seg over at stolpen virker.",
+          "kind": "ending",
+          "narration": "Signalstolpen lyser nå klart. Arktis finner hiet sitt fordi lyset leder veien."
+        }
+      ],
+      "opening": "Runi og Gamle Røde må få den gamle signalstolpen til å lyse slik at den sjeldne fjellreven Arktis kan finne sitt nye hi. Først må de samle nok lykter og planker i riktig pakning, så må de montere og feste alt på stolpen.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "missions": [
+        {
+          "id": "m1",
+          "goal": "Få totalantallet lykter som ligger i kassene.",
+          "kind": "mission",
+          "next": "m2",
+          "title": "Fyll kassene",
+          "before": "Runi og Gamle Røde er i skogskanten. De finner fem tomme kasser som skal fylles med lykter. Anna venter ved verkstedet og trenger fullstappede kasser for å ta med lyktene dit. Du ser kassene og tomme lykt-plasser i hver kasse.",
+          "success": "Runi fylte alle kassene med lykter og Anna kan ta dem til verkstedet.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lanterns",
+                    "label": "lykter per kasse",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "gamle"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "lanterns"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kassene viser nå alle lyktene på plass.",
+                    "working": "Kassene vises som delvis fylt med lykter, og du ser hvor du arbeider.",
+                    "incorrect": "Ingen endring i kassene; prøv å telle per kasse først."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 3568501991,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Det er {{groups}} kasser og hver kasse har {{each}} plasser for lykter.",
+              "representation": "bilde",
+              "questionTemplate": "Hvor mange lykter er det totalt i alle kassene? Antall = {{groups}} × {{each}} lykter."
+            }
+          ]
+        },
+        {
+          "id": "m2",
+          "goal": "Finn totalt antall lykter i de nye kassene.",
+          "kind": "mission",
+          "next": "m3",
+          "title": "Fyll en ekstra runde",
+          "before": "Anna har tatt de første kassene mot verkstedet, men hun sier at hun trenger flere lykter for å være sikker på at stolpen blir lys nok. Runi finner fem nye kasser i havna med litt færre plasser i hver. Runi må fylle disse også før Anna kommer tilbake med de første kassene.",
+          "success": "De nye kassene ble fylt og Anna kan samle alle kassene sammen.",
+          "variants": [
+            {
+              "id": "v2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes2",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lanterns2",
+                    "label": "lykter per kasse",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes2"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kassene ved havna viser nå full plassering av lykter.",
+                    "working": "Du ser kassene få lykter i noen plasser mens du arbeider.",
+                    "incorrect": "Ingen nye lykter settes i kassene; sjekk antall per kasse."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 3568502008,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Hver kasse har {{each}} plasser for lykter, og det er {{groups}} kasser.",
+              "representation": "bilde",
+              "questionTemplate": "Hvor mange lykter er det totalt i disse kassene? Antall = {{groups}} × {{each}} lykter."
+            }
+          ]
+        },
+        {
+          "id": "m3",
+          "goal": "Finn hvor mange planker som fortsatt må skaffes til plattformen.",
+          "kind": "mission",
+          "next": "m4",
+          "title": "Skaff planker",
+          "before": "På verkstedet viser Anna hvor mange planker som mangler for å feste en plattform på signalstolpen. Runi og Gamle Røde må bringe nok planker slik at plattformen kan bygges før montering. Anna bekrefter at hun kan begynne å feste planker så snart alle er levert.",
+          "success": "Runi og Gamle Røde leverte de manglende plankene til verkstedet.",
+          "variants": [
+            {
+              "id": "v3",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "positions",
+                    "label": "plankplasser",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "installed",
+                    "label": "allerede monterte planker",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "positions"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "installed"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "positions"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "installed"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "positions"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plankeplassene viser nå planker der de var tomme.",
+                    "working": "Du ser plankeplassene og hvilke som er gjort; noen er merket som ledige.",
+                    "incorrect": "Ingen flere planker vises på plattformen; prøv å regne ut forskjellen."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "countedAssetId": "plank",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3568502092,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Det er {{total}} plasser for planker på plattformen, og {{known}} er allerede lagt på plass.",
+              "representation": "tall",
+              "questionTemplate": "Hvor mange planker må Runi hente? Antall = {{total}} − {{known}} planker."
+            }
+          ]
+        },
+        {
+          "id": "m4",
+          "goal": "Finn hvor mange lykter som fortsatt må monteres i stolpen.",
+          "kind": "mission",
+          "next": "end1",
+          "title": "Monter lyktene",
+          "before": "Alle kassene med lykter og de siste plankene er samlet ved verkstedet. Anna sier at hun nå kan montere lyktene i selve stolpen, men noen lyktfester er allerede på plass. Runi må finne hvor mange lykter som fortsatt mangler for å fullføre monteringen.",
+          "success": "Runi plasserte de siste lyktene, og signalstolpen lyste igjen.",
+          "variants": [
+            {
+              "id": "v4",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-spots",
+                    "label": "plassene på stolpen",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "mounted",
+                    "label": "allerede monterte lykter",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi", "gamle"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-spots"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-spots"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lyktplassene på stolpen viser nå lykter.",
+                    "working": "Du ser hvilke lyktplasser som ennå er tomme og hvilke som er fylt.",
+                    "incorrect": "Ingen flere lykter settes; sjekk først total og kjent."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "countedAssetId": "lantern",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3568502109,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Stolpen har {{total}} plasser for lykter, og {{known}} er allerede montert.",
+              "representation": "tall",
+              "questionTemplate": "Hvor mange lykter må monteres nå? Antall = {{total}} − {{known}} lykter."
+            }
+          ]
+        }
+      ],
+      "locations": [
+        {
+          "id": "forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "harbor",
+          "name": "Havna"
+        }
+      ],
+      "entryNodeId": "m1",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "facts": {},
+    "packet": {
+      "id": "chapter-45734895-8032-4525-a33e-7790f2ee2931",
+      "goal": "Få den ødelagte signalstolpen lyst igjen ved å samle lykter og planker og montere dem på stedet.",
+      "nodes": [
+        {
+          "id": "m1",
+          "goal": "Få totalantallet lykter som ligger i kassene.",
+          "kind": "mission",
+          "next": "m2",
+          "title": "Fyll kassene",
+          "before": "Runi og Gamle Røde er i skogskanten. De finner fem tomme kasser som skal fylles med lykter. Anna venter ved verkstedet og trenger fullstappede kasser for å ta med lyktene dit. Du ser kassene og tomme lykt-plasser i hver kasse.",
+          "success": "Runi fylte alle kassene med lykter og Anna kan ta dem til verkstedet.",
+          "variants": [
+            {
+              "id": "v1",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lanterns",
+                    "label": "lykter per kasse",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "gamle"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "lanterns"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "boxes"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kassene viser nå alle lyktene på plass.",
+                    "working": "Kassene vises som delvis fylt med lykter, og du ser hvor du arbeider.",
+                    "incorrect": "Ingen endring i kassene; prøv å telle per kasse først."
+                  }
+                },
+                "locationId": "forest",
+                "interaction": "grouping",
+                "backgroundAssetId": "forest-sky"
+              },
+              "problem": {
+                "seed": 3568501991,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Det er {{groups}} kasser og hver kasse har {{each}} plasser for lykter.",
+              "representation": "bilde",
+              "questionTemplate": "Hvor mange lykter er det totalt i alle kassene? Antall = {{groups}} × {{each}} lykter."
+            }
+          ]
+        },
+        {
+          "id": "m2",
+          "goal": "Finn totalt antall lykter i de nye kassene.",
+          "kind": "mission",
+          "next": "m3",
+          "title": "Fyll en ekstra runde",
+          "before": "Anna har tatt de første kassene mot verkstedet, men hun sier at hun trenger flere lykter for å være sikker på at stolpen blir lys nok. Runi finner fem nye kasser i havna med litt færre plasser i hver. Runi må fylle disse også før Anna kommer tilbake med de første kassene.",
+          "success": "De nye kassene ble fylt og Anna kan samle alle kassene sammen.",
+          "variants": [
+            {
+              "id": "v2",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "boxes2",
+                    "label": "kasser",
+                    "assetId": "box",
+                    "quantityKey": "groups"
+                  },
+                  {
+                    "id": "lanterns2",
+                    "label": "lykter per kasse",
+                    "assetId": "lantern",
+                    "quantityKey": "each"
+                  }
+                ],
+                "actorIds": ["runi", "anna"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "boxes2"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "group",
+                      "targetId": "boxes2"
+                    },
+                    {
+                      "action": "fill",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lanterns2"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle kassene ved havna viser nå full plassering av lykter.",
+                    "working": "Du ser kassene få lykter i noen plasser mens du arbeider.",
+                    "incorrect": "Ingen nye lykter settes i kassene; sjekk antall per kasse."
+                  }
+                },
+                "locationId": "harbor",
+                "interaction": "grouping",
+                "backgroundAssetId": "harbor-sky"
+              },
+              "problem": {
+                "seed": 3568502008,
+                "skillId": "mult-telling-grupper",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Hver kasse har {{each}} plasser for lykter, og det er {{groups}} kasser.",
+              "representation": "bilde",
+              "questionTemplate": "Hvor mange lykter er det totalt i disse kassene? Antall = {{groups}} × {{each}} lykter."
+            }
+          ]
+        },
+        {
+          "id": "m3",
+          "goal": "Finn hvor mange planker som fortsatt må skaffes til plattformen.",
+          "kind": "mission",
+          "next": "m4",
+          "title": "Skaff planker",
+          "before": "På verkstedet viser Anna hvor mange planker som mangler for å feste en plattform på signalstolpen. Runi og Gamle Røde må bringe nok planker slik at plattformen kan bygges før montering. Anna bekrefter at hun kan begynne å feste planker så snart alle er levert.",
+          "success": "Runi og Gamle Røde leverte de manglende plankene til verkstedet.",
+          "variants": [
+            {
+              "id": "v3",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "positions",
+                    "label": "plankplasser",
+                    "assetId": "plank",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "installed",
+                    "label": "allerede monterte planker",
+                    "assetId": "plank",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "positions"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "installed"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "positions"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "installed"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "positions"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle plankeplassene viser nå planker der de var tomme.",
+                    "working": "Du ser plankeplassene og hvilke som er gjort; noen er merket som ledige.",
+                    "incorrect": "Ingen flere planker vises på plattformen; prøv å regne ut forskjellen."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3568502092,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Det er {{total}} plasser for planker på plattformen, og {{known}} er allerede lagt på plass.",
+              "representation": "tall",
+              "questionTemplate": "Hvor mange planker må Runi hente? Antall = {{total}} − {{known}} planker."
+            }
+          ]
+        },
+        {
+          "id": "m4",
+          "goal": "Finn hvor mange lykter som fortsatt må monteres i stolpen.",
+          "kind": "mission",
+          "next": "end1",
+          "title": "Monter lyktene",
+          "before": "Alle kassene med lykter og de siste plankene er samlet ved verkstedet. Anna sier at hun nå kan montere lyktene i selve stolpen, men noen lyktfester er allerede på plass. Runi må finne hvor mange lykter som fortsatt mangler for å fullføre monteringen.",
+          "success": "Runi plasserte de siste lyktene, og signalstolpen lyste igjen.",
+          "variants": [
+            {
+              "id": "v4",
+              "role": "primary",
+              "scene": {
+                "objects": [
+                  {
+                    "id": "lantern-spots",
+                    "label": "plassene på stolpen",
+                    "assetId": "lantern",
+                    "quantityKey": "total"
+                  },
+                  {
+                    "id": "mounted",
+                    "label": "allerede monterte lykter",
+                    "assetId": "lantern",
+                    "quantityKey": "known"
+                  }
+                ],
+                "actorIds": ["anna", "runi", "gamle"],
+                "feedback": {
+                  "correct": [
+                    {
+                      "action": "fill",
+                      "targetId": "lantern-spots"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "working": [
+                    {
+                      "action": "highlight",
+                      "targetId": "lantern-spots"
+                    },
+                    {
+                      "action": "reveal",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "incorrect": [
+                    {
+                      "action": "highlight",
+                      "targetId": "mounted"
+                    }
+                  ],
+                  "reducedMotion": {
+                    "correct": "Alle lyktplassene på stolpen viser nå lykter.",
+                    "working": "Du ser hvilke lyktplasser som ennå er tomme og hvilke som er fylt.",
+                    "incorrect": "Ingen flere lykter settes; sjekk først total og kjent."
+                  }
+                },
+                "locationId": "workshop",
+                "interaction": "quantity",
+                "backgroundAssetId": "workshop-sky"
+              },
+              "problem": {
+                "seed": 3568502109,
+                "skillId": "likhetstegn",
+                "difficulty": 2,
+                "generatorVersion": 1
+              },
+              "clueTemplate": "Stolpen har {{total}} plasser for lykter, og {{known}} er allerede montert.",
+              "representation": "tall",
+              "questionTemplate": "Hvor mange lykter må monteres nå? Antall = {{total}} − {{known}} lykter."
+            }
+          ]
+        },
+        {
+          "id": "end1",
+          "hook": "Runi ser Arktis trygt komme frem og gleder seg over at stolpen virker.",
+          "kind": "ending",
+          "narration": "Signalstolpen lyser nå klart. Arktis finner hiet sitt fordi lyset leder veien."
+        }
+      ],
+      "title": "Runi og signalstolpen",
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "gamle",
+          "name": "Gamle Røde",
+          "assetId": "animal"
+        },
+        {
+          "id": "anna",
+          "name": "Anna",
+          "assetId": "person"
+        }
+      ],
+      "assets": [
+        {
+          "id": "animal",
+          "role": "character",
+          "description": "Vennlig liten rev med spisse ører."
+        },
+        {
+          "id": "person",
+          "role": "character",
+          "description": "Vennlig menneskefigur med blå jakke."
+        },
+        {
+          "id": "forest-sky",
+          "role": "background",
+          "description": "Lys skog med en sti og grønne tretopper."
+        },
+        {
+          "id": "box",
+          "role": "prop",
+          "description": "En trekasse som kan inneholde eller motta gjenstander."
+        },
+        {
+          "id": "lantern",
+          "role": "prop",
+          "description": "En lykt med et lysrom som kan fylles med lyssteiner."
+        },
+        {
+          "id": "harbor-sky",
+          "role": "background",
+          "description": "Lun havn med øyer, brygge og rolig sjø."
+        },
+        {
+          "id": "workshop-sky",
+          "role": "background",
+          "description": "Varmt verksted med arbeidsbenk og vindu."
+        },
+        {
+          "id": "plank",
+          "role": "prop",
+          "description": "En treplanke til bygging eller reparasjon."
+        }
+      ],
+      "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+      "opening": "Runi og Gamle Røde må få den gamle signalstolpen til å lyse slik at den sjeldne fjellreven Arktis kan finne sitt nye hi. Først må de samle nok lykter og planker i riktig pakning, så må de montere og feste alt på stolpen.",
+      "interest": {
+        "key": "rever",
+        "label": "Rever"
+      },
+      "locations": [
+        {
+          "id": "forest",
+          "name": "Skogskanten"
+        },
+        {
+          "id": "workshop",
+          "name": "Verkstedet"
+        },
+        {
+          "id": "harbor",
+          "name": "Havna"
+        }
+      ],
+      "entryNodeId": "m1",
+      "schemaVersion": 1,
+      "basedOnRevision": 0
+    },
+    "review": {
+      "issues": [],
+      "routes": [
+        {
+          "routeId": "route-1",
+          "coherent": true,
+          "endingId": "end1",
+          "evidence": "m1 success: alle 5 kasser (4 plasser hver) ble fylt og Anna kan ta dem til verkstedet — dette forklarer at Anna er på verkstedet i m3. m2 success: de nye kassene i havna fylles, og Anna kan så samle alle kassene sammen — dette forklarer at alle kassene blir samlet ved verkstedet før montering i m4. m3 success: de manglende plankene leveres til verkstedet, noe som gjør det mulig for Anna å begynne montering i m4 hvor både planker og lykter er samlet. Ingen oppdrag i ruten forutsetter en hoppet-over handling eller et ikke-valgt alternativ.",
+          "missionIds": ["m1", "m2", "m3", "m4"]
+        }
+      ],
+      "approved": true,
+      "missions": [
+        {
+          "missionId": "m1",
+          "sceneAgreement": "Rendering viser 5 beholdere med 4 tomme posisjoner hver (containerCount=5, positionsPerContainer=4) og ingen løse lykter; elevspørsmålet ber om totalen av akkurat disse posisjonene.",
+          "mathematicalNeed": "Multiplikasjon: total = antall kasser × plasser per kasse (5 × 4 = 20).",
+          "physicalRuleKind": "capacity",
+          "physicalRuleQuote": "Det er 5 kasser og hver kasse har 4 plasser for lykter."
+        },
+        {
+          "missionId": "m2",
+          "sceneAgreement": "Rendering viser 5 beholdere med 3 tomme posisjoner hver (containerCount=5, positionsPerContainer=3) og ingen løse lykter; oppgaven ber om totalen i disse kasse-settene.",
+          "mathematicalNeed": "Multiplikasjon: total = antall kasser × plasser per kasse (5 × 3 = 15).",
+          "physicalRuleKind": "capacity",
+          "physicalRuleQuote": "Hver kasse har 3 plasser for lykter, og det er 5 kasser."
+        },
+        {
+          "missionId": "m3",
+          "sceneAgreement": "Rendering viser 14 markerte plankeplasser hvor 6 er markert som installert (positionCount=14, alreadyInstalled=6); oppgaven spør etter hvor mange planker som fysisk mangler for å oppfylle plattformens krav.",
+          "mathematicalNeed": "Subtraksjon: antall som må hentes = total plasser − allerede lagt (14 − 6 = 8).",
+          "physicalRuleKind": "design_requirement",
+          "physicalRuleQuote": "Det er 14 plasser for planker på plattformen, og 6 er allerede lagt på plass."
+        },
+        {
+          "missionId": "m4",
+          "sceneAgreement": "Rendering viser 12 lyktplasser med 4 allerede montert (positionCount=12, alreadyInstalled=4); spørsmålsteksten ber eksplisitt om å finne restmengden som skal fylles på disse faste plassene.",
+          "mathematicalNeed": "Subtraksjon: antall som må monteres = total plasser − allerede montert (12 − 4 = 8).",
+          "physicalRuleKind": "capacity",
+          "physicalRuleQuote": "Stolpen har 12 plasser for lykter, og 4 er allerede montert."
+        }
+      ],
+      "variation": "Oppgavene varierer mellom grouping (multiplikasjon), ny grouping med annet per-beholder-tall, og quantity (subtraksjon) for både planker og monterte lykter — gir variasjon i operasjoner og representasjon (bilde og tall).",
+      "continuity": "Alle scener og forflytninger er konsistente: kassene fylles i skogskanten (m1), Anna tar de første kassene til verkstedet før m2 starter, Runi fyller nye kasser i havna (m2) og deretter samles alt ved verkstedet (m3, m4). Mengdene stemmer gjennom hele ruten: 5×4 = 20 lykter fra m1 pluss 5×3 = 15 fra m2 gir 35 tilgjengelige lykter; planke- og lyktbehovene i m3 og m4 (8 planker, 8 lykter) kan dekkes av disse mengdene uten uuttalte valg eller tap. Ingen intern node-id vises til eleven, og alle sceneobjekter er konkrete referanser som matcher renderingene.",
+      "historyEventIds": [],
+      "historyImpactQuote": ""
+    },
+    "attempts": 1,
+    "interest": {
+      "key": "rever",
+      "label": "Rever"
+    },
+    "manifest": [
+      {
+        "id": "animal",
+        "role": "character",
+        "state": "ready",
+        "sha256": "d9de018088cf1dff01a6ff2b098306883160d1bbb5d44e2bfa462e0f6b83a46e",
+        "version": 1
+      },
+      {
+        "id": "person",
+        "role": "character",
+        "state": "ready",
+        "sha256": "51197da60d22f26f2976c405b48af1066f47b2a8b3ed53f130e099281cd00f73",
+        "version": 1
+      },
+      {
+        "id": "forest-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "91fdae112dde5402900d22794bfff725f03030831c552dde65ad345f83909e0b",
+        "version": 1
+      },
+      {
+        "id": "box",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "a1498ebbd1daf03e99fa8ebb8f47fb46d3e060476d5ee121b24968490dcb3f54",
+        "version": 1
+      },
+      {
+        "id": "lantern",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "a05d81eefcee356dfc4b5c351d947930df30a13cc6bafc1a1d9e902d4edb555d",
+        "version": 1
+      },
+      {
+        "id": "harbor-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "a5296a85515775bb008e8c1ffd74341d9f3aabd74651dace4204baa3cdcf1ce9",
+        "version": 1
+      },
+      {
+        "id": "workshop-sky",
+        "role": "background",
+        "state": "ready",
+        "sha256": "554c44ffc26f49f084119e259f4d84af92a30e0f855d337612a84a811f5bee59",
+        "version": 1
+      },
+      {
+        "id": "plank",
+        "role": "prop",
+        "state": "ready",
+        "sha256": "50acec3b80cb93e5330c37704351c8d07a7dc2c514ab68d445fb2dcf661acbe1",
+        "version": 1
+      }
+    ],
+    "research": {
+      "brief": "Jeg søker opp og samler et konsist kunnskapsgrunnlag (ikke selve historien) for et personlig matteeventyr med interessefeltet \"Rever\" på norsk bokmål. Nedenfor følger etablerte fakta (med kilder) og forslag til elementer du kan bruke som inspirerende, fiksjonelle tillegg — organisert etter: karakterer (med roller/relasjoner), steder, gjenstander, kjøretøy, naturlige aktiviteter/særpreg. Jeg har skilt “Etablerte fakta” fra “Mulig oppdiktet / kreativt materiale”. Viktige faktapåstander er kildebelagt.\n\nEtablerte fakta (kort og kildebelagt)\n- Arten rødrev (Vulpes vulpes) er vanlig over store deler av Norge, fra skog og lavland til bynære områder; den er habitatgeneralist og allsidig i matveien. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus) er en egen art i Norge, rødreven kan konkurrere med/fange unge fjellrev; fjellrev er truet og det finnes aktivt avls-/gjeninnsettingsarbeid koordinert av NINA og Miljødirektoratet. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Bestandsestimat og forvaltningspraksis: Det finnes usikkerhet i rødrevbestanden (estimat varierer), mens fjellrevprogrammet har dokumenterte utsettinger og oppfølging. Jakttider og forvaltning er regulert nasjonalt. ([natursans.no](https://natursans.no/arter/rodrev?utm_source=openai))\n\n(De fem mest lastbærende påstandene over er sitert; øvrige fakta i dokumentet bygger hovedsakelig på disse kildene.)\n\nKonsist kunnskapsgrunnlag — etablerte elementer (fakta)\n1) Arter og biologiske roller\n- Rødrev (Vulpes vulpes): generalist, opportunistisk rovdyr/åtseldeter, fleksibel i diett (gnagere, fugl, egg, frukt, søppel, av og til lam). Lever ofte alene eller i små familier; revemødre (tisper) tar seg av valper i hi. ([snl.no](https://snl.no/r%C3%B8drev?utm_source=openai))  \n- Fjellrev (Vulpes lagopus): arktisk spesialist, mer knyttet til høyfjell/arktiske regioner, truet i Norge og gjeninnsettingsfokus. ([snl.no](https://snl.no/fjellrev?utm_source=openai))  \n- Variasjon/fargeformer: rødrev har flere fargevarianter (rød, sølv, hvit, osv.); avl og historisk pelsdyrhold har gitt fargevariasjoner. ([snl.no](https://snl.no/rev_-_oppdrett?utm_source=openai))\n\n2) Landskap og steder (etablerte)\n- Habitatspenn: skog, kulturlandskap, bynære strøk, utmark; fjellområder er mer fjellrevens arena. Enkelte øyer kan mangle rødrev. Infrastruktur (veier, hytter) påvirker utbredelse. ([biodiversity.no](https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai))  \n- Forvaltningssteder: avlsstasjoner og utsettingsområder for fjellrev (eksempel: Hardangervidda, Finse, Varanger-områder omtalt i NINA-rapporter). ([brage.nina.no](https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai))\n\n3) Interaksjoner (etablerte)\n- Predasjon og konkurranse: rødrev tar smågnagere og fugler; kan påvirke andre arter (inkl. unge fjellrev). Rovdyrs rolle i økosystemer studeres av NINA. ([nina.no](https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai))  \n- Forvaltning & menneskepåvirkning: jaktperioder, avls- og reintroduksjonsprogrammer, nedleggelse av pelsdyrnæring påvirker genetikk/hybridisering. ([snl.no](https://snl.no/revejakt?utm_source=openai))\n\nKonsist kunnskapsgrunnlag — forslag til elementer for et matteeventyr (klar merking: mulige oppdiktede elementer)\nMerk: disse er kreative forslag basert på etablerte fakta (over) — egnet som karakterer/objekter/oppdrag i en mattehistorie, men er ikke faktapåstander.\n\nA) Karakterer (roller og relasjoner) — fiksjonelle forslag\n- Hovedkarakter: “Rødrevungen Runi” — nysgjerrig, flink med mønstre og telling (kan representere variabler/funksjoner i matematikken). (Fiksjon.)  \n- Mentor/eldre rev: “Gamle Røde” — kjenner terrenget, forteller om rødrevens sansevinkling (brukes til geometri/retning). (Fiksjon.)  \n- Fjellrev-figuren: “Arktis” — sjelden, god på strategisk plassering (kan representere optimaliseringsoppgaver). (Fiksjon.)  \n- Menneske-allierte: Naturforsker “Anna” (rolle: gir data, kart, tidsserier) — nøkkelfigur for å gi observerbare tall (antall individer, fôrmengder). (Fiksjon; unngå ekte personopplysninger.)\n\nRelasjoner (fiksjonelle rammer)\n- Runi lærer av Gamle Røde hvordan man beregner avstand (porsjoner, jaktvinkler) og hvordan populasjoner endres over tid (enkle differenslikninger).  \n- Arktis bringer inn problemstilling: påvirkning fra innvandring/utsetting — sammenlikning av to populasjoner (logikk/proporsjoner).\n\nB) Steder / kart-elementer — kan brukes i oppgaver\n- Skogskanten (grid/koordinatsystem): rutenett for kart- og bevegelsesoppgaver. (Fiksjonell anvendelse av reelle habitattyper.)  \n- Fjellhi (høydeprofilekvasjoner): oppgaver om høyde, areal, volum (enkle integrasjons- eller arealoppgaver for høyere nivå).  \n- Byområde (søppelh",
+      "sources": [
+        {
+          "url": "https://snl.no/r%C3%B8drev?utm_source=openai",
+          "title": "rødrev – Store norske leksikon"
+        },
+        {
+          "url": "https://snl.no/fjellrev?utm_source=openai",
+          "title": "fjellrev – Store norske leksikon"
+        },
+        {
+          "url": "https://natursans.no/arter/rodrev?utm_source=openai",
+          "title": "Rødrev i Norge: fakta, jakt, sykdom og fjellrev | natursans"
+        },
+        {
+          "url": "https://snl.no/rev_-_oppdrett?utm_source=openai",
+          "title": "rev – oppdrett – Store norske leksikon"
+        },
+        {
+          "url": "https://biodiversity.no/Taxon/Vulpes_vulpes/48034?utm_source=openai",
+          "title": "Vulpes vulpes - Artsdatabanken"
+        },
+        {
+          "url": "https://brage.nina.no/nina-xmlui/bitstream/handle/11250/3170388/ninarapport2511.pdf?isAllowed=y&sequence=1&utm_source=openai",
+          "title": "Fjellrev i Norge 2024"
+        },
+        {
+          "url": "https://www.nina.no/var-forskning/arter-og-okosystemer/rovdyr?utm_source=openai",
+          "title": "Rovdyr"
+        },
+        {
+          "url": "https://snl.no/revejakt?utm_source=openai",
+          "title": "revejakt – Store norske leksikon"
+        }
+      ],
+      "interest": "Rever",
+      "researchedAt": "2026-10-17T09:41:56.116Z"
+    },
+    "workerRegion": "arn1",
+    "resourceVersion": 1
+  },
+  "calls": [
+    {
+      "id": "5a43d0b5-e59f-4983-bea9-d9d0994837c5",
+      "phase": "draft",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-generate",
+        "latency_ms": 47374,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 6633,
+        "cost_estimate": 0.11409475,
+        "output_tokens": 4357,
+        "chapter_number": 17,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "45734895-8032-4525-a33e-7790f2ee2931",
+      "result": {
+        "id": "chapter-45734895-8032-4525-a33e-7790f2ee2931",
+        "goal": "Få den ødelagte signalstolpen lyst igjen ved å samle lykter og planker og montere dem på stedet.",
+        "title": "Runi og signalstolpen",
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "gamle",
+            "name": "Gamle Røde",
+            "assetId": "animal"
+          },
+          {
+            "id": "anna",
+            "name": "Anna",
+            "assetId": "person"
+          }
+        ],
+        "sagaId": "saga-8ca0a2d8-9619-4bd5-9c90-a8b064a43017",
+        "choices": [],
+        "endings": [
+          {
+            "id": "end1",
+            "hook": "Runi ser Arktis trygt komme frem og gleder seg over at stolpen virker.",
+            "kind": "ending",
+            "narration": "Signalstolpen lyser nå klart. Arktis finner hiet sitt fordi lyset leder veien."
+          }
+        ],
+        "opening": "Runi og Gamle Røde må få den gamle signalstolpen til å lyse slik at den sjeldne fjellreven Arktis kan finne sitt nye hi. Først må de samle nok lykter og planker i riktig pakning, så må de montere og feste alt på stolpen.",
+        "interest": {
+          "key": "rever",
+          "label": "Rever"
+        },
+        "missions": [
+          {
+            "id": "m1",
+            "goal": "Få totalantallet lykter som ligger i kassene.",
+            "kind": "mission",
+            "next": "m2",
+            "title": "Fyll kassene",
+            "before": "Runi og Gamle Røde er i skogskanten. De finner fem tomme kasser som skal fylles med lykter. Anna venter ved verkstedet og trenger fullstappede kasser for å ta med lyktene dit. Du ser kassene og tomme lykt-plasser i hver kasse.",
+            "success": "Runi fylte alle kassene med lykter og Anna kan ta dem til verkstedet.",
+            "variants": [
+              {
+                "id": "v1",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes",
+                      "label": "kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lanterns",
+                      "label": "lykter per kasse",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "gamle"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "boxes"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "lanterns"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "boxes"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kassene viser nå alle lyktene på plass.",
+                      "working": "Kassene vises som delvis fylt med lykter, og du ser hvor du arbeider.",
+                      "incorrect": "Ingen endring i kassene; prøv å telle per kasse først."
+                    }
+                  },
+                  "locationId": "forest",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "forest-sky"
+                },
+                "problem": {
+                  "seed": 3568501991,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Det er {{groups}} kasser og hver kasse har {{each}} plasser for lykter.",
+                "representation": "bilde",
+                "questionTemplate": "Hvor mange lykter er det totalt i alle kassene? Antall = {{groups}} × {{each}} lykter."
+              }
+            ]
+          },
+          {
+            "id": "m2",
+            "goal": "Finn totalt antall lykter i de nye kassene.",
+            "kind": "mission",
+            "next": "m3",
+            "title": "Fyll en ekstra runde",
+            "before": "Anna har tatt de første kassene mot verkstedet, men hun sier at hun trenger flere lykter for å være sikker på at stolpen blir lys nok. Runi finner fem nye kasser i havna med litt færre plasser i hver. Runi må fylle disse også før Anna kommer tilbake med de første kassene.",
+            "success": "De nye kassene ble fylt og Anna kan samle alle kassene sammen.",
+            "variants": [
+              {
+                "id": "v2",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "boxes2",
+                      "label": "kasser",
+                      "assetId": "box",
+                      "quantityKey": "groups"
+                    },
+                    {
+                      "id": "lanterns2",
+                      "label": "lykter per kasse",
+                      "assetId": "lantern",
+                      "quantityKey": "each"
+                    }
+                  ],
+                  "actorIds": ["runi", "anna"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "boxes2"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "lanterns2"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "group",
+                        "targetId": "boxes2"
+                      },
+                      {
+                        "action": "fill",
+                        "targetId": "lanterns2"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lanterns2"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle kassene ved havna viser nå full plassering av lykter.",
+                      "working": "Du ser kassene få lykter i noen plasser mens du arbeider.",
+                      "incorrect": "Ingen nye lykter settes i kassene; sjekk antall per kasse."
+                    }
+                  },
+                  "locationId": "harbor",
+                  "interaction": "grouping",
+                  "backgroundAssetId": "harbor-sky"
+                },
+                "problem": {
+                  "seed": 3568502008,
+                  "skillId": "mult-telling-grupper",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Hver kasse har {{each}} plasser for lykter, og det er {{groups}} kasser.",
+                "representation": "bilde",
+                "questionTemplate": "Hvor mange lykter er det totalt i disse kassene? Antall = {{groups}} × {{each}} lykter."
+              }
+            ]
+          },
+          {
+            "id": "m3",
+            "goal": "Finn hvor mange planker som fortsatt må skaffes til plattformen.",
+            "kind": "mission",
+            "next": "m4",
+            "title": "Skaff planker",
+            "before": "På verkstedet viser Anna hvor mange planker som mangler for å feste en plattform på signalstolpen. Runi og Gamle Røde må bringe nok planker slik at plattformen kan bygges før montering. Anna bekrefter at hun kan begynne å feste planker så snart alle er levert.",
+            "success": "Runi og Gamle Røde leverte de manglende plankene til verkstedet.",
+            "variants": [
+              {
+                "id": "v3",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "positions",
+                      "label": "plankplasser",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "installed",
+                      "label": "allerede monterte planker",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna", "runi"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "positions"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "installed"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "positions"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "installed"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "positions"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle plankeplassene viser nå planker der de var tomme.",
+                      "working": "Du ser plankeplassene og hvilke som er gjort; noen er merket som ledige.",
+                      "incorrect": "Ingen flere planker vises på plattformen; prøv å regne ut forskjellen."
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "countedAssetId": "plank",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 3568502092,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Det er {{total}} plasser for planker på plattformen, og {{known}} er allerede lagt på plass.",
+                "representation": "tall",
+                "questionTemplate": "Hvor mange planker må Runi hente? Antall = {{total}} − {{known}} planker."
+              }
+            ]
+          },
+          {
+            "id": "m4",
+            "goal": "Finn hvor mange lykter som fortsatt må monteres i stolpen.",
+            "kind": "mission",
+            "next": "end1",
+            "title": "Monter lyktene",
+            "before": "Alle kassene med lykter og de siste plankene er samlet ved verkstedet. Anna sier at hun nå kan montere lyktene i selve stolpen, men noen lyktfester er allerede på plass. Runi må finne hvor mange lykter som fortsatt mangler for å fullføre monteringen.",
+            "success": "Runi plasserte de siste lyktene, og signalstolpen lyste igjen.",
+            "variants": [
+              {
+                "id": "v4",
+                "role": "primary",
+                "scene": {
+                  "objects": [
+                    {
+                      "id": "lantern-spots",
+                      "label": "plassene på stolpen",
+                      "quantityKey": "total"
+                    },
+                    {
+                      "id": "mounted",
+                      "label": "allerede monterte lykter",
+                      "quantityKey": "known"
+                    }
+                  ],
+                  "actorIds": ["anna", "runi", "gamle"],
+                  "feedback": {
+                    "correct": [
+                      {
+                        "action": "fill",
+                        "targetId": "lantern-spots"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "mounted"
+                      }
+                    ],
+                    "working": [
+                      {
+                        "action": "highlight",
+                        "targetId": "lantern-spots"
+                      },
+                      {
+                        "action": "reveal",
+                        "targetId": "mounted"
+                      }
+                    ],
+                    "incorrect": [
+                      {
+                        "action": "highlight",
+                        "targetId": "mounted"
+                      }
+                    ],
+                    "reducedMotion": {
+                      "correct": "Alle lyktplassene på stolpen viser nå lykter.",
+                      "working": "Du ser hvilke lyktplasser som ennå er tomme og hvilke som er fylt.",
+                      "incorrect": "Ingen flere lykter settes; sjekk først total og kjent."
+                    }
+                  },
+                  "locationId": "workshop",
+                  "interaction": "quantity",
+                  "countedAssetId": "lantern",
+                  "backgroundAssetId": "workshop-sky"
+                },
+                "problem": {
+                  "seed": 3568502109,
+                  "skillId": "likhetstegn",
+                  "difficulty": 2,
+                  "generatorVersion": 1
+                },
+                "clueTemplate": "Stolpen har {{total}} plasser for lykter, og {{known}} er allerede montert.",
+                "representation": "tall",
+                "questionTemplate": "Hvor mange lykter må monteres nå? Antall = {{total}} − {{known}} lykter."
+              }
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "id": "forest",
+            "name": "Skogskanten"
+          },
+          {
+            "id": "workshop",
+            "name": "Verkstedet"
+          },
+          {
+            "id": "harbor",
+            "name": "Havna"
+          }
+        ],
+        "entryNodeId": "m1",
+        "schemaVersion": 1,
+        "basedOnRevision": 0
+      },
+      "started_at": "2026-10-19T20:39:12.442152+00:00",
+      "completed_at": "2026-10-19T20:40:00.492779+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    },
+    {
+      "id": "e9fd81f5-56b4-4f40-a997-db2525c6e9fe",
+      "phase": "review",
+      "state": "completed",
+      "usage": {
+        "ok": true,
+        "model": "gpt-5-mini",
+        "purpose": "story-review",
+        "latency_ms": 69231,
+        "session_id": null,
+        "environment": "preview",
+        "usage_known": true,
+        "input_tokens": 8148,
+        "cost_estimate": 0.099935,
+        "output_tokens": 3524,
+        "chapter_number": 17,
+        "pricing_version": "2026-10-15-usd11-v2"
+      },
+      "job_id": "45734895-8032-4525-a33e-7790f2ee2931",
+      "result": {
+        "issues": [],
+        "routes": [
+          {
+            "routeId": "route-1",
+            "coherent": true,
+            "endingId": "end1",
+            "evidence": "m1 success: alle 5 kasser (4 plasser hver) ble fylt og Anna kan ta dem til verkstedet — dette forklarer at Anna er på verkstedet i m3. m2 success: de nye kassene i havna fylles, og Anna kan så samle alle kassene sammen — dette forklarer at alle kassene blir samlet ved verkstedet før montering i m4. m3 success: de manglende plankene leveres til verkstedet, noe som gjør det mulig for Anna å begynne montering i m4 hvor både planker og lykter er samlet. Ingen oppdrag i ruten forutsetter en hoppet-over handling eller et ikke-valgt alternativ.",
+            "missionIds": ["m1", "m2", "m3", "m4"]
+          }
+        ],
+        "approved": true,
+        "missions": [
+          {
+            "missionId": "m1",
+            "sceneAgreement": "Rendering viser 5 beholdere med 4 tomme posisjoner hver (containerCount=5, positionsPerContainer=4) og ingen løse lykter; elevspørsmålet ber om totalen av akkurat disse posisjonene.",
+            "mathematicalNeed": "Multiplikasjon: total = antall kasser × plasser per kasse (5 × 4 = 20).",
+            "physicalRuleKind": "capacity",
+            "physicalRuleQuote": "Det er 5 kasser og hver kasse har 4 plasser for lykter."
+          },
+          {
+            "missionId": "m2",
+            "sceneAgreement": "Rendering viser 5 beholdere med 3 tomme posisjoner hver (containerCount=5, positionsPerContainer=3) og ingen løse lykter; oppgaven ber om totalen i disse kasse-settene.",
+            "mathematicalNeed": "Multiplikasjon: total = antall kasser × plasser per kasse (5 × 3 = 15).",
+            "physicalRuleKind": "capacity",
+            "physicalRuleQuote": "Hver kasse har 3 plasser for lykter, og det er 5 kasser."
+          },
+          {
+            "missionId": "m3",
+            "sceneAgreement": "Rendering viser 14 markerte plankeplasser hvor 6 er markert som installert (positionCount=14, alreadyInstalled=6); oppgaven spør etter hvor mange planker som fysisk mangler for å oppfylle plattformens krav.",
+            "mathematicalNeed": "Subtraksjon: antall som må hentes = total plasser − allerede lagt (14 − 6 = 8).",
+            "physicalRuleKind": "design_requirement",
+            "physicalRuleQuote": "Det er 14 plasser for planker på plattformen, og 6 er allerede lagt på plass."
+          },
+          {
+            "missionId": "m4",
+            "sceneAgreement": "Rendering viser 12 lyktplasser med 4 allerede montert (positionCount=12, alreadyInstalled=4); spørsmålsteksten ber eksplisitt om å finne restmengden som skal fylles på disse faste plassene.",
+            "mathematicalNeed": "Subtraksjon: antall som må monteres = total plasser − allerede montert (12 − 4 = 8).",
+            "physicalRuleKind": "capacity",
+            "physicalRuleQuote": "Stolpen har 12 plasser for lykter, og 4 er allerede montert."
+          }
+        ],
+        "variation": "Oppgavene varierer mellom grouping (multiplikasjon), ny grouping med annet per-beholder-tall, og quantity (subtraksjon) for både planker og monterte lykter — gir variasjon i operasjoner og representasjon (bilde og tall).",
+        "continuity": "Alle scener og forflytninger er konsistente: kassene fylles i skogskanten (m1), Anna tar de første kassene til verkstedet før m2 starter, Runi fyller nye kasser i havna (m2) og deretter samles alt ved verkstedet (m3, m4). Mengdene stemmer gjennom hele ruten: 5×4 = 20 lykter fra m1 pluss 5×3 = 15 fra m2 gir 35 tilgjengelige lykter; planke- og lyktbehovene i m3 og m4 (8 planker, 8 lykter) kan dekkes av disse mengdene uten uuttalte valg eller tap. Ingen intern node-id vises til eleven, og alle sceneobjekter er konkrete referanser som matcher renderingene.",
+        "historyEventIds": [],
+        "historyImpactQuote": ""
+      },
+      "started_at": "2026-10-19T20:40:01.313988+00:00",
+      "completed_at": "2026-10-19T20:41:11.044394+00:00",
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0"
+    }
+  ],
+  "costs": [
+    {
+      "id": "a25a9882-a618-4b13-8e61-c06e7ec72487",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-generate",
+      "created_at": "2026-10-19T20:40:00.273246+00:00",
+      "latency_ms": 47374,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 6633,
+      "cost_estimate": 0.11409475,
+      "output_tokens": 4357,
+      "chapter_job_id": "45734895-8032-4525-a33e-7790f2ee2931",
+      "chapter_number": 17,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T20:39:12.83+00:00"
+    },
+    {
+      "id": "63d7221e-56b1-407f-a75e-d372d2aaa3de",
+      "ok": true,
+      "model": "gpt-5-mini",
+      "purpose": "story-review",
+      "created_at": "2026-10-19T20:41:10.937741+00:00",
+      "latency_ms": 69231,
+      "session_id": null,
+      "environment": "preview",
+      "usage_known": true,
+      "household_id": "4d672295-b9b6-49e2-a1b3-c3e40e285ec0",
+      "input_tokens": 8148,
+      "cost_estimate": 0.099935,
+      "output_tokens": 3524,
+      "chapter_job_id": "45734895-8032-4525-a33e-7790f2ee2931",
+      "chapter_number": 17,
+      "pricing_version": "2026-10-15-usd11-v2",
+      "request_started_at": "2026-10-19T20:40:01.644+00:00"
+    }
+  ],
+  "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+  "phase": "ready",
+  "state": "ready",
+  "error_code": null,
+  "accountSpent": 5.244107
+}

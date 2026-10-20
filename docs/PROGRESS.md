@@ -1,6 +1,6 @@
 # Fremdrift
 
-## Start her: aktiv spillrevisjon (oppdatert 19. oktober 2026)
+## Start her: spillrevisjon stoppet (oppdatert 20. oktober 2026)
 
 Les deretter [GAME-REVISION](GAME-REVISION.md) og [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Eldre milepæler nedenfor er historikk. Skill implementert kode, teknisk kontroll og faktisk modell-/spillkvalitet.
 
@@ -11,13 +11,15 @@ Les deretter [GAME-REVISION](GAME-REVISION.md) og [SPEC §15](SPEC.md#15-avtalt-
 - R2s innloggede Preview-port er **bestått** på `55cdbdd`: ekte Auth/RLS/Leo-lås, tre oppdrag, feil/hjelp/riktig, observert bevegelse, pause/gjenopptak, reload og avslutning; 17 serverhandlinger med HTTP 200, ingen browserfeil. [Bevis](R2-VERIFICATION.md), [opptak/bilder](evidence/r2/README.md). Historie/hjelp er kodebestemt, ingen KI-kall.
 - Aktiv videreføring er `feat/chapter-preparation`, opprettet fra siste R2 `588578e`. [R3 utkast-PR #20](https://github.com/sirhaugness/ki-techer/pull/20) har `feat/chapter-player` som base så lenge #18 er åpen. Kontroller live status før base endres.
 
-### R3: implementert, verifisering pågår
+### R3: implementert, kvalitetsport åpen – arbeidet er stoppet
 
 Interessevalg og ny spiller på `/leo/kapittel`; Workflow 5 i `arn1`; research, helt utkast, separat kontroll, ressursmanifest, service-only lagring, lease/idempotens, varig kall-/budsjettjournal, sikker projeksjon og lagret fortsettelse. Generator v1 er frosset før persistens. Forberedelse tar ingen økttid; gammel og ny spiller deler tidsgrenser. Full faglig tilpasning og flerturshjelp er fortsatt R4/R5.
 
 [Detaljert R3-verifisering](R3-VERIFICATION.md) skiller mocks, direkte kodebestemt hjelp og ekte modellrespons. Full CI på `e256394` er grønn: 548 Vitest-tester, simulering, 25 browserprøver og fem Auth-prøver mot lokal Supabase, bygg og tilgjengelighet. Dev-migrasjon er grønn. Kontrollert browser-kjede bestått. Faktisk gratis Preview-worker på samme commit fullførte i `arn1` etter lukket nettleser, med deduplisering, begge simulerte avbrudd og separate kritikk-/rettingssteg.
 
-Seksten avsluttede ekte «Rever»-forsøk er bevart i R3-evidensen. Koden håndhever jobbidentitet, komplette oppdrags-/avslutningslister, én primary som i dagens spiller, tillatte motorreferanser og alle ruter. Siste per-rutekritikk fant et reelt steinunderskudd og forfatteren rettet det; koden avviste likevel siste modellgodkjenning fordi fysisk-regel-sitatene var intern metadata. Ny kritikergrammatikk låser sitater til faktisk elevtekst, klassifiserer regeltypen og sender konkrete kodeavvisninger til rettingsforsøket. Tegneplanen presiserer selve telleenheten og begrensede visuelle konsekvenser. Forfatter bruker low, separat kritiker medium; begge har12000-ut-token/180sekunder. Prøve 13 og14 traff henholdsvis120- og180sekunders-timeout uten utkast; fulle reservasjoner beholdes. Ingen generert pakke er menneskelig kvalitetsgodkjent ennå. R3 er fortsatt utkast.
+Sytten ekte «Rever»-forsøk er bevart. Siste prøve på `e9c8845` bestod struktur/matte og separat modellkritikk og nådde ready. Ingen gjennomspilling er utført. Codex-tutor fant fortsatt P2 i råpakken: en ny innsamling uten dokumentert behov/overskudd og Anna vist i scenen mens teksten sier hun er borte. Modellgodkjenningen er derfor ingen kvalitetsgodkjenning. Tutorens siste fulle vurdering ble avbrutt av agentkvote; foreløpige konkrete funn beholdes. Full CI og dev-migrasjon er grønne på `e9c8845`.
+
+**Thor har stoppet arbeidet. Ingen nye genereringer, ekte KI-tester, rettinger eller merge skal startes som del av denne leveransen.** Bare lagring/push og statusrapport fullføres. Det er ingen queued/running-jobber ved avlesningen20. oktober. R3 og begge PR-er forblir utkast.
 
 ### Tilgang, opprydding og rammer
 
@@ -25,16 +27,13 @@ Thor har uttrykkelig godkjent midlertidige syntetiske testdata med sletting og e
 
 R2-kontoen er globalt logget ut og hele det syntetiske datasettet er slettet: husholdning/elev/enhet tidligere, gjenværende Auth-bruker 17. oktober. Etterkontroll viste null bruker, sessions og parent-rader. Connectorens tidligere `Invalid or expired requestState` er dermed løst. Egen Vercel-deling er tilbakekalt og private filer slettet.
 
-Samlet konservativ KI-testbelastning er **8,02989550 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 4,04329750 kr og beholdte usikre draft-reservasjoner 0,98677975 kr. Gjenstående **1,97010450 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto skal ryddes etter prøven.
+Samlet konservativ KI-testbelastning er **8,24392525 kr av 10**, inkludert historisk 2,99981825 kr, nye bekreftede modellkall 4,25732725 kr og beholdte usikre draft-reservasjoner 0,98677975 kr. Gjenstående **1,75607475 kr**. Ikke nullstill regnskap, bytt konto eller øk grenser for å omgå rammen. R3s midlertidige konto er fortsatt i leo-dev; opprydding ble ikke utført etter stoppordren. Kostnadsjournal og kontrollnotater er bevart i evidence/r3/cost-ledger.json. Ingen nye databaseendringer ble gjort ved avslutningen.
 
-### Neste arbeid og byggeorden
+### Stoppunkt og eventuell senere videreføring
 
-1. Gratis Preview-worker, inkludert nye separate rettingssteg, og kontrollert spiller er bestått. Fullfør aktuell CI og ekte modell-/spillprøve etter nedjustert forfatter-reasoning.
-2. Prøv første ekte genererte kapittel innen resterende budsjett; vurder råforsøk, avvisninger, elevsynlig tekst/scene, feil/hjelp/riktig og lagret fortsettelse. Faktisk designer/tutor/reviewer skal vurdere relevant bevis. En positiv modellkritiker er ikke menneskelig kvalitetsgodkjenning.
-3. Oppdater kostnad/evidens, rydd syntetiske data, oppdater PR og denne overleveringen. Bevar R2 som separat avhengighet; ingen produksjonsmerge.
-4. Deretter R4 (læringsmotor/adaptiv avvikling), R5 (lærer/tale/visuell bredde), R6 (overgang/foreldreinnsyn), R7 (full SPEC-verifisering). Hele kravkartet i GAME-REVISION gjelder; tre demooppdrag er ikke hele produktet.
+R2s innloggede spillprøve er bestått. R3s tekniske forberedelse virker, men kritikerens pålitelighet og en kvalitetsgodkjent, faktisk gjennomspilt generert historie er ikke ferdig. Senere R4–R7 er heller ikke levert. En eventuell videreføring må først ta stilling til denne åpne kvalitetsporten og utestående syntetisk opprydding; stoppordren gjelder nå.
 
-**Hva Thor må gjøre:** Ingen ny testtilgang, nøkkel eller oppstartsgodkjenning. Agenten fortsetter R3-verifisering. En ny samtale kan bruke: «Fortsett spillrevisjonen fra Start her i docs/PROGRESS.md. Kontroller levende PR-status og fullfør neste åpne leveranse etter GAME-REVISION og SPEC.»
+**Hva Thor må gjøre:** Ingen handling kreves for å bevare arbeidet. Endringene lagres på `feat/chapter-preparation`, uten merge. Les kort sluttrapport; eventuell videreutvikling krever ny bestilling.
 
 ---
 

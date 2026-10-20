@@ -1,0 +1,285 @@
+{
+  "commit": "e9c8845353c06538138c82a1a909a3411c4faee6",
+  "source": "real model via authenticated Preview; retained synthetic account and budget",
+  "interest": "Rever",
+  "errors": [],
+  "views": [
+    {
+      "time": "2026-10-19T20:39:12.854Z",
+      "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+      "state": "running",
+      "phase": "draft",
+      "revision": 0,
+      "playing": false,
+      "canRetry": true,
+      "canChooseNew": false,
+      "interest": "Rever",
+      "title": "Ditt neste kapittel",
+      "goal": "",
+      "opening": "",
+      "message": "Vi gjør hele kapittelet klart. Du kan ta en pause mens vi arbeider.",
+      "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
+      "lastAnswer": null,
+      "mission": null,
+      "choices": [],
+      "choicePrompt": null,
+      "solved": false,
+      "outcome": null,
+      "ending": null,
+      "history": [],
+      "hintLevel": 0,
+      "failures": 0
+    },
+    {
+      "time": "2026-10-19T20:40:08.857Z",
+      "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+      "state": "running",
+      "phase": "review",
+      "revision": 0,
+      "playing": false,
+      "canRetry": true,
+      "canChooseNew": false,
+      "interest": "Rever",
+      "title": "Ditt neste kapittel",
+      "goal": "",
+      "opening": "",
+      "message": "Vi gjør hele kapittelet klart. Du kan ta en pause mens vi arbeider.",
+      "teacher": "Jeg er her. Spør om historien eller få hjelp med regningen.",
+      "lastAnswer": null,
+      "mission": null,
+      "choices": [],
+      "choicePrompt": null,
+      "solved": false,
+      "outcome": null,
+      "ending": null,
+      "history": [],
+      "hintLevel": 0,
+      "failures": 0
+    },
+    {
+      "time": "2026-10-19T20:41:16.937Z",
+      "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+      "state": "ready",
+      "phase": "ready",
+      "revision": 0,
+      "playing": false,
+      "canRetry": false,
+      "canChooseNew": false,
+      "interest": "Rever",
+      "title": "Runi og signalstolpen",
+      "goal": "Få den ødelagte signalstolpen lyst igjen ved å samle lykter og planker og montere dem på stedet.",
+      "opening": "Runi og Gamle Røde må få den gamle signalstolpen til å lyse slik at den sjeldne fjellreven Arktis kan finne sitt nye hi. Først må de samle nok lykter og planker i riktig pakning, så må de montere og feste alt på stolpen.",
+      "message": "Hele kapittelet er klart.",
+      "teacher": "Det er 5 kasser og hver kasse har 4 plasser for lykter.",
+      "lastAnswer": null,
+      "mission": {
+        "chapterId": "chapter-45734895-8032-4525-a33e-7790f2ee2931",
+        "missionId": "m1",
+        "variantId": "v1",
+        "title": "Fyll kassene",
+        "before": "Runi og Gamle Røde er i skogskanten. De finner fem tomme kasser som skal fylles med lykter. Anna venter ved verkstedet og trenger fullstappede kasser for å ta med lyktene dit. Du ser kassene og tomme lykt-plasser i hver kasse.",
+        "goal": "Få totalantallet lykter som ligger i kassene.",
+        "question": "Hvor mange lykter er det totalt i alle kassene? Antall = 5 × 4 lykter.",
+        "clue": "Det er 5 kasser og hver kasse har 4 plasser for lykter.",
+        "representation": "bilde",
+        "answerType": "number",
+        "choices": [],
+        "location": {
+          "id": "forest",
+          "name": "Skogskanten"
+        },
+        "actors": [
+          {
+            "id": "runi",
+            "name": "Runi",
+            "assetId": "animal"
+          },
+          {
+            "id": "gamle",
+            "name": "Gamle Røde",
+            "assetId": "animal"
+          }
+        ],
+        "scene": {
+          "locationId": "forest",
+          "actorIds": ["runi", "gamle"],
+          "backgroundAssetId": "forest-sky",
+          "interaction": "grouping",
+          "objects": [
+            {
+              "id": "boxes",
+              "label": "kasser",
+              "assetId": "box",
+              "quantity": 5
+            },
+            {
+              "id": "lanterns",
+              "label": "lykter per kasse",
+              "assetId": "lantern",
+              "quantity": 4
+            }
+          ],
+          "feedback": {
+            "working": [
+              {
+                "targetId": "boxes",
+                "action": "group"
+              },
+              {
+                "targetId": "lanterns",
+                "action": "fill"
+              }
+            ],
+            "incorrect": [
+              {
+                "targetId": "boxes",
+                "action": "highlight"
+              }
+            ],
+            "reducedMotion": {
+              "working": "Kassene vises som delvis fylt med lykter, og du ser hvor du arbeider.",
+              "incorrect": "Ingen endring i kassene; prøv å telle per kasse først."
+            }
+          }
+        },
+        "quantities": {
+          "groups": {
+            "objectId": "boxes",
+            "value": 5
+          },
+          "each": {
+            "objectId": "lanterns",
+            "value": 4
+          }
+        }
+      },
+      "choices": [],
+      "choicePrompt": null,
+      "solved": false,
+      "outcome": null,
+      "ending": null,
+      "history": [],
+      "hintLevel": 0,
+      "failures": 0
+    }
+  ],
+  "preflight": {
+    "status": 200,
+    "budget": {
+      "limit": 7.00018175,
+      "spent": 5.03007725,
+      "warning": false,
+      "fallback": false,
+      "remaining": 1.9701045
+    },
+    "models": {
+      "text": "gpt-5-mini"
+    }
+  },
+  "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+  "finalView": {
+    "jobId": "45734895-8032-4525-a33e-7790f2ee2931",
+    "state": "ready",
+    "phase": "ready",
+    "revision": 0,
+    "playing": false,
+    "canRetry": false,
+    "canChooseNew": false,
+    "interest": "Rever",
+    "title": "Runi og signalstolpen",
+    "goal": "Få den ødelagte signalstolpen lyst igjen ved å samle lykter og planker og montere dem på stedet.",
+    "opening": "Runi og Gamle Røde må få den gamle signalstolpen til å lyse slik at den sjeldne fjellreven Arktis kan finne sitt nye hi. Først må de samle nok lykter og planker i riktig pakning, så må de montere og feste alt på stolpen.",
+    "message": "Hele kapittelet er klart.",
+    "teacher": "Det er 5 kasser og hver kasse har 4 plasser for lykter.",
+    "lastAnswer": null,
+    "mission": {
+      "chapterId": "chapter-45734895-8032-4525-a33e-7790f2ee2931",
+      "missionId": "m1",
+      "variantId": "v1",
+      "title": "Fyll kassene",
+      "before": "Runi og Gamle Røde er i skogskanten. De finner fem tomme kasser som skal fylles med lykter. Anna venter ved verkstedet og trenger fullstappede kasser for å ta med lyktene dit. Du ser kassene og tomme lykt-plasser i hver kasse.",
+      "goal": "Få totalantallet lykter som ligger i kassene.",
+      "question": "Hvor mange lykter er det totalt i alle kassene? Antall = 5 × 4 lykter.",
+      "clue": "Det er 5 kasser og hver kasse har 4 plasser for lykter.",
+      "representation": "bilde",
+      "answerType": "number",
+      "choices": [],
+      "location": {
+        "id": "forest",
+        "name": "Skogskanten"
+      },
+      "actors": [
+        {
+          "id": "runi",
+          "name": "Runi",
+          "assetId": "animal"
+        },
+        {
+          "id": "gamle",
+          "name": "Gamle Røde",
+          "assetId": "animal"
+        }
+      ],
+      "scene": {
+        "locationId": "forest",
+        "actorIds": ["runi", "gamle"],
+        "backgroundAssetId": "forest-sky",
+        "interaction": "grouping",
+        "objects": [
+          {
+            "id": "boxes",
+            "label": "kasser",
+            "assetId": "box",
+            "quantity": 5
+          },
+          {
+            "id": "lanterns",
+            "label": "lykter per kasse",
+            "assetId": "lantern",
+            "quantity": 4
+          }
+        ],
+        "feedback": {
+          "working": [
+            {
+              "targetId": "boxes",
+              "action": "group"
+            },
+            {
+              "targetId": "lanterns",
+              "action": "fill"
+            }
+          ],
+          "incorrect": [
+            {
+              "targetId": "boxes",
+              "action": "highlight"
+            }
+          ],
+          "reducedMotion": {
+            "working": "Kassene vises som delvis fylt med lykter, og du ser hvor du arbeider.",
+            "incorrect": "Ingen endring i kassene; prøv å telle per kasse først."
+          }
+        }
+      },
+      "quantities": {
+        "groups": {
+          "objectId": "boxes",
+          "value": 5
+        },
+        "each": {
+          "objectId": "lanterns",
+          "value": 4
+        }
+      }
+    },
+    "choices": [],
+    "choicePrompt": null,
+    "solved": false,
+    "outcome": null,
+    "ending": null,
+    "history": [],
+    "hintLevel": 0,
+    "failures": 0
+  }
+}
