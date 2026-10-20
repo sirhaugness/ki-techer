@@ -135,7 +135,7 @@ function install(chapter: FreeChapter, state: StorySession, now: string) {
   state.focusSkillId ??= item.skillId;
   state.response = {
     ...fallbackResponse('ny_oppgave'),
-    speech: 'Oppdraget er klart. Jeg er her hvis du trenger hjelp.',
+    speech: '',
   };
 }
 
@@ -298,7 +298,7 @@ export function startStorySession(
     state.response.speech =
       state.hints.level > 0
         ? concreteHelp(state.active, state.hints.level, 'Jeg forstår ikke')
-        : 'Jeg er her når du trenger hjelp.';
+        : '';
   } else {
     install(chapter, state, now);
     events.items.push(eventItem(state));
@@ -442,7 +442,7 @@ export function freeStoryView(
       ? (state?.freeChapter.reactions?.at(-1) ??
         (solved ? (mission?.success ?? '') : (mission?.retry ?? '')))
       : '';
-  const response = state?.response.speech ?? 'Jeg er her når du trenger hjelp.';
+  const response = state?.response.speech ?? '';
   const teacher = response === feedback ? '' : response;
   return {
     chapterId: chapter.id,

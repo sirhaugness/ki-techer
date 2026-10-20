@@ -16,7 +16,9 @@ Gammel låsing av uferdig jobb og saga-revisjon passer ikke forhåndsgenerering.
 
 Innlogget Preview og ekte modell er ennå ikke verifisert. Pris og varighet med ekte modell er ikke målt; 1 kr og 90 sekunder er kodegrenser, ikke observerte gjennomsnitt. Den nye leveransen bruker ingen betalte tester og endrer ikke det historiske testregnskapet. Ekte KI-testing krever særskilt godkjenning.
 
-**Hva Thor må gjøre:** Ingenting under implementeringen. Ekte KI-test og produksjonsmerge krever egne godkjenninger.
+**PR og Preview:** [PR #21](https://github.com/sirhaugness/ki-techer/pull/21) er utkast. Preview for kodeleveransen: https://ki-techer-git-feat-free-story-chapters-team-thor1.vercel.app. Dev-migrasjonen er grønn via Actions; Preview er READY og sender uinnloggede besøk til foreldreinnlogging. Kvalitetsjobben og CI-vedlegget følges i PR-en. Lokalt ga tilgjengelighetskontrollen 100/100 på begge nye flater. Den siste tekstjusteringen fjerner gjentatt lærerfylltekst ved nye oppdrag.
+
+**Hva Thor må gjøre:** Se over utkastet og prøv interessevalg → oppdrag → feil/hint/riktig → pause/gjenopptak i Preview når du ønsker. Ekte KI-test utført av agenten og produksjonsmerge krever egne godkjenninger.
 
 ---
 
