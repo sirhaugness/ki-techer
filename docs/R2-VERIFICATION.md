@@ -1,0 +1,78 @@
+# R2: første spillbare kapittelsnitt
+
+16. oktober 2026. Avgrensning: [GAME-REVISION R2](GAME-REVISION.md#pr-rekkefølge-og-porter), [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Branch `feat/chapter-player` fra R1 `9089172`; [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18) har nå base `main`, med main `5ad9807` integrert i `eff9a3d`. Opprinnelig PR #17 ble merget eksternt til den gamle R1-branchen etter at PR #16 var merget til main; R2 var dermed fortsatt ikke på main. PR #18 samler R2 og de senere rettelsene/overleveringen. Runtime `4ae1549`, siste scenearia-/Auth-testrettelse `5710f6b`. Ingen produksjonsmerge utført av agenten.
+
+## Innhold og ferdigkriterier
+
+«Lys over Tidevannsvika» er et helt, **håndskrevet prøvekapittel** i R1-format, med tre oppdrag og en avslutning. Lengden er en kvalitetsprøve, ikke en generell kapittelmal.
+
+| Oppdrag      | Hvorfor regningen trengs                                             | Kontrollert matematikk                   | Synlig konsekvens                                           |
+| ------------ | -------------------------------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------- |
+| Tenn leia    | Båten venter utenfor grunna og trenger lys for å finne trygg lei.    | 3 lykter × 4 lyssteiner = 12             | Lyktene tennes; båten med Mira flytter seg til brygga.      |
+| Landgangen   | Mira kan ikke bære postsekken i land før tomme plankeplasser fylles. | 9 plankeplasser − 3 eksisterende = 6 nye | Landgangen blir hel; Mira står på øya.                      |
+| Invitasjoner | Hver postkasse skal få like mange invitasjoner til øyas båtfest.     | 12 invitasjoner / 3 postkasser = 4 hver  | Sekken tømmes; kassene er fylt; Mira seiler videre i båten. |
+
+Scenens tellbare arbeidsobjekter og oppgaveteksten bruker R1-projeksjonens gitte mengder. Motorens svarvurdering kjører server-side. Bare riktig svar åpner oppdragets konsekvens og neste steg. Hele historien og alle visuelle ressurser finnes i kode før spillstart; ingen nettbasert medieproduksjon eller vilkårlig generert SVG/JavaScript.
+
+## Lagring og tilgang
+
+Bare prøvefremdrift lagres i `localStorage`, separat per elev, innholdsversjon og nettleser. Den inneholder innsendte svar, gjeldende utkast, sist vurderte utkast, hjelpevalg, hintnivå og avgrenset antall feil. Hver gjenopptakelse kontrollerer alle tidligere svar på nytt på serveren og gjenoppbygger faktisk historie i riktig rekkefølge. Løst konsekvens bevares til eleven velger å gå videre. Ugyldig lagringsformat gir en eksplisitt feil og valg om omstart. Blokkert lagring meldes; eleven kan fortsette mens siden holdes åpen.
+
+Dette er ikke autoritativ eller manipulasjonssikker læringsprogresjon. Andre enheter, samtidige faner, foreldres eksport/sletting av denne nettleserlagringen og overgang fra gamle kapitler inngår ikke i R2. Ingen læringsøkt, mestring, medaljong, profilobservasjon eller KI-kostnad skrives. R3/R4/R6 må håndtere varig lagring, versjonering, atomisk progresjon og personvern samlet. R1s generatorversjon er fortsatt ikke frosset; prøveversjonen må endres om generator eller prøveinnhold endres.
+
+Siden og hver server action gjenbruker eksisterende `leoAccess`: verifisert innlogging, låst Leo-enhet, riktig elev/husholdning og kontroll av pågående datasletting. Den eksisterende lokale testfixturen kan bare brukes uten produksjonsmodus og uten Supabase-oppsett. Ingen ny innloggingsomgåelse i Preview.
+
+## Observerte kontroller
+
+- Første hele lokale nettleserkjede er bestått: åpning → 11 feil → historieforklaring → matematisk hint → reload → endret utkast og hjelp/reload uten gammel feilstatus → 12 riktig → observert båtbevegelse → landgang → pause/hjem/gjenopptak → 6 riktig → 5/3/4 feilfordeling → 4/4/4 → reload → riktig → avreise → avslutning/reload. Ingen nettleserfeil i dette forløpet.
+- Egen nettlesertest med redusert bevegelse, tastatursvar, 768×1024, 1024×768 og 390×844, 48px knapper, skadet lagring og blokkert skriving er bestått. Skjermbilder dokumenterer tilstander; opptak og transformmåling dokumenterer bevegelse.
+- `npm run check` på `4ae1549` er bestått: lint, typecheck, formatering, 515 Vitest-tester, simulering, 24 browser-tester / 2 lokale Auth-tester hoppet over, produksjonsbygg og Lighthouse over 90 på alle ni sider. Prøvesiden hadde først 96 med ugyldig aria-label på generiske spans. Rettet til beskrivende bilde-/grupperoller. Deretter: 11/11 fokuserte enhetstester, typecheck/lint, de to R2-browser-testene og ny Lighthouse-kjøring med **100/100 på alle ni sider**. Dette siste er arbeidskopien som ble `5710f6b`.
+- [CI 38943683179](https://github.com/sirhaugness/ki-techer/actions/runs/38943683179) for `4ae1549` er observert grønn, inklusive isolert Supabase/Auth. `5710f6b` utvider `parent-flow.spec.ts` med den nye siden: ekte lokal Auth/RLS → Leo-lås → feil → hint → riktig → reload → vanlig kartlegging. [CI 38946227068](https://github.com/sirhaugness/ki-techer/actions/runs/38946227068) på `eff9a3d` er nå observert grønn i begge jobber med denne utvidelsen. Siste `fa1aa98` fikk deretter en konkret testkappløpsfeil, beskrevet nedenfor.
+- Bevarte bilder, opptak og opphavsbeskrivelse: [artefaktmanifest](evidence/r2/README.md). Alt er fra lokal syntetisk prøve, uten innloggingshemmeligheter.
+
+### Uavhengige vurderinger
+
+Faktiske underagenter `/root/designer`, `/root/tutor_evaluator` og `/root/reviewer` leste sine rollefiler, undersøkte arbeidskopien og rapporterte uten å endre prosjektet. Hovedagenten gjorde rettelsene og samordnet nettlesertestene.
+
+| Funn                                                       | Bevis og tiltak                                                                                          | Etterkontroll                                                                                                    |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| P2: strandet båt og ubegrunnet planketall i første konsept | Båten venter nå utenfor grunna; landgangen har samme gitte total og eksisterende planker som spørsmålet. | Tutor regnet alle tre svar uavhengig og vurderte faktisk scene/spørsmål.                                         |
+| P2: Mira på feil sted ved venting/avreise                  | Mira tegnes nå inne i båtgruppen under venting, ankomst og avreise; på land etter landgangen.            | Tutor bekreftet rettelsen i kode og faktiske bilder/opptaksuttrekk. Nettlesertesten sjekker hvem som er ombord.  |
+| P2: svarfelt under første skjerm ved 1024×768              | Kortere oversikt, mindre sidemargin og fjernet konkurrerende banner.                                     | Designer etterkontrollerte nytt bilde: spørsmål, arbeidssted, lærer og svarfelt samtidig, svarfelt ca. y703–758. |
+| P3: gammel feilrespons etter redigering og hjelp/reload    | `lastChecked` knytter responsen til det faktisk vurderte utkastet. Forsøk/hint bevares.                  | Reviewer etterkontrollerte rettelsen og kjørte 11/11 prøvetester; nettleserregresjonen er bestått.               |
+| P3: dekorativ SVG-tekst skalert under 20px                 | Den dekorative stedslabelen er fjernet; nødvendig tekst er vanlig HTML.                                  | Rettelsen er kontrollert i kode og siste bevarte bilder.                                                         |
+| P3: ugyldig aria-label på generiske scene-spans            | Oppsummerte mengder har bilde-/grupperoller; dekorative punkter er skjult for skjermleser.               | Ny Lighthouse: 100/100 på spilleren og alle åtte øvrige sider.                                                   |
+
+## Hva dette beviser
+
+**Teknisk funksjon:** et isolert R1-basert kapittel kan gjennomspilles og gjenopptas. **Modellkvalitet:** ikke prøvd; historie er håndskrevet, hjelp og tilbakemelding direkte kodebestemt, lokal Auth er mock. Ingen fallback er presentert som ekte modellrespons. **Spillopplevelse:** menneskelig design-/pedagogisk gjennomgang av faktiske bilder og bevegelse innen dette ene kapittelet; ingen observasjon av et barn, fysisk iPad eller Safari.
+
+## Preview og konkret åpen port
+
+[Preview for 4ae1549](https://ki-techer-cdte2za7y-team-thor1.vercel.app/leo/provekapittel) er observert READY, region `arn1`. [Branchadresse](https://ki-techer-git-feat-chapter-player-team-thor1.vercel.app/leo/provekapittel) følger nye commits. Faktisk uinnlogget forespørsel endte i appens innlogging, ikke elevdata. Dette er en tilgangskontroll, **ikke innlogget spilltest**. For siste bygg/SHA og CI: kontroller PR #18 før videreføring.
+
+Automatisk godkjenningskontroll avviste opprettelse av midlertidig syntetisk Auth-bruker med husholdning/elev/enhet i den delte `leo-dev`-databasen: vedvarende data med innloggingsopplysninger var ikke uttrykkelig autorisert og ble vurdert å stride mot oppgavens omfang uten databaseendring. Handlingen ble ikke utført. Read-only etterkontroll fant null `r2-preview-…@example.invalid`-brukere. Ingen database-/miljø-/nøkkelendring ble gjort. Ingen omgåelse av avslaget. Den nye Auth-testen bruker i stedet CI-ens isolerte lokale Supabase, innen eksisterende testoppsett; det erstatter ikke Preview-porten.
+
+Egen kortvarig deling på R2-branchadressen er tilbakekalt. Private lokale testfiler er slettet. Vercels fetch-verktøy administrerer sin egen midlertidige ytre tilgang; appens Auth/RLS ble ikke omgått. Ingen ekte KI-kall; tidligere testregnskap forblir 2,99981825 kr av 10. Ingen testkonto er opprettet for å endre eller nullstille dette.
+
+For å lukke porten trengs eksisterende uttrykkelig godkjent testtilgang eller Thors godkjenning til de konkret avgrensede, midlertidige syntetiske dataene med sletting/etterkontroll. Prøv alle tre oppdrag med feil/hjelp/riktig, bevegelse, neste steg, pause/reload og avslutning i autentisert Preview. Registrer versjon og responskilder. R2 holdes som utkast inntil denne porten er avklart; R3 er neste nye leveranse etterpå. Dette er ikke full SPEC-dekning eller ferdig genererings-/adaptiv læringsflyt.
+
+## Oppfølging i ny arbeidsøkt 16. oktober
+
+PR #18 er kontrollert åpen som utkast mot main, head `fa1aa98`; Preview `ki-techer-r58uy6oho-team-thor1.vercel.app` er READY i `arn1` på samme commit. Branchen er hentet og sjekket ut. Main er fortsatt `5ad9807`.
+
+[CI 38946388510](https://github.com/sirhaugness/ki-techer/actions/runs/38946388510) feilet i den nye Auth-testen: `parent-flow.spec.ts` reloadet umiddelbart etter riktig svar, før server-action hadde returnert og skrevet localStorage. CI-loggen viser forventet `solved`, mottatt `working` etter reload. Faktisk reviewer `/root/r2_review` fant samme feil uavhengig og kjørte de 11 fokuserte prøvetestene grønt. Testen venter nå på `solved` før reload og kontrollerer fortsatt gjenopptatt `solved` etterpå. Ingen timeout er økt og appkode er ikke endret.
+
+Lokalt i denne arbeidsøkten: 11/11 fokuserte enhetstester (reviewer), full treoppdragskjede i Chromium, formatering, ESLint og diffkontroll bestått. Nettbrett-/redusert-bevegelse-testen traff først femsekundersgrensen mens siden fortsatt viste «Åpner prøvekapittelet …»; én målrettet ny kjøring bestod, inkludert tastatur, skjermstørrelser, skadet lagring og blokkert skriving. Ingen timeout er endret. Ingen fysisk iPad/Safari er prøvd.
+
+Innlogget Preview står fortsatt åpen. Den konkrete godkjenningen til midlertidig syntetisk Auth-/husholdnings-/elev-/enhetsdata med sletting/etterkontroll er etterspurt; ingen opprettelse er utført. Read-only kontroll fant fortsatt null `r2-preview-…@example.invalid`-brukere. Ingen betalte KI-kall, endret budsjett, hemmeligheter eller produksjonsendring. R3 avventer fortsatt denne porten.
+
+**Sluttkontroll for testrettelsen:** `fcfd6fc` har observert [grønn full CI 38947691067](https://github.com/sirhaugness/ki-techer/actions/runs/38947691067), begge jobber: statiske kontroller, enhetstester, simulering, browser-tester, isolert Supabase/Auth, produksjonsbygg og tilgjengelighet. [Preview for samme commit](https://ki-techer-28n3enzte-team-thor1.vercel.app/leo/provekapittel) er READY i `arn1`. Denne siste dokumentasjonsoppdateringen endrer ingen runtime eller tester. PR #18 holdes utkast. R2s innloggede Preview-port og oppstart av R3 avventer fortsatt den særskilte testdatagodkjenningen; ingen slik tilgang tolkes ut fra manglende svar.
+
+## Godkjent og gjennomført innlogget Preview 16. oktober
+
+Thor godkjente uttrykkelig den midlertidige syntetiske testkontoen med tilhørende husholdning/elev/enhet og sletting/etterkontroll. På `55cdbdd`, [Preview](https://ki-techer-oiharecan-team-thor1.vercel.app/leo/provekapittel), ble hele den faktiske R2-flyten gjennomspilt med ekte Supabase Auth, husholdnings-RLS og Leo-lås: åpning → feil → historieforklaring → mattehint → endret utkast/hjelp/reload → riktig → observert båtbevegelse → neste oppdrag → pause/hjem/gjenopptak → landgang → feil/riktig fordeling → reload → avreise → avslutning/reload. Alle 17 serverhandlinger svarte 200, ingen browserfeil. Ingen KI-kall; historie og hjelp er direkte kodebestemt. Chromium 1024×768; ingen fysisk iPad, Safari eller barnetest. [CI 38948546515](https://github.com/sirhaugness/ki-techer/actions/runs/38948546515) er observert grønn på samme commit.
+
+Innloggingsøkten er globalt logget ut; read-only etterkontroll viste null aktive sessions/refresh-tokens og null ai_calls. Nettleserlagring og private lokale innloggingsfiler er slettet; egen midlertidig Vercel-deling er tilbakekalt. Sletting av de fire syntetiske dataradene/authbrukeren returnerte to ganger verktøyfeilen `Invalid or expired requestState`; etterkontroll viste fortsatt konto/husholdning/elev/enhet, uten aktive innlogginger. Sletting er uttrykkelig autorisert og følges opp; feilen er ikke en ny avvisning eller en ferdig opprydding.
+
+Den innloggede spillporten er bestått. R3 kan nå bygges fra R2, med oppryddingen som eksplisitt gjenstående driftspunkt. PR #18 forblir utkast og produksjon er uendret.

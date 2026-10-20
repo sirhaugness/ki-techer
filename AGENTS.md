@@ -6,6 +6,7 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 
 ## Leserekkefølge og ansvar
 
+- Ved videreføring av spillrevisjonen: start med «Start her» i [docs/PROGRESS.md](docs/PROGRESS.md), deretter [docs/GAME-REVISION.md](docs/GAME-REVISION.md) og SPEC §15. Kontroller levende branch-/PR-status og åpne porter før neste leveranse; ikke bygg ferdige leveranser på nytt fra en eldre main-kopi.
 - Brukerens siste avtalte bestilling styrer oppdraget. [docs/SPEC.md](docs/SPEC.md) er kanonisk produktspesifikasjon; rotfilen SPEC.md peker dit.
 - Les relevant kode og [docs/PROGRESS.md](docs/PROGRESS.md) for dagens implementering og observerte resultater. [docs/DECISIONS.md](docs/DECISIONS.md) er datert beslutningshistorikk; eldre begrensninger skal ikke overstyre nyere krav.
 - Skill vedtatt krav, implementert kode og faktisk verifisert atferd. En dokumentasjons- eller promptendring betyr ikke at alle beskrevne funksjoner er bygget.
@@ -88,6 +89,7 @@ Små endringer trenger ikke hele teamet. Rene undersøkelser endrer ikke filer, 
 
 - PR tester mot leo-dev / Vercel Preview. Merge til main påvirker produksjon. Ikke merge eller endre leo-prod / Production-variabler uten Thors tillatelse.
 - Utfør nødvendig og autorisert Preview-/dev-oppsett selv gjennom tilgjengelige connectorer/CLI og bekreft resultatet. Spør bare om manglende tilgang eller handlinger som trenger særskilt godkjenning.
+- Thor har 16. oktober 2026 uttrykkelig godkjent midlertidig syntetisk testkonto med husholdning, elev og enhet i leo-dev, inkludert sletting og etterkontroll. Bruk denne godkjenningen til avtalt Preview-/dev-verifisering; ikke spør igjen om samme testtilgang. Thor ønsker færrest mulig godkjenningsspørsmål. Produksjonsgrensen og samlet KI-testramme gjelder fortsatt.
 - Thor har 14. oktober 2026 godkjent fortsatt bruk av eksisterende `OPENAI_API_KEY` i Vercel Preview. Ikke spør igjen om eksisterende nøkkel kontra ny nøkkel. Godkjenningen omfatter ikke nye nøkler, endring av hemmeligheter eller produksjonsendringer.
 
 ## Driftsoppsett og kjente fallgruver

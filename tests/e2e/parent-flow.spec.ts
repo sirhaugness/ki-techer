@@ -3,7 +3,7 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   page,
   request,
 }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(120_000);
   test.skip(
     process.env.E2E_LOCAL_SUPABASE !== '1',
     'Requires a local Supabase stack with Mailpit.',
@@ -61,6 +61,32 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
+  // R2 also runs with real local Auth/RLS in CI, never the dev shared database.
+  await page.getByRole('link', { name: 'Prøv den nye spillflaten' }).click();
+  await expect(page.getByRole('heading', { name: 'Tenn leia' })).toBeVisible({
+    timeout: 20000,
+  });
+  await page.getByRole('textbox', { name: 'Lyssteiner i alt' }).fill('11');
+  await page.getByRole('button', { name: 'Sjekk svaret' }).click();
+  await expect(page.getByTestId('chapter-scene')).toHaveAttribute(
+    'data-phase',
+    'retry',
+  );
+  await page.getByRole('button', { name: 'Hjelp med regningen' }).click();
+  await expect(page.getByRole('complementary')).toContainText('én lykt først');
+  await page.getByRole('textbox', { name: 'Lyssteiner i alt' }).fill('12');
+  await page.getByRole('button', { name: 'Sjekk svaret' }).click();
+  // The click does not await the server action or its localStorage write.
+  await expect(page.getByTestId('chapter-scene')).toHaveAttribute(
+    'data-phase',
+    'solved',
+  );
+  await page.reload();
+  await expect(page.getByTestId('chapter-scene')).toHaveAttribute(
+    'data-phase',
+    'solved',
+  );
+  await page.getByRole('link', { name: 'Pause og hjem' }).click();
   await page.getByRole('button', { name: 'Start Bli kjent' }).click();
   await page.getByRole('button', { name: '😊 Glad' }).click();
   for (let i = 0; i < 10; i++) {
