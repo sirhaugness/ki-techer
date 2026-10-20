@@ -1,6 +1,40 @@
 # Fremdrift
 
-## Start her – fri kapittelhistorie 20. oktober 2026
+## Start her – forberedt Star Wars-kapittel, 20. oktober 2026
+
+Ny uttrykkelig produktbeslutning erstatter fri kapittelhistorie. Les [kanonisk SPEC](SPEC.md), [hele kapittelplanen](chapters/star-wars-vaders-felle.md), [læreplan og læreroppsett](curriculum/chapter-pedagogy.md), [inaktivt lærerutkast/kodegrenser](TUTOR-DRAFT.md) og [kort byggeplan](GAME-REVISION.md). Neste implementeringsleveranse er **K1: SW01, SW06 og SW19**; ingen fortsettelse av gammel R3-bestilling.
+
+### Kontrollert utgangspunkt
+
+- `main` ble kontrollert med `git ls-remote` og hentet 20. oktober: **d6e18740547c43db34e7ce108b95fc5bf28e800e**, merge av [PR #21](https://github.com/sirhaugness/ki-techer/pull/21). Arbeidskopien startet på samme commit, ren branch `work`; dokumentarbeidet ligger på `docs/prepared-star-wars-chapter` fra dette grunnlaget.
+- Vercels lesbare deploymentmetadata for [produksjon](https://ki-techer.vercel.app) viser samme SHA, `target: production`, `READY`, deployment `dpl_EZSka9A4tzx8VMMcYvcEsP9ExS2W`, prosjekt `ki-techer`, team `team-thor1`. Forsiden svarte også HTTP 200 ved en lesekontroll. Dette er versjons-/tilgjengelighetskontroll, ingen innlogget gjennomspilling eller ny modellprøving.
+- GitHub-kontroll: #18 og #21 er merget. [#20](https://github.com/sirhaugness/ki-techer/pull/20) er åpen som utkast, head `8340e13`, base `feat/chapter-player`; den er parkert og skal ikke merges som grunnlag for ny retning. [#19](https://github.com/sirhaugness/ki-techer/pull/19) er åpen, egen dokumentasjonsgren om korte svar; ingen tilsvarende kapittelplan-PR fantes. Ingen eksisterende PR er lukket eller endret av denne leveransen.
+- Faktisk runtime har fortsatt fri kapittelgenerering, progressive oppdrag og 70-prosentstart. `tutor.v2.md` er fortsatt aktiv. En dokumentasjonsrevisjon aktiverer ingen av de planlagte funksjonene.
+
+### Levert i K0
+
+Kanonisk SPEC erstatter de motstridende aktive bestillingene. README, rotpeker, AGENTS, byggeplan og utviklingsroller peker på samme retning. Tidligere testlogger/beslutninger beholdes som historikk. Ingen ventetids-/genereringskrav fra gammel retning er aktive produktkrav; lærer-/talevern og produksjonsgrenser beholdes.
+
+Kapittelplanen har **20 hovedoppgaver, 5 per del**, alle med elevtekst, læringsmål/Udir-kobling, tall/enheter/fasit/metoder, handling og uttrykkskobling, trinnvis hjelp, enklere variant, misforståelse, vurderingsvei, konsekvens og ressurser. Utvalgte forståelsesprober, repetisjon og oppgaver med mindre støtte er angitt. Areal er repetisjon fra 3. trinn; standardiserte volumenheter er med, ikke-standardiserte er markert som udekket. Ingen årsdekning påstås.
+
+Lærerutkastet ligger bare i `docs/`, med forslag til kontekst/moduser og konkret kart over prompt, guards, hjelp, hendelser, vurdering, mestring, spiller og lagring som må endres samlet senere. Ingen aktiv prompt, appkode, database eller bilder er endret.
+
+### Gjennomgang og verifisering
+
+- Faktiske underagenter `pedagogy`, `design_review` og `final_review` leste relevante rolle-/prosjektfiler, kodegrunnlag og hele kapittelplanen. Pedagogy kontrollerte Udir direkte og regnet alle hoved- og støtteoppgaver uavhengig; design_review kontrollerte de ti feltene og figur-/ressurskontinuitet. Ingen app, modell eller barn ble prøvd.
+- Funn rettet: SW03 har nå ett eksplisitt svarkrav for modell og rest; SW04 oppgir konstant tillegg; volumkoblingen avgrenser ikke-standardiserte enheter; lærerutkastet har faktisk svar-/hjelpe-/probehistorikk; SW17 flytter riktig form til en ny valgposisjon.
+- Uavhengig deterministisk kontroll bestått: alle 20 hovedoppgaver og numeriske støtteeksempler, koordinat-/løkkespor, 2D-egenskaper også etter rotasjon, kubeegenskaper og enhetsmengder. Strukturkontroll finner SW01–SW20 én gang hver, fire deler med fem oppgaver og alle ti felt. Pedagogy etterkontrollerte de konkrete rettelsene uten gjenstående funn. Siste uavhengige reviewer fant også en uklarhet om revisjon i hjelpesamtalen og en foreldet omtale av eval:agent. Rettet: oppgaven holdes fast, mens hver lagrede tur øker serverrevisjon; eval:agent er tydelig merket mock som standard. Sluttkontroll bestått: Prettier 3.9.9 på alle 29 Markdown-filer, 134 lokale lenker/ankere, 12 npm-kommandoreferanser, gyldig kontekst-JSON med bevart mengdesum og `git diff --check`. Diffen omfatter bare Markdown. Reviewer etterkontrollerte rettelsene uten gjenstående P1/P2; ingen runtimegodkjenning følger av dette.
+- `npm ci --ignore-scripts` kunne ikke kjøres på uendret låsefil: npm rapporterer chokidar 4/5 og readdirp 4/5 i utakt. Ingen avhengigheter eller låsefil endres for dokumentarbeidet. Prettier kjøres separat med prosjektets fastsatte versjon. Ingen runtime-tester eller bygg er nødvendig for dette rene dokumentasjonsdiffet.
+
+Ingen betalte modellkall, migrasjoner, produksjonsutrulling, skriving til appdata/driftstjenester eller nye hemmeligheter. Dokumentene committes og leveres som egen PR. Siste registrerte historiske KI-testsum er **8,24392525 kr av 10 kr**; ikke kontrollert på nytt mot tjenesten, ingen nullstilling eller nytt forbruk her. Ingen ny Preview-appflyt finnes å verifisere; denne leveransen skal leses som dokumentasjon, ikke en spillbar prøve.
+
+**Hva Thor må gjøre:** Ingen oppsett, lærerpanel eller detaljgodkjenning. K1 er neste avgrensede byggesteg. Når en spillbar prøve er levert, kan Thor prøve med Leo og gi enkel tilbakemelding.
+
+## Historikk – ikke aktive byggeordre
+
+Alt nedenfor er bevart dokumentasjon om eldre versjoner. Gamle «neste steg», PR-/Preview-status, kostnadssummer, krav om generering/research/kritiker, porter og ventetid overstyrer ikke gjeldende SPEC eller statusen over. Særlig er gamle utsagn om at #18/#21 er utkast eller om nødvendig R2-opprydding ikke nåstatus.
+
+## Historikk: fri kapittelhistorie, tidligere 20. oktober 2026
 
 R2/PR #18 er merget til main `be45e18`. Grenen `feat/free-story-chapters` bygger på denne. PR #20/`feat/chapter-preparation` er parkert og skal ikke merges. Ny bestilling og plan er godkjent; se SPEC §16 og AGENTS. Ingen ekte KI-test er godkjent for denne leveransen. Tidligere testbelastning på 8,24392525 kr av 10 kr beholdes.
 
@@ -22,9 +56,9 @@ Innlogget Preview og ekte modell er ennå ikke verifisert. Pris og varighet med 
 
 ---
 
-## Start her: aktiv spillrevisjon (oppdatert 16. oktober 2026)
+## Historikk: spillrevisjon 16. oktober 2026
 
-Denne delen er overleveringen til neste arbeidsøkt. Den erstatter ikke produktkravene i [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026), eller kravkartet og byggeplanen i [GAME-REVISION.md](GAME-REVISION.md). Eldre milepæler nedenfor er historikk; «implementert» der betyr ikke at dagens spill oppfyller den nye visjonen. Oppdater denne delen etter hver leveranse, sammen med daterte bevis og åpne funn.
+Denne delen er overleveringen til neste arbeidsøkt. Den erstatter ikke produktkravene i [SPEC §15](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026), eller kravkartet og byggeplanen i [GAME-REVISION.md](GAME-REVISION.md). Eldre milepæler nedenfor er historikk; «implementert» der betyr ikke at dagens spill oppfyller den nye visjonen. Oppdater denne delen etter hver leveranse, sammen med daterte bevis og åpne funn.
 
 ### Avtalt mål og rammer
 

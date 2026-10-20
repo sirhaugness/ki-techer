@@ -1,25 +1,23 @@
 # Leo-læreren
 
-En rolig mattelærer for 4. trinn. Denne versjonen inneholder M1–M9: innlogging og Leo-lås, 35 ferdigheter, kontrollerte matteøkter, KI-lærer med profilminne, medaljong, tale og foreldredashbord med budsjett, eksport og sletting. Ekte KI-kvalitet og fysisk iPad-test må godkjennes før fast bruk; se fremdriften for hva som er faktisk verifisert.
+Matematikk for Leo i 4. klasse: et begrenset bibliotek av forberedte, illustrerte interesseverdener og en levende KI-lærer som underviser og undersøker forståelse. Først bygger vi **Star Wars: Darth Vaders felle**.
 
-**Fortsette spillrevisjonen i en ny samtale?** Begynn med [Start her i PROGRESS](docs/PROGRESS.md#start-her-aktiv-spillrevisjon-oppdatert-16-oktober-2026), deretter [kravkart/PR-rekkefølge](docs/GAME-REVISION.md) og SPEC §15. R2 ligger i [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18), branch `feat/chapter-player`; ikke start fra en eldre main-kopi uten å hente riktig branch. [R2-verifiseringen](docs/R2-VERIFICATION.md) beskriver det ferdige lokale snittet og den åpne innloggede Preview-porten. Neste nye leveranse er R3 etter at denne porten er lukket.
+**Status:** Retningen og alle 20 hovedoppgavene er beskrevet i prosjektfilene. Den nye kapittelopplevelsen er ennå ikke bygget. Produksjon kjører fortsatt fri kapittelhistorie fra PR #21; den skal senere kunne erstattes. Se [PROGRESS](docs/PROGRESS.md) for kontrollert versjon og begrensninger.
 
-- [Spesifikasjon](docs/SPEC.md)
-- [Fremdrift og faktiske testresultater](docs/PROGRESS.md)
-- [Oppsett, GitHub-hemmeligheter og Preview-test for nybegynnere](docs/DEPLOY.md)
-- [Personvern](docs/PRIVACY.md)
-- [iPad-testplan](docs/IPAD-TESTPLAN.md)
-- [Tilgjengelighet](docs/ACCESSIBILITY.md)
-- [Beslutninger](docs/DECISIONS.md)
-- [Codex-agentteamets roller og arbeidsflyt](docs/agent-team/workflow.md)
-- [Læreplan og kilder](docs/curriculum/mat01-06.md)
+- [Kanonisk produktbeskrivelse](docs/SPEC.md)
+- [Hele kapittelplanen med 20 oppgaver](docs/chapters/star-wars-vaders-felle.md)
+- [Pedagogikk og læreplankoblinger](docs/curriculum/chapter-pedagogy.md)
+- [Inaktivt lærerutkast og konkrete kodegrenser](docs/TUTOR-DRAFT.md)
+- [Kort byggeplan](docs/GAME-REVISION.md)
+- [Fremdrift](docs/PROGRESS.md) og [beslutninger](docs/DECISIONS.md)
+- [Oppsett og deploy](docs/DEPLOY.md), [personvern](docs/PRIVACY.md), [tilgjengelighet](docs/ACCESSIBILITY.md) og [iPad-prøving](docs/IPAD-TESTPLAN.md)
+- [Utviklingsroller og arbeidsflyt](docs/agent-team/workflow.md)
+
+Eksisterende kode har elevprofil, læringsmotor, lagring, foreldredashbord, tale og kostnadsvern. Disse skal gjenbrukes der de passer. Historiske testresultater i PROGRESS gjelder oppgitte versjoner, ikke den planlagte Star Wars-opplevelsen.
 
 ```sh
 npm ci
 npm run dev
-npm run check
 ```
 
-Kopier `.env.example` til `.env.local` og legg inn dev-verdiene for innlogging. Forsiden kan åpnes også før Supabase er konfigurert. `npm run simulate` kjører 200-økts simuleringer uten KI-kall. Full auth-e2e kjøres i CI mot lokal Supabase, og kan kjøres lokalt med Docker/Supabase CLI og `node --import tsx scripts/e2e-local.ts` etter `supabase start`.
-
-`docs/SPEC.md` er kanonisk produktspesifikasjon. Rotfilen `SPEC.md` peker dit for å unngå motstridende kopier. Krav, implementering og observerte resultater er merket separat; se særlig eventyrkravene i seksjon 14.
+Kopier `.env.example` til `.env.local` og sett dev-verdier etter oppsettsveiledningen. Forsiden kan åpnes uten konfigurert innlogging. `npm run simulate` kjører motoren uten KI-kall. `npm run check` kjører full lokal kvalitetspakke; autentisering krever lokal test-Supabase for full Auth-e2e. Dokumentasjonsarbeid bruker målrettet format-, lenke- og konsistenskontroll.

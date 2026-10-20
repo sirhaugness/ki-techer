@@ -1,5 +1,7 @@
 # Verifisering av illustrert matteeventyr
 
+**Historisk verifisering:** Resultatene og eventuelle «neste steg» nedenfor gjelder den oppgitte eldre versjonen. Gjeldende retning står i [SPEC](SPEC.md), nåstatus i [PROGRESS](PROGRESS.md). Ingen eldre genererings-/kritikerkrav er aktiv byggeordre.
+
 14. oktober 2026. Arbeid på egen gren mot Preview.
 
 ## Hva den forrige flyten faktisk gjorde

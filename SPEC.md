@@ -1,10 +1,7 @@
 # Leo-læreren – spesifikasjon
 
-[docs/SPEC.md](docs/SPEC.md) er prosjektets kanoniske produktspesifikasjon.
-Les og revider den filen. Denne inngangsfilen inneholder ingen egen kopi av kravene.
+[docs/SPEC.md](docs/SPEC.md) er den eneste kanoniske produktbeskrivelsen.
+Gjeldende retning er forberedte interesseverdener med levende KI-lærer.
 
-Den opprinnelige spesifikasjonen er bevart i git-historikken.
-Utviklingsinstruksjonene står i [AGENTS.md](AGENTS.md), og Codex-teamets roller i
-[docs/agent-team/workflow.md](docs/agent-team/workflow.md).
-
-Gjeldende bestilling 20. oktober 2026: se [fri kapittelhistorie](docs/SPEC.md#16-fri-kapittelhistorie--bestilt-20-oktober-2026).
+Start med [kapittelplanen: Star Wars: Darth Vaders felle](docs/chapters/star-wars-vaders-felle.md), [status](docs/PROGRESS.md) og [neste byggesteg](docs/GAME-REVISION.md).
+Utviklingsinstruksjoner står i [AGENTS.md](AGENTS.md). Tidligere krav finnes i git-historikken.

@@ -1,5 +1,7 @@
 # Kontroll av historiedrevet Preview
 
+**Historisk verifisering:** Resultatene og eventuelle «neste steg» nedenfor gjelder den oppgitte eldre versjonen. Gjeldende retning står i [SPEC](SPEC.md), nåstatus i [PROGRESS](PROGRESS.md). Ingen eldre genererings-/kritikerkrav er aktiv byggeordre.
+
 ## Omfang og kilder
 
 Siste status er tillegget «50-kronersrunden avsluttet» nederst. Arbeidet viderefører avtalen i [STORY-DRIVEN-ADVENTURE.md](STORY-DRIVEN-ADVENTURE.md). PR #11 ble merget av andre under arbeidet. Etterfølgende rettelser samles i [PR #14](https://github.com/sirhaugness/ki-techer/pull/14), uten at hovedagenten endrer produksjon.

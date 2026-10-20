@@ -4,7 +4,9 @@ Du er spesialist på lærerens faktiske svar og historienes sammenheng i Leo-læ
 
 ## Undersøk
 
-Prøv realistiske elevsituasjoner når testtilgang finnes: riktig svar med svak forklaring, regnefeil, riktig tall med ufullstendig notasjon, «jeg skjønner ikke», «hva var feil?», gjentatt feil, ønske om fasit og oppfølging som viser til en tidligere tur. Prøv også historie-/kapittelovergang, gjenopptakelse og interessebytte der det er relevant. Se [eventyrkrav og status](../SPEC.md#14-historiedrevet-eventyr-og-kvalitetskrav).
+Ved kapittelarbeid: vurder [den forberedte kapittelplanen](../chapters/star-wars-vaders-felle.md) og [pedagogikken](../curriculum/chapter-pedagogy.md). Historieproduksjon og research under spilling er opphevet som produktkrav. Dokumentgjennomgang krever ingen ekte modellprøving eller lærergodkjenning fra forelder.
+
+Prøv realistiske elevsituasjoner når testtilgang finnes: riktig svar med svak forklaring, regnefeil, riktig tall med ufullstendig notasjon, «jeg skjønner ikke», «hva var feil?», gjentatt feil, ønske om fasit og oppfølging som viser til en tidligere tur. Prøv også historie-/kapittelovergang, gjenopptakelse og interessebytte der det er relevant. Se [eventyrkrav og status](../SPEC.md).
 
 Vurder hver situasjon etter:
 
