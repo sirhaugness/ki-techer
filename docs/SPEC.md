@@ -507,3 +507,19 @@ Denne seksjonen presiserer den nye produktflyten og har forrang ved konflikt med
 - Hver PR rapporterer teknisk funksjon, faktisk modellkvalitet og spillopplevelse separat. Tidlig kvalitetsport er tre sammenhengende oppdrag i den nye flaten; full godkjenning krever hele kravkartet, flere kapitler/interesser og relevante nettbrett-/tilgjengelighetsprøver. Under én krone per vanlig økt er fortsatt et mål som må måles, også når ny medieproduksjon inngår.
 
 R1 oppretter et additivt, versjonert kontraktlag i `lib/chapters/` med referanse-/matematikk-/rutekontroll og separate elev-/lærerprojeksjoner. R2 kobler det til en isolert spiller med et håndskrevet prøvekapittel og nettleserlagret prøvefremdrift. Dette beviser ikke varig kapittelproduksjon, ekte generert fortellerkvalitet eller ferdig adaptiv læringsflyt. [R2-verifiseringen](R2-VERIFICATION.md) beskriver det observerte omfanget; R3–R7 i kravkartet dekker de øvrige leveransene.
+
+## 16. Fri kapittelhistorie – bestilt 20. oktober 2026
+
+Denne bestillingen erstatter motstridende R3-krav i §14–15. R2 er merget som egen PR #18; PR #20 er parkert. Implementasjon og verifisering rapporteres separat.
+
+Motoren lager 20–25 matteplasser med ferdighet, vanskegrad og deterministisk oppgave ut fra nivå, forkunnskaper og repetisjon. KI velger ikke matematikk. Én strukturert respons inneholder tittel, sammendrag, scener og oppdrag med tekst, uttrykk, svar og hint. Leo er hovedpersonen; interesser og forrige kapittels sammendrag sendes som data. Handlingen skal være fri uten fast fortellingsmal.
+
+Kode kontrollerer uttrykk og svar, plassens ferdighet og nivå, fylte felt, tekstlengde, Leo/interesse og gjentatte setninger. Selve mattespørsmålet beholdes fra motoren; fri scenetekst knytter regningen til handlingen. Dermed kan modellen ikke bytte regneart i det synlige spørsmålet mens den kopierer riktig fasit. KI-kritiker brukes ikke. Feil sendes samlet til maksimalt ett rettingskall. Resterende feil og manglende oppdrag erstattes av generatoroppdrag i samme setting. Bare fullførte elevhandlinger er historikk; et uferdig kapittels planlagte sammendrag merkes som planlagt kontekst. Publisert innhold endres ikke.
+
+Samlet absolutt frist er 90 sekunder og genereringsrammen 1,00 kr per kapittel inkludert retting. Ved brudd beholdes godkjent innhold og resten fylles deterministisk. Ukjent kallutfall gir ingen automatisk nykjøp. Første komplette godkjente scene kan spilles mens resten kommer. Neste kapittel forberedes én gang ved 70 prosent med egen stabil identitet. Forberedelse bruker ikke læringstid; pause og foreldregrenser gjelder under spill.
+
+Kapitler lagres. `ai_calls` har tilknytning, kostnad og varighet per kapittel. Kostnadsreservasjoner før modellkall håndhever kapittelrammen og husholdningens månedsramme. Ukjent forbruk beholder hele reservasjonen. Hint, forklaring og cached opplesing følger eksisterende månedsramme utenfor kapittelets genereringsramme. KI brukes ellers bare når Leo ber læreren om hjelp.
+
+Ingen generisk ventefylltekst eller illustrasjoner som ikke passer. Kodekontroll beviser ikke spennende eller semantisk sammenhengende fri tekst; dette må vurderes manuelt. Fritt modellinnhold modereres før publisering; moderering er en sikkerhetskontroll og ingen fortellerkritiker.
+
+Tester bruker mocks og håndskrevne fixtures. Ekte KI krever egen godkjenning og samlet 10 kr-ramme. Stopp og spør etter tre uløste forsøk på samme utviklingsproblem. Ingen rå KI-forsøk, logger eller testbevis i git; skjermbilder vedlegges PR. Ingen SQL via connector; migrasjoner kjøres via Actions. Ingen produksjonsendring uten tillatelse.

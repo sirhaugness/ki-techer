@@ -29,6 +29,11 @@ jobs:
         with:
           name: accessibility-reports
           path: test-results/lighthouse/
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter-preview-screenshots
+          path: test-results/free-chapters/
   supabase-e2e:
     runs-on: ubuntu-latest
     steps:

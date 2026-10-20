@@ -1,8 +1,22 @@
 # Leo-læreren
 
 Leo-læreren skal hjelpe en niåring med å mestre matematikk på 4. trinn etter LK20.
-En KI-lærer velger pedagogiske aktiviteter; en deterministisk motor kontrollerer svar og mestring.
+Læringsmotoren velger matematikk; KI-læreren gir historie og hjelp innenfor motorens rammer.
 Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å lære og krever lite arbeid fra forelder.
+
+## Gjeldende bestilling 20. oktober 2026 – fri kapittelhistorie
+
+Denne bestillingen har forrang over eldre R3-/kritikerkrav nedenfor.
+
+- Bygg fra merget R2; PR #20 er parkert. Ingen KI-kritiker eller retting i løkke.
+- Motoren velger 20–25 matteplasser ut fra faktisk nivå og repetisjon. KI skriver én strukturert kapittelrespons; Leo er helten, interessene og forrige sammendrag inngår.
+- Kode kontrollerer matematikk, plassens identitet, tekstgrenser og gjentakelser. Maks ett samlet rettingskall; deretter generatoroppdrag i samme setting. Modellfeil skal ikke blokkere kapitlet.
+- Absolutt kapittelfrist 90 sekunder og samlet genereringsramme 1 kr. Godkjente fragmenter beholdes. Første scene åpnes progressivt; neste kapittel forberedes én gang ved 70 prosent.
+- Samme utviklingsproblem uløst etter tre rettingsforsøk: stopp og spør Thor.
+- Tester bruker mocks og håndskrevne fixtures. Spør før enhver ekte KI-test; samlet testregnskap nullstilles ikke, maks 10 kr uten ny godkjenning.
+- Ikke commit KI-forsøk, logger, skjermbilder eller andre testbevis. Håndskrevne fixtures og testkode er tillatt. Skjermbilder vedlegges PR uten å legges i git.
+- Ingen SQL direkte via Supabase-connector. Append-only migrasjoner kjøres av GitHub Actions; SQL kan verifiseres mot lokal testdatabase.
+- Spør før produksjonsendring. Hold PR liten og lesbar; oppdater AGENTS, kanonisk SPEC og PROGRESS.
 
 ## Leserekkefølge og ansvar
 
@@ -15,7 +29,7 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 
 ## Prinsipper
 
-1. Modellen bestemmer pedagogikken; koden husker, verifiserer og håndhever grenser.
+1. Motoren bestemmer matten og mestringen; modellen skriver historie og gir veiledning innenfor kontrollerte rammer.
 2. Fasit kommer aldri fra KI alene: generator eller uavhengig kodekontroll kreves. Matematisk korrekthet erstatter ikke kontroll av om teksten, scenen og oppgaven betyr det samme.
 3. Tilpasset veiledning gis ett håndterbart steg om gangen. Hintnivå, hjelperegistrering og selvstendig mestring håndheves i kode.
 4. Mestring krever både vurdering og data; bare motoren tildeler medaljongdeler.

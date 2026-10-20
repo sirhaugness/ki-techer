@@ -37,12 +37,28 @@ export async function db() {
     },
   );
 }
-export function adminDb() {
+export function adminDb(timeoutMs?: number) {
   if (!process.env.SUPABASE_SECRET_KEY)
     throw new Error('Servernøkkel mangler.');
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY,
-    { auth: { persistSession: false, autoRefreshToken: false } },
+    {
+      auth: { persistSession: false, autoRefreshToken: false },
+      ...(timeoutMs
+        ? {
+            global: {
+              fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+                fetch(input, {
+                  ...init,
+                  signal: AbortSignal.any([
+                    AbortSignal.timeout(timeoutMs),
+                    ...(init?.signal ? [init.signal] : []),
+                  ]),
+                }),
+            },
+          }
+        : {}),
+    },
   );
 }

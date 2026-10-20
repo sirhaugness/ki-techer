@@ -250,6 +250,15 @@ export async function POST(request: Request) {
       return Response.json({ ok: true });
     }
     let state = f ? f.state : await latestSession(profile.id);
+    if (
+      state?.freeChapter &&
+      (!state.endedAt || cmd.command !== 'start') &&
+      ['start', 'turn', 'feedback'].includes(cmd.command)
+    )
+      return Response.json(
+        { message: 'Fortsett det lagrede kapitlet under Nytt eventyr.' },
+        { status: 409 },
+      );
     if (provider?.usage && state) {
       provider.usage.sessionId = state.id;
       provider.usage.chapterNumber = state.active?.interestId

@@ -9,6 +9,8 @@ import { progressForPart } from '@/lib/engine/medallion';
 import { LeoExperience } from '@/components/leo/experience';
 import { redirect } from 'next/navigation';
 import { UnlockForm } from '@/app/forelder/forms';
+import Link from 'next/link';
+import { resetChapterFixtures } from '@/lib/free-story/fixture';
 export const dynamic = 'force-dynamic';
 export default async function LeoPage({
   searchParams,
@@ -18,6 +20,7 @@ export default async function LeoPage({
   const mock = fixtureEnabled(),
     query = await searchParams;
   if (mock && query.fixture) {
+    resetChapterFixtures();
     resetFixture(
       query.fixture === 'master',
       ['practice', 'quiet', 'story'].includes(query.fixture),
@@ -40,11 +43,16 @@ export default async function LeoPage({
     ([1, 2, 3, 4] as const).map((id) => progressForPart(id, {}));
   return (
     <>
+      <p className="mb-4">
+        <Link href="/leo/eventyr">
+          Utforsk et nytt kapittel med dine interesser →
+        </Link>
+      </p>
       <LeoExperience
         key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
         profile={profile}
         story={story}
-        initial={state ? publicView(state, !mock) : null}
+        initial={state && !state.freeChapter ? publicView(state, !mock) : null}
         parts={parts}
         diagnosticComplete={state?.diagnosticComplete ?? false}
       />

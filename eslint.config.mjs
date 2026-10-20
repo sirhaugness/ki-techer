@@ -6,6 +6,9 @@ export default defineConfig([
   ...nextTs,
   globalIgnores([
     '.next/**',
+    '.well-known/workflow/**',
+    'app/.well-known/workflow/**',
+    '.workflow-data/**',
     'coverage/**',
     'playwright-report/**',
     'test-results/**',

@@ -58,6 +58,12 @@ export type Interest = {
   weight?: number;
 };
 export type Snapshot = {
+  freeChapter?: {
+    id: string;
+    index: number;
+    failures: number;
+    reactions?: string[];
+  };
   universeResearch?: Record<string, import('../ai/provider').UniverseResearch>;
   version: 1;
   storyProgress?: import('../profile/story').StoryProgress;

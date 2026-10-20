@@ -10,6 +10,11 @@ import { speechAudio } from '@/lib/voice/speech';
 import { speechCache } from '@/lib/voice/cache';
 import { homeSpeech } from '@/lib/voice/text';
 import { openaiVoice } from '@/lib/voice/openai';
+import { loadChapter } from '@/lib/free-story/store';
+import { chapterFixtures } from '@/lib/free-story/fixture';
+import { freeStoryView } from '@/lib/free-story/play';
+import { storySpeech } from '@/lib/free-story/speech';
+import type { StorySession } from '@/lib/free-story/types';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 const schema = z
@@ -59,10 +64,13 @@ export async function POST(request: Request) {
     if (source === 'home' && parsed.data.sessionId !== profile.id)
       return new Response(null, { status: 403 });
     const story = source === 'home' ? await homeChapter(profile) : null;
-    const text =
+    let text =
       source === 'home'
         ? `${homeSpeech(profile.tutorName)} ${story!.title}. Kapittel ${story!.number}. ${story!.text}`
         : [
+            source !== 'speech' && state!.freeChapter && !state!.endedAt
+              ? (state!.active?.storyContext ?? '')
+              : '',
             source !== 'task' ? state!.response.speech : '',
             source !== 'speech' && !state!.endedAt
               ? (state!.active?.text ?? '')
@@ -70,6 +78,15 @@ export async function POST(request: Request) {
           ]
             .filter(Boolean)
             .join(' ');
+    if (state?.freeChapter) {
+      const chapter = mock
+        ? chapterFixtures().get(state.freeChapter.id)
+        : await loadChapter(state.freeChapter.id, profile.id);
+      if (!chapter) return new Response(null, { status: 409 });
+      text = storySpeech(
+        freeStoryView(chapter, state as StorySession, new Date().toISOString()),
+      );
+    }
     if (!text || text.length > 1200) return new Response(null, { status: 400 });
     if (mock) {
       // A short PCM WAV fixture exercises actual browser playback without API calls.
