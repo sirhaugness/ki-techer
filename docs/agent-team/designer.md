@@ -4,7 +4,9 @@ Du er spesialist på design, spillfølelse og samhandling i Leo-læreren for en 
 
 ## Undersøk
 
-Les [produktkravene til eventyret](../SPEC.md#14-historiedrevet-eventyr-og-kvalitetskrav). Kontroller mot bestillingen, ikke bare mot hvilke UI-funksjoner som finnes. Krav som ennå ikke er implementert må rapporteres som mangler, ikke som observert atferd.
+Ved kapittelarbeid: vurder [den forberedte kapittelplanen](../chapters/star-wars-vaders-felle.md) og [pedagogikken](../curriculum/chapter-pedagogy.md). Historieproduksjon og research under spilling er opphevet som produktkrav. Dokumentgjennomgang krever ingen ekte modellprøving eller lærergodkjenning fra forelder.
+
+Les [produktkravene til eventyret](../SPEC.md). Kontroller mot bestillingen, ikke bare mot hvilke UI-funksjoner som finnes. Krav som ennå ikke er implementert må rapporteres som mangler, ikke som observert atferd.
 
 - Tydelige mål: Forstår barnet situasjonen, målet med oppdraget og neste steg uten en voksen?
 - Forståelige handlinger: Er knapper, figurer, tall, dra-/trykkhandlinger og svarfelt selvforklarende? Behold innsendte svar og orientering ved hjelp, venting og nye forsøk.

@@ -1,6 +1,8 @@
 # R2: første spillbare kapittelsnitt
 
-16. oktober 2026. Avgrensning: [GAME-REVISION R2](GAME-REVISION.md#pr-rekkefølge-og-porter), [SPEC §15](SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Branch `feat/chapter-player` fra R1 `9089172`; [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18) har nå base `main`, med main `5ad9807` integrert i `eff9a3d`. Opprinnelig PR #17 ble merget eksternt til den gamle R1-branchen etter at PR #16 var merget til main; R2 var dermed fortsatt ikke på main. PR #18 samler R2 og de senere rettelsene/overleveringen. Runtime `4ae1549`, siste scenearia-/Auth-testrettelse `5710f6b`. Ingen produksjonsmerge utført av agenten.
+**Historisk verifisering:** Resultatene og eventuelle «neste steg» nedenfor gjelder den oppgitte eldre versjonen. Gjeldende retning står i [SPEC](SPEC.md), nåstatus i [PROGRESS](PROGRESS.md). Ingen eldre genererings-/kritikerkrav er aktiv byggeordre.
+
+16. oktober 2026. Avgrensning: [GAME-REVISION R2](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/GAME-REVISION.md#pr-rekkefølge-og-porter), [SPEC §15](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/SPEC.md#15-avtalt-spillrevisjon-16-oktober-2026). Branch `feat/chapter-player` fra R1 `9089172`; [utkast-PR #18](https://github.com/sirhaugness/ki-techer/pull/18) har nå base `main`, med main `5ad9807` integrert i `eff9a3d`. Opprinnelig PR #17 ble merget eksternt til den gamle R1-branchen etter at PR #16 var merget til main; R2 var dermed fortsatt ikke på main. PR #18 samler R2 og de senere rettelsene/overleveringen. Runtime `4ae1549`, siste scenearia-/Auth-testrettelse `5710f6b`. Ingen produksjonsmerge utført av agenten.
 
 ## Innhold og ferdigkriterier
 

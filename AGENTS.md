@@ -1,26 +1,18 @@
 # Leo-læreren
 
 Leo-læreren skal hjelpe en niåring med å mestre matematikk på 4. trinn etter LK20.
-Læringsmotoren velger matematikk; KI-læreren gir historie og hjelp innenfor motorens rammer.
+Forberedte kapitler gir historien; KI-læreren underviser innenfor motorens kontrollerte rammer.
 Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å lære og krever lite arbeid fra forelder.
 
-## Gjeldende bestilling 20. oktober 2026 – fri kapittelhistorie
+## Gjeldende bestilling 20. oktober 2026 – forberedt kapittelbibliotek
 
-Denne bestillingen har forrang over eldre R3-/kritikerkrav nedenfor.
+[Kanonisk SPEC](docs/SPEC.md) er eneste produktbeskrivelse. Den nye uttrykkelige bestillingen erstatter fri kapittelgenerering og motstridende eldre R3–R7-planer. Første verden/kapittel er [Star Wars: Darth Vaders felle](docs/chapters/star-wars-vaders-felle.md). Følg [byggeplanen](docs/GAME-REVISION.md) og [gjeldende status](docs/PROGRESS.md).
 
-- Bygg fra merget R2; PR #20 er parkert. Ingen KI-kritiker eller retting i løkke.
-- Motoren velger 20–25 matteplasser ut fra faktisk nivå og repetisjon. KI skriver én strukturert kapittelrespons; Leo er helten, interessene og forrige sammendrag inngår.
-- Kode kontrollerer matematikk, plassens identitet, tekstgrenser og gjentakelser. Maks ett samlet rettingskall; deretter generatoroppdrag i samme setting. Modellfeil skal ikke blokkere kapitlet.
-- Absolutt kapittelfrist 90 sekunder og samlet genereringsramme 1 kr. Godkjente fragmenter beholdes. Første scene åpnes progressivt; neste kapittel forberedes én gang ved 70 prosent.
-- Samme utviklingsproblem uløst etter tre rettingsforsøk: stopp og spør Thor.
-- Tester bruker mocks og håndskrevne fixtures. Spør før enhver ekte KI-test; samlet testregnskap nullstilles ikke, maks 10 kr uten ny godkjenning.
-- Ikke commit KI-forsøk, logger, skjermbilder eller andre testbevis. Håndskrevne fixtures og testkode er tillatt. Skjermbilder vedlegges PR uten å legges i git.
-- Ingen SQL direkte via Supabase-connector. Append-only migrasjoner kjøres av GitHub Actions; SQL kan verifiseres mot lokal testdatabase.
-- Spør før produksjonsendring. Hold PR liten og lesbar; oppdater AGENTS, kanonisk SPEC og PROGRESS.
+Denne leveransen er dokumentasjon, pedagogikk og komplett plan med 20 hovedoppgaver. Ingen runtime-aktivering, betalte modelltester, migrasjoner eller produksjonsutrulling. Senere runtimearbeid må samordne [lærerutkastet og kodegrensene](docs/TUTOR-DRAFT.md); Markdown endrer ikke appen. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
 
 ## Leserekkefølge og ansvar
 
-- Ved videreføring av spillrevisjonen: start med «Start her» i [docs/PROGRESS.md](docs/PROGRESS.md), deretter [docs/GAME-REVISION.md](docs/GAME-REVISION.md) og SPEC §15. Kontroller levende branch-/PR-status og åpne porter før neste leveranse; ikke bygg ferdige leveranser på nytt fra en eldre main-kopi.
+- Ved videreføring av spillrevisjonen: start med «Start her» i [docs/PROGRESS.md](docs/PROGRESS.md), deretter [docs/GAME-REVISION.md](docs/GAME-REVISION.md) og kanonisk SPEC. Kontroller levende branch-/PR-status og åpne porter før neste leveranse; ikke bygg ferdige leveranser på nytt fra en eldre main-kopi.
 - Brukerens siste avtalte bestilling styrer oppdraget. [docs/SPEC.md](docs/SPEC.md) er kanonisk produktspesifikasjon; rotfilen SPEC.md peker dit.
 - Les relevant kode og [docs/PROGRESS.md](docs/PROGRESS.md) for dagens implementering og observerte resultater. [docs/DECISIONS.md](docs/DECISIONS.md) er datert beslutningshistorikk; eldre begrensninger skal ikke overstyre nyere krav.
 - Skill vedtatt krav, implementert kode og faktisk verifisert atferd. En dokumentasjons- eller promptendring betyr ikke at alle beskrevne funksjoner er bygget.
@@ -29,7 +21,7 @@ Denne bestillingen har forrang over eldre R3-/kritikerkrav nedenfor.
 
 ## Prinsipper
 
-1. Motoren bestemmer matten og mestringen; modellen skriver historie og gir veiledning innenfor kontrollerte rammer.
+1. Motoren kontrollerer matematikk og mestring; kapittelinnhold forberedes under utvikling, og KI-læreren gir veiledning under spilling.
 2. Fasit kommer aldri fra KI alene: generator eller uavhengig kodekontroll kreves. Matematisk korrekthet erstatter ikke kontroll av om teksten, scenen og oppgaven betyr det samme.
 3. Tilpasset veiledning gis ett håndterbart steg om gangen. Hintnivå, hjelperegistrering og selvstendig mestring håndheves i kode.
 4. Mestring krever både vurdering og data; bare motoren tildeler medaljongdeler.
@@ -41,7 +33,7 @@ Denne bestillingen har forrang over eldre R3-/kritikerkrav nedenfor.
 ## Eventyr og spillopplevelse
 
 - Hvert oppdrag er én situasjon: tidligere hendelse → matematisk utfordring → Leos handling → støtte ved feil → synlig konsekvens → videre historie. Tekst, bilde, tall og interaksjon skal beskrive samme handling.
-- Nye kapitler bygger på en overordnet historie og tidligere hendelser, valg, figurer, relasjoner, gjenstander, steder og uløste mål. Historikken skal påvirke fortsettelsen konkret.
+- Forberedte kapitler bruker faktisk lagret fremdrift. Historikk skiller planlagte hendelser fra fullførte hendelser; ingen ny historieproduksjon under spilling kreves.
 - Eksempler er illustrasjoner, ikke obligatoriske åpninger, figurer eller oppdragsrekkefølger. Ingen fast «laste energi og ta av»-åpning.
 - Variasjon vurderes i praktisk formål, hindring, matematisk modell og elevhandling. Nye tall, navn, bilder eller svarfelt alene er ikke tilstrekkelig.
 - Scenen gjør problemet forståelig før oppdraget, reagerer under arbeidet og viser støtte ved feil og konsekvens ved riktig svar. Feil straffes ikke. Redusert bevegelse skal bevare forståelig respons.
@@ -55,14 +47,14 @@ Denne bestillingen har forrang over eldre R3-/kritikerkrav nedenfor.
 - `components/leo/`, `components/parent/`, `components/ui/`: elevflate, foreldreflate og UI.
 - `lib/engine/`: ren motor uten I/O; ferdigheter, mestring, kandidater, hint, økt, medaljong og svar-/scenekontroll.
 - `lib/agent/`: lærerens agentløkke, verktøy, kontekst, guards og versjonerte prompter.
-- `lib/chapters/`: nytt additivt kapittelfundament; se SPEC §15 og docs/GAME-REVISION.md for faktisk implementeringsstatus.
+- `lib/chapters/`: eksisterende kapittelfundament; se kanonisk SPEC og docs/GAME-REVISION.md for faktisk implementeringsstatus.
 - `lib/learning/`: øktintegrasjon, lærerhjelp, kapitler og lagring. `lib/ai/`, `lib/db/`, `lib/auth/`, `lib/voice/`: serverintegrasjoner.
 - `supabase/migrations/`: append-only migrasjoner. `tests/`: Vitest og `tests/e2e/`: Playwright.
 - `docs/agent-team/`: Codex-roller og arbeidsflyt. `docs/`: spesifikasjon, beslutninger, fremdrift, personvern, deploy og testplaner.
 - `npm run dev`: utvikling. `npm run build` / `npm run start`: bygg / kjør bygg.
 - `npm run lint`, `typecheck`, `format:check`, `test`, `test:e2e`: statiske kontroller og tester.
 - `npm run simulate`: motorens simulering uten eksterne tjenester. `npm run check`: full lokal kvalitetspakke, også tilgjengelighet.
-- `npm run eval:agent`: separat ekte modellevaluering utenfor CI. Se SPEC for skriptets begrensede dekning.
+- `npm run eval:agent`: mocks som standard. Avgrenset ekte evaluering krever eksplisitt `--live --ledger`, avtalt mandat og varig regnskap. Dagens live-skript bruker én seedet oppgave og hintnivå 0; det beviser ikke ny flerturshjelp eller forståelsesprober.
 
 ## Konvensjoner og lærerens kontrakter
 
@@ -71,11 +63,11 @@ Motoren har ingen I/O. Harde regler håndheves i kode, ikke bare i prompter.
 Ingen hemmeligheter i klientkode, git, rapporter eller underagentkontekst. Bruk variablene fra `.env.example`.
 
 Vanlige kvalitetstester bruker OpenAI-/Supabase-mocks; full Auth-e2e kan bruke lokal Supabase med testnøkler. Migrasjonsworkflow mot dev/prod er separat.
-Vanlige tester og evalueringsskript bruker mocks som standard. Ekte KI-testing bruker billigste egnede modell (gpt-5-nano for generell agent-eval; gpt-5-mini når det er modellen som fortellingskontrollen skal verifisere), syntetiske data og en varig, samlet ramme på maksimalt 10 kroner for testarbeidet. Spør Thor FØR rammen overskrides; tidligere godkjenninger av30/50 kroner gjelder bare avsluttede runder. Ikke nullstill regnskap, bytt konto eller øk konfigurasjon for å omgå rammen. Ekte modellkvalitet kan ikke påstås bevist med mocks. PR forblir utkast til fortellingskontrollen og aktuelle åpne kvalitetsfunn er fullført og verifisert.
+Vanlige tester og evalueringsskript bruker mocks som standard. Ekte KI-testing bruker billigste egnede modell (gpt-5-nano for generell agent-eval; gpt-5-mini når det er modellen som fortellingskontrollen skal verifisere), syntetiske data og en varig, samlet ramme på maksimalt 10 kroner for testarbeidet. Spør Thor FØR rammen overskrides; tidligere godkjenninger av 30/50 kroner gjelder bare avsluttede runder. Ikke nullstill regnskap, bytt konto eller øk konfigurasjon for å omgå rammen. Ekte modellkvalitet kan ikke påstås bevist med mocks. Spør før ekte KI-testing; ingen slik test er del av dokumentasjonsleveransen. Ikke commit rå KI-forsøk, logger, skjermbilder eller andre testbevis; håndskrevne fixtures og testkode er tillatt. Skjermbilder kan vedlegges PR uten å legges i git. Dokumentasjons-PR vurderes mot dokumentasjonskravene; en ny runtime-PR beskriver sine konkrete åpne kvalitetsfunn separat.
 
 Lærerprompten må skille tur med verktøy fra hjelp uten verktøy. Ikke krev nye oppgaver i en hjelpetur.
-Tall-/hintinstruksjoner må passe aktuell guard: vanlig dialog før nivå 4 er tallfri; særskilt hjelp kan bare bruke tillatte oppgavetall uten å røpe fasit.
-Ikke svekk fasitvern for å få en prompt til å passere. Bevar eldre promptversjoner ved ny lærerprompt, oppdater aktive referanser og versjonsmerking sammen.
+Dagens runtime, frem til samordnet revisjon etter TUTOR-DRAFT: tall-/hintinstruksjoner må passe aktuell guard: vanlig dialog før nivå 4 er tallfri; særskilt hjelp kan bare bruke tillatte oppgavetall uten å røpe fasit.
+Undervisning med kontrollerte løsninger krever ny modus-/evidenskontrakt. Ikke svekk fasitvern bare for å få en prompt til å passere. Bevar eldre promptversjoner ved ny lærerprompt, oppdater aktive referanser og versjonsmerking sammen.
 
 `lib/auth/` og `lib/db/` er server-only. Bruk `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er valgfri.
 Innlogging og callback deler `authOrigin`: ekstern vert før innebygd `VERCEL_URL`; ikke prioriter Nexts interne localhost-adresse.

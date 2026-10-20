@@ -1,5 +1,7 @@
 # Verifisering av kapittelkjeden
 
+**Historisk verifisering:** Resultatene og eventuelle «neste steg» nedenfor gjelder den oppgitte eldre versjonen. Gjeldende retning står i [SPEC](SPEC.md), nåstatus i [PROGRESS](PROGRESS.md). Ingen eldre genererings-/kritikerkrav er aktiv byggeordre.
+
 13. oktober 2026. Ingen produksjonsendringer.
 
 Historien som kontrolleres: Leo velger en interesse → serveren planlegger seks oppdrag → generator/AST kontrollerer matematikken → hvert svar lagres atomisk med evidens og historiekonsekvens → Leo velger en rute → neste kapittel bruker hukommelsen og de samlede svarene. Ved interessebytte ligger tidligere oppgave og støtte på pause, mens læringen følger Leo.

@@ -1,5 +1,15 @@
 # Kostnader og testgrenser
 
+## Gjeldende retning 20. oktober 2026
+
+[SPEC §9](SPEC.md#9-kostnad-og-tilgang) styrer kostnadsvern. Historie/bilder utarbeides under utvikling og gjenbrukes. Den nye elevreisen trenger ingen forfatter, research eller fortellingskritiker per spilling. Levende lærer, forståelsesvurdering og tale beholder budsjettvakt, reservasjon, logging, rategrenser og cache. Ingen ny normalbrukspris eller lærerkvalitet er målt i dokumentasjonsleveransen.
+
+Siste registrerte historiske testregnskap i PROGRESS er 8,24392525 kr av 10 kr, ikke kontrollert på nytt mot tjenesten her. Ingen betalt test inngår nå. Ekte testing følger avtalt mandat og samme varige regnskap, uten nullstilling.
+
+## Historiske beregninger og tester – 15. oktober 2026
+
+Alt nedenfor beskriver datidens kode, priser, testforbruk og PR-status. Seksoppdragskapittel, obligatorisk modellkritiker og forbud mot delt innhold er ikke aktive produktkrav. Prisene er ikke kontrollert på nytt. Bevar tallene som historiske regneeksempler, ikke som nåværende garanti eller ny bestilling. En tidligere åpen/utkast-PR kan senere være merget; se PROGRESS for nåstatus.
+
 Kontrollert 15. oktober 2026. Beløpene er NOK. En kostnadsberegning er ikke en leverandørfaktura.
 
 ## Hva ai_calls i produksjon faktisk viser

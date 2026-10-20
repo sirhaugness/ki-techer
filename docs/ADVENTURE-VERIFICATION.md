@@ -1,5 +1,7 @@
 # Matteeventyr med læreren ved pulten
 
+**Historisk verifisering:** Resultatene og eventuelle «neste steg» nedenfor gjelder den oppgitte eldre versjonen. Gjeldende retning står i [SPEC](SPEC.md), nåstatus i [PROGRESS](PROGRESS.md). Ingen eldre genererings-/kritikerkrav er aktiv byggeordre.
+
 Dato: 2026-10-12. Produksjon er ikke endret.
 
 ## Leveransen

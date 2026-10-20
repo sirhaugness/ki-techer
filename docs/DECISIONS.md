@@ -2,7 +2,19 @@
 
 ## Les historikken riktig
 
-Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se revisjonsbeslutningen nederst. Historiske resultater dokumenterer bare den undersøkte versjonen.
+Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se gjeldende beslutning under. Historiske resultater dokumenterer bare den undersøkte versjonen.
+
+## 2026-10-20: forberedt bibliotek og lærer som underviser
+
+Ny uttrykkelig bestilling erstatter fri kapittelgenerering, generering under spilling, progressiv publisering, 70-prosentstart og tilhørende 90 sekunder/1 kr-krav som produktretning. [SPEC](SPEC.md) er eneste kanoniske beskrivelse; [kapittelplanen](chapters/star-wars-vaders-felle.md) har 20 hovedoppgaver i én Star Wars-verden. Ingen stor interessekatalog eller ny produksjonsworker kreves først.
+
+Dokumentleveransen K0 aktiverer ingen runtime. Lærerprompten må senere endres samlet med modus, kontekst, probehendelser, vurdering, guards og hjelperegistrering; et inaktivt utkast ligger i [TUTOR-DRAFT](TUTOR-DRAFT.md). Direkte forklaring og gjennomarbeidede eksempler tillates i undervisning uten at det blir selvstendig mestring. Veiledet historieprogresjon skilles fra ferdighetsopplåsing.
+
+K1 blir tre valgte oppgaver (SW01/SW06/SW19), deretter utvidelse til resten av samme kapittel. Ny elevflate kan erstatte de gamle etter kontrollert overgang med bevarte data. Eksisterende profil, motor, foreldre, tale, lagring og kostnadsvern gjenbrukes. Ingen nye krav til forelder om lærerpanel eller studie; Leo-prøving og enkel tilbakemelding er nok som brukerrolle, uten løfte om dokumentert læringseffekt.
+
+Produksjon/main ble kontrollert på d6e1874; #21 er merget, #20 fortsatt åpen/parkert. Ingen merge, migrasjon, betalt test eller produksjonsendring her. Daterte føringer nedenfor er historikk og kan ikke overstyre denne beslutningen.
+
+## Historiske beslutninger
 
 ## M0
 

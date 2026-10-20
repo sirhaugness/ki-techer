@@ -1,6 +1,8 @@
 # Backlog
 
-Her samles pirk og idéer til senere oppgaver.
+Her samles idéer; dette er ingen aktiv byggeordre. [SPEC](SPEC.md) og [GAME-REVISION](GAME-REVISION.md) styrer gjeldende arbeid.
+
+Punktene under er historiske observasjoner fra gamle flyter. Fri kapittelplanlegging og kritikergjenopptakelse er lagt bort fra ny elevreise. Lærerevaluering og sporbare responskilder er fortsatt relevante, men skal tilpasses det forberedte kapitlet; ikke bygg gamle produksjonspipelines for å lukke disse punktene.
 
 ## Fra agentteamets kildeundersøkelse (14. oktober 2026)
 

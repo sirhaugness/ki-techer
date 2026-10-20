@@ -4,6 +4,10 @@ Brukeren snakker med én hovedagent som eier oppgaven fra undersøkelse til ferd
 
 Disse Markdown-filene er gjenbrukbare rollebeskrivelser, ikke registrering av native agenttyper i Codex. Hovedagenten må lese aktuell rollefil ved behov og gi innholdet til en faktisk underagent. Kontroller tilgjengelige start-, meldings- og venteverktøy i den aktuelle chatten; verktøy som `spawn_agent` og `wait_agent` kan brukes der de finnes. Ikke etterlign flere agenter i ett svar. Hvis underagenter mangler, oppgi begrensningen og hvilke vurderinger hovedagenten selv gjorde. Ikke hev at teamet kjørte.
 
+## Gjeldende retning
+
+Følg [SPEC](../SPEC.md) og [byggeplanen](../GAME-REVISION.md) for forberedte kapitler. K0 er dokumentasjon, ikke runtime. Ikke viderefør gammel R3-produksjon eller krev ekspertpanel/manuell lærergodkjenning fra Thor. Undersøk skille mellom undervisning, veiledet øving og selvstendig prøve, og om forståelsesprober har faktisk vurderingsvei.
+
 ## Instruksjonsgrunnlag og oppdragstype
 
 Brukerens siste avtalte bestilling og [kanonisk SPEC](../SPEC.md) styrer produktmålene. Rollefiler utfyller [AGENTS.md](../../AGENTS.md). Historiske valg i DECISIONS og tidligere testresultater er evidens om en versjon, ikke permanente produktgrenser. Ved konflikt: undersøk konteksten, bevar kodehåndhevet sikkerhet og dokumenter beslutningen; ikke still rutinespørsmål om allerede avtalte valg.
