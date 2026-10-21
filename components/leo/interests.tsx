@@ -44,7 +44,7 @@ export function Interests({
   }
   return (
     <>
-      <Link href="/leo">← Tilbake til kartet</Link>
+      <Link href="/leo/oving">← Tilbake til kartet</Link>
       <h1 className="my-6 text-4xl font-bold">Mine interesser</h1>
       <p>
         Velg ett eventyr. Det følger deg til du selv bytter. Du beholder alt du

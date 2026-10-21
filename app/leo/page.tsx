@@ -1,16 +1,14 @@
 import { after } from 'next/server';
-import { reflectPending } from '@/lib/profile/repository';
-import { homeChapter, maintainLearner } from '@/lib/profile/home';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { UnlockForm } from '@/app/forelder/forms';
+import { PreparedScene } from '@/components/leo/prepared-scene';
 import { leoAccess } from '@/lib/learning/access';
 import { fixtureEnabled, fixture, resetFixture } from '@/lib/learning/fixture';
 import { latestSession } from '@/lib/learning/repository';
-import { publicView } from '@/lib/learning/session';
-import { progressForPart } from '@/lib/engine/medallion';
-import { LeoExperience } from '@/components/leo/experience';
-import { redirect } from 'next/navigation';
-import { UnlockForm } from '@/app/forelder/forms';
-import Link from 'next/link';
 import { resetChapterFixtures } from '@/lib/free-story/fixture';
+import { maintainLearner } from '@/lib/profile/home';
+import styles from './home.module.css';
 export const dynamic = 'force-dynamic';
 export default async function LeoPage({
   searchParams,
@@ -26,51 +24,58 @@ export default async function LeoPage({
       ['practice', 'quiet', 'story'].includes(query.fixture),
       ['quiet', 'story'].includes(query.fixture),
     );
-    if (query.fixture === 'story') fixture().storyDriven = true;
     redirect('/leo');
   }
   const f = mock ? fixture() : null;
   const profile = f?.profile ?? (await leoAccess()).profile;
   const state = f ? f.state : await latestSession(profile.id);
-  if (!mock)
-    after(async () => {
-      await maintainLearner(profile.id);
-      await reflectPending(profile.id, profile.householdId);
-    });
-  const story = await homeChapter(profile);
-  const parts =
-    state?.parts ??
-    ([1, 2, 3, 4] as const).map((id) => progressForPart(id, {}));
+  const progress = state?.preparedChapter;
+  const finished = progress?.index === 3;
+  if (!mock) after(() => maintainLearner(profile.id));
   return (
-    <>
-      <p className="mb-4">
-        <Link href="/leo/stjerneoppdrag">
-          Star Wars: Darth Vaders felle – prøv tre oppdrag →
-        </Link>
-      </p>
-      <p className="mb-4 text-sm">
-        <Link href="/leo/eventyr">
-          Utforsk et nytt kapittel med dine interesser →
-        </Link>
-      </p>
-      <LeoExperience
-        key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
-        profile={profile}
-        story={story}
-        initial={
-          state && !state.freeChapter && !state.preparedActive
-            ? publicView(state, !mock)
-            : null
-        }
-        parts={parts}
-        diagnosticComplete={state?.diagnosticComplete ?? false}
-      />
+    <div className={styles.home}>
+      <header className={styles.welcome}>
+        <p className={styles.brand}>LEO-LÆREREN</p>
+        <h1>Hei, {profile.firstName}!</h1>
+        <p>Romskipet venter. Klar for et matteeventyr?</p>
+      </header>
+      <article className={styles.chapter} aria-labelledby="chapter-title">
+        <div className={styles.cover}>
+          <PreparedScene index={0} solved={false} />
+        </div>
+        <div className={styles.content}>
+          <p className={styles.world}>STAR WARS</p>
+          <h2 id="chapter-title">Darth Vaders felle</h2>
+          <p>Hjelp Luke og R2-D2 forbi Vaders feller og tilbake til Falcon.</p>
+          {progress && (
+            <p className={styles.saved}>
+              {finished
+                ? 'Du har fullført de tre oppdragene.'
+                : `Arbeidet ditt er lagret. Du er på oppdrag ${progress.index + 1} av 3.`}
+            </p>
+          )}
+          <Link href="/leo/stjerneoppdrag" className={styles.play}>
+            {finished
+              ? 'Se Star Wars-eventyret'
+              : progress
+                ? 'Fortsett Star Wars-eventyret'
+                : 'Spill Star Wars'}{' '}
+            <span aria-hidden="true">→</span>
+          </Link>
+          <p className={styles.detail}>
+            Prøv tre oppdrag med brikker, figurer og en lærer som hjelper deg.
+          </p>
+          <p className={styles.note}>
+            Du kan ta pause underveis. Vi husker hvor du er.
+          </p>
+        </div>
+      </article>
       {!mock && (
-        <details className="mt-12">
-          <summary className="min-h-12 cursor-pointer">For forelder</summary>
+        <details className={styles.parent}>
+          <summary>For forelder</summary>
           <UnlockForm />
         </details>
       )}
-    </>
+    </div>
   );
 }

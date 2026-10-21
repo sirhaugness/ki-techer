@@ -9,7 +9,7 @@ test.beforeEach(() =>
 test('tablet diagnostics → interests → practice, hints, manipulatives, reload and finish', async ({
   page,
 }) => {
-  await page.goto('/leo?fixture=reset');
+  await page.goto('/leo/oving?fixture=reset');
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
   await page.getByRole('button', { name: 'Start Bli kjent' }).click();
   await page.getByRole('button', { name: '😊 Glad' }).click();
@@ -63,7 +63,7 @@ test('tablet diagnostics → interests → practice, hints, manipulatives, reloa
 test('seeded master challenge completes on tablet without hint or answer data', async ({
   page,
 }) => {
-  await page.goto('/leo?fixture=master');
+  await page.goto('/leo/oving?fixture=master');
   await page.getByRole('button', { name: 'Start mesterutfordring' }).click();
   await page.getByRole('button', { name: '😊 Glad' }).click();
   await expect(

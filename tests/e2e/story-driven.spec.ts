@@ -24,7 +24,7 @@ async function action(
   return (await response).json();
 }
 async function start(page: Page, label: string) {
-  await page.goto('/leo?fixture=story');
+  await page.goto('/leo/oving?fixture=story');
   await page.getByRole('link', { name: 'Mine interesser' }).click();
   await page
     .locator('.interest-presets')

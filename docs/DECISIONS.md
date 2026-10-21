@@ -4,6 +4,10 @@
 
 Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se gjeldende beslutning under. Historiske resultater dokumenterer bare den undersøkte versjonen.
 
+## 2026-10-21: én tydelig elevinngang til Star Wars
+
+Etter merge av K1 viste produksjon fortsatt en eldre versjon, og den implementerte forsiden beholdt flere motstridende konsepter. Elevforsiden viser nå kun det forberedte Star Wars-kapitlet som hovedvalg. Lagret K1 endrer knappen til fortsettelse. Tidligere øving flyttes til ulenket `/leo/oving`; elevdata og eksisterende foreldre-/lagringskontroller beholdes. Start i Star Wars-spilleren sender et eksplisitt øktbytte som avslutter gammel åpen økt med CAS før ny prøve; foreldretid og bevis beholdes. Ingen ny elevprofil, interesse eller kapittelproduksjon skal kreves for å prøve.
+
 ## 2026-10-21: K1 bruker eksisterende økter og kontrollerte lærerbeslutninger
 
 Bygg SW01/SW06/SW19 som én versjonert prøve med scenehopp. Eksisterende snapshot/RPC gir fremdrift, revisjon, innsyn og sletting uten migrasjon. Aktiv prøvespilling skilles fra bevart fremdrift. Fri dialog lagres ikke i nested fremdrift av hensyn til eksisterende oppbevaringsregler.

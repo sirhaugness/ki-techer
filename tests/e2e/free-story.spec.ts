@@ -53,7 +53,7 @@ test('whole stored chapter: wrong/help/right, pause/reload, one next identity at
     }
   });
   await page.goto('/leo?fixture=practice');
-  await page.getByRole('link', { name: /Utforsk et nytt kapittel/ }).click();
+  await page.goto('/leo/eventyr');
   await page
     .getByRole('button', { name: 'Verdensrommet', exact: true })
     .click();
@@ -84,7 +84,7 @@ test('whole stored chapter: wrong/help/right, pause/reload, one next identity at
     .getByRole('button', { name: 'Pause og hjem', exact: true })
     .click();
   await expect(page).toHaveURL(/\/leo$/);
-  await page.getByRole('link', { name: /Utforsk et nytt kapittel/ }).click();
+  await page.goto('/leo/eventyr');
   await page
     .getByRole('button', { name: 'Start eller fortsett eventyret' })
     .click();

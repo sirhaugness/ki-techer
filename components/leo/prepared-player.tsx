@@ -180,7 +180,9 @@ export function PreparedPlayer({
               </div>
               <button
                 disabled={busy}
-                onClick={() => void command({ command: 'start' })}
+                onClick={() =>
+                  void command({ command: 'start', switchFromPrevious: true })
+                }
               >
                 {view.sessionId ? 'Fortsett eventyret' : 'Start eventyret'} →
               </button>

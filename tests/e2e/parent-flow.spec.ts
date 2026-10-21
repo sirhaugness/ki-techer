@@ -61,7 +61,8 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
-  // R2 also runs with real local Auth/RLS in CI, never the dev shared database.
+  await page.goto('/leo/oving');
+  // Archived R2 still runs with real local Auth/RLS in CI.
   await page.getByRole('link', { name: 'Prøv den nye spillflaten' }).click();
   await expect(page.getByRole('heading', { name: 'Tenn leia' })).toBeVisible({
     timeout: 20000,
@@ -87,6 +88,7 @@ test('magic link → profile → persistent Leo lock → PIN unlock', async ({
     'solved',
   );
   await page.getByRole('link', { name: 'Pause og hjem' }).click();
+  await page.goto('/leo/oving');
   await page.getByRole('button', { name: 'Start Bli kjent' }).click();
   await page.getByRole('button', { name: '😊 Glad' }).click();
   for (let i = 0; i < 10; i++) {
