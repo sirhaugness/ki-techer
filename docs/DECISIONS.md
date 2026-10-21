@@ -4,6 +4,12 @@
 
 Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se gjeldende beslutning under. Historiske resultater dokumenterer bare den undersøkte versjonen.
 
+## 2026-10-21: K1 bruker eksisterende økter og kontrollerte lærerbeslutninger
+
+Bygg SW01/SW06/SW19 som én versjonert prøve med scenehopp. Eksisterende snapshot/RPC gir fremdrift, revisjon, innsyn og sletting uten migrasjon. Aktiv prøvespilling skilles fra bevart fremdrift. Fri dialog lagres ikke i nested fremdrift av hensyn til eksisterende oppbevaringsregler.
+
+KI tolker korte probeord og velger kontrollerte undervisningsgrep gjennom separat prepared-tutor.v1. Matematikk, forklaringer, fremdrift og hjelpet fullføring bestemmes i kode. Begge roller kan dokumenteres over to turer med en begrenset strukturert evidenstilstand. K1 gir ingen global mestring/FSRS/medaljong fra de tre forfatteroppgavene; denne motorbroen er neste avgrensning i K2. [K1-verifisering](K1-VERIFICATION.md) angir hva som er prøvd og hva som gjenstår.
+
 ## 2026-10-20: forberedt bibliotek og lærer som underviser
 
 Ny uttrykkelig bestilling erstatter fri kapittelgenerering, generering under spilling, progressiv publisering, 70-prosentstart og tilhørende 90 sekunder/1 kr-krav som produktretning. [SPEC](SPEC.md) er eneste kanoniske beskrivelse; [kapittelplanen](chapters/star-wars-vaders-felle.md) har 20 hovedoppgaver i én Star Wars-verden. Ingen stor interessekatalog eller ny produksjonsworker kreves først.

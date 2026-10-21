@@ -152,6 +152,9 @@ try {
     'leo-free-chapter',
     '/leo/eventyr?chapter=' + prepared.view.chapterId,
   );
+  await fetch(origin + '/leo?fixture=quiet');
+  await post({ command: 'start' }, '/api/prepared');
+  await audit('leo-prepared-pilot', '/leo/stjerneoppdrag');
   await audit(
     'parent',
     '/forelder/00000000-0000-4000-8000-000000000099?fixture=reset',

@@ -10,7 +10,7 @@ Leo går i 4. klasse. Han skal møte engasjerende matematikk, forstå hva han gj
 
 Første verden er Star Wars; første kapittel er **Star Wars: Darth Vaders felle**, med fire deler og fem hovedoppgaver i hver. Den komplette [kapittelplanen](chapters/star-wars-vaders-felle.md) definerer historie, kontrollerte tall, støtte og ressurser. Dette er et utvalg læringsmål, ikke hele årsprogrammet. Vi bygger ikke en stor katalog før dette kapitlet fungerer.
 
-Denne dokumentasjonsleveransen gir retning, pedagogisk opplegg, 20 ferdig beskrevne oppgaver og et inaktivt lærerutkast. Den bygger ikke hele spillet og omfatter ingen betalte modelltester, databasemigrasjoner eller produksjonsutrulling.
+K0 leverte retning, pedagogisk opplegg, 20 ferdig beskrevne oppgaver og et inaktivt lærerutkast. K1 implementerer tre oppgaver som en avgrenset prøve; [verifisering og begrensninger](K1-VERIFICATION.md) er ført separat. Hele spillet og de resterende 17 oppgavene er ikke bygget. Ingen betalte modelltester eller produksjonsutrulling er bestilt.
 
 ## 2. Innhold og elevreise
 
@@ -70,7 +70,7 @@ Fare og kamp kan være dramatisk uten grafiske skildringer. Matematikk og scenen
 
 Læreren skal kjenne faktisk oppgave, synlige mengder, matematisk modell, synlig uttrykk, elevhandlinger, tidligere hjelp og kontrollert svarvurdering. Kontekst bygges på serveren, aldri fra elevens påstand om godkjenning. Hold framtidige scener og skjult fasit utenfor vanlig elevprojeksjon. Kontrollert løsningshjelp kan bare slippes gjennom i tillatt modus.
 
-Det [inaktive lærerutkastet og kodekartet](TUTOR-DRAFT.md) definerer neste kontrakt, konteksteksempel og nødvendige endringer. Ikke last det som systemprompt før kontekst, skjema, hendelser, vurdering, hjelperegistrering og guards er bygget og kontrollert samlet. `tutor.v2.md` er fortsatt aktiv. Ingen ny modelltilgang eller researchfunksjon er innført her.
+Det [inaktive lærerutkastet og kodekartet](TUTOR-DRAFT.md) definerer neste kontrakt, konteksteksempel og nødvendige endringer. Ikke last det som systemprompt før kontekst, skjema, hendelser, vurdering, hjelperegistrering og guards er bygget og kontrollert samlet. `tutor.v2.md` gjelder fortsatt eldre øving. K1 har en separat, avgrenset `prepared-tutor.v1` med strukturert valg av kontrollerte forklaringer og probevurdering; [implementering og begrensninger](K1-VERIFICATION.md) er dokumentert separat. Det generelle lærerutkastet er ikke lastet uendret som runtime.
 
 ## 8. Gjenbruk og tekniske rammer
 

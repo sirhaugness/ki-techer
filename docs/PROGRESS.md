@@ -1,6 +1,22 @@
 # Fremdrift
 
-## Start her – forberedt Star Wars-kapittel, 20. oktober 2026
+## Start her – K1, 21. oktober 2026
+
+K0 er merget i [PR #22](https://github.com/sirhaugness/ki-techer/pull/22). K1 bygger fra `main` d415dbb på `feat/prepared-star-wars-pilot` og implementerer [tre valgte oppgaver](chapters/star-wars-vaders-felle.md) på `/leo/stjerneoppdrag`. Les [K1-VERIFICATION](K1-VERIFICATION.md) for kodegrenser, responskilder og faktisk verifisering. [SPEC](SPEC.md) er kanonisk; [byggeplanen](GAME-REVISION.md) avgrenser K2.
+
+Implementert: illustrerte 2D-scener, presise brikker/figurer/rollekort, trinnvis hjelp, enklere eksempel, kontrollert løsning, separat forståelsesprobe, lagret arbeid og gjenopptak. Ny prøvetilstand følger eksisterende økter, foreldretilgang, budsjett og tale. Det kreves ingen migrasjon. Ingen generering eller neste kapittel startes under prøven.
+
+Lokalt kontrollert: 640 Vitest-tester i 47 filer, deriblant virkelig SQL-kontrakt i PGlite, 27 nettlesertester / 2 lokale Auth-tester utelatt, lint/typecheck/formatering, motorsimulering og diff. Funn rettet om første startvisning, riktig tall/feil fordeling, avgrenset rolleforståelse over to samtaleturer og revisjon etter pause. Låsefilens eksisterende plassering av chokidar/readdirp er reparert for installasjon; package.json er uendret.
+
+K1 logger evidens, men oppdaterer ikke global ferdighetsmestring, repetisjonskort eller medaljong fra disse tre forfatteroppgavene. Dette er en uttrykkelig motorgrense, ikke dokumentert full adaptiv kapittelstøtte. KI-responser er forhåndskontrollerte formuleringer valgt etter kontekst; fri modellbasert formulering er ikke bygget. Modelltolkning er testet med mocks, ikke betalte kall.
+
+Pedagogy/design_review leverte faktiske kode-/kontraktundersøkelser. Reviewer fant to-tursproblemet før kontokvoten avbrøt videre gjennomgang; rettelsen er testet, men full uavhengig runtime-sluttkontroll påstås ikke. Hovedagenten har gjennomført resten av kontrollen.
+
+Produksjon ble lest som d415dbb, READY, etter ekstern merge av #22. Ingen produksjonsendring, hemmelighetsendring, betalt KI-test eller hosted migrasjon utføres her. Historisk KI-testregnskap er uendret 8,24392525 kr av 10. Produksjonsbygg og promptens deployment-filspor er kontrollert. Lighthouse gir 100/100 på alle 12 visninger, inkludert prøven; 146 lokale Markdown-lenker/ankere består. Hosted Preview-status registreres når observert; innlogget hosted spill/ekte modell/fysisk iPad er ikke dokumentert av lokale tester.
+
+**Hva Thor må gjøre:** Ingen oppsett eller lærerpanel. Når Preview er klart, kan prøven testes med Leo. Videre arbeid etter K1 er de resterende oppgavene og den begrensede motorbroen i K2, etter at faktiske feil i prøven er rettet.
+
+## K0 – dokumentasjon, historisk leveranse 20. oktober 2026
 
 Ny uttrykkelig produktbeslutning erstatter fri kapittelhistorie. Les [kanonisk SPEC](SPEC.md), [hele kapittelplanen](chapters/star-wars-vaders-felle.md), [læreplan og læreroppsett](curriculum/chapter-pedagogy.md), [inaktivt lærerutkast/kodegrenser](TUTOR-DRAFT.md) og [kort byggeplan](GAME-REVISION.md). Neste implementeringsleveranse er **K1: SW01, SW06 og SW19**; ingen fortsettelse av gammel R3-bestilling.
 

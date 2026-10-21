@@ -14,6 +14,8 @@ import { loadChapter } from '@/lib/free-story/store';
 import { chapterFixtures } from '@/lib/free-story/fixture';
 import { freeStoryView } from '@/lib/free-story/play';
 import { storySpeech } from '@/lib/free-story/speech';
+import { preparedView } from '@/lib/prepared/play';
+import { preparedSpeech } from '@/lib/prepared/speech';
 import type { StorySession } from '@/lib/free-story/types';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -78,7 +80,9 @@ export async function POST(request: Request) {
           ]
             .filter(Boolean)
             .join(' ');
-    if (state?.freeChapter) {
+    if (state?.preparedActive) {
+      text = preparedSpeech(preparedView(state));
+    } else if (state?.freeChapter) {
       const chapter = mock
         ? chapterFixtures().get(state.freeChapter.id)
         : await loadChapter(state.freeChapter.id, profile.id);
