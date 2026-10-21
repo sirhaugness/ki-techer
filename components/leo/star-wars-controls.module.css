@@ -1,0 +1,275 @@
+.controls {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  color: #193749;
+  font-size: 20px;
+  line-height: 1.45;
+}
+.controls button,
+.controls select,
+.controls input {
+  min-height: 48px;
+  min-width: 48px;
+  border: 2px solid #52717c;
+  border-radius: 12px;
+  background: #fffdf7;
+  color: #193749;
+  font: inherit;
+}
+.controls button {
+  cursor: pointer;
+  padding: 10px 14px;
+}
+.controls button:disabled,
+.controls select:disabled,
+.controls input:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.controls button:focus-visible,
+.controls select:focus-visible,
+.controls input:focus-visible {
+  outline: 3px solid #92521a;
+  outline-offset: 4px;
+}
+.controls button.selected {
+  border-color: #14675f;
+  background: #d8eee7;
+  box-shadow: inset 0 0 0 1px #14675f;
+  font-weight: 750;
+}
+.bank {
+  padding: 14px;
+  border: 1px solid #adbec5;
+  border-radius: 16px;
+  background: #edf2f2;
+}
+.bank p {
+  margin: 0 0 10px;
+}
+.bankCells,
+.shieldCells {
+  display: grid;
+  grid-template-columns: repeat(6, 16px);
+  gap: 6px;
+  align-content: start;
+}
+.bankCells {
+  grid-template-columns: repeat(12, 16px);
+  min-height: 38px;
+}
+.cell {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid #8d5b15;
+  background: #f1bf60;
+}
+.shields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.shield {
+  padding: 14px 10px;
+  border: 2px solid #557c89;
+  border-radius: 12px 12px 28px 28px;
+  background: #f2f8f7;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  align-content: start;
+}
+.shield h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.shieldCells {
+  min-height: 38px;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+}
+.stepper button {
+  width: 48px;
+  padding: 6px;
+  font-size: 26px;
+  line-height: 1;
+}
+.stepper output {
+  min-width: 24px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 750;
+}
+.routeMap,
+.programMap,
+.floor {
+  margin: 0;
+  min-width: 0;
+}
+.routeMap svg,
+.programMap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.routeMap text,
+.programMap text {
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 700;
+}
+.programMap svg {
+  max-width: 480px;
+  margin-inline: auto;
+}
+.programMap text {
+  fill: #193749;
+  font-size: 17px;
+}
+.routeMap figcaption,
+.programMap figcaption,
+.floor figcaption {
+  margin-top: 8px;
+  font-size: 18px;
+}
+.loop,
+.cornerPicker {
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 2px solid #52717c;
+  border-radius: 14px;
+}
+.loop {
+  border-left: 7px solid #af701d;
+  background: #fbf4e3;
+}
+.loop legend,
+.cornerPicker legend {
+  padding: 0 5px;
+  font-weight: 750;
+}
+.commands {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.commands label,
+.numbers label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.commands select {
+  width: 100%;
+  padding: 8px 5px;
+  font-size: 18px;
+}
+.plates {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.plates > button {
+  padding: 10px 4px;
+  min-width: 0;
+  overflow: visible;
+}
+.plateLabel {
+  display: block;
+  font-weight: 750;
+  font-size: 18px;
+}
+.plateDrawing,
+.rotatedPlate {
+  display: grid;
+  align-items: center;
+  min-height: 110px;
+}
+.plateDrawing svg,
+.rotatedPlate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.rotatedPlate svg {
+  transform: rotate(35deg) scale(0.85);
+}
+.platePreview {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto 14px;
+}
+.platePreview > .rotatedPlate {
+  aspect-ratio: 1;
+}
+.cornerButtons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cornerButtons button {
+  flex: 1 0 105px;
+}
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 14px;
+}
+.numbers input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 26px;
+}
+.options {
+  display: grid;
+  gap: 10px;
+}
+.options button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.routeValues {
+  white-space: nowrap;
+  font-weight: 750;
+}
+.floorGrid {
+  display: grid;
+  width: min(100%, 320px);
+  border: 2px solid #345967;
+  background: #d1dfe0;
+}
+.floorGrid span {
+  aspect-ratio: 1;
+  border: 1px solid #345967;
+  background: #ebf2ec;
+}
+@media (max-width: 420px) {
+  .bankCells {
+    grid-template-columns: repeat(8, 16px);
+  }
+  .shield {
+    padding-inline: 5px;
+  }
+  .shieldCells {
+    grid-template-columns: repeat(4, 16px);
+  }
+  .commands {
+    grid-template-columns: 1fr;
+  }
+  .options button {
+    flex-wrap: wrap;
+  }
+}

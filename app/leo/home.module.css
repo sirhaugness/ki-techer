@@ -30,6 +30,12 @@
 }
 .cover {
   background: #071023;
+  position: relative;
+  height: clamp(150px, 24vw, 220px);
+}
+.cover img {
+  object-fit: cover;
+  object-position: center 40%;
 }
 .cover > div {
   border: 0;

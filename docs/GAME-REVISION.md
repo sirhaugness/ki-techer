@@ -1,41 +1,25 @@
-# Byggeplan for det forberedte kapitlet
+# Byggeplan for Star Wars-eventyret
 
-Gjeldende 20. oktober 2026. [SPEC](SPEC.md) er kanonisk produktretning; [kapittelplanen](chapters/star-wars-vaders-felle.md) er innholdsbestillingen. Tidligere R3–R7-plan er erstattet; den finnes i [historisk versjon](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/GAME-REVISION.md). R1/R2 og PR #21 er kilde til gjenbruk, ingen bestilling om å bygge fri generering videre.
+Gjeldende 21. oktober 2026. [SPEC](SPEC.md) er kanonisk. [Revidert manus v2](chapters/star-wars-v2.md) erstatter de berørte v1-oppgavene etter Thors tilbakemeldinger. Eldre K0/K1 og R-planer er historikk i git og [PROGRESS](PROGRESS.md).
 
-## Nå: dokumentasjonsleveranse K0
+## K2: den reviderte historien og flaten
 
-Ferdig innhold: kanonisk retning, 20 komplette hovedoppgaver i fire deler, Udir-kobling, støtte-/overføringsopplegg, liten ressursliste og inaktivt lærerutkast med kodegrenser. Ingen ny runtime, bilder, migrasjoner eller ekte modelltest. Faktiske kontroller registreres i [PROGRESS](PROGRESS.md).
+Implementert i denne leveransen; observerte kontroller og åpne grenser føres i [K2-VERIFICATION](K2-VERIFICATION.md).
 
-## K1: en spillbar prøve med tre oppgaver
+- Hele SW01–20 i rekkefølge, med tydelige overganger fra asteroidebeltet til Star Destroyeren, Leias celle, Falcon i hangaren og hyperrommet. Nitten matematikk-/modelloppgaver og ett frivillig ja/nei-valg til slutt.
+- Matematikk som driver handlingen: energiceller, laserskudd, rutevalg på faktisk kart, nøkler, gulvplater, ledningslogikk, gangetabell, signalstopp og felles kraft mot Vader. Volumoppgavene fra v1 er erstattet.
+- Realistiske forberedte bilder, én historietekst med spørsmålet i fet skrift til slutt, magisk Kraften-dialog nær oppgaven og lyssabel over svarflaten. Automatisk neste etter åtte sekunder kan stoppes med «Bli her litt». Pause, tastatur og redusert bevegelse virker gjennom hele løpet.
+- Kraften kan formulere svar på Leos spørsmål med eksisterende KI-leverandør, moderering og budsjettvern. Forfatterhint, eksempel og løsning er også tilgjengelige. Koden kontrollerer matematikk, hjelp og fremdrift; KI kan ikke tildele mestring eller flytte oppgaven.
+- Eksisterende økter/RPC lagrer fremdrift uten migrasjon. Arbeidet lagres underveis og før eksplisitte handlinger. Tidligere pilot-/øvingsdata bevares; gamle flater er ulenket fra forsiden. Ingen produksjonsendring eller betalt modelltest inngår.
 
-Implementert i egen runtimeleveranse; [K1-VERIFICATION](K1-VERIFICATION.md) viser hva som faktisk er kontrollert og gjenstående hosted/modellevaluering. Punktene under er akseptkriteriene, ikke bevis på at alle tjenester er prøvd.
+Ferdigkriterier: spill gjennom feil → hjelp → riktig → lyssabel → automatisk neste → pause/reload → fortsett → valgt slutt; prøv kart/figurer og smal skjerm; kontroller matematikk, autorisasjon, tidsvern, revisjon, tapt svar/retry, innsyn/eksport/sletting og tale. Skill lokale syntetiske tester fra ekte KI og innlogget Preview.
 
-Bruk **SW01 → SW06 → SW19**, med uttrykkelig merkede scenehopp mellom utdrag fra kapitlet. Tre valgte oppgaver demonstrerer divisjon, geometri og forståelsessamtale; de skal ikke fremstilles som hele fortellingen eller årsdekning. Ingen stor verdenvelger eller katalog kreves: én kapittelinngang er nok.
+## Neste: K3 – forbedre læreren og læringsstøtten
 
-1. **Minimal innholdskontrakt:** Én håndskrevet, versjonert pakke i repoet med akkurat prøvens oppgaver, støtte og ressurser. Gjenbruk `lib/chapters/` der det passer. Nåværende generatorreferanse kan ikke uten videre representere alle eksakte forfatteroppgavene: legg til en streng datatype eller frossen referanse, med egen uavhengig fasit-/modellkontroll. Ikke bygg et innholdsstudio eller en produksjonsworker.
-2. **Samme faglige data i tekst og scene:** Kontrollerte mengder og plater fra samme oppgavegrunnlag, enkel illustrert bakgrunn og 2D-bevegelse. Vis feil med symbol/tekst og konkret hjelp, og riktig med meningsfull konsekvens. Behold arbeid, fokus og tilgjengelige svaralternativer.
-3. **Modus og lærer:** Implementer undervisning, veiledet øving og selvstendig prøve som serverstyrt tilstand. Følg [TUTOR-DRAFT](TUTOR-DRAFT.md): samordne prompt, lokale hjelpeinstrukser, kontekst, guards, kontrollert løsning og probe-/vurderingshendelser. Aktiver ikke utkastet først og håp at øvrig kode passer. Begrens verktøy til det som trengs.
-4. **Evidens og gjenopptak:** Riktig tall, riktig modell og forståelsesevidens lagres separat. Hjelp markeres før visning. Undervisning blir aldri selvstendig mestring. Lagre oppgave/variant, pakkeversjon, probe, støtte, handlinger og konsekvens med samme autoritative revisjon/idempotens som resten av appen. Prøven må kunne fortsettes etter pause/reload, også midt i forståelsessamtalen.
-5. **Bevar eksisterende grenser:** Innlogging, Leo-lås, foreldregrenser, budsjett/tale og innsyn/eksport/sletting gjelder også nye data. Vurder eksisterende lagring før eventuell separat migrasjonsleveranse; ingen databasemigrasjon hører til K0. Veiledet historieprogresjon må ikke kreve falsk opplåsing av medaljongdeler.
+Bruk konkret tilbakemelding fra gjennomspillingen til å rette uklare oppgaver, språk og tempo. En avtalt ekte modellprøve skal undersøke om Kraften svarer relevant og forståelig over flere turer; dagens mocks beviser ikke det. Betalt testing krever særskilt mandat og eksisterende samlet kostnadsregnskap.
 
-Ferdigkriterier for K1:
+Deretter: flere tilpassede støttevarianter og utvalgte forståelsesspørsmål som kan vurderes med handling, korte ord eller tale. Bygg en avgrenset bro til ferdighetsmotorens selvstendige evidens/repetisjon. Ikke gi medaljong eller mestring bare fordi eventyret er fullført. Ingen stor katalog eller nytt innholdsstudio kreves.
 
-- SW01: ujevn fordeling → støtte → fire grupper på seks → fire like skjold. Den viste undervisningen registreres som hjelp.
-- SW06: feil parallellogram → rettvinkelmal/konkret forklaring → rektangel med fire rette vinkler → luke åpnes.
-- SW19: riktig tall uten rolleforklaring gir ikke full forståelsesmerking. Korte ord, markering og tilrettelagte valg har en vurderingsvei. Etter høyst én oppfølging tilbys direkte forklaring og hjulpet fullføring.
-- Samme oppgave/samtale gjenopptas; duplikat/sent svar flytter ikke et annet forsøk eller gjentar konsekvens. Ingen ny historie-/bildeproduksjon ved start eller 70 prosent i prøveflyten.
-- Målrettede motor-/API-/UI-tester og en hel nettleserkjede kontrollerer faktisk oppførsel med syntetiske data. Responskilder oppgis. Ekte lærerspråk må senere prøves innen særskilt avtalt mandat; mocks beviser ikke modellkvalitet. Ingen formell studie eller lærergodkjenning fra Thor kreves.
+## Senere: flere eventyr
 
-## Deretter: K2 og overgang
-
-Når prøvens konkrete feil er rettet, fyll samme pakke med de resterende 17 planlagte hovedoppgavene og ressursene. Bevar lagring over flere økter, bruk støttevarianter etter faktisk behov og kontroller hele fortellingen. Større katalog, ny sagaarkitektur og kontinuerlig innholdsproduksjon er ikke forutsetninger.
-
-Før senere erstatning av dagens elevflate: kontroller gammel fremdrift/profil, eksport/sletting, tale, tids-/kostnadsvern og tilgjengelighet på den nye. Behold nødvendige leseløp for gamle data i overgangsperioden; fjern parallelle elevinnganger og genereringskode når erstatningen er kontrollert. Nytt innhold kan deles; elevens fremdrift og data er fortsatt private. Produksjonsutrulling er en separat autorisert handling.
-
-## Gjenbruksbeslutning
-
-| Behold                                                                                   | Tilpass                                                                                                          | Legg bort fra ny elevreise                                                                                                                              |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Elevprofil, motor, mestring/repetisjon, auth/Leo-lås, foreldre, tale/cache, budsjettvern | Versjonert kapittelpakke, presise matteobjekter, svarflate, handlingsevidens, lærer-/probekontekst og gjenopptak | Fritekst som bestiller nytt eventyr, fri kapittelgenerator, progressiv publisering/polling, 70-prosentstart, research-/kritikerworker for spilleinnhold |
-
-At en funksjon legges bort som produktretning betyr ikke at den er slettet fra runtime i dokumentasjonsleveransen. [Kodekartet](TUTOR-DRAFT.md) angir berørte grenser. Åpne PR #20 skal ikke merges for å realisere denne retningen.
+Bygg neste forberedte kapittel når historien, hjelpen og bruken fungerer godt nok. Bevar elevdata og gjør versjonsovergang eksplisitt. Fri interessegenerering, produksjonsworker og 70-prosentstart er fortsatt lagt bort fra den nye elevreisen. Merge til produksjon er en separat autorisert handling.

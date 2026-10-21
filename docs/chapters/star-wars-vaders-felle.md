@@ -1,6 +1,6 @@
 # Star Wars: Darth Vaders felle
 
-**Komplett kapittelplan v1 – 20. oktober 2026. Ikke implementert som spill.** Én verden, ett kapittel, fire deler med fem hovedoppgaver. Leo er en ung jedi som trener med Luke Skywalker. Leia, Darth Vader, Han Solo, Chewbacca og R2-D2 er de øvrige navngitte historiefigurene. Læreren finnes i grensesnittet, uten å delta som historiefigur.
+**Historisk kapittelplan v1 – 20. oktober 2026. Erstattet av [revidert manus v2](star-wars-v2.md) etter Thors tilbakemeldinger 21. oktober.** Én verden, ett kapittel, fire deler med fem hovedoppgaver. Leo er en ung jedi som trener med Luke Skywalker. Leia, Darth Vader, Han Solo, Chewbacca og R2-D2 er de øvrige navngitte historiefigurene. Læreren finnes i grensesnittet, uten å delta som historiefigur.
 
 [Produktkrav](../SPEC.md), [læreplankoblinger og læreroppsett](../curriculum/chapter-pedagogy.md), [runtime-utkast](../TUTOR-DRAFT.md) og [byggeplan](../GAME-REVISION.md) utfyller planen. Læreplankodene under er lokale referanser forklart i pedagogikkdokumentet, kontrollert mot Udir 20. oktober. Kapitlet dekker utvalgte mål, ikke hele 4. trinn.
 

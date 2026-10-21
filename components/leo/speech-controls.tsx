@@ -18,7 +18,7 @@ export function SpeechControls({
   view: Pick<LearningView, 'id' | 'revision' | 'speech' | 'ended' | 'task'> &
     Partial<LearningView>;
   initialAuto?: boolean;
-  source?: 'home' | 'all';
+  source?: 'home' | 'all' | 'star-wars';
   contentKey?: string;
 }) {
   const [auto, setAuto] = useState(initialAuto),

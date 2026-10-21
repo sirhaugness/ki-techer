@@ -1,6 +1,22 @@
 # Fremdrift
 
-## Start her – tydelig Star Wars-forside, 21. oktober 2026
+## Start her – revidert fullhistorie og Kraften, 21. oktober 2026
+
+Ny bestilling etter faktisk utprøving: innarbeid Thors historieføringer og tidligere grensesnittkommentarer i løsningen. Arbeidet ligger på `feat/star-wars-force-adventure`, fra oppdatert `origin/main` **5efbd06** (ekstern merge av #24). Ingen produksjonsendring utføres her.
+
+Levert kode: hele [manus v2](chapters/star-wars-v2.md), 19 matematikk-/modelloppgaver og et ja/nei-avslutningsvalg; faktisk forgrenet rutekart; tydelig Star Destroyer/celle/hangar/Falcon-kontinuitet; flere gangestykker og konkret logikk fremfor volum. Vaders58 mot Leos16 og Lukes45 er innarbeidet. Fire realistiske bilder er laget på forhånd. Historie og oppgave samles, Kraften er et lysende felt og samtalepartner, og riktig svar gir lyssabel over svarflaten med automatisk neste etter 8 sekunder. «Bli her litt», pause og redusert bevegelse beholdes.
+
+`force-tutor.v1` kan formulere samtalesvar med eksisterende KI-oppsett. Moderering, servereid matematikk og kontroll av skrevne ligninger gjelder før visning; forfatterhint brukes som merket reserve. Læreren kan ikke flytte oppgaven eller godkjenne matematikk/mestring. Hjelp logges før svar, og en varig CAS-claim hindrer dobbelt kjøp av samme spørsmål ved retry. Fri dialog/utdata ligger i eksisterende oppbevaringsstyrte meldinger. Ingen nye nøkler eller migrasjoner. Gamle data og treoppdragsprøven bevares på ulenket `/leo/utdrag`. Forsiden peker kun på det nye eventyret.
+
+Observert lokalt: 659 Vitest-tester/50 filer bestått; siste fokuserte 15/15 etter siste kontroll-/oppbevaringsrettelser. PGlite kjører faktisk SQL-kontrakt med CAS, innsyn, eksport og sletting. Hele nye 20-stegsløpet er gjennomspilt i Chromium med feil → hjelp → pause/reload → lyssabel/automatisk neste → lagret ja-slutt. Smal skjerm/reducedmotion og tale bestod. Full nettleserkjøring ga 31 bestått / 2 Auth utelatt / 1 feil i testens locator (Nexts egen alert ble telt); rettet locator og målrettet omkjøring bestod. Tapt lagringssvar og redigering mens forrige lagring venter er dermed kontrollert. Motorsimulering og produksjonsbygg bestod; siste fire nye nettlesertester bestod samlet etter innholds-/oppbevaringsrettelser. Lighthouse ga 100/100 på alle 13 visninger. Lint, typecheck, formatering, bygg og 89 lokale dokumentlenker er kontrollert. CI/Preview føres på PR-en etter observasjon. [K2-VERIFICATION](K2-VERIFICATION.md) samler metoder og begrensninger.
+
+Pedagogy og design_review fikk uttrykkelig mandat til innhold/svarflate; final_review gjorde uavhengig lesekontroll og fasitregning. Funn om elevtall i KI-guard, ÷ og samtidige KI-retries er rettet og etterkontrollert. En siste språkkontroll rettet kontaktenheten i SW13 og presiserte at Falcon henger like over gulvet med åpen rampe når Leo møter Luke. Ingen gjenværende konkrete P1/P2 i undersøkt kode. Dette er teknisk kontroll, ikke ekte modellkvalitet eller observerte barnereaksjoner.
+
+**Hva Thor må gjøre:** Ingen oppsett eller nye nøkler. Prøv den nye Preview-lenken når den er klar. Ekte KI-lærerspråk, innlogget hosted gjennomspilling og fysisk iPad er åpne porter. Ny betalt test er ikke bestilt; historisk regnskap er uendret 8,24392525 kr av 10 kr. Merge/produksjon er ikke utført. Neste arbeid er mer målrettet lærer-/støtteforbedring og senere avgrenset motorbro, se [byggeplanen](GAME-REVISION.md).
+
+## Historikk – tidligere forsideleveranse
+
+## Tydelig Star Wars-forside, 21. oktober 2026
 
 Brukeren har merget [K1/PR #23](https://github.com/sirhaugness/ki-techer/pull/23) og ba deretter om å fjerne gamle konsepter fra forsiden. Ny elevprofil løste ikke problemet. `main` er kontrollert på e9323f2 (merge #23), mens Vercels siste registrerte produksjonsdeployment ved første kontroll fortsatt var d415dbb, READY, `dpl_DFewu6ib2WM8JmrcTUaKsGTDNxks`. Ingen deployment for den nye main-commiten ble returnert ved første kontroll. Se siste observasjon nedenfor; dette ble senere en ferdig utrulling. GitHub viser kvalitets-/migrasjonsjobber, men ingen Vercel-status på merge-commiten. Dette er ikke undersøkt som en feil i elevprofilen, og ingen nye profiler eller nullstilling trengs for endringen.
 

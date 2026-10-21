@@ -251,15 +251,16 @@ export async function POST(request: Request) {
     }
     let state = f ? f.state : await latestSession(profile.id);
     if (
-      (state?.freeChapter || state?.preparedActive) &&
+      (state?.freeChapter || state?.preparedActive || state?.starWarsActive) &&
       (!state.endedAt || cmd.command !== 'start') &&
       ['start', 'turn', 'feedback'].includes(cmd.command)
     )
       return Response.json(
         {
-          message: state?.preparedActive
-            ? 'Fortsett stjerneoppdraget eller sett det på pause først.'
-            : 'Fortsett det lagrede kapitlet under Nytt eventyr.',
+          message:
+            state?.preparedActive || state?.starWarsActive
+              ? 'Fortsett stjerneoppdraget eller sett det på pause først.'
+              : 'Fortsett det lagrede kapitlet under Nytt eventyr.',
         },
         { status: 409 },
       );

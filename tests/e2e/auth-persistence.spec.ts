@@ -117,37 +117,46 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
     );
     expect(refreshed.refresh_token).not.toBe(previousRefresh);
     expect(refreshed.expires_at).toBeGreaterThan(Date.now() / 1000);
-    // K1 uses real local Auth/RLS and the existing transactional RPC in CI.
+    // The full adventure uses real local Auth/RLS and the existing transactional RPC in CI.
     await page.goto('http://127.0.0.1:3000/leo/stjerneoppdrag');
     await page.getByRole('button', { name: 'Start eventyret' }).click();
     await page
-      .getByRole('button', { name: 'Legg én på skjold 1', exact: true })
+      .getByRole('button', {
+        name: 'Legg én energicelle i skjoldfelt 1',
+        exact: true,
+      })
       .click();
-    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText(
+      '1',
+    );
     await page
       .getByRole('button', { name: 'Sjekk svaret', exact: true })
       .click();
     await expect(
-      page
-        .getByRole('status')
-        .filter({ hasText: /Se på brikkene som er igjen/ }),
+      page.getByRole('status').filter({ hasText: /Du har 23 celler igjen/ }),
     ).toBeVisible();
     await page.getByRole('button', { name: 'Gi meg et hint' }).click();
     await expect(
-      page
-        .getByRole('status')
-        .filter({ hasText: 'Finn de fire skjoldene som skal dele likt.' }),
+      page.getByRole('status').filter({
+        hasText:
+          'Alle de fire skjoldfeltene skal få like mange celler. Ingen celler skal bli igjen.',
+      }),
     ).toBeVisible();
     await page.getByRole('button', { name: 'Pause og lagre' }).click();
     await page.reload();
     await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
-    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText(
+      '1',
+    );
+    await page.getByText('Mer hjelp', { exact: true }).click();
     await page
       .getByRole('button', { name: 'Vis og forklar løsningen' })
       .click();
-    await page.getByRole('button', { name: 'Fullfør sammen' }).click();
+    await page
+      .getByRole('button', { name: 'Sjekk svaret', exact: true })
+      .click();
     await expect(
-      page.getByRole('button', { name: 'Neste utdrag' }),
+      page.getByRole('button', { name: 'Bli her litt' }),
     ).toBeEnabled();
     await page.getByRole('button', { name: 'Pause og lagre' }).click();
     await page.getByRole('link', { name: '← Hjem', exact: true }).click();
