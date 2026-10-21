@@ -41,6 +41,7 @@ export function resetFixture(master = false, ready = false, quiet = false) {
   f.interests = [];
   f.storyDriven = false;
   f.profile.settings.voice = !quiet;
+  f.profile.settings.auto_read = false;
   if (ready) {
     f.state = createSession(
       f.profile,

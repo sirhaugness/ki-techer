@@ -8,7 +8,7 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 
 [Kanonisk SPEC](docs/SPEC.md) er eneste produktbeskrivelse. Den nye uttrykkelige bestillingen erstatter fri kapittelgenerering og motstridende eldre R3–R7-planer. Første verden/kapittel er [Star Wars: Darth Vaders felle](docs/chapters/star-wars-vaders-felle.md). Følg [byggeplanen](docs/GAME-REVISION.md) og [gjeldende status](docs/PROGRESS.md).
 
-Denne leveransen er dokumentasjon, pedagogikk og komplett plan med 20 hovedoppgaver. Ingen runtime-aktivering, betalte modelltester, migrasjoner eller produksjonsutrulling. Senere runtimearbeid må samordne [lærerutkastet og kodegrensene](docs/TUTOR-DRAFT.md); Markdown endrer ikke appen. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
+K0-dokumentasjonen er merget i PR #22. Brukeren har deretter bestilt K1: en spillbar prøve med SW01/SW06/SW19. Følg [K1-status og kontroller](docs/K1-VERIFICATION.md). Ingen betalte modelltester eller produksjonsutrulling er bestilt. Den nye, avgrensede lærerflyten må holde prompt, kontekst, vurdering og kodegrenser samlet; [lærerutkastet](docs/TUTOR-DRAFT.md) er fortsatt grunnlag for videre bredde. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
 
 ## Leserekkefølge og ansvar
 

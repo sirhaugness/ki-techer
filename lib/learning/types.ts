@@ -58,6 +58,8 @@ export type Interest = {
   weight?: number;
 };
 export type Snapshot = {
+  preparedChapter?: import('../prepared/contracts').Progress;
+  preparedActive?: boolean;
   freeChapter?: {
     id: string;
     index: number;

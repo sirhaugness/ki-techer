@@ -1,6 +1,6 @@
 # Inaktivt lærerutkast og kodegrenser
 
-**Status: designutkast, lastes ikke av appen.** `app/api/leo/route.ts` laster fortsatt `lib/agent/prompts/tutor.v2.md`. Ingen filer under `lib/` eller `app/` endres av denne leveransen. Produktkrav står i [SPEC](SPEC.md); læreropplegget i [kapittelpedagogikken](curriculum/chapter-pedagogy.md).
+**Status: generelt designutkast, lastes ikke direkte av appen.** K1 har implementert en avgrenset flyt med egne kontrakter og `prepared-tutor.v1`; se [faktisk implementering og begrensninger](K1-VERIFICATION.md). Kodekartet nedenfor beskriver utgangspunktet på d6e1874, ikke status for hver K1-funksjon. `app/api/leo/route.ts` laster fortsatt `lib/agent/prompts/tutor.v2.md`. K0 endret ingen filer under `lib/` eller `app/`; K1 er en separat implementeringsleveranse. Produktkrav står i [SPEC](SPEC.md); læreropplegget i [kapittelpedagogikken](curriculum/chapter-pedagogy.md).
 
 ## Faktisk kode på d6e1874 og nødvendig endring
 

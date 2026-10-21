@@ -1,5 +1,11 @@
 'use client';
-import { useEffect, useCallback, useRef, useState } from 'react';
+import {
+  useEffect,
+  useEffectEvent,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 import type { LearningView } from '@/lib/learning/types';
 const silence =
   'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAAAAA==';
@@ -7,17 +13,24 @@ export function SpeechControls({
   view,
   initialAuto = false,
   source = 'all',
+  contentKey,
 }: {
   view: Pick<LearningView, 'id' | 'revision' | 'speech' | 'ended' | 'task'> &
     Partial<LearningView>;
   initialAuto?: boolean;
   source?: 'home' | 'all';
+  contentKey?: string;
 }) {
   const [auto, setAuto] = useState(initialAuto),
     [enabled, setEnabled] = useState(false),
     [message, setMessage] = useState(''),
     [retry, setRetry] = useState(0);
-  const key = `${source}:${view.id}:${view.revision}`;
+  const key = `${source}:${view.id}:${contentKey ?? view.revision}`;
+  const voiceRequest = useEffectEvent(() => ({
+    sessionId: view.id,
+    revision: view.revision,
+    source,
+  }));
   const player = useRef<HTMLAudioElement | null>(null),
     url = useRef<string | null>(null),
     ready = useRef<{ key: string; blob: Blob } | null>(null);
@@ -107,11 +120,7 @@ export function SpeechControls({
     void fetch('/api/voice/tts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: view.id,
-        revision: view.revision,
-        source,
-      }),
+      body: JSON.stringify(voiceRequest()),
       signal: controller.signal,
     })
       .then(async (response) => {
@@ -148,17 +157,7 @@ export function SpeechControls({
       controller.abort();
       invalidatePlayback();
     };
-  }, [
-    view.id,
-    view.revision,
-    key,
-    retry,
-    enabled,
-    play,
-    native,
-    source,
-    invalidatePlayback,
-  ]);
+  }, [view.id, key, retry, enabled, play, native, source, invalidatePlayback]);
   function activate() {
     stopped.current = null;
     wanted.current = true;

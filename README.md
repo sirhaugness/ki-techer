@@ -2,7 +2,7 @@
 
 Matematikk for Leo i 4. klasse: et begrenset bibliotek av forberedte, illustrerte interesseverdener og en levende KI-lærer som underviser og undersøker forståelse. Først bygger vi **Star Wars: Darth Vaders felle**.
 
-**Status:** Retningen og alle 20 hovedoppgavene er beskrevet i prosjektfilene. Den nye kapittelopplevelsen er ennå ikke bygget. Produksjon kjører fortsatt fri kapittelhistorie fra PR #21; den skal senere kunne erstattes. Se [PROGRESS](docs/PROGRESS.md) for kontrollert versjon og begrensninger.
+**Status:** Alle 20 hovedoppgaver er planlagt. K1 implementerer en prøve med tre utdrag på `/leo/stjerneoppdrag`: divisjon, geometri og forståelsessamtale. [K1-verifiseringen](docs/K1-VERIFICATION.md) skiller lokale tester fra gjenstående hosted/modellevaluering. Produksjon er ikke oppdatert med K1. Se [PROGRESS](docs/PROGRESS.md) for kontrollert versjon og begrensninger.
 
 - [Kanonisk produktbeskrivelse](docs/SPEC.md)
 - [Hele kapittelplanen med 20 oppgaver](docs/chapters/star-wars-vaders-felle.md)

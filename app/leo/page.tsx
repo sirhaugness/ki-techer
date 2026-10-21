@@ -44,6 +44,11 @@ export default async function LeoPage({
   return (
     <>
       <p className="mb-4">
+        <Link href="/leo/stjerneoppdrag">
+          Star Wars: Darth Vaders felle – prøv tre oppdrag →
+        </Link>
+      </p>
+      <p className="mb-4 text-sm">
         <Link href="/leo/eventyr">
           Utforsk et nytt kapittel med dine interesser →
         </Link>
@@ -52,7 +57,11 @@ export default async function LeoPage({
         key={`${state?.id ?? 'home'}:${state?.revision ?? 0}`}
         profile={profile}
         story={story}
-        initial={state && !state.freeChapter ? publicView(state, !mock) : null}
+        initial={
+          state && !state.freeChapter && !state.preparedActive
+            ? publicView(state, !mock)
+            : null
+        }
         parts={parts}
         diagnosticComplete={state?.diagnosticComplete ?? false}
       />

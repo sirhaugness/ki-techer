@@ -6,7 +6,9 @@ Gjeldende 20. oktober 2026. [SPEC](SPEC.md) er kanonisk produktretning; [kapitte
 
 Ferdig innhold: kanonisk retning, 20 komplette hovedoppgaver i fire deler, Udir-kobling, støtte-/overføringsopplegg, liten ressursliste og inaktivt lærerutkast med kodegrenser. Ingen ny runtime, bilder, migrasjoner eller ekte modelltest. Faktiske kontroller registreres i [PROGRESS](PROGRESS.md).
 
-## Neste: K1, en spillbar prøve med tre oppgaver
+## K1: en spillbar prøve med tre oppgaver
+
+Implementert i egen runtimeleveranse; [K1-VERIFICATION](K1-VERIFICATION.md) viser hva som faktisk er kontrollert og gjenstående hosted/modellevaluering. Punktene under er akseptkriteriene, ikke bevis på at alle tjenester er prøvd.
 
 Bruk **SW01 → SW06 → SW19**, med uttrykkelig merkede scenehopp mellom utdrag fra kapitlet. Tre valgte oppgaver demonstrerer divisjon, geometri og forståelsessamtale; de skal ikke fremstilles som hele fortellingen eller årsdekning. Ingen stor verdenvelger eller katalog kreves: én kapittelinngang er nok.
 
