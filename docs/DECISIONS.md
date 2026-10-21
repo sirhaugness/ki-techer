@@ -8,7 +8,7 @@ Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og br
 
 Bygg SW01/SW06/SW19 som én versjonert prøve med scenehopp. Eksisterende snapshot/RPC gir fremdrift, revisjon, innsyn og sletting uten migrasjon. Aktiv prøvespilling skilles fra bevart fremdrift. Fri dialog lagres ikke i nested fremdrift av hensyn til eksisterende oppbevaringsregler.
 
-KI tolker korte probeord og velger kontrollerte undervisningsgrep gjennom separat prepared-tutor.v1. Matematikk, forklaringer, fremdrift og hjelpet fullføring bestemmes i kode. Begge roller kan dokumenteres over to turer med en begrenset strukturert evidenstilstand. K1 gir ingen global mestring/FSRS/medaljong fra de tre forfatteroppgavene; denne motorbroen er neste avgrensning i K2. [K1-verifisering](K1-VERIFICATION.md) angir hva som er prøvd og hva som gjenstår.
+KI tolker korte probeord og velger kontrollerte undervisningsgrep gjennom separat prepared-tutor.v1. Matematikk, forklaringer, fremdrift og hjelpet fullføring bestemmes i kode. Begge roller kan dokumenteres over to turer med en begrenset strukturert evidenstilstand. Naturlig språk vurderes av den oppgavespesifikke modellrubrikken med eksakte, distinkte sitater; kode krever ikke bestemte enhetsord. Opplesing identifiseres ved tekstinnhold, mens nye kall fortsatt valideres mot gjeldende revisjon. K1 gir ingen global mestring/FSRS/medaljong fra de tre forfatteroppgavene; denne motorbroen er neste avgrensning i K2. [K1-verifisering](K1-VERIFICATION.md) angir hva som er prøvd og hva som gjenstår.
 
 ## 2026-10-20: forberedt bibliotek og lærer som underviser
 

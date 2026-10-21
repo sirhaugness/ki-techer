@@ -232,6 +232,47 @@ describe('prepared chapter authority and teaching', () => {
       }),
     ).rejects.toThrow('endret');
   });
+  it('accepts grounded alternative wording classified by the role rubric', async () => {
+    const s = await toProbe();
+    const result = await turn(
+      s,
+      {
+        type: 'probe',
+        probeId: 'SW19-divisor-roles',
+        text: 'A er hvor mange som deler. B er hvor mange i hver.',
+      },
+      model('relevant', 'hvor mange som deler', 'hvor mange i hver'),
+    );
+    expect(result.state.preparedChapter).toMatchObject({
+      evidence: 'relevant',
+      status: 'correct',
+      assisted: false,
+      probeRoles: { a: true, b: true },
+    });
+  });
+  it('rejects result-only or identical quotations even if the model claims relevant', async () => {
+    const s = await toProbe();
+    for (const [text, a, b] of [
+      ['6 og 6', '6', '6'],
+      ['Begge blir seks', 'Begge blir', 'seks'],
+      ['Begge blir seks', 'Begge blir seks', 'Begge blir seks'],
+    ]) {
+      const result = await turn(
+        s,
+        {
+          type: 'probe',
+          probeId: 'SW19-divisor-roles',
+          text,
+        },
+        model('relevant', a, b),
+      );
+      expect(result.state.preparedChapter).toMatchObject({
+        evidence: 'not-assessed',
+        status: 'working',
+        probeRoles: { a: false, b: false },
+      });
+    }
+  });
   it('combines short role answers on the same probe without treating them as help', async () => {
     let state = await toProbe();
     state = (

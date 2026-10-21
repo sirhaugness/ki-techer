@@ -156,3 +156,43 @@ test('reduced motion, narrow screen and parent voice-off keep usable controls', 
     ),
   ).toBe(true);
 });
+
+test('automatic speech stays on the same text during work and reads a new hint once', async ({
+  page,
+}) => {
+  await page.goto('/leo?fixture=reset');
+  await page.goto('/leo/stjerneoppdrag');
+  await page.getByRole('button', { name: 'Start eventyret' }).click();
+  const requests: number[] = [];
+  const statuses: number[] = [];
+  page.on('request', (request) => {
+    if (request.url().endsWith('/api/voice/tts'))
+      requests.push(request.postDataJSON().revision);
+  });
+  page.on('response', (response) => {
+    if (response.url().endsWith('/api/voice/tts'))
+      statuses.push(response.status());
+  });
+  await page.getByRole('button', { name: 'Auto-opplesing: av' }).click();
+  await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+  expect(requests).toHaveLength(1);
+  for (let i = 1; i <= 4; i++)
+    for (let j = 0; j < 6; j++) {
+      await page
+        .getByRole('button', { name: `Legg én på skjold ${i}`, exact: true })
+        .click();
+      await expect(page.getByLabel(`Brikker på skjold ${i}`)).toHaveText(
+        String(j + 1),
+      );
+    }
+  expect(requests).toHaveLength(1);
+  const voiceResponse = page.waitForResponse((response) =>
+    response.url().endsWith('/api/voice/tts'),
+  );
+  await page.getByRole('button', { name: 'Gi meg et hint' }).click();
+  expect((await voiceResponse).status()).toBe(200);
+  const state = await (await page.request.get('/api/prepared')).json();
+  expect(requests).toEqual([0, state.view.revision]);
+  expect(statuses).toEqual([200, 200]);
+  await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+});

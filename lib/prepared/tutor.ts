@@ -60,17 +60,36 @@ export async function selectTeaching(input: {
     const d = decisionSchema.parse(reply.value);
     // Persist only validated role coverage, never raw quotes inside progress.
     const reliable = ['partial', 'relevant'].includes(d.evidence);
+    // The model rubric interprets natural language; code checks grounding,
+    // distinct evidence and excludes quotations that only repeat a result.
+    const grounded = (quote: string) => {
+      const words = quote.toLocaleLowerCase('nb').match(/\p{L}+/gu) ?? [];
+      return (
+        !!quote.trim() &&
+        text.includes(quote) &&
+        words.some(
+          (word) =>
+            ![
+              'begge',
+              'blir',
+              'er',
+              'svaret',
+              'svar',
+              'lik',
+              'seks',
+              'tre',
+            ].includes(word),
+        )
+      );
+    };
+    const distinct =
+      !d.quoteA.trim() ||
+      !d.quoteB.trim() ||
+      d.quoteA.trim().toLocaleLowerCase('nb') !==
+        d.quoteB.trim().toLocaleLowerCase('nb');
     const roles = {
-      a:
-        reliable &&
-        !!d.quoteA.trim() &&
-        text.includes(d.quoteA) &&
-        /(?:tre|3|antall).*(?:sendere|mottakere|grupper)/iu.test(d.quoteA),
-      b:
-        reliable &&
-        !!d.quoteB.trim() &&
-        text.includes(d.quoteB) &&
-        /(?:tre|3|brikker).*(?:hver|per|pakke)/iu.test(d.quoteB),
+      a: reliable && distinct && grounded(d.quoteA),
+      b: reliable && distinct && grounded(d.quoteB),
     };
     if (input.probe && !d.safety) {
       const a = p.probeRoles.a || roles.a,

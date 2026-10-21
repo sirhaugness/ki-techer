@@ -174,3 +174,34 @@ it('does not carry a manual request into the next view when auto read is off', a
   fireEvent.click(screen.getByRole('button', { name: /Les høyt/ }));
   await waitFor(() => expect(screen.getByText('Leser høyt.')).toBeVisible());
 });
+
+it('keeps identical prepared speech through work revisions, then fetches changed text with the current revision', async () => {
+  fetchMock.mockImplementation(async () => new Response(new Blob(['audio'])));
+  const { rerender } = render(
+    <SpeechControls view={view} initialAuto contentKey="same-visible-lesson" />,
+  );
+  fireEvent.click(screen.getByRole('button', { name: /Les høyt/ }));
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(play).toHaveBeenCalledTimes(2));
+  for (let revision = 1; revision <= 24; revision++) {
+    rerender(
+      <SpeechControls
+        view={{ ...view, revision }}
+        initialAuto
+        contentKey="same-visible-lesson"
+      />,
+    );
+  }
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  expect(play).toHaveBeenCalledTimes(2);
+  rerender(
+    <SpeechControls
+      view={{ ...view, revision: 25, speech: 'Se på de fire skjoldene.' }}
+      initialAuto
+      contentKey="new-hint"
+    />,
+  );
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+  expect(JSON.parse(fetchMock.mock.calls[1][1].body).revision).toBe(25);
+  await waitFor(() => expect(play).toHaveBeenCalledTimes(3));
+});

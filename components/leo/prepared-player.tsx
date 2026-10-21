@@ -538,6 +538,7 @@ export function PreparedPlayer({
               )}
               {voice && view.sessionId && view.running && (
                 <SpeechControls
+                  contentKey={preparedSpeech(view)}
                   view={{
                     id: view.sessionId,
                     revision: view.revision,

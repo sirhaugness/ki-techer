@@ -117,6 +117,40 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
     );
     expect(refreshed.refresh_token).not.toBe(previousRefresh);
     expect(refreshed.expires_at).toBeGreaterThan(Date.now() / 1000);
+    // K1 uses real local Auth/RLS and the existing transactional RPC in CI.
+    await page.goto('http://127.0.0.1:3000/leo/stjerneoppdrag');
+    await page.getByRole('button', { name: 'Start eventyret' }).click();
+    await page
+      .getByRole('button', { name: 'Legg én på skjold 1', exact: true })
+      .click();
+    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await page
+      .getByRole('button', { name: 'Sjekk svaret', exact: true })
+      .click();
+    await expect(
+      page
+        .getByRole('status')
+        .filter({ hasText: /Se på brikkene som er igjen/ }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Gi meg et hint' }).click();
+    await expect(
+      page
+        .getByRole('status')
+        .filter({ hasText: 'Finn de fire skjoldene som skal dele likt.' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Pause og lagre' }).click();
+    await page.reload();
+    await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
+    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await page
+      .getByRole('button', { name: 'Vis og forklar løsningen' })
+      .click();
+    await page.getByRole('button', { name: 'Fullfør sammen' }).click();
+    await expect(
+      page.getByRole('button', { name: 'Neste utdrag' }),
+    ).toBeEnabled();
+    await page.getByRole('button', { name: 'Pause og lagre' }).click();
+    await page.getByRole('link', { name: '← Hjem', exact: true }).click();
     await page.getByText('For forelder', { exact: true }).click();
     await page.getByLabel('Forelderens PIN', { exact: true }).fill('0123');
     await page.getByRole('button', { name: 'Lås opp foreldresiden' }).click();
