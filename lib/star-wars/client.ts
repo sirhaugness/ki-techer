@@ -14,6 +14,7 @@ export function useAdventure() {
   const [draft, setDraft] = useState<Work>(emptyWork);
   const [busy, setBusy] = useState(false),
     [saving, setSaving] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const [error, setError] = useState(''),
     [canRetry, setCanRetry] = useState(false);
   const current = useRef<AdventureView | null>(null),
@@ -22,6 +23,7 @@ export function useAdventure() {
     saved = useRef(0),
     failed = useRef(false),
     acting = useRef(false);
+  const navigating = useRef(false);
   const queue = useRef<Promise<unknown>>(Promise.resolve());
   const retry = useRef<{
     body: Record<string, unknown>;
@@ -134,6 +136,7 @@ export function useAdventure() {
   function change(next: Work) {
     if (
       acting.current ||
+      navigating.current ||
       failed.current ||
       !current.current?.running ||
       current.current.status === 'correct'
@@ -145,7 +148,7 @@ export function useAdventure() {
     setSaving(true);
   }
   async function action(event: AdventureEvent | 'start') {
-    if (acting.current || failed.current) return false;
+    if (acting.current || navigating.current || failed.current) return false;
     acting.current = true;
     setBusy(true);
     try {
@@ -166,8 +169,26 @@ export function useAdventure() {
       setBusy(false);
     }
   }
+  async function leave() {
+    if (navigating.current) return false;
+    navigating.current = true;
+    setLeaving(true);
+    try {
+      return await enqueue(async () => {
+        if (failed.current) return false;
+        await flush();
+        if (current.current?.running) await send({ type: 'pause' });
+        return true;
+      });
+    } catch {
+      return false;
+    } finally {
+      navigating.current = false;
+      setLeaving(false);
+    }
+  }
   async function recover(useRetry: boolean) {
-    if (acting.current) return;
+    if (acting.current || navigating.current) return;
     acting.current = true;
     setBusy(true);
     try {
@@ -197,11 +218,12 @@ export function useAdventure() {
     view,
     draft,
     change,
-    busy,
+    busy: busy || leaving,
     saving,
     error,
     canRetry,
     action,
+    leave,
     recover,
   };
 }

@@ -6,6 +6,51 @@ test.beforeEach(() =>
   ),
 );
 test.use({ video: 'on' });
+test('Home waits for an in-flight pause and saves once before navigating', async ({
+  page,
+}) => {
+  await page.goto('/leo?fixture=quiet');
+  await page.goto('/leo/stjerneoppdrag');
+  await page.getByRole('button', { name: 'Start eventyret' }).click();
+  await page
+    .getByRole('button', {
+      name: 'Legg én energicelle i skjoldfelt 1',
+      exact: true,
+    })
+    .click();
+  let release!: () => void,
+    notify!: () => void,
+    pauses = 0;
+  const held = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const received = new Promise<void>((resolve) => {
+    notify = resolve;
+  });
+  await page.route('**/api/star-wars', async (route) => {
+    const request = route.request();
+    if (
+      request.method() === 'POST' &&
+      request.postDataJSON().event?.type === 'pause'
+    ) {
+      pauses++;
+      const response = await route.fetch();
+      notify();
+      await held;
+      await route.fulfill({ response });
+    } else await route.continue();
+  });
+  await page.getByRole('button', { name: 'Pause og lagre' }).click();
+  await received;
+  await page.getByRole('link', { name: '← Hjem', exact: true }).click();
+  release();
+  await expect(page).toHaveURL(/\/leo$/);
+  await expect(page.getByRole('heading', { name: 'Hei, Leo!' })).toBeVisible();
+  const saved = await (await page.request.get('/api/star-wars')).json();
+  expect(saved.view.running).toBe(false);
+  expect(saved.view.work.groups).toEqual([1, 0, 0, 0]);
+  expect(pauses).toBe(1);
+});
 test('responsive draft saves survive a lost response and a later edit without overwriting either', async ({
   page,
 }) => {

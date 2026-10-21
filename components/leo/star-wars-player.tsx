@@ -28,6 +28,7 @@ export function StarWarsPlayer({
     canRetry,
     action,
     recover,
+    leave,
   } = useAdventure();
   const [question, setQuestion] = useState(''),
     [talking, setTalking] = useState(false);
@@ -72,8 +73,7 @@ export function StarWarsPlayer({
     };
   }, [solved, view?.running, view?.finished, view?.itemId, stay, busy, error]);
   async function home() {
-    if (!view?.running || (await action({ type: 'pause' })))
-      router.push('/leo');
+    if (await leave()) router.push('/leo');
   }
   const locked = busy || solved || !view?.running || !!error;
   const art = assets[view?.mission.image ?? 'cockpit'];
@@ -83,10 +83,9 @@ export function StarWarsPlayer({
         <Link
           href="/leo"
           onClick={(e) => {
-            if (view?.running) {
-              e.preventDefault();
-              void home();
-            }
+            if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            void home();
           }}
         >
           ← Hjem
