@@ -19,7 +19,12 @@ import { preparedTurn, preparedView, startPrepared } from '@/lib/prepared/play';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 const schema = z.discriminatedUnion('command', [
-  z.object({ command: z.literal('start') }).strict(),
+  z
+    .object({
+      command: z.literal('start'),
+      switchFromPrevious: z.boolean().optional(),
+    })
+    .strict(),
   z
     .object({
       command: z.literal('turn'),
@@ -92,7 +97,12 @@ export async function POST(request: Request) {
       );
     if (cmd.command === 'start') {
       let previous = c.state;
-      if (previous && !previous.endedAt && !mayContinue(previous.clock, now)) {
+      if (
+        previous &&
+        !previous.endedAt &&
+        (!mayContinue(previous.clock, now) ||
+          (cmd.switchFromPrevious && !previous.preparedActive))
+      ) {
         const ended = {
           ...previous,
           endedAt: now,
@@ -109,6 +119,7 @@ export async function POST(request: Request) {
           ))
         )
           throw Error('Økten er endret. Last siden på nytt.');
+        if (c.mock) c.f!.state = ended;
         previous = ended;
       }
       const state = startPrepared(

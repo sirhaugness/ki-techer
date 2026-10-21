@@ -1,6 +1,18 @@
 # Fremdrift
 
-## Start her – K1, 21. oktober 2026
+## Start her – tydelig Star Wars-forside, 21. oktober 2026
+
+Brukeren har merget [K1/PR #23](https://github.com/sirhaugness/ki-techer/pull/23) og ba deretter om å fjerne gamle konsepter fra forsiden. Ny elevprofil løste ikke problemet. `main` er kontrollert på e9323f2 (merge #23), mens Vercels siste registrerte produksjonsdeployment fortsatt er d415dbb, READY, `dpl_DFewu6ib2WM8JmrcTUaKsGTDNxks`. Ingen deployment for den nye main-commiten ble returnert ved kontrollen; årsaken til uteblitt produksjonsbygg er ikke fastslått. GitHub viser kvalitets-/migrasjonsjobber, men ingen Vercel-status på merge-commiten. Dette er ikke undersøkt som en feil i elevprofilen, og ingen nye profiler eller nullstilling trengs for endringen.
+
+På `fix/star-wars-home` er `/leo` nå én rolig forside med illustrert «Star Wars: Darth Vaders felle», stor **Spill Star Wars**-knapp og **Fortsett Star Wars-eventyret** når arbeid finnes. Interessevalg, gammel kapittelgenerator, medaljong/kart, kartlegging og parallelle prøveinnganger er fjernet fra forsiden. Foreldres PIN-inngang beholdes. Ingen interessehenting, historiegenerering eller modellbasert profilrefleksjon startes av den nye forsiden.
+
+Den tidligere øvingsflaten ligger ulenket på `/leo/oving` for kompatibilitet og regresjonskontroll; gamle interesser, svar og mestringsdata slettes ikke. Eksplisitt start av Star Wars kan avslutte en tidligere åpen økt med revisjonskontroll og starte prøven med bevarte data og samme tidsgrenser. Aktiv K1 gjenbrukes. Pause → hjem → fortsett viser lagret arbeid. Dette er opprydding i inngangen, ikke K2 eller de øvrige 17 oppgavene.
+
+Målrettet API-/SQL-test: 17 tester består. Lint, typecheck, formatering og diffkontroll består. 29 nettlesertilfeller består etter målrettet etterkjøring; to lokale Auth-tester er utelatt uten separat Auth-stack. Full første runde fant manglende FFmpeg og en gammel test som forventet en fjernet hjemmelenke; FFmpeg er installert og testen flyttet til den arkiverte inngangen. Ny forside er prøvd med ny og eksisterende profil, gammel åpen økt, lagret K1 og pause/hjem/reload/fortsett. Hovedknappen er målt innenfor skjermen ved 390×844, 768×1024 og 1024×768, uten horisontal overflow. Bygg, tilgjengelighet og PR/Preview registreres før levering. Reviewer og designer har faktisk etterlest endringen uten konkrete P1/P2; designer har i tillegg sett syntetisk skjermbilde. Ingen ekte modellkall, migrasjon, endring i hemmeligheter eller produksjonsmerge.
+
+**Hva Thor må gjøre:** Ingen ny elev eller interessevalg. Når denne endringen er utrullet: åpne `/leo` og trykk **Spill Star Wars**. Ny PR og Preview kommer med leveransen; produksjon endres ikke automatisk av agenten.
+
+## K1 – historisk implementering, 21. oktober 2026
 
 K0 er merget i [PR #22](https://github.com/sirhaugness/ki-techer/pull/22). K1 bygger fra `main` d415dbb på `feat/prepared-star-wars-pilot`, [utkast-PR #23](https://github.com/sirhaugness/ki-techer/pull/23), og implementerer [tre valgte oppgaver](chapters/star-wars-vaders-felle.md) på `/leo/stjerneoppdrag`. Les [K1-VERIFICATION](K1-VERIFICATION.md) for kodegrenser, responskilder og faktisk verifisering. [SPEC](SPEC.md) er kanonisk; [byggeplanen](GAME-REVISION.md) avgrenser K2.
 

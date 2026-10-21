@@ -11,7 +11,7 @@ test.beforeEach(() =>
 );
 
 async function start(page: Page, label: string) {
-  await page.goto('/leo?fixture=quiet');
+  await page.goto('/leo/oving?fixture=quiet');
   await page.getByRole('link', { name: 'Mine interesser' }).click();
   await page
     .locator('.interest-presets')

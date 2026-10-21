@@ -17,7 +17,7 @@ test('R2: error, contextual help, three consequences, pause and browser resume',
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto('/leo');
+  await page.goto('/leo/oving');
   await page.getByRole('link', { name: 'Prøv den nye spillflaten' }).click();
   await expect(page.getByRole('heading', { name: 'Tenn leia' })).toBeVisible({
     timeout: 20000,
@@ -79,6 +79,7 @@ test('R2: error, contextual help, three consequences, pause and browser resume',
   ).toBeFocused();
   await page.getByRole('textbox', { name: 'Nye planker' }).fill('6');
   await page.getByRole('link', { name: 'Pause og hjem' }).click();
+  await page.goto('/leo/oving');
   await page.getByRole('link', { name: 'Prøv den nye spillflaten' }).click();
   await expect(page.getByRole('textbox', { name: 'Nye planker' })).toHaveValue(
     '6',

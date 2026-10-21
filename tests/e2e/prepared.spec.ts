@@ -12,9 +12,7 @@ test('three authored missions: error, teaching, consequence, pause/reload and se
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/leo?fixture=quiet');
-  await page
-    .getByRole('link', { name: /Star Wars: Darth Vaders felle/ })
-    .click();
+  await page.getByRole('link', { name: 'Spill Star Wars' }).click();
   await page.getByRole('button', { name: 'Start eventyret' }).click();
   const saved = await page.request.get('/api/prepared');
   expect(saved.ok()).toBe(true);
@@ -195,4 +193,73 @@ test('automatic speech stays on the same text during work and reads a new hint o
   expect(requests).toEqual([0, state.view.revision]);
   expect(statuses).toEqual([200, 200]);
   await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
+});
+
+test('home has one obvious adventure entry for new and existing learners, then resumes saved work', async ({
+  page,
+}) => {
+  for (const fixture of ['reset', 'quiet']) {
+    await page.goto(`/leo?fixture=${fixture}`);
+    await expect(
+      page.getByRole('heading', { name: 'Darth Vaders felle' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: 'Spill Star Wars' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', {
+        name: /interesser|nytt kapittel|spillflaten|Velg ditt eventyr/i,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole('button', { name: /Bli kjent|matteøkt/i }),
+    ).toHaveCount(0);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/leo');
+    const button = await page
+      .getByRole('link', { name: 'Spill Star Wars' })
+      .boundingBox();
+    expect(button!.y + button!.height).toBeLessThanOrEqual(viewport.height);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  // An unfinished session from the retired home must not block the new story.
+  await page.goto('/leo/oving?fixture=reset');
+  await page.getByRole('button', { name: 'Start Bli kjent' }).click();
+  await page.getByRole('link', { name: '🌱 Hjem', exact: true }).click();
+  await page.getByRole('link', { name: 'Spill Star Wars' }).click();
+  await page.getByRole('button', { name: 'Start eventyret' }).click();
+  await page
+    .getByRole('button', { name: 'Legg én på skjold 1', exact: true })
+    .click();
+  await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+  await page.getByRole('button', { name: 'Pause og lagre' }).click();
+  await page.getByRole('link', { name: '← Hjem', exact: true }).click();
+  await expect(
+    page.getByRole('link', { name: 'Fortsett Star Wars-eventyret' }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: '/tmp/leo-star-wars-home.png',
+    fullPage: true,
+  });
+  await page.reload();
+  await page
+    .getByRole('link', { name: 'Fortsett Star Wars-eventyret' })
+    .click();
+  await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
+  await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
 });

@@ -5,6 +5,8 @@ const store = vi.hoisted(() => ({
   denied: false,
   calls: 0,
   limits: 0,
+  saved: [] as Snapshot[],
+  stale: false,
 }));
 vi.mock('server-only', () => ({}));
 vi.mock('../../lib/learning/fixture', () => ({
@@ -36,7 +38,8 @@ vi.mock('../../lib/learning/repository', () => ({
     store.state = structuredClone(s);
   },
   saveTurn: async (s: Snapshot, _id: string, rev: number) => {
-    if (store.state?.revision !== rev) return false;
+    if (store.stale || store.state?.revision !== rev) return false;
+    store.saved.push(structuredClone(s));
     store.state = structuredClone(s);
     return true;
   },
@@ -54,6 +57,7 @@ vi.mock('../../lib/ai/control', () => ({
     return null;
   },
 }));
+import { createSession } from '../../lib/learning/session';
 import { GET, POST } from '../../app/api/prepared/route';
 const origin = 'http://localhost:3000';
 function post(body: unknown, requestOrigin = origin) {
@@ -82,6 +86,8 @@ beforeEach(() => {
   store.denied = false;
   store.calls = 0;
   store.limits = 0;
+  store.saved = [];
+  store.stale = false;
   delete process.env.APP_URL;
   delete process.env.VERCEL_URL;
 });
@@ -104,6 +110,50 @@ describe('prepared API authority', () => {
       (await post(turn({ type: 'probe', probeId: 'wrong', text: 'test' })))
         .status,
     ).toBe(400);
+  });
+  it('explicitly switches from an old open session without deleting its evidence, and respects CAS', async () => {
+    const original = createSession(
+      {
+        id: '00000000-0000-4000-8000-000000000011',
+        householdId: '00000000-0000-4000-8000-000000000001',
+        firstName: 'Leo',
+        tutorName: 'Lumi',
+        grade: 4,
+        avatar: 'spire',
+        settings: {},
+      },
+      null,
+      new Date().toISOString(),
+      0,
+      'diagnostic',
+      null,
+    );
+    original.messages = [{ role: 'leo', text: 'Et tidligere svar' }];
+    store.state = structuredClone(original);
+    expect((await post({ command: 'start' })).status).toBe(400);
+    expect(store.saved).toHaveLength(0);
+    store.stale = true;
+    expect(
+      (await post({ command: 'start', switchFromPrevious: true })).status,
+    ).toBe(400);
+    expect(store.state.id).toBe(original.id);
+    store.stale = false;
+    expect(
+      (await post({ command: 'start', switchFromPrevious: true })).status,
+    ).toBe(200);
+    expect(store.saved[0]).toMatchObject({
+      id: original.id,
+      messages: original.messages,
+      revision: 1,
+    });
+    expect(store.saved[0].endedAt).toBeTruthy();
+    expect(store.state.id).not.toBe(original.id);
+    expect(store.state.preparedActive).toBe(true);
+    expect(store.calls).toBe(0);
+    const activeId = store.state.id;
+    await post({ command: 'start', switchFromPrevious: true });
+    expect(store.state.id).toBe(activeId);
+    expect(store.saved).toHaveLength(1);
   });
   it('rejects stale/foreign item or session before any teacher request', async () => {
     await post({ command: 'start' });

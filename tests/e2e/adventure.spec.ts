@@ -14,7 +14,7 @@ for (const viewport of [
     page,
   }) => {
     await page.setViewportSize(viewport);
-    await page.goto('/leo?fixture=quiet');
+    await page.goto('/leo/oving?fixture=quiet');
     await page.getByRole('link', { name: 'Mine interesser' }).click();
     await page
       .getByRole('button', { name: 'Star Wars', exact: false })
@@ -110,7 +110,7 @@ for (const viewport of [
 test('one selected interest and retained story after switching back', async ({
   page,
 }) => {
-  await page.goto('/leo?fixture=practice');
+  await page.goto('/leo/oving?fixture=practice');
   await page.getByRole('link', { name: 'Mine interesser' }).click();
   for (const name of ['Star Wars', 'Dinosaurer', 'Star Wars']) {
     await page
@@ -130,7 +130,7 @@ test('reduced motion suppresses the celebration animation', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/leo?fixture=practice');
+  await page.goto('/leo/oving?fixture=practice');
   await page.getByRole('button', { name: 'Start en matteøkt' }).click();
   await page.getByRole('button', { name: '🙂 Rolig' }).click();
   const q = await page.locator('#task-question').innerText();

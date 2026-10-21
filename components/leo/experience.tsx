@@ -415,7 +415,7 @@ export function LeoExperience({
                 className="primary"
                 onClick={() => {
                   setView(null);
-                  router.push('/leo');
+                  router.push('/leo/oving');
                   router.refresh();
                 }}
               >

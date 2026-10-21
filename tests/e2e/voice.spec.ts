@@ -35,7 +35,7 @@ test('read aloud, auto preference, hold-to-speak, visible editable transcript an
       },
     });
   });
-  await page.goto('/leo?fixture=reset');
+  await page.goto('/leo/oving?fixture=reset');
   await page.getByRole('button', { name: 'Start Bli kjent' }).click();
   await page.getByRole('button', { name: '😊 Glad' }).click();
   await page.getByRole('button', { name: 'Les høyt' }).click();
@@ -80,7 +80,7 @@ test('denied microphone leaves text answer available', async ({ page }) => {
       },
     });
   });
-  await page.goto('/leo?fixture=reset');
+  await page.goto('/leo/oving?fixture=reset');
   await page.getByRole('button', { name: 'Start Bli kjent' }).click();
   await page.getByRole('button', { name: '🙂 Rolig' }).click();
   const mic = page.getByRole('button', { name: 'Hold for å snakke' });
@@ -95,7 +95,7 @@ test('denied microphone leaves text answer available', async ({ page }) => {
 test('auto read and the unlocked audio player survive starting a session from home', async ({
   page,
 }) => {
-  await page.goto('/leo?fixture=reset');
+  await page.goto('/leo/oving?fixture=reset');
   await page.getByRole('button', { name: 'Auto-opplesing: av' }).click();
   await expect(page.getByText('Leser høyt.', { exact: true })).toBeVisible();
   const moodAudio = page.waitForResponse(

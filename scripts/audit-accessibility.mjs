@@ -107,7 +107,7 @@ try {
     requestId: randomUUID(),
     event: { type: 'mood', mood: 'rolig' },
   });
-  await audit('leo-task', '/leo');
+  await audit('leo-task', '/leo/oving');
   await fetch(origin + '/leo?fixture=quiet');
   await post({ command: 'interest', label: 'Star Wars' });
   const adventureSession = await post({
@@ -122,8 +122,8 @@ try {
     requestId: randomUUID(),
     event: { type: 'mood', mood: 'rolig' },
   });
-  await audit('leo-adventure', '/leo');
-  await fetch(origin + '/leo?fixture=story');
+  await audit('leo-adventure', '/leo/oving');
+  await fetch(origin + '/leo/oving?fixture=story');
   await post({ command: 'interest', label: 'Star Wars' });
   const storySession = await post({
     command: 'start',
@@ -137,7 +137,7 @@ try {
     requestId: randomUUID(),
     event: { type: 'mood', mood: 'rolig' },
   });
-  await audit('leo-story', '/leo');
+  await audit('leo-story', '/leo/oving');
   await fetch(origin + '/leo?fixture=quiet');
   await audit('leo-free-interests', '/leo/eventyr');
   const prepared = await post(
