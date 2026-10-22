@@ -1,8 +1,9 @@
 import { after } from 'next/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { UnlockForm } from '@/app/forelder/forms';
-import { PreparedScene } from '@/components/leo/prepared-scene';
+import { assets } from '@/lib/star-wars/assets';
 import { leoAccess } from '@/lib/learning/access';
 import { fixtureEnabled, fixture, resetFixture } from '@/lib/learning/fixture';
 import { latestSession } from '@/lib/learning/repository';
@@ -29,8 +30,8 @@ export default async function LeoPage({
   const f = mock ? fixture() : null;
   const profile = f?.profile ?? (await leoAccess()).profile;
   const state = f ? f.state : await latestSession(profile.id);
-  const progress = state?.preparedChapter;
-  const finished = progress?.index === 3;
+  const progress = state?.starWars;
+  const finished = (progress?.index ?? 0) >= 20;
   if (!mock) after(() => maintainLearner(profile.id));
   return (
     <div className={styles.home}>
@@ -41,17 +42,25 @@ export default async function LeoPage({
       </header>
       <article className={styles.chapter} aria-labelledby="chapter-title">
         <div className={styles.cover}>
-          <PreparedScene index={0} solved={false} />
+          <Image
+            src={assets.cockpit.src}
+            alt={assets.cockpit.alt}
+            fill
+            priority
+            sizes="(max-width: 880px) 100vw, 880px"
+          />
         </div>
         <div className={styles.content}>
           <p className={styles.world}>STAR WARS</p>
           <h2 id="chapter-title">Darth Vaders felle</h2>
-          <p>Hjelp Luke og R2-D2 forbi Vaders feller og tilbake til Falcon.</p>
+          <p>
+            Redd Leia, unnslipp Vader og hjelp vennene dine hjem med Falcon.
+          </p>
           {progress && (
             <p className={styles.saved}>
               {finished
-                ? 'Du har fullført de tre oppdragene.'
-                : `Arbeidet ditt er lagret. Du er på oppdrag ${progress.index + 1} av 3.`}
+                ? 'Du har fullført eventyret!'
+                : `Arbeidet ditt er lagret. Du er på oppdrag ${progress.index + 1} av 20.`}
             </p>
           )}
           <Link href="/leo/stjerneoppdrag" className={styles.play}>
@@ -63,7 +72,7 @@ export default async function LeoPage({
             <span aria-hidden="true">→</span>
           </Link>
           <p className={styles.detail}>
-            Prøv tre oppdrag med brikker, figurer og en lærer som hjelper deg.
+            20 oppdrag. Kraften er med deg hvis du trenger hjelp.
           </p>
           <p className={styles.note}>
             Du kan ta pause underveis. Vi husker hvor du er.

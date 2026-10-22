@@ -12,18 +12,24 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
   );
   test.setTimeout(90_000);
   const profileDir = await mkdtemp(join(tmpdir(), 'leo-auth-browser-'));
-  const launch = () =>
-    chromium.launchPersistentContext(profileDir, {
+  const launch = async () => {
+    const browser = await chromium.launchPersistentContext(profileDir, {
       headless: true,
       executablePath:
         process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
         process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
       viewport: { width: 1024, height: 768 },
     });
+    // A missing action must identify its locator before the whole journey expires.
+    browser.setDefaultTimeout(15_000);
+    browser.setDefaultNavigationTimeout(30_000);
+    return browser;
+  };
   let context = await launch();
   try {
     let page = context.pages()[0];
     const email = `persistent-${Date.now()}@example.test`;
+    console.info('Auth persistence checkpoint: login');
     await page.goto('http://127.0.0.1:3000/login');
     await page.getByLabel('E-postadressen din').fill(email);
     await page.getByRole('button', { name: 'Send innloggingslenke' }).click();
@@ -52,6 +58,7 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
     await expect(
       page.getByRole('heading', { name: 'Foreldresiden', exact: true }),
     ).toBeVisible();
+    console.info('Auth persistence checkpoint: create learner');
     await page.getByRole('button', { name: 'Opprett elevprofil' }).click();
     await page.getByLabel('Forelderens PIN (fire sifre)').fill('0123');
     await page.getByRole('button', { name: 'Lagre PIN' }).click();
@@ -66,6 +73,7 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
     expect(
       authCookies.every((c) => c.expires > Date.now() / 1000 + 86400),
     ).toBe(true);
+    console.info('Auth persistence checkpoint: restart browser');
     await context.close();
     context = await launch();
     page = context.pages()[0];
@@ -99,6 +107,7 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
         value,
       })),
     );
+    console.info('Auth persistence checkpoint: refresh expired session');
     await page.reload();
     await expect(
       page.getByRole('heading', { name: 'Hei, Leo!' }),
@@ -117,40 +126,53 @@ test('real local Auth: persistent browser restart, automatic refresh, PIN protec
     );
     expect(refreshed.refresh_token).not.toBe(previousRefresh);
     expect(refreshed.expires_at).toBeGreaterThan(Date.now() / 1000);
-    // K1 uses real local Auth/RLS and the existing transactional RPC in CI.
+    console.info('Auth persistence checkpoint: full adventure');
+    // The full adventure uses real local Auth/RLS and the existing transactional RPC in CI.
     await page.goto('http://127.0.0.1:3000/leo/stjerneoppdrag');
     await page.getByRole('button', { name: 'Start eventyret' }).click();
     await page
-      .getByRole('button', { name: 'Legg én på skjold 1', exact: true })
+      .getByRole('button', {
+        name: 'Legg én energicelle i skjoldfelt 1',
+        exact: true,
+      })
       .click();
-    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText(
+      '1',
+    );
     await page
       .getByRole('button', { name: 'Sjekk svaret', exact: true })
       .click();
     await expect(
-      page
-        .getByRole('status')
-        .filter({ hasText: /Se på brikkene som er igjen/ }),
+      page.getByRole('status').filter({ hasText: /Du har 23 celler igjen/ }),
     ).toBeVisible();
     await page.getByRole('button', { name: 'Gi meg et hint' }).click();
     await expect(
-      page
-        .getByRole('status')
-        .filter({ hasText: 'Finn de fire skjoldene som skal dele likt.' }),
+      page.getByRole('status').filter({
+        hasText:
+          'Alle de fire skjoldfeltene skal få like mange celler. Ingen celler skal bli igjen.',
+      }),
     ).toBeVisible();
+    console.info('Auth persistence checkpoint: pause and restore work');
     await page.getByRole('button', { name: 'Pause og lagre' }).click();
     await page.reload();
     await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
-    await expect(page.getByLabel('Brikker på skjold 1')).toHaveText('1');
+    await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText(
+      '1',
+    );
+    console.info('Auth persistence checkpoint: complete with help');
+    await page.getByText('Mer hjelp', { exact: true }).click();
     await page
       .getByRole('button', { name: 'Vis og forklar løsningen' })
       .click();
-    await page.getByRole('button', { name: 'Fullfør sammen' }).click();
+    await page
+      .getByRole('button', { name: 'Sjekk svaret', exact: true })
+      .click();
     await expect(
-      page.getByRole('button', { name: 'Neste utdrag' }),
+      page.getByRole('button', { name: 'Bli her litt' }),
     ).toBeEnabled();
     await page.getByRole('button', { name: 'Pause og lagre' }).click();
     await page.getByRole('link', { name: '← Hjem', exact: true }).click();
+    console.info('Auth persistence checkpoint: parent unlock and logout');
     await page.getByText('For forelder', { exact: true }).click();
     await page.getByLabel('Forelderens PIN', { exact: true }).fill('0123');
     await page.getByRole('button', { name: 'Lås opp foreldresiden' }).click();

@@ -154,7 +154,10 @@ try {
   );
   await fetch(origin + '/leo?fixture=quiet');
   await post({ command: 'start' }, '/api/prepared');
-  await audit('leo-prepared-pilot', '/leo/stjerneoppdrag');
+  await audit('leo-prepared-pilot', '/leo/utdrag');
+  await fetch(origin + '/leo?fixture=quiet');
+  await post({ command: 'start' }, '/api/star-wars');
+  await audit('leo-star-wars-full', '/leo/stjerneoppdrag');
   await audit(
     'parent',
     '/forelder/00000000-0000-4000-8000-000000000099?fixture=reset',

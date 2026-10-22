@@ -14,6 +14,7 @@ import { loadChapter } from '@/lib/free-story/store';
 import { chapterFixtures } from '@/lib/free-story/fixture';
 import { freeStoryView } from '@/lib/free-story/play';
 import { storySpeech } from '@/lib/free-story/speech';
+import { adventureView, adventureSpeech } from '@/lib/star-wars/play';
 import { preparedView } from '@/lib/prepared/play';
 import { preparedSpeech } from '@/lib/prepared/speech';
 import type { StorySession } from '@/lib/free-story/types';
@@ -23,7 +24,7 @@ const schema = z
   .object({
     sessionId: z.uuid(),
     revision: z.number().int().nonnegative(),
-    source: z.enum(['home', 'speech', 'task', 'all']),
+    source: z.enum(['home', 'speech', 'task', 'all', 'star-wars']),
   })
   .strict();
 export async function POST(request: Request) {
@@ -80,7 +81,11 @@ export async function POST(request: Request) {
           ]
             .filter(Boolean)
             .join(' ');
-    if (state?.preparedActive) {
+    if (source === 'star-wars' && !state?.starWars)
+      return new Response(null, { status: 409 });
+    if (source === 'star-wars' || state?.starWarsActive) {
+      text = adventureSpeech(adventureView(state));
+    } else if (state?.preparedActive) {
       text = preparedSpeech(preparedView(state));
     } else if (state?.freeChapter) {
       const chapter = mock

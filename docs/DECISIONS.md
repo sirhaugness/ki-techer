@@ -4,6 +4,16 @@
 
 Dette er daterte implementeringsvalg. Nyere avtalte krav i [SPEC](SPEC.md) og brukerens bestilling styrer videreutviklingen. Eldre begrensninger er ikke automatisk varige produktregler; se gjeldende beslutning under. Historiske resultater dokumenterer bare den undersøkte versjonen.
 
+## 2026-10-21: full revidert historie og Kraften
+
+Thors tilbakemeldinger etter utprøving erstatter berørte deler av v1. Hele løypen har nå 19 matematikk-/modelloppgaver og ett avslutningsvalg. Historien går via asteroidebeltet, Star Destroyeren, Leias celle og Falcon i hangaren til hyperrommet. Volum er erstattet med logikk og mer gange. [Manus v2](chapters/star-wars-v2.md) er lesbar kopi av runtimeinnholdet.
+
+Ny `lib/star-wars/` pakkeversjon2 og ny hovedspiller bruker samme økter/RPC uten migrasjon; gammel pilot beholdes ulenket på `/leo/utdrag` og data endres ikke. Progresjon, svar-/modellkontroll og hjelp følger autoritativ revisjon. Forfatteroppgaver gir ingen automatisk global mestring, FSRS eller medaljong. Tidligere oppgitt K2-motorbro er senere arbeid, slik at den nye historien ikke låses bak ubygde ferdighetstildelinger.
+
+Kraften formulerer korte samtalesvar gjennom eksisterende leverandør, med moderering, servereid matematikk og kontroll av skrevne ligninger. `force-tutor.v1` passer samme kontrakt; den gamle piloten beholder sin prompt. Inputtall blir ikke autoritative. Betalt ask får en varig CAS-claim med trygt hint før modellkall; gjentatt requestId kjøper ikke samme spørsmål på nytt. Fri dialog/utdata legges i eksisterende oppbevaringsstyrte meldinger, ikke i langlivet nested fremdrift.
+
+Realistiske bilder er forberedte ressurser. Matteobjekter tegnes i kode. Historie og oppgave samles, Kraften svarer nær oppgaven, og riktig svar tenner lyssabel over svarflaten. Automatisk neste etter åtte sekunder kan stoppes med «Bli her litt»; pause og redusert bevegelse beholdes. [Verifisering](K2-VERIFICATION.md) skiller implementasjon fra ekte modell/hosted prøving. Ingen betalt modelltest eller produksjonsendring her.
+
 ## 2026-10-21: én tydelig elevinngang til Star Wars
 
 Etter merge av K1 viste produksjon fortsatt en eldre versjon, og den implementerte forsiden beholdt flere motstridende konsepter. Elevforsiden viser nå kun det forberedte Star Wars-kapitlet som hovedvalg. Lagret K1 endrer knappen til fortsettelse. Tidligere øving flyttes til ulenket `/leo/oving`; elevdata og eksisterende foreldre-/lagringskontroller beholdes. Start i Star Wars-spilleren sender et eksplisitt øktbytte som avslutter gammel åpen økt med CAS før ny prøve; foreldretid og bevis beholdes. Ingen ny elevprofil, interesse eller kapittelproduksjon skal kreves for å prøve.

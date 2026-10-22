@@ -1,6 +1,6 @@
 # Leo-læreren – kanonisk produktbeskrivelse
 
-Gjeldende retning, vedtatt 20. oktober 2026: et begrenset bibliotek av forberedte interesseverdener og kapitler, med en levende KI-mattelærer. Denne bestillingen erstatter fri interessegenerering og tidligere R3–R7-bestillinger der de strider mot teksten her. Eldre spesifikasjon finnes i [git-historikken](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/SPEC.md).
+Gjeldende retning, oppdatert etter bestillingen 21. oktober 2026: et begrenset bibliotek av forberedte interesseverdener og kapitler, med en levende KI-mattelærer. Denne bestillingen erstatter fri interessegenerering og tidligere R3–R7-bestillinger der de strider mot teksten her. Eldre spesifikasjon finnes i [git-historikken](https://github.com/sirhaugness/ki-techer/blob/d6e18740547c43db34e7ce108b95fc5bf28e800e/docs/SPEC.md).
 
 Dette er produktkrav, ikke en erklæring om ferdig runtime. [PROGRESS](PROGRESS.md) viser implementert og kontrollert status; [GAME-REVISION](GAME-REVISION.md) viser neste byggesteg. [AGENTS](../AGENTS.md) styrer utviklingsarbeidet. Andre dokumenter skal lenke hit fremfor å kopiere produktreglene.
 
@@ -8,9 +8,9 @@ Dette er produktkrav, ikke en erklæring om ferdig runtime. [PROGRESS](PROGRESS.
 
 Leo går i 4. klasse. Han skal møte engasjerende matematikk, forstå hva han gjør og kunne fortsette uten mye hjelp fra forelder. LK20 er faglig grunnlag. Et riktig tall eller en fullført animasjon alene dokumenterer ikke forståelse. Automatiske tester dokumenterer ikke læringseffekt eller Leos engasjement.
 
-Første verden er Star Wars; første kapittel er **Star Wars: Darth Vaders felle**, med fire deler og fem hovedoppgaver i hver. Den komplette [kapittelplanen](chapters/star-wars-vaders-felle.md) definerer historie, kontrollerte tall, støtte og ressurser. Dette er et utvalg læringsmål, ikke hele årsprogrammet. Vi bygger ikke en stor katalog før dette kapitlet fungerer.
+Første verden er Star Wars; første kapittel er **Star Wars: Darth Vaders felle**, med fire deler og fem hovedoppgaver i hver. Det reviderte [manuset med oppgaver](chapters/star-wars-v2.md) definerer historie, kontrollerte tall, støtte og ressurser. Dette er et utvalg læringsmål, ikke hele årsprogrammet. Vi bygger ikke en stor katalog før dette kapitlet fungerer.
 
-K0 leverte retning, pedagogisk opplegg, 20 ferdig beskrevne oppgaver og et inaktivt lærerutkast. K1 implementerer tre oppgaver som en avgrenset prøve; [verifisering og begrensninger](K1-VERIFICATION.md) er ført separat. Hele spillet og de resterende 17 oppgavene er ikke bygget. Ingen betalte modelltester eller produksjonsutrulling er bestilt.
+K0 og K1 er historiske leveranser. Ny bestilling etter utprøving: bygg hele den reviderte historien med 20 steg, realistiske bilder, ett samlet tekstfelt med oppgaven i fet skrift til slutt, Kraften som samtalepartner og lyssabelrespons med automatisk videreføring. K2 implementerer dette; [verifisering og begrensninger](K2-VERIFICATION.md) skiller kode, lokale tester og hosted/modellevaluering. Ingen betalte modelltester eller produksjonsutrulling er bestilt.
 
 ## 2. Innhold og elevreise
 
@@ -20,7 +20,7 @@ Elevreisen blir: åpne tilgjengelig verden → start eller fortsett lagret kapit
 
 Fri kapittelproduksjon under spilling, progressiv publisering av modellfragmenter, automatisk nesteproduksjon ved 70 prosent, 90-sekunders genereringsfrist og 1 kr per generert kapittel er opphevet som produktkrav. Koden har fortsatt disse løpene frem til senere erstatning. Kostnadsvernet for lærer og tale beholdes.
 
-Den nye flaten kan senere erstatte dagens elevopplevelser. Gamle data bevares gjennom en uttrykkelig overgang; vi skal ikke vedlikeholde to likeverdige elevreiser permanent. Ikke bygg ny worker, researchpipeline, innholdsstudio eller generisk spillmotor for første kapittel.
+Elevforsiden viser ett Star Wars-valg, uten interessevalg, fri kapittelproduksjon eller gammel kart-/medaljonginngang. `/leo/stjerneoppdrag` er den nye hovedreisen. Gamle data og leseløp bevares i overgang; de eldre flatene er ulenket fra forsiden. Ikke bygg ny worker, researchpipeline, innholdsstudio eller generisk spillmotor for første kapittel.
 
 ## 3. Undervisning, øving og forståelse
 
@@ -50,7 +50,7 @@ Bevar motorens ferdighetsgraf, uavhengige svarvurdering, repetisjon, frustrasjon
 
 ## 5. Visuell retning
 
-Et tiltalende illustrert 2D-eventyr for nettbrett, med korte scener og enkel interaksjon og animasjon. Ingen fri bevegelse eller avansert 3D-spillverden. En kontrollert roterbar figur kan brukes som matematisk modell.
+Et filmatisk eventyr for nettbrett med realistiske, forberedte stemningsbilder og enkle 2D-kontroller. Leo har lyst, bustete hår. Historie og oppgave står samlet, med oppgaven i fet skrift til slutt. Kraften vises som et lysende magisk felt, og riktig-/suksessmeldingen inngår i dialogen nær oppgaven. En lyssabel tennes over svarflaten ved riktig svar; neste oppdrag kommer automatisk etter åtte sekunder. «Bli her litt» stopper overgangen. Pause og redusert bevegelse beholdes. Ingen fri bevegelse eller avansert 3D-spillverden. En kontrollert roterbar figur kan brukes som matematisk modell.
 
 Stemningsbilder og figurillustrasjoner bærer fortellingen. Tellbare objekter, grupper, rutenett, figurkanter og faglige størrelser tegnes av programmet fra autoritative data. Ingen telling i et generert bakgrunnsbilde. Scene og regneuttrykk kan stå side om side; fremhev forbindelsen og reduser støtten ved senere oppgaver.
 
@@ -60,9 +60,9 @@ Elevtekst er kort bokmål. Bruk lesbar tekst, minst 48 px berøringsmål, tastat
 
 ## 6. Historie og ressurser
 
-Leo er en ung jedi som trener med Luke. Navngitte historiefigurer er bare Luke Skywalker, Leia, Darth Vader, Han Solo, Chewbacca og R2-D2. Eksisterende lærernavn beholdes eventuelt i grensesnittet uten å bli en historiefigur. Ingen andre navngitte personer introduseres.
+Leo er en ung jedi som trener med Luke. Navngitte historiefigurer er bare Luke Skywalker, Leia, Darth Vader, Han Solo, Chewbacca og R2-D2. Samtalepartneren i den nye flaten heter Kraften. Eksisterende profilnavn endres ikke i lagring. Ingen andre navngitte personer introduseres.
 
-Fire deler: innflyging gjennom asteroidefeltet, inn på stasjonen og befri Leia, avslør Vaders felle og stans traktorstråle/angrep, deretter flukt og hyperrom. Tvisten er at Vader lot nødmeldingen slippe ut for å lokke Luke dit. Luke holder Vader tilbake mens Leo, Leia og R2-D2 handler. Han og Chewbacca holder Falcon klar; Luke rekker skipet før sluttspranget.
+Fire deler: innflyging gjennom asteroidefeltet, inn på Star Destroyeren og befri Leia, avslør Vaders felle og stans traktorstråle/angrep, deretter flukt og hyperrom. Tvisten er at Vader lot nødmeldingen slippe ut for å lokke Luke dit. Luke holder Vader tilbake mens Leo, Leia og R2-D2 handler. Han og Chewbacca holder Falcon klar; Luke rekker skipet før sluttspranget.
 
 Fare og kamp kan være dramatisk uten grafiske skildringer. Matematikk og scenens behov planlegges samlet. Ressurslisten i kapittelplanen angir få gjenbrukbare bakgrunner, figurer, kontrollerte matteobjekter og animasjoner. Den er en produksjonsbestilling, ikke påstand om ferdige bilder.
 
@@ -70,7 +70,7 @@ Fare og kamp kan være dramatisk uten grafiske skildringer. Matematikk og scenen
 
 Læreren skal kjenne faktisk oppgave, synlige mengder, matematisk modell, synlig uttrykk, elevhandlinger, tidligere hjelp og kontrollert svarvurdering. Kontekst bygges på serveren, aldri fra elevens påstand om godkjenning. Hold framtidige scener og skjult fasit utenfor vanlig elevprojeksjon. Kontrollert løsningshjelp kan bare slippes gjennom i tillatt modus.
 
-Det [inaktive lærerutkastet og kodekartet](TUTOR-DRAFT.md) definerer neste kontrakt, konteksteksempel og nødvendige endringer. Ikke last det som systemprompt før kontekst, skjema, hendelser, vurdering, hjelperegistrering og guards er bygget og kontrollert samlet. `tutor.v2.md` gjelder fortsatt eldre øving. K1 har en separat, avgrenset `prepared-tutor.v1` med strukturert valg av kontrollerte forklaringer og probevurdering; [implementering og begrensninger](K1-VERIFICATION.md) er dokumentert separat. Det generelle lærerutkastet er ikke lastet uendret som runtime.
+Det [inaktive lærerutkastet og kodekartet](TUTOR-DRAFT.md) definerer neste kontrakt, konteksteksempel og nødvendige endringer. Ikke last det som systemprompt før kontekst, skjema, hendelser, vurdering, hjelperegistrering og guards er bygget og kontrollert samlet. `tutor.v2.md` gjelder fortsatt eldre øving. K1 beholder `prepared-tutor.v1` på den arkiverte prøveflaten. K2 bruker separat `force-tutor.v1`: korte genererte samtalesvar med faktisk oppgave, elevhandling, hjelp og autoritativ vurdering. Moderering, servereid tallgrunnlag og kontroll av skrevne ligninger gjelder før visning; dette er ingen garanti for alle naturlige språkutsagn. Ved feil/budsjettstopp brukes et merket forfatterhint. [K2-kontrollen](K2-VERIFICATION.md) angir grensene. Frie forståelsesprober fra K1 er ikke overført som matematisk forståelsesgodkjenning i K2. Det generelle lærerutkastet er ikke lastet uendret som runtime.
 
 ## 8. Gjenbruk og tekniske rammer
 
@@ -92,6 +92,6 @@ Ingen produksjonsmerge, migrasjon eller endring av produksjonsvariabler uten aut
 
 Dokumentasjonsleveransen skal ha 20 komplette hovedoppgaver, kontrollerte svar/enheter og tolkninger, konsistente lenker og tydelig status. Uavhengig pedagogisk gjennomgang er utviklingsarbeid, ingen bestilling til forelder om å skaffe ekspertpanel.
 
-Neste implementering er et lite spillbart snitt: divisjon **SW01**, geometri **SW06** og forståelsessamtale **SW19**, med tydelig merkede scenehopp i prøven. Kontroller feil → hjelp → riktig/veiledet fullføring → synlig konsekvens → pause/gjenopptak, og at hjulpet arbeid ikke blir selvstendig mestring. Tre oppgaver betyr ikke et ferdig 20-oppgavers spill. [Byggeplanen](GAME-REVISION.md) angir kontrakter og ferdigkriterier.
+Gjeldende leveranse er hele den reviderte løypen **SW01–SW20**, med 19 matematikk-/modelloppgaver og ett avslutningsvalg. Kontroller feil → hjelp → riktig → synlig konsekvens → automatisk neste → pause/gjenopptak. Verken riktige tall, logikkvalg eller kapittelfullføring gir automatisk global mestring. Støttevarianter valgt adaptivt og en bredere motorbro er senere arbeid, ikke ferdig i K2. [Byggeplanen](GAME-REVISION.md) angir neste steg.
 
 Rapporter teknisk funksjon, faktisk modellkvalitet og opplevelse separat. Oppgi versjon, scenario og responskilde: ekte modell, mock, direkte kodebestemt svar, fallback eller ukjent. Et grønt bygg eller en plan erstatter ikke en gjennomført elevflyt. Leo kan senere prøve og gi enkel tilbakemelding; ingen formell studie kreves.

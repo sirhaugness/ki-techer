@@ -60,6 +60,9 @@ export type Interest = {
 export type Snapshot = {
   preparedChapter?: import('../prepared/contracts').Progress;
   preparedActive?: boolean;
+  starWars?: import('../star-wars/contracts').Progress;
+  starWarsActive?: boolean;
+  starWarsSession?: boolean;
   freeChapter?: {
     id: string;
     index: number;

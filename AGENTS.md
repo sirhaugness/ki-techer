@@ -6,9 +6,9 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 
 ## Gjeldende bestilling 20. oktober 2026 – forberedt kapittelbibliotek
 
-[Kanonisk SPEC](docs/SPEC.md) er eneste produktbeskrivelse. Den nye uttrykkelige bestillingen erstatter fri kapittelgenerering og motstridende eldre R3–R7-planer. Første verden/kapittel er [Star Wars: Darth Vaders felle](docs/chapters/star-wars-vaders-felle.md). Følg [byggeplanen](docs/GAME-REVISION.md) og [gjeldende status](docs/PROGRESS.md).
+[Kanonisk SPEC](docs/SPEC.md) er eneste produktbeskrivelse. Den nye uttrykkelige bestillingen erstatter fri kapittelgenerering og motstridende eldre R3–R7-planer. Første verden/kapittel er [Star Wars: Darth Vaders felle](docs/chapters/star-wars-v2.md). Følg [byggeplanen](docs/GAME-REVISION.md) og [gjeldende status](docs/PROGRESS.md).
 
-K0 er merget i PR #22 og K1 med SW01/SW06/SW19 i PR #23. Ny bestilling 21. oktober: rydd elevforsiden for gamle interesse-/kart-/genereringskonsepter og gjør Star Wars til ett tydelig hovedvalg. Bevar elevdata og foreldregrenser. Følg [K1-status og kontroller](docs/K1-VERIFICATION.md). Ingen betalte modelltester eller produksjonsutrulling er bestilt. Den nye, avgrensede lærerflyten må holde prompt, kontekst, vurdering og kodegrenser samlet; [lærerutkastet](docs/TUTOR-DRAFT.md) er fortsatt grunnlag for videre bredde. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
+K0/K1 og ryddingen av forsiden (#22–24) er merget. Ny uttrykkelig bestilling 21. oktober etter utprøving: implementer hele det [reviderte manuset v2](docs/chapters/star-wars-v2.md), realistiske bilder, samlet historie/oppgave, Kraften som samtalepartner og lyssabelrespons med automatisk neste. Følg [K2-kontrollen](docs/K2-VERIFICATION.md). Brukerens konkrete historieføringer erstatter v1-oppgavene der de er i konflikt. Bevar elevdata, foreldregrenser og eksisterende Preview-nøkkel. Ingen betalte modelltester eller produksjonsutrulling er bestilt. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
 
 ## Leserekkefølge og ansvar
 
@@ -67,7 +67,7 @@ Vanlige tester og evalueringsskript bruker mocks som standard. Ekte KI-testing b
 
 Lærerprompten må skille tur med verktøy fra hjelp uten verktøy. Ikke krev nye oppgaver i en hjelpetur.
 Dagens runtime, frem til samordnet revisjon etter TUTOR-DRAFT: tall-/hintinstruksjoner må passe aktuell guard: vanlig dialog før nivå 4 er tallfri; særskilt hjelp kan bare bruke tillatte oppgavetall uten å røpe fasit.
-Undervisning med kontrollerte løsninger krever ny modus-/evidenskontrakt. Ikke svekk fasitvern bare for å få en prompt til å passere. Bevar eldre promptversjoner ved ny lærerprompt, oppdater aktive referanser og versjonsmerking sammen.
+Undervisning med kontrollerte løsninger krever ny modus-/evidenskontrakt. Ikke svekk fasitvern bare for å få en prompt til å passere. Bevar eldre promptversjoner ved ny lærerprompt, oppdater aktive referanser og versjonsmerking sammen. K2 bruker separat `force-tutor.v1` med generert veiledning, hjelperegistrering før svar og kontrollert løsningskontekst; dette endrer ikke tall-/fasitgrensene i eldre øving og pilot.
 
 `lib/auth/` og `lib/db/` er server-only. Bruk `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` og `SUPABASE_SECRET_KEY`; `APP_URL` er valgfri.
 Innlogging og callback deler `authOrigin`: ekstern vert før innebygd `VERCEL_URL`; ikke prioriter Nexts interne localhost-adresse.

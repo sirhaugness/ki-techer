@@ -126,6 +126,7 @@ export function createSession(
   return {
     version: 1,
     preparedChapter: structuredClone(previous?.preparedChapter),
+    starWars: structuredClone(previous?.starWars),
     universeResearch: structuredClone(previous?.universeResearch ?? {}),
     storyProgress: structuredClone(previous?.storyProgress ?? {}),
     adventures,
