@@ -1,5 +1,11 @@
 # Fremdrift
 
+## Samarbeidsinstruksjon, 22. oktober 2026
+
+Etter Thors uttrykkelige beskjed brukes «Neste steg for deg:» bare når han faktisk må utføre en konkret handling. Ellers utelates hele avslutningen, inkludert formuleringer som «Neste steg for deg: Ingen». Regelen er samordnet i AGENTS.md og agentarbeidsflyten. Dette endrer ikke appen eller Star Wars-manuset.
+
+Kontroll: de to instruksjonene er lest mot hverandre, og endringen er avgrenset til rapporteringsregelen og denne loggføringen. Ingen runtime- eller modelltest er nødvendig for tekstendringen.
+
 ## Start her – revidert fullhistorie og Kraften, 21. oktober 2026
 
 Ny bestilling etter faktisk utprøving: innarbeid Thors historieføringer og tidligere grensesnittkommentarer i løsningen. Arbeidet ligger på `feat/star-wars-force-adventure`, fra oppdatert `origin/main` **5efbd06** (ekstern merge av #24). Ingen produksjonsendring utføres her.
