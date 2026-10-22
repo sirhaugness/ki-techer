@@ -15,9 +15,20 @@ import {
   type AdventureView,
 } from './contracts';
 import { missions } from './content';
-import { checkWork, solutionWork, checkedSolution, workFeedback } from './math';
-import { forceReply } from './tutor';
-export const promptVersion = 'force-tutor.v1';
+import {
+  checkWork,
+  solutionWork,
+  checkedSolution,
+  workFeedback,
+  missionWork,
+} from './math';
+import {
+  forceReply,
+  prepareQuestion,
+  recordHelp,
+  fallbackSpeech,
+} from './tutor';
+export const promptVersion = 'force-tutor.v2';
 function newProgress(
   index = 0,
   completed: Progress['completed'] = [],
@@ -156,6 +167,9 @@ export async function adventureTurn(input: {
     events = emptyEvents(),
     m = missions[p.index];
   if (!m) throw Error('Eventyret er avsluttet.');
+  p.work = missionWork(m, p.work);
+  if (p.submittedWork)
+    p.submittedWork = p.submittedWork.map((work) => missionWork(m, work));
   if (!mayContinue(state.clock, input.now)) {
     state.endedAt = input.now;
     state.starWarsActive = false;
@@ -165,11 +179,15 @@ export async function adventureTurn(input: {
     if (p.status === 'correct' && !['next', 'pause'].includes(e.type))
       throw Error('Dette oppdraget er allerede løst.');
     if (e.type === 'work') {
-      p.work = e.work;
+      p.work = missionWork(m, e.work);
       p.status = 'working';
       p.numericCorrect = null;
       p.modelCorrect = null;
     } else if (e.type === 'answer') {
+      p.submittedWork = [
+        ...(p.submittedWork ?? []),
+        structuredClone(p.work),
+      ].slice(-3);
       const result = checkWork(p.index, p.work);
       p.numericCorrect = result.numericCorrect;
       p.modelCorrect = result.modelCorrect;
@@ -196,8 +214,7 @@ export async function adventureTurn(input: {
       }
       message(state, events, 'lærer', p.teacher);
     } else if (e.type === 'ask') {
-      p.assisted = true;
-      p.helpLevel = Math.max(1, p.helpLevel);
+      prepareQuestion(p, e.text);
       const result = await forceReply({
         provider: input.provider ?? null,
         instructions: input.instructions ?? '',
@@ -210,7 +227,7 @@ export async function adventureTurn(input: {
       // not in long-lived nested progress. Keep an authored resume fallback here.
       p.teacher =
         result.source === 'model'
-          ? m.hints[Math.min(p.helpLevel - 1, 2)]
+          ? fallbackSpeech(m, p, e.text)
           : result.speech;
       p.source = result.source;
       if (result.accepted) message(state, events, 'leo', e.text);
@@ -236,6 +253,7 @@ export async function adventureTurn(input: {
         p.work = solutionWork(p.index);
         p.status = 'working';
       }
+      recordHelp(p, e.type);
       message(state, events, 'lærer', p.teacher);
     } else if (e.type === 'next') {
       if (p.status !== 'correct')

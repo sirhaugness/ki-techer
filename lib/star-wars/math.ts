@@ -1,5 +1,15 @@
-import type { Work } from './contracts';
+import type { Mission, Work } from './contracts';
 import { emptyWork } from './contracts';
+// Choice is an option id, never free text. Also cleans legacy saved work before
+// it is copied into tutor memory or sent to a provider.
+export function missionWork(mission: Mission, work: Work): Work {
+  return {
+    ...structuredClone(work),
+    choice: mission.control.options?.some((option) => option.id === work.choice)
+      ? work.choice
+      : null,
+  };
+}
 // Independent arithmetic/model checks. Never accept an answer or advancement from a model.
 export function solutionWork(index: number): Work {
   const w = emptyWork();

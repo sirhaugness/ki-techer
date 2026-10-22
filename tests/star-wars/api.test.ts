@@ -1,5 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest';
 import type { Snapshot } from '../../lib/learning/types';
+import type { AiProvider } from '../../lib/ai/provider';
 const store = vi.hoisted(() => ({
   state: null as Snapshot | null,
   denied: false,
@@ -8,6 +9,7 @@ const store = vi.hoisted(() => ({
   saved: [] as Snapshot[],
   stale: false,
   hold: null as Promise<void> | null,
+  provider: null as AiProvider | null,
 }));
 vi.mock('server-only', () => ({}));
 vi.mock('../../lib/learning/fixture', () => ({
@@ -56,7 +58,7 @@ vi.mock('../../lib/ai/control', () => ({
   controlledProvider: async () => {
     store.calls++;
     if (store.hold) await store.hold;
-    return null;
+    return store.provider;
   },
 }));
 import { createSession } from '../../lib/learning/session';
@@ -91,10 +93,55 @@ beforeEach(() => {
   store.saved = [];
   store.stale = false;
   store.hold = null;
+  store.provider = null;
   delete process.env.APP_URL;
   delete process.env.VERCEL_URL;
 });
 describe('full adventure API authority', () => {
+  it('sends the v2 conversation and help memory through the real route once per claim', async () => {
+    await post({ command: 'start' });
+    store.provider = {
+      moderate: vi.fn(async () => true),
+      respond: vi.fn(async () => ({
+        value: {
+          speech: 'Legg én celle i hvert skjoldfelt. Da får alle like mye.',
+        },
+        usage: { inputTokens: 1, outputTokens: 1 },
+      })),
+    } as unknown as AiProvider;
+    const first = turn({ type: 'ask', text: 'Hva betyr like mange?' });
+    expect((await post(first)).status).toBe(200);
+    expect((await post(first)).status).toBe(200);
+    expect(store.provider.respond).toHaveBeenCalledTimes(1);
+    const request = vi.mocked(store.provider.respond).mock.calls[0][0];
+    expect(request.instructions).toContain('submittedAttempts');
+    expect(JSON.parse(request.input as string).helpHistory).toHaveLength(1);
+    expect(store.state!.starWars!.helpHistory).toHaveLength(1);
+    expect(store.state!.starWars!.source).toBe('model');
+    expect(
+      (await post(turn({ type: 'ask', text: 'Hvorfor må de få like mye?' })))
+        .status,
+    ).toBe(200);
+    const second = JSON.parse(
+      vi.mocked(store.provider.respond).mock.calls[1][0].input as string,
+    );
+    expect(second.messages).toEqual([
+      { role: 'leo', text: 'Hva betyr like mange?' },
+      {
+        role: 'lærer',
+        text: 'Legg én celle i hvert skjoldfelt. Da får alle like mye.',
+      },
+    ]);
+    expect(second.requestIntent).toBe('why');
+    expect(store.state!.starWars!.helpHistory).toHaveLength(2);
+    expect(store.saved[0].starWars!.helpHistory).toHaveLength(1);
+    expect(store.saved[0].starWars!.source).toBe('fallback');
+    expect(store.state!.starWars).toMatchObject({
+      index: 0,
+      status: 'working',
+      completed: [],
+    });
+  });
   it('claims a paid question before the provider and replays its saved hint during a concurrent retry', async () => {
     await post({ command: 'start' });
     let release!: () => void;

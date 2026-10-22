@@ -16,6 +16,7 @@ import { mayContinue } from '@/lib/engine/session';
 import { controlledProvider } from '@/lib/ai/control';
 import { eventSchema } from '@/lib/star-wars/contracts';
 import { missions } from '@/lib/star-wars/content';
+import { prepareQuestion, fallbackSpeech } from '@/lib/star-wars/tutor';
 import {
   adventureTurn,
   adventureView,
@@ -172,10 +173,12 @@ export async function POST(request: Request) {
         throw Error('Dette oppdraget er allerede løst.');
       reserved = structuredClone(state);
       const progress = reserved.starWars!;
-      progress.assisted = true;
-      progress.helpLevel = Math.max(1, progress.helpLevel);
-      progress.teacher =
-        missions[progress.index].hints[Math.min(progress.helpLevel - 1, 2)];
+      prepareQuestion(progress, cmd.event.type === 'ask' ? cmd.event.text : '');
+      progress.teacher = fallbackSpeech(
+        missions[progress.index],
+        progress,
+        cmd.event.type === 'ask' ? cmd.event.text : '',
+      );
       progress.source = 'fallback';
       reserved.revision++;
       reserved.seenEvents = [...reserved.seenEvents, cmd.requestId].slice(-50);
@@ -198,7 +201,7 @@ export async function POST(request: Request) {
         : null;
     const instructions = needsTeacher
       ? await readFile(
-          process.cwd() + '/lib/agent/prompts/force-tutor.v1.md',
+          process.cwd() + '/lib/agent/prompts/force-tutor.v2.md',
           'utf8',
         )
       : '';
