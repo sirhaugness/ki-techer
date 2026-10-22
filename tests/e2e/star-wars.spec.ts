@@ -426,6 +426,10 @@ test('Kraften reserve conversation: error, hint, why, another explanation and pa
   ).toBeVisible();
   await page.getByText('Mer hjelp', { exact: true }).click();
   await page.getByRole('button', { name: 'Vis og forklar løsningen' }).click();
+  await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText('6');
+  await expect(
+    page.getByRole('button', { name: 'Sjekk svaret', exact: true }),
+  ).toBeEnabled();
   const before = await (await page.request.get('/api/star-wars')).json();
   expect(before.view).toMatchObject({
     index: 0,

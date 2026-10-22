@@ -36,6 +36,9 @@ jobs:
           path: test-results/free-chapters/
   supabase-e2e:
     runs-on: ubuntu-latest
+    env:
+      # Use the pinned CLI's upstream default; GHCR has rate-limited Postgres pulls.
+      SUPABASE_INTERNAL_IMAGE_REGISTRY: public.ecr.aws
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
