@@ -113,7 +113,7 @@ Små endringer trenger ikke hele teamet. Rene undersøkelser endrer ikke filer, 
 Thor er nybegynner innen utvikling. Forklar enkelt på norsk med hva som er endret, hvorfor, hva som faktisk er kontrollert og eventuelle begrensninger.
 Thor ønsker ikke gjentatte bekreftelser for allerede godkjent arbeid. Fortsett innenfor avtalt mandat uten å spørre på nytt. Unngå unødvendige handlinger som utløser nye verktøydialoger. Plattformens egne bekreftelseskrav kan ikke slås av eller omgås; forklar kilden dersom en slik dialog faktisk blokkerer nødvendig arbeid. Dette endrer ikke den avtalte grensen på 10 kroner for ekte KI-testing eller kravet om tillatelse til produksjonsendringer.
 Når Thor ber om undersøkelse uten endringer: svar, ikke endre filer.
-Avslutt alltid med «Neste steg for deg:» og en kort, konkret sjekkliste.
+Bruk «Neste steg for deg:» med en kort, konkret sjekkliste bare når Thor faktisk må gjøre noe. Hvis ingen handling er nødvendig, utelat hele avslutningen; ikke skriv «Neste steg for deg: Ingen» eller finn på et neste steg.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
