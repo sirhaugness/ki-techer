@@ -281,3 +281,9 @@ CI på `fa1aa98` viste `working` etter umiddelbar reload etter svarinnsending. P
 ## 2026-10-16: godkjent syntetisk testtilgang og innlogget R2-port
 
 Thor har uttrykkelig godkjent midlertidig syntetisk konto med husholdning/elev/enhet i leo-dev og sletting/etterkontroll, og ønsker færrest mulig nye godkjenningsspørsmål. Dette mandatet beholdes i AGENTS. Det omfatter avtalt Preview-/dev-verifisering, ikke produksjonsendringer eller forhøyet KI-budsjett. Innlogget R2 på 55cdbdd er bestått uten KI-kall. Tekniske slettingsfeil fra connectoren registreres som gjenstående opprydding, ikke som avslag eller utført sletting.
+
+## 2026-10-22: avgrenset Kraften-samtale med oppgaveminne
+
+K3 bygger på PR #25, som ble merget eksternt under arbeidet; ny PR rettes mot main b9d1336. Tre innsendte Work og åtte støttehandlinger bevares per oppgave med eksisterende snapshot/CAS, uten migrasjon. Oppgaveminnet har bare tall, enum-kommandoer og gyldige valg-id-er; dialog følger eksisterende oppbevaring. Godkjent dialog og faktisk innsending skilles fra utkast i force-tutor.v2. Tredje hint og uttrykkelig løsning merkes som vist hjelp. Gjentatte samtalemeldinger gir ikke automatisk full løsning eller selvstendig mestring. Serveren eier fortsatt vurdering og progresjon.
+
+Forfatterreserven bytter mellom konkret steg og enklere eksempel, og får egne hvorfor-forklaringer knyttet til de uendrede oppgavene. Et observert feiltall kan bare unntas fra tallvernet i et avgrenset sitat; det blir ikke autoritativt matematisk grunnlag. Større adaptiv læring/prober utsettes. Ingen betalt modelltest: 8,24392525 kr videreføres uendret. Se K3-VERIFICATION for faktisk teknisk evidens og åpne kvalitetsgrenser.

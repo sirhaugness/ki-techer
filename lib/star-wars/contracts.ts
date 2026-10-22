@@ -58,6 +58,14 @@ export type Progress = {
   source: 'code' | 'model' | 'fallback';
   completed: { missionId: string; assisted: boolean; correct: boolean }[];
   ending: 'yes' | 'no' | null;
+  // Optional for saved K2 sessions. Only validated task actions, never raw chat.
+  submittedWork?: Work[];
+  helpHistory?: {
+    kind: 'ask' | 'hint' | 'example' | 'solution';
+    level: number;
+    strategy?: 'step' | 'example' | 'why' | 'solution' | 'feedback';
+  }[];
+  solutionShown?: boolean;
 };
 export type AdventureView = {
   sessionId: string | null;

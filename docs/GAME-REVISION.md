@@ -14,9 +14,13 @@ Implementert i denne leveransen; observerte kontroller og åpne grenser føres i
 
 Ferdigkriterier: spill gjennom feil → hjelp → riktig → lyssabel → automatisk neste → pause/reload → fortsett → valgt slutt; prøv kart/figurer og smal skjerm; kontroller matematikk, autorisasjon, tidsvern, revisjon, tapt svar/retry, innsyn/eksport/sletting og tale. Skill lokale syntetiske tester fra ekte KI og innlogget Preview.
 
-## Neste: K3 – forbedre læreren og læringsstøtten
+## K3: bedre Kraften-samtaler
 
-Bruk konkret tilbakemelding fra gjennomspillingen til å rette uklare oppgaver, språk og tempo. En avtalt ekte modellprøve skal undersøke om Kraften svarer relevant og forståelig over flere turer; dagens mocks beviser ikke det. Betalt testing krever særskilt mandat og eksisterende samlet kostnadsregnskap.
+Avgrenset samtaleforbedring er implementert på `feat/force-conversation`, oppå eksternt merget PR #25. Faktisk innsendt arbeid, dagens utkast, tidligere støtte og godkjent dialog skilles i modellkonteksten. Gjentatt fastlåsing får en annen reserveforklaring, og hvorfor-spørsmål får konkret matematisk begrunnelse. Se [K3-VERIFICATION](K3-VERIFICATION.md) for faktisk kontrollerte forløp og begrensninger. Historie og hovedflate fra K2 beholdes.
+
+Ekte modellkvalitet over flere turer er fortsatt ikke verifisert. Betalt testing krever særskilt mandat og eksisterende samlet kostnadsregnskap; mocks og kodebestemt reserve er ikke modellkvalitetsbevis.
+
+## Neste: bredere læringsstøtte
 
 Deretter: flere tilpassede støttevarianter og utvalgte forståelsesspørsmål som kan vurderes med handling, korte ord eller tale. Bygg en avgrenset bro til ferdighetsmotorens selvstendige evidens/repetisjon. Ikke gi medaljong eller mestring bare fordi eventyret er fullført. Ingen stor katalog eller nytt innholdsstudio kreves.
 

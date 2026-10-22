@@ -381,3 +381,69 @@ test('one home entry on narrow screens, reduced motion and pause during celebrat
     'SW02',
   );
 });
+
+test('Kraften reserve conversation: error, hint, why, another explanation and paused solution', async ({
+  page,
+}) => {
+  await page.goto('/leo?fixture=quiet');
+  await page.goto('/leo/stjerneoppdrag');
+  await page.getByRole('button', { name: 'Start eventyret' }).click();
+  await page
+    .getByRole('button', {
+      name: 'Legg én energicelle i skjoldfelt 1',
+      exact: true,
+    })
+    .click();
+  await page.getByRole('button', { name: 'Sjekk svaret', exact: true }).click();
+  const reply = page
+    .getByRole('status')
+    .filter({ hasText: /Du har 23 celler igjen/ });
+  await expect(reply).toBeVisible();
+  await page.getByRole('button', { name: 'Gi meg et hint' }).click();
+  await page.getByRole('button', { name: 'Snakk med Kraften' }).click();
+  await page.getByLabel('Hva lurer du på?').fill('Hvorfor må de få like mye?');
+  await page.getByRole('button', { name: 'Send til Kraften' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Lik fordeling betyr' }),
+  ).toBeVisible();
+  await page.getByLabel('Hva lurer du på?').fill('Jeg skjønner fortsatt ikke');
+  await page.getByRole('button', { name: 'Send til Kraften' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'På øvepanelet' }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Kraften bruker et lagret hint akkurat nå.'),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Pause og lagre' }).click();
+  await page.reload();
+  await page.getByRole('button', { name: 'Fortsett eventyret' }).click();
+  await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText('1');
+  await page.getByRole('button', { name: 'Snakk med Kraften' }).click();
+  await page.getByLabel('Hva lurer du på?').fill('Forklar på en annen måte');
+  await page.getByRole('button', { name: 'Send til Kraften' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Legg én celle i hvert felt.' }),
+  ).toBeVisible();
+  await page.getByText('Mer hjelp', { exact: true }).click();
+  await page.getByRole('button', { name: 'Vis og forklar løsningen' }).click();
+  await expect(page.getByLabel('Energiceller i skjoldfelt 1')).toHaveText('6');
+  await expect(
+    page.getByRole('button', { name: 'Sjekk svaret', exact: true }),
+  ).toBeEnabled();
+  const before = await (await page.request.get('/api/star-wars')).json();
+  expect(before.view).toMatchObject({
+    index: 0,
+    status: 'working',
+    assisted: true,
+    work: { groups: [6, 6, 6, 6] },
+  });
+  await page.getByRole('button', { name: 'Sjekk svaret', exact: true }).click();
+  await expect(page.getByTestId('lightsaber')).toBeVisible();
+  await page.getByRole('button', { name: 'Bli her litt' }).click();
+  const after = await (await page.request.get('/api/star-wars')).json();
+  expect(after.view).toMatchObject({
+    index: 0,
+    status: 'correct',
+    assisted: true,
+  });
+});

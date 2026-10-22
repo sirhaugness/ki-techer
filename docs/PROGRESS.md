@@ -1,6 +1,16 @@
 # Fremdrift
 
-## Start her – revidert fullhistorie og Kraften, 21. oktober 2026
+## Start her – bedre Kraften-samtaler, 22. oktober 2026
+
+Arbeidet på `feat/force-conversation` bygger på **b9d1336**, etter at PR #25 ble merget eksternt under oppdraget. Ny aktiv `force-tutor.v2` får faktisk innsendte svar med servervurdering, separat utkast, tidligere hjelp/løsningsvisning og godkjent dialog. Reserven bytter forklaringsmåte ved gjentatt fastlåsing og forklarer hvorfor regnearten passer. Feiltall kan siteres uten å bli fasitgrunnlag. Serverkontroll, hjulpet evidens, CAS/retry og oppbevaring beholdes. Ingen historie-/layoutendring, migrasjon eller produksjonsmerge.
+
+[K3-VERIFICATION](K3-VERIFICATION.md) beskriver funn, kontrakter, responskilder og observerte kontroller. 28 fokuserte Vitest-tester og seks Star Wars-nettleserforløp består med syntetiske data/modellresponser eller direkte reservehjelp. Pedagogy og reviewer har faktisk undersøkt endringen; konkrete funn er rettet og etterkontrollert. Samlet lokalt: 672 Vitest-tester/51 filer, 33 nettleserforløp (to lokale Auth-tester utelatt), lint/typecheck/formatering/simulering/bygg og Lighthouse 13 × 100 består. [PR #26](https://github.com/sirhaugness/ki-techer/pull/26) er åpen. [Preview på runtime 5b1bd14](https://ki-techer-cvy4e4dhg-team-thor1.vercel.app/leo/stjerneoppdrag) er READY og innlogget gjennomspilt med syntetisk konto/budsjett 0: feil → hint → hvorfor → gjentatt misforståelse → pause/reload → annen forklaring → løsning → lagret hjulpet fullføring. SQL bekreftet 0 KI-kall. Alle testdata er slettet og null etterkontrollert. Vanlig CI-kvalitet og dev-migrasjonskontroll består; separat Auth-jobb traff GHCR-rategrense før appstart også etter retry. Auth-CI bruker nå CLI-versjonens tilgjengelige standardregister public.ecr.aws i stedet; ny kjøring følges i PR-en. Se K3-kontrollen for presis metode og grense. Ingen betalte modelltester: historisk regnskap beholdes på **8,24392525 kr av 10 kr**, nytt forbruk **0 kr**. Ekte modellkvalitet kan ikke utledes av disse testene.
+
+**Hva Thor må gjøre:** Ingen ny nøkkel eller oppsett. Prøv Preview som beskrevet i K3-kontrollen. Ingen ny elevprofil trengs. Følg siste CI-resultat før eventuell merge; den innloggede Preview-reserven er kontrollert. Større adaptiv læring, forståelsesprober og flere eventyr er senere arbeid. Ikke merge denne PR-en før du ønsker produksjonsendringen.
+
+## Historikk – K2
+
+## Revidert fullhistorie og Kraften, 21. oktober 2026
 
 Ny bestilling etter faktisk utprøving: innarbeid Thors historieføringer og tidligere grensesnittkommentarer i løsningen. Arbeidet ligger på `feat/star-wars-force-adventure`, fra oppdatert `origin/main` **5efbd06** (ekstern merge av #24). Ingen produksjonsendring utføres her.
 

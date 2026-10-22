@@ -10,6 +10,8 @@ Leo skal delta i et sammenhengende eventyr som er lett å bruke, gir lyst til å
 
 K0/K1 og ryddingen av forsiden (#22–24) er merget. Ny uttrykkelig bestilling 21. oktober etter utprøving: implementer hele det [reviderte manuset v2](docs/chapters/star-wars-v2.md), realistiske bilder, samlet historie/oppgave, Kraften som samtalepartner og lyssabelrespons med automatisk neste. Følg [K2-kontrollen](docs/K2-VERIFICATION.md). Brukerens konkrete historieføringer erstatter v1-oppgavene der de er i konflikt. Bevar elevdata, foreldregrenser og eksisterende Preview-nøkkel. Ingen betalte modelltester eller produksjonsutrulling er bestilt. Thor trenger ikke skaffe lærer, ekspertpanel eller formell studie. Ta rimelige valg og utfør relevante kontroller selv.
 
+K2 med hele historien er merget i PR #25 (main b9d1336). Avgrenset K3-samtaleforbedring følger [K3-kontrollen](docs/K3-VERIFICATION.md): aktiv force-tutor.v2, kort oppgaveminne og bedre reserveforklaringer. Historie/hovedflate beholdes. Nye betalte modelltester er ikke bestilt; tidligere regnskap videreføres. Større adaptiv læring/prober og flere eventyr kommer senere.
+
 ## Leserekkefølge og ansvar
 
 - Ved videreføring av spillrevisjonen: start med «Start her» i [docs/PROGRESS.md](docs/PROGRESS.md), deretter [docs/GAME-REVISION.md](docs/GAME-REVISION.md) og kanonisk SPEC. Kontroller levende branch-/PR-status og åpne porter før neste leveranse; ikke bygg ferdige leveranser på nytt fra en eldre main-kopi.
