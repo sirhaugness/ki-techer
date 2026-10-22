@@ -71,6 +71,6 @@ Rapporten til brukeren og PR-beskrivelsen skal inneholde:
 - Hvilke underagenter som faktisk kjørte, hva de leverte og hvordan funnene ble samlet og håndtert.
 - Dokumentert verifisering: kommandoer, observert resultat, miljø/commit, og tydelig skille mellom kodekontroll, direkte kodebestemte svar, mock/fallback og ekte tjenester/modell. Vurder teknisk funksjon, modellkvalitet og spillopplevelse separat.
 - Preview-lenke for riktig branch/commit og hva som faktisk er testet der. Hvis Preview mangler eller er utilgjengelig, oppgi det og nøyaktig hva som gjenstår; ikke oppgi en eldre Preview som bevis for den nye branchen.
-- PR-lenke og «Hva Thor må gjøre». Avslutt brukerens rapport med «Neste steg for deg:» og en kort, konkret sjekkliste.
+- PR-lenke. Bruk «Neste steg for deg:» med en kort, konkret sjekkliste bare når Thor faktisk må gjøre noe. Hvis ingen handling er nødvendig, utelat hele avslutningen; ikke skriv «Neste steg for deg: Ingen» eller finn på et neste steg.
 
 Et grønt bygg eller en samlet agentrapport erstatter ikke testing av den endrede brukerflyten. Ikke hev at GitHub CI, innlogget Preview, ekte modellkvalitet eller fysisk iPad er verifisert uten observerte resultater.
